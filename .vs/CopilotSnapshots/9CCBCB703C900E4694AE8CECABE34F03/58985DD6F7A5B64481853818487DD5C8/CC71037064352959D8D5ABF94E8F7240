@@ -1,0 +1,77 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan
+{
+    public partial class DashboardForm : Form
+    {
+        private readonly IRoomService _roomService;
+        private readonly IBookingService _bookingService;
+        private readonly IInvoiceService _invoiceService;
+
+        public DashboardForm(IRoomService roomService, IBookingService bookingService, IInvoiceService invoiceService)
+        {
+      InitializeComponent();
+    _roomService = roomService;
+        _bookingService = bookingService;
+      _invoiceService = invoiceService;
+        }
+
+        private async void DashboardForm_Load(object sender, EventArgs e)
+ {
+          try
+    {
+           await LoadDashboardData();
+            }
+   catch (Exception ex)
+            {
+     MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message);
+            }
+    }
+
+        private async Task LoadDashboardData()
+      {
+   // Tính toán thống kê
+          var allRooms = await _roomService.GetAllRoomsAsync();
+            var availableRooms = await _roomService.GetAvailableRoomsAsync();
+            var upcomingCheckIns = await _bookingService.GetUpcomingCheckInsAsync(1);
+ 
+        // Cập nhật giao diện với dữ liệu thực
+            UpdateOccupancyRate(allRooms.Count(), availableRooms.Count());
+          UpdateCheckInsPending(upcomingCheckIns.Count());
+   
+            // Load revenue data
+       await UpdateRevenueData();
+        }
+
+    private void UpdateOccupancyRate(int totalRooms, int availableRooms)
+        {
+            if (totalRooms > 0)
+  {
+          int occupiedRooms = totalRooms - availableRooms;
+            int occupancyRate = (occupiedRooms * 100) / totalRooms;
+      // Cập nhật label occupancy rate
+ }
+        }
+
+      private void UpdateCheckInsPending(int count)
+     {
+            // Cập nhật label check-ins pending
+        }
+
+        private async Task UpdateRevenueData()
+      {
+          try
+       {
+      DateTime today = DateTime.Now.Date;
+          decimal dailyRevenue = await _invoiceService.GetRevenueAsync(today, today.AddHours(23).AddMinutes(59).AddSeconds(59));
+        // Cập nhật label revenue
+            }
+     catch (Exception ex)
+    {
+       MessageBox.Show("Lỗi tải doanh thu: " + ex.Message);
+        }
+   }
+    }
+}

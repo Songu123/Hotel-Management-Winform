@@ -1,0 +1,139 @@
+﻿using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan
+{
+    public partial class InvoiceManagementForm : Form
+    {
+ private readonly IInvoiceService _invoiceService;
+
+   public InvoiceManagementForm(IInvoiceService invoiceService)
+      {
+          InitializeComponent();
+  _invoiceService = invoiceService;
+ }
+
+        private async void InvoiceManagementForm_Load(object sender, EventArgs e)
+ {
+       try
+     {
+      await LoadInvoiceDataAsync();
+    }
+       catch (Exception ex)
+      {
+     MessageBox.Show("Lỗi tải dữ liệu hóa đơn: " + ex.Message);
+       }
+      }
+
+     private async Task LoadInvoiceDataAsync()
+    {
+          var invoices = await _invoiceService.GetUnpaidInvoicesAsync();
+     // Bind data to DataGridView
+    }
+   }
+}
+
+partial class InvoiceManagementForm
+{
+  private System.ComponentModel.IContainer components = null;
+
+ private void InitializeComponent()
+  {
+         components = new System.ComponentModel.Container();
+
+         Panel mainPanel = new Panel();
+    mainPanel.Dock = DockStyle.Fill;
+    mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+       Panel headerPanel = new Panel();
+       headerPanel.Height = 60;
+headerPanel.Dock = DockStyle.Top;
+   headerPanel.BackColor = Color.White;
+    headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+      Label titleLabel = new Label();
+  titleLabel.Text = "Invoices & Services";
+     titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+   titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+      titleLabel.Location = new Point(30, 8);
+  titleLabel.Size = new Size(400, 40);
+   headerPanel.Controls.Add(titleLabel);
+
+      Panel toolbarPanel = new Panel();
+        toolbarPanel.Height = 60;
+    toolbarPanel.Dock = DockStyle.Top;
+     toolbarPanel.BackColor = Color.White;
+ toolbarPanel.BorderStyle = BorderStyle.FixedSingle;
+
+   Button btnNewInvoice = new Button();
+       btnNewInvoice.Text = "+ New Invoice";
+   btnNewInvoice.Location = new Point(20, 12);
+      btnNewInvoice.Size = new Size(130, 36);
+  btnNewInvoice.BackColor = Color.FromArgb(70, 130, 180);
+     btnNewInvoice.ForeColor = Color.White;
+       btnNewInvoice.Font = new Font("Segoe UI", 10);
+      btnNewInvoice.FlatStyle = FlatStyle.Flat;
+btnNewInvoice.Cursor = Cursors.Hand;
+       btnNewInvoice.Click += (s, e) => CreateNewInvoice();
+  toolbarPanel.Controls.Add(btnNewInvoice);
+
+      Label filterLabel = new Label();
+   filterLabel.Text = "Filter:";
+filterLabel.Location = new Point(350, 18);
+filterLabel.Size = new Size(50, 20);
+  toolbarPanel.Controls.Add(filterLabel);
+
+        ComboBox cbInvoiceFilter = new ComboBox();
+   cbInvoiceFilter.Items.AddRange(new string[] { "All", "Draft", "Issued", "Paid", "Unpaid" });
+  cbInvoiceFilter.SelectedIndex = 0;
+       cbInvoiceFilter.Location = new Point(400, 15);
+   cbInvoiceFilter.Size = new Size(150, 25);
+ cbInvoiceFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+  cbInvoiceFilter.SelectedIndexChanged += (s, e) => FilterInvoices(cbInvoiceFilter.SelectedItem.ToString());
+        toolbarPanel.Controls.Add(cbInvoiceFilter);
+
+      DataGridView dgvInvoices = new DataGridView();
+     dgvInvoices.Location = new Point(20, 80);
+    dgvInvoices.Size = new Size(1560, 600);
+  dgvInvoices.BackgroundColor = Color.White;
+  dgvInvoices.BorderStyle = BorderStyle.FixedSingle;
+      dgvInvoices.AllowUserToAddRows = false;
+       dgvInvoices.ReadOnly = false;
+   dgvInvoices.RowHeadersVisible = false;
+ dgvInvoices.GridColor = Color.LightGray;
+     dgvInvoices.Font = new Font("Segoe UI", 9);
+
+ dgvInvoices.Columns.Add("InvoiceId", "ID");
+ dgvInvoices.Columns.Add("InvoiceNumber", "Invoice No");
+        dgvInvoices.Columns.Add("Customer", "Customer");
+  dgvInvoices.Columns.Add("Amount", "Total Amount");
+    dgvInvoices.Columns.Add("PaidAmount", "Paid");
+    dgvInvoices.Columns.Add("Status", "Status");
+        dgvInvoices.Columns.Add("Date", "Date");
+      dgvInvoices.Columns.Add("Action", "Action");
+
+ mainPanel.Controls.Add(dgvInvoices);
+    mainPanel.Controls.Add(toolbarPanel);
+
+   this.AutoScaleDimensions = new SizeF(7F, 15F);
+ this.AutoScaleMode = AutoScaleMode.Font;
+    this.ClientSize = new Size(1600, 800);
+       this.Controls.Add(mainPanel);
+  this.Controls.Add(headerPanel);
+ this.Name = "InvoiceManagementForm";
+this.Text = "Hotel Management - Invoices & Services";
+     this.StartPosition = FormStartPosition.CenterScreen;
+    this.WindowState = FormWindowState.Maximized;
+   this.Load += (s, e) => InvoiceManagementForm_Load(s, e);
+   }
+
+   private void CreateNewInvoice()
+     {
+  MessageBox.Show("Create new invoice");
+       }
+
+  private void FilterInvoices(string filter)
+ {
+ // Filter logic
+   }
+ }
+}

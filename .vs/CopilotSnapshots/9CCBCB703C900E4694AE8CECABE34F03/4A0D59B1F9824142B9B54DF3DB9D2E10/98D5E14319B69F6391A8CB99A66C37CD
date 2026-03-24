@@ -1,0 +1,40 @@
+﻿using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan
+{
+    public partial class BookingManagementForm : Form
+{
+private readonly IBookingService _bookingService;
+    private readonly IRoomService _roomService;
+
+   public BookingManagementForm(IBookingService bookingService, IRoomService roomService)
+      {
+   InitializeComponent();
+_bookingService = bookingService;
+  _roomService = roomService;
+       }
+
+    private async void BookingManagementForm_Load(object sender, EventArgs e)
+ {
+ try
+      {
+  await LoadBookingDataAsync();
+   }
+             catch (Exception ex)
+     {
+    MessageBox.Show("Lỗi tải dữ liệu booking: " + ex.Message);
+  }
+        }
+
+      private async Task LoadBookingDataAsync()
+        {
+           var bookings = await _bookingService.GetUpcomingCheckInsAsync(30);
+   // Bind data to DataGridView
+   }
+
+private void CreateNewBooking()
+       {
+          MessageBox.Show("Create new booking");
+    }
+   }
+}

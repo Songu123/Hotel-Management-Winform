@@ -1,0 +1,339 @@
+﻿namespace QuanLyKhachSan
+{
+    partial class InvoiceManagementForm
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            components = new System.ComponentModel.Container();
+
+          // Main panel
+            Panel mainPanel = new Panel();
+   mainPanel.Dock = DockStyle.Fill;
+            mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+ // Header panel
+        Panel headerPanel = new Panel();
+            headerPanel.Height = 100;
+    headerPanel.Dock = DockStyle.Top;
+    headerPanel.BackColor = Color.White;
+       headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+            Label titleLabel = new Label();
+            titleLabel.Text = "Invoices & Services";
+            titleLabel.Font = new Font("Segoe UI", 28, FontStyle.Bold);
+            titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+     titleLabel.Location = new Point(30, 8);
+  titleLabel.Size = new Size(500, 40);
+            headerPanel.Controls.Add(titleLabel);
+
+Label subtitleLabel = new Label();
+         subtitleLabel.Text = "Manage guest accounts, process payments, and add premium amenities.";
+            subtitleLabel.Font = new Font("Segoe UI", 10);
+            subtitleLabel.ForeColor = Color.Gray;
+       subtitleLabel.Location = new Point(30, 48);
+            subtitleLabel.Size = new Size(500, 20);
+    headerPanel.Controls.Add(subtitleLabel);
+
+            Button btnExportReport = new Button();
+       btnExportReport.Text = "📊 EXPORT REPORT";
+            btnExportReport.Location = new Point(550, 28);
+        btnExportReport.Size = new Size(140, 40);
+            btnExportReport.BackColor = Color.FromArgb(200, 200, 200);
+  btnExportReport.ForeColor = Color.Black;
+         btnExportReport.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+    btnExportReport.FlatStyle = FlatStyle.Flat;
+  btnExportReport.Cursor = Cursors.Hand;
+        headerPanel.Controls.Add(btnExportReport);
+
+            Button btnGenerateInvoice = new Button();
+         btnGenerateInvoice.Text = "+ GENERATE NEW INVOICE";
+          btnGenerateInvoice.Location = new Point(700, 28);
+       btnGenerateInvoice.Size = new Size(180, 40);
+     btnGenerateInvoice.BackColor = Color.FromArgb(30, 40, 60);
+   btnGenerateInvoice.ForeColor = Color.White;
+     btnGenerateInvoice.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            btnGenerateInvoice.FlatStyle = FlatStyle.Flat;
+          btnGenerateInvoice.Cursor = Cursors.Hand;
+            btnGenerateInvoice.Click += (s, e) => CreateNewInvoice();
+    headerPanel.Controls.Add(btnGenerateInvoice);
+
+        // Content panel with scroll
+    Panel contentPanel = new Panel();
+         contentPanel.Dock = DockStyle.Fill;
+     contentPanel.AutoScroll = true;
+ contentPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+            // Metric Cards Section
+            Label metricsLabel = new Label();
+     metricsLabel.Text = "Recent Invoices";
+            metricsLabel.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+     metricsLabel.ForeColor = Color.FromArgb(30, 40, 60);
+         metricsLabel.Location = new Point(20, 15);
+         metricsLabel.Size = new Size(300, 30);
+         contentPanel.Controls.Add(metricsLabel);
+
+            // Filter buttons
+            Label filterLabel = new Label();
+    filterLabel.Text = "ALL";
+ filterLabel.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+   filterLabel.ForeColor = Color.Gray;
+            filterLabel.Location = new Point(507, 15);
+   filterLabel.Size = new Size(50, 20);
+            contentPanel.Controls.Add(filterLabel);
+
+            Button btnAllInvoices = new Button();
+      btnAllInvoices.Text = "ALL";
+  btnAllInvoices.Location = new Point(507, 35);
+          btnAllInvoices.Size = new Size(60, 28);
+     btnAllInvoices.BackColor = Color.Transparent;
+  btnAllInvoices.ForeColor = Color.FromArgb(30, 40, 60);
+   btnAllInvoices.Font = new Font("Segoe UI", 9);
+  btnAllInvoices.FlatStyle = FlatStyle.Flat;
+            btnAllInvoices.Cursor = Cursors.Hand;
+        contentPanel.Controls.Add(btnAllInvoices);
+
+            Label filterLabel2 = new Label();
+        filterLabel2.Text = "UNPAID";
+            filterLabel2.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+          filterLabel2.ForeColor = Color.Gray;
+            filterLabel2.Location = new Point(575, 15);
+            filterLabel2.Size = new Size(80, 20);
+            contentPanel.Controls.Add(filterLabel2);
+
+            Button btnUnpaidInvoices = new Button();
+            btnUnpaidInvoices.Text = "UNPAID";
+          btnUnpaidInvoices.Location = new Point(575, 35);
+            btnUnpaidInvoices.Size = new Size(80, 28);
+            btnUnpaidInvoices.BackColor = Color.Transparent;
+      btnUnpaidInvoices.ForeColor = Color.FromArgb(30, 40, 60);
+            btnUnpaidInvoices.Font = new Font("Segoe UI", 9);
+     btnUnpaidInvoices.FlatStyle = FlatStyle.Flat;
+            btnUnpaidInvoices.Cursor = Cursors.Hand;
+            contentPanel.Controls.Add(btnUnpaidInvoices);
+
+ // DataGridView for invoices
+            DataGridView dgvInvoices = new DataGridView();
+            dgvInvoices.Location = new Point(20, 70);
+            dgvInvoices.Size = new Size(860, 350);
+            dgvInvoices.BackgroundColor = Color.White;
+  dgvInvoices.BorderStyle = BorderStyle.FixedSingle;
+      dgvInvoices.AllowUserToAddRows = false;
+            dgvInvoices.ReadOnly = true;
+            dgvInvoices.RowHeadersVisible = false;
+            dgvInvoices.GridColor = Color.LightGray;
+            dgvInvoices.Font = new Font("Segoe UI", 10);
+            dgvInvoices.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+
+   dgvInvoices.Columns.Add("InvoiceId", "INVOICE ID");
+            dgvInvoices.Columns.Add("GuestName", "GUEST NAME");
+     dgvInvoices.Columns.Add("InvoiceDate", "DATE");
+dgvInvoices.Columns.Add("Amount", "AMOUNT");
+            dgvInvoices.Columns.Add("Status", "STATUS");
+
+            dgvInvoices.Columns[0].Width = 140;
+       dgvInvoices.Columns[1].Width = 250;
+     dgvInvoices.Columns[2].Width = 140;
+         dgvInvoices.Columns[3].Width = 140;
+       dgvInvoices.Columns[4].Width = 120;
+
+  // Sample data
+            dgvInvoices.Rows.Add("INV-96218", "Julianne Moore", "Oct 24, 2023", "$1,240.00", "PAID");
+     dgvInvoices.Rows.Add("INV-96211", "Marcus Aurelius", "Oct 25, 2023", "$450.50", "UNPAID");
+      dgvInvoices.Rows.Add("INV-96212", "Elena Gilbert", "Oct 26, 2023", "$2,890.00", "PENDING");
+            dgvInvoices.Rows.Add("INV-96213", "Silas Varich", "Oct 26, 2023", "$89.00", "PAID");
+
+ contentPanel.Controls.Add(dgvInvoices);
+
+   // Metrics Panel (Right side)
+            Panel metricsPanel = new Panel();
+            metricsPanel.Location = new Point(900, 70);
+   metricsPanel.Size = new Size(680, 350);
+            metricsPanel.BackColor = Color.Transparent;
+
+    // Total Outstanding Card
+      Panel totalOutstandingCard = CreateMetricCard(
+      "TOTAL OUTSTANDING",
+     "$14,205.40",
+             "Amount pending collection",
+          Color.FromArgb(30, 40, 60),
+   0, 0, 220, 160);
+            metricsPanel.Controls.Add(totalOutstandingCard);
+
+ // Collection Rate Card
+         Panel collectionRateCard = CreateMetricCard(
+          "COLLECTION RATE",
+          "94.2%",
+    "Successfully collected",
+                Color.FromArgb(40, 200, 150),
+             230, 0, 220, 160);
+        metricsPanel.Controls.Add(collectionRateCard);
+
+            // Active Services Card
+ Panel activeServicesCard = CreateMetricCard(
+    "ACTIVE SERVICES",
+  "128",
+      "Premium amenities active",
+     Color.FromArgb(70, 130, 180),
+            460, 0, 220, 160);
+     metricsPanel.Controls.Add(activeServicesCard);
+
+     // Add New Service Section
+ Panel addServicePanel = new Panel();
+            addServicePanel.Location = new Point(0, 170);
+            addServicePanel.Size = new Size(680, 180);
+   addServicePanel.BackColor = Color.White;
+  addServicePanel.BorderStyle = BorderStyle.FixedSingle;
+
+     Label addServiceLabel = new Label();
+            addServiceLabel.Text = "➕ Add New Service Charge";
+ addServiceLabel.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+   addServiceLabel.ForeColor = Color.FromArgb(30, 40, 60);
+        addServiceLabel.Location = new Point(15, 15);
+            addServiceLabel.Size = new Size(300, 25);
+            addServicePanel.Controls.Add(addServiceLabel);
+
+    Label roomLabel = new Label();
+roomLabel.Text = "GUEST ROOM";
+            roomLabel.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+      roomLabel.ForeColor = Color.Gray;
+            roomLabel.Location = new Point(15, 50);
+            roomLabel.Size = new Size(100, 15);
+            addServicePanel.Controls.Add(roomLabel);
+
+    ComboBox cbRoom = new ComboBox();
+     cbRoom.Location = new Point(15, 68);
+          cbRoom.Size = new Size(300, 25);
+         cbRoom.Items.Add("Room 402 - Julianne Moore");
+   cbRoom.Items.Add("Room 105 - Marcus Aurelius");
+     cbRoom.DropDownStyle = ComboBoxStyle.DropDownList;
+       addServicePanel.Controls.Add(cbRoom);
+
+            Label categoryLabel = new Label();
+            categoryLabel.Text = "SERVICE CATEGORY";
+            categoryLabel.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+     categoryLabel.ForeColor = Color.Gray;
+      categoryLabel.Location = new Point(380, 50);
+            categoryLabel.Size = new Size(120, 15);
+            addServicePanel.Controls.Add(categoryLabel);
+
+            Panel categoryPanel = new Panel();
+     categoryPanel.Location = new Point(380, 68);
+     categoryPanel.Size = new Size(280, 60);
+            categoryPanel.BackColor = Color.Transparent;
+
+      Button btnSpa = new Button();
+    btnSpa.Text = "🧘 Spa";
+       btnSpa.Location = new Point(0, 0);
+            btnSpa.Size = new Size(80, 25);
+            btnSpa.BackColor = Color.FromArgb(240, 240, 240);
+            btnSpa.FlatStyle = FlatStyle.Flat;
+            btnSpa.Cursor = Cursors.Hand;
+            categoryPanel.Controls.Add(btnSpa);
+
+            Button btnDining = new Button();
+      btnDining.Text = "🍽️ Dining";
+            btnDining.Location = new Point(90, 0);
+   btnDining.Size = new Size(80, 25);
+       btnDining.BackColor = Color.FromArgb(240, 240, 240);
+btnDining.FlatStyle = FlatStyle.Flat;
+            btnDining.Cursor = Cursors.Hand;
+      categoryPanel.Controls.Add(btnDining);
+
+  Button btnLaundry = new Button();
+ btnLaundry.Text = "👕 Laundry";
+            btnLaundry.Location = new Point(180, 0);
+            btnLaundry.Size = new Size(90, 25);
+     btnLaundry.BackColor = Color.FromArgb(240, 240, 240);
+        btnLaundry.FlatStyle = FlatStyle.Flat;
+         btnLaundry.Cursor = Cursors.Hand;
+            categoryPanel.Controls.Add(btnLaundry);
+
+            addServicePanel.Controls.Add(categoryPanel);
+
+            Button btnPostToBill = new Button();
+    btnPostToBill.Text = "POST TO BILL";
+     btnPostToBill.Location = new Point(520, 110);
+         btnPostToBill.Size = new Size(140, 40);
+            btnPostToBill.BackColor = Color.FromArgb(30, 40, 60);
+            btnPostToBill.ForeColor = Color.White;
+            btnPostToBill.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            btnPostToBill.FlatStyle = FlatStyle.Flat;
+       btnPostToBill.Cursor = Cursors.Hand;
+     addServicePanel.Controls.Add(btnPostToBill);
+
+   metricsPanel.Controls.Add(addServicePanel);
+
+  contentPanel.Controls.Add(metricsPanel);
+
+            // Form settings
+          mainPanel.Controls.Add(contentPanel);
+            mainPanel.Controls.Add(headerPanel);
+
+        this.AutoScaleDimensions = new SizeF(7F, 15F);
+   this.AutoScaleMode = AutoScaleMode.Font;
+  this.ClientSize = new Size(1600, 900);
+            this.Controls.Add(mainPanel);
+            this.Name = "InvoiceManagementForm";
+ this.Text = "Hotel Management - Invoices & Services";
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.WindowState = FormWindowState.Maximized;
+            this.Load += (s, e) => InvoiceManagementForm_Load(s, e);
+   }
+
+        private Panel CreateMetricCard(string title, string value, string subtitle, Color accentColor, int x, int y, int width, int height)
+        {
+  Panel card = new Panel();
+  card.Location = new Point(x, y);
+        card.Size = new Size(width, height);
+   card.BackColor = Color.White;
+            card.BorderStyle = BorderStyle.FixedSingle;
+
+            // Top accent bar
+    Panel accentBar = new Panel();
+       accentBar.Height = 4;
+      accentBar.Dock = DockStyle.Top;
+     accentBar.BackColor = accentColor;
+    card.Controls.Add(accentBar);
+
+         // Title
+      Label titleLabel = new Label();
+       titleLabel.Text = title;
+  titleLabel.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+        titleLabel.ForeColor = Color.Gray;
+        titleLabel.Location = new Point(15, 12);
+     titleLabel.Size = new Size(190, 18);
+    card.Controls.Add(titleLabel);
+
+     // Value
+            Label valueLabel = new Label();
+       valueLabel.Text = value;
+        valueLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+      valueLabel.ForeColor = Color.FromArgb(30, 40, 60);
+       valueLabel.Location = new Point(15, 35);
+            valueLabel.Size = new Size(190, 35);
+      card.Controls.Add(valueLabel);
+
+     // Subtitle
+       Label subtitleLabel = new Label();
+    subtitleLabel.Text = subtitle;
+            subtitleLabel.Font = new Font("Segoe UI", 9);
+            subtitleLabel.ForeColor = Color.Gray;
+            subtitleLabel.Location = new Point(15, 78);
+      subtitleLabel.Size = new Size(190, 60);
+      card.Controls.Add(subtitleLabel);
+
+   return card;
+  }
+    }
+}

@@ -1,0 +1,165 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class UCDashboard
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+   {
+     components.Dispose();
+            }
+   base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+     {
+components = new System.ComponentModel.Container();
+
+    // Main Panel
+            Panel mainPanel = new Panel();
+            mainPanel.Dock = DockStyle.Fill;
+mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+    mainPanel.AutoScroll = true;
+     mainPanel.Padding = new Padding(20);
+
+    // Title
+   Label titleLabel = new Label();
+  titleLabel.Text = "📊 Dashboard";
+     titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+          titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+     titleLabel.Location = new Point(20, 10);
+            titleLabel.Size = new Size(400, 40);
+       mainPanel.Controls.Add(titleLabel);
+
+            // Subtitle
+            Label subtitleLabel = new Label();
+    subtitleLabel.Text = "Today's Overview & Key Metrics";
+     subtitleLabel.Font = new Font("Segoe UI", 11);
+     subtitleLabel.ForeColor = Color.Gray;
+            subtitleLabel.Location = new Point(20, 55);
+        subtitleLabel.Size = new Size(400, 25);
+            mainPanel.Controls.Add(subtitleLabel);
+
+            // Row 1: Metric Cards
+            Panel row1 = new Panel();
+    row1.Height = 140;
+            row1.Dock = DockStyle.Top;
+    row1.Padding = new Padding(0, 0, 0, 20);
+      row1.BackColor = Color.Transparent;
+  row1.AutoSize = true;
+
+            row1.Controls.Add(CreateMetricCard("Today's Income", "4,335", "💰", Color.FromArgb(70, 130, 180), 0));
+    row1.Controls.Add(CreateMetricCard("Occupancy Rate", "84%", "📊", Color.FromArgb(40, 200, 150), 320));
+    row1.Controls.Add(CreateMetricCard("Check-ins", "5", "📅", Color.FromArgb(200, 120, 80), 640));
+
+            mainPanel.Controls.Add(row1);
+
+        // Row 2: Info Panel
+   Panel row2 = new Panel();
+            row2.Height = 200;
+      row2.Dock = DockStyle.Top;
+            row2.Padding = new Padding(0, 0, 0, 20);
+    row2.BackColor = Color.Transparent;
+            row2.AutoSize = true;
+
+  Panel infoPanel = new Panel();
+infoPanel.Dock = DockStyle.Fill;
+       infoPanel.BackColor = Color.White;
+            infoPanel.BorderStyle = BorderStyle.FixedSingle;
+            infoPanel.Padding = new Padding(20);
+
+  Label infoTitle = new Label();
+ infoTitle.Text = "📈 Today's Summary";
+         infoTitle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            infoTitle.ForeColor = Color.FromArgb(30, 40, 60);
+    infoTitle.Location = new Point(20, 20);
+            infoTitle.AutoSize = true;
+            infoPanel.Controls.Add(infoTitle);
+
+     Label info1 = new Label();
+            info1.Text = "Total Guests: 25 (15 individuals, 10 corporate)";
+  info1.Font = new Font("Segoe UI", 10);
+   info1.ForeColor = Color.Gray;
+        info1.Location = new Point(20, 60);
+   info1.AutoSize = true;
+          infoPanel.Controls.Add(info1);
+
+      Label info2 = new Label();
+            info2.Text = "Available Rooms: 6 Standard, 3 Deluxe, 1 Suite";
+     info2.Font = new Font("Segoe UI", 10);
+            info2.ForeColor = Color.Gray;
+    info2.Location = new Point(20, 85);
+    info2.AutoSize = true;
+            infoPanel.Controls.Add(info2);
+
+            Label info3 = new Label();
+            info3.Text = "Maintenance: 2 rooms (ETA: 2 hours)";
+  info3.Font = new Font("Segoe UI", 10);
+            info3.ForeColor = Color.Gray;
+            info3.Location = new Point(20, 110);
+        info3.AutoSize = true;
+            infoPanel.Controls.Add(info3);
+
+          Label info4 = new Label();
+      info4.Text = "Revenue Target: 85% achieved (Target: 50,000)";
+            info4.Font = new Font("Segoe UI", 10);
+      info4.ForeColor = Color.Gray;
+            info4.Location = new Point(20, 135);
+            info4.AutoSize = true;
+     infoPanel.Controls.Add(info4);
+
+            row2.Controls.Add(infoPanel);
+      mainPanel.Controls.Add(row2);
+
+   this.Controls.Add(mainPanel);
+            this.AutoScaleDimensions = new SizeF(7F, 15F);
+    this.AutoScaleMode = AutoScaleMode.Font;
+   this.Name = "UCDashboard";
+this.Size = new Size(1234, 803);
+  }
+
+        private Panel CreateMetricCard(string title, string value, string icon, Color accentColor, int xPosition)
+     {
+    Panel card = new Panel();
+            card.Width = 280;
+     card.Height = 140;
+            card.Location = new Point(xPosition, 0);
+       card.BackColor = Color.White;
+      card.BorderStyle = BorderStyle.FixedSingle;
+         card.Padding = new Padding(20);
+
+ Panel accentBar = new Panel();
+      accentBar.Height = 4;
+  accentBar.Dock = DockStyle.Top;
+  accentBar.BackColor = accentColor;
+            card.Controls.Add(accentBar);
+
+   Label titleLabel = new Label();
+          titleLabel.Text = title;
+         titleLabel.Font = new Font("Segoe UI", 9);
+          titleLabel.ForeColor = Color.Gray;
+  titleLabel.Location = new Point(20, 12);
+            titleLabel.AutoSize = true;
+        card.Controls.Add(titleLabel);
+
+   Label iconLabel = new Label();
+      iconLabel.Text = icon;
+            iconLabel.Font = new Font("Segoe UI", 16);
+  iconLabel.Location = new Point(230, 10);
+         iconLabel.AutoSize = true;
+            card.Controls.Add(iconLabel);
+
+Label valueLabel = new Label();
+         valueLabel.Text = value;
+            valueLabel.Font = new Font("Segoe UI", 28, FontStyle.Bold);
+   valueLabel.ForeColor = accentColor;
+    valueLabel.Location = new Point(20, 40);
+            valueLabel.AutoSize = true;
+        card.Controls.Add(valueLabel);
+
+          return card;
+        }
+    }
+}

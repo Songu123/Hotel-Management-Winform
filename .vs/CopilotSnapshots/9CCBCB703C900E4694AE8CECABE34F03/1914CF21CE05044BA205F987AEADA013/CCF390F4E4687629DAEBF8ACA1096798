@@ -1,0 +1,134 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Repositories.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class MainForm : Form
+    {
+        private readonly IRoomService _roomService;
+        private readonly IBookingService _bookingService;
+        private readonly IInvoiceService _invoiceService;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ICustomerRepository _customerRepository;
+
+        public MainForm(
+  IRoomService roomService,
+IBookingService bookingService,
+ IInvoiceService invoiceService,
+  IServiceProvider serviceProvider,
+ ICustomerRepository customerRepository)
+        {
+            InitializeComponent();
+            _roomService = roomService;
+            _bookingService = bookingService;
+            _invoiceService = invoiceService;
+            _serviceProvider = serviceProvider;
+            _customerRepository = customerRepository;
+        }
+
+        private void MenuItemClick(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            string menuItem = btn?.Tag?.ToString() ?? "";
+
+            try
+            {
+                switch (menuItem)
+                {
+                    case "DASHBOARD":
+                        OpenDashboard();
+                        break;
+
+                    case "ROOM MANAGEMENT":
+                        OpenRoomManagement();
+                        break;
+
+                    case "BOOKING MANAGEMENT":
+                        OpenBookingManagement();
+                        break;
+
+                    case "CUSTOMER MANAGEMENT":
+                        OpenCustomerManagement();
+                        break;
+
+                    case "INVOICES & SERVICES":
+                        OpenInvoiceManagement();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}");
+            }
+        }
+
+        private void OpenDashboard()
+        {
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form is DashboardForm)
+                {
+                    form.BringToFront();
+                    form.Focus();
+                    return;
+                }
+            }
+
+            var dashboardForm = ActivatorUtilities.CreateInstance<DashboardForm>(_serviceProvider);
+            dashboardForm.Show();
+        }
+
+        private void OpenRoomManagement()
+        {
+            MessageBox.Show("Room Management - Coming Soon");
+        }
+
+        private void OpenBookingManagement()
+        {
+            MessageBox.Show("Booking Management - Coming Soon");
+        }
+
+        private void OpenCustomerManagement()
+        {
+            MessageBox.Show("Customer Management - Coming Soon");
+        }
+
+        private void OpenInvoiceManagement()
+        {
+            MessageBox.Show("Invoice Management - Coming Soon");
+        }
+
+        private void BottomMenuClick(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn?.Text.Contains("LOGOUT") == true)
+            {
+                this.Close();
+                Application.Exit();
+            }
+            else if (btn?.Text.Contains("HELP CENTER") == true)
+            {
+                MessageBox.Show(
+                      "Hotel Management System v1.0\n\n" +
+              "Hệ thống quản lý khách sạn hiện đại.\n\n" +
+                      "Các tính năng:\n" +
+             "- Quản lý phòng\n" +
+             "- Quản lý booking\n" +
+                 "- Quản lý khách hàng\n" +
+               "- Quản lý hóa đơn\n\n" +
+             "Liên hệ hỗ trợ: support@hotel.com",
+            "Trợ giúp");
+            }
+        }
+    }
+}

@@ -1,0 +1,40 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyKhachSan.Models
+{
+    [Table("PHONG")]
+    public class Room
+    {
+        [Key]
+        [Column("maP")]
+        [StringLength(20)]
+        public string RoomId { get; set; }
+
+        [Column("tenP")]
+        [StringLength(20)]
+        public string Name { get; set; }
+
+        [Column("loaiP")]
+        public int RoomType { get; set; }
+
+        [Column("giaP")]
+        public int Price { get; set; }
+
+        [Column("chiTietLoaiP")]
+        public int RoomTypeDetails { get; set; }
+
+        [Column("tinhTrang")]
+        public int Status { get; set; } = 0;
+
+        [Column("hienTrang")]
+        public int CurrentCondition { get; set; } = 0;
+
+        [Column("xuLy")]
+        public int IsDeleted { get; set; } = 0;
+
+        // Navigation properties
+        public virtual ICollection<RoomRentalDetail> RoomRentalDetails { get; set; } = new List<RoomRentalDetail>();
+        public virtual ICollection<RoomAmenity> RoomAmenities { get; set; } = new List<RoomAmenity>();
+    }
+}

@@ -1,0 +1,454 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class UCRoomFloorView : UserControl
+    {
+        /// <summary>
+        /// Room floor data
+        /// </summary>
+        private List<FloorRoomInfo> allRooms = new List<FloorRoomInfo>();
+        private Dictionary<int, Color> floorColors = new Dictionary<int, Color>();
+        private readonly IRoomService _roomService;
+        private readonly IBookingService _bookingService;
+
+        public UCRoomFloorView()
+        {
+            InitializeComponent();
+            InitializeFloorColors();
+        }
+
+        /// <summary>
+        /// Constructor with dependency injection
+        /// </summary>
+        public UCRoomFloorView(IRoomService roomService, IBookingService bookingService) : this()
+        {
+            _roomService = roomService;
+            _bookingService = bookingService;
+        }
+
+        private async void UCRoomFloorView_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                await LoadRoomDataFromDatabaseAsync();
+                DisplayFloorView();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading room data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Initialize colors for each floor
+        /// </summary>
+        private void InitializeFloorColors()
+        {
+            floorColors = new Dictionary<int, Color>
+            {
+                { 1, Color.FromArgb(240, 240, 240) },  // Floor 1 - Light gray
+    { 2, Color.FromArgb(240, 240, 240) },  // Floor 2 - Light gray
+        { 3, Color.FromArgb(240, 240, 240) },  // Floor 3 - Light gray
+        { 4, Color.FromArgb(240, 240, 240) },  // Floor 4 - Light gray
+     { 5, Color.FromArgb(240, 240, 240) }   // Floor 5 - Light gray
+   };
+        }
+
+        /// <summary>
+        /// Load room data from database
+        /// </summary>
+        private async Task LoadRoomDataFromDatabaseAsync()
+        {
+            try
+            {
+                allRooms.Clear();
+
+                // Get all rooms from database
+                if (_roomService == null)
+                {
+                    // Fallback to sample data if service is not available
+                    LoadRoomData();
+                    return;
+                }
+
+                var dbRooms = await _roomService.GetAllRoomsAsync();
+                var dbBookings = await _bookingService.GetAllBookingsAsync();
+
+                foreach (var dbRoom in dbRooms)
+                {
+                    //var roomInfo = new FloorRoomInfo
+                    //{
+                    //    RoomNumber = dbRoom.RoomNumber,
+                    //    Type = dbRoom.RoomType?.Name ?? "Unknown",
+                    //    Floor = dbRoom.Floor?.FloorNumber ?? ExtractFloorFromRoomNumber(dbRoom.RoomNumber),
+                    //    Status = dbRoom.Status.ToString(),
+                    //    Guest = "-",
+                    //    CheckInDate = "-", 
+                    //    CheckOutDate = "-",
+                    //    Price = dbRoom.RoomType?.PricePerNight.ToString("N0") ?? "-",
+                    //    Service = "-"
+                    //};
+
+                    //// Find active booking for this room
+                    //var activeBooking = dbBookings?.FirstOrDefault(b =>
+                    //             b.RoomId == dbRoom.RoomId &&
+                    //    (b.Status == BookingStatus.CheckedIn || b.Status == BookingStatus.Confirmed));
+
+                    //if (activeBooking != null)
+                    //{
+                    //    roomInfo.Guest = activeBooking.Customer?.FullName ?? "Unknown";
+                    //    roomInfo.CheckInDate = activeBooking.CheckInDate.ToString("dd/MM/yyyy HH:mm");
+                    //    roomInfo.CheckOutDate = activeBooking.CheckOutDate.ToString("dd/MM/yyyy HH:mm");
+                    //    roomInfo.Service = activeBooking.Customer?.FullName ?? "-";
+                    //}
+
+                    //allRooms.Add(roomInfo);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoadRoomData(); // Fallback to sample data
+            }
+        }
+
+        /// <summary>
+        /// Extract floor number from room number (e.g., "301" -> 3)
+        /// </summary>
+        private int ExtractFloorFromRoomNumber(string roomNumber)
+        {
+            if (string.IsNullOrEmpty(roomNumber) || roomNumber.Length < 1)
+                return 1;
+
+            if (int.TryParse(roomNumber[0].ToString(), out var floor))
+            {
+                return floor;
+            }
+
+            return 1;
+        }
+
+        /// <summary>
+        /// Initialize sample room data (fallback)
+        /// </summary>
+        private void LoadRoomData()
+        {
+            allRooms = new List<FloorRoomInfo>
+            {
+ // Floor 1
+           new FloorRoomInfo { RoomNumber = "101", Type = "Đơn", Floor = 1, Status = "Occupied", Guest = "Nguyễn Phú Trọng", CheckInDate = "11/05/2023 08:47", CheckOutDate = "12/05/2023 12:00", Price = "500,000", Service = "Nguyễn Phú Trọng" },
+     new FloorRoomInfo { RoomNumber = "102", Type = "Đơn", Floor = 1, Status = "Occupied", Guest = "Đào Quân Hòa", CheckInDate = "08/05/2023 16:21", CheckOutDate = "24/05/2023 12:00", Price = "1,800,000", Service = "Đào Quân Hòa" },
+     new FloorRoomInfo { RoomNumber = "103", Type = "Đơn", Floor = 1, Status = "Occupied", Guest = "Nguyễn Phú Trọng", CheckInDate = "09/05/2023 16:21", CheckOutDate = "30/05/2023 12:00", Price = "1,800,000", Service = "Nguyễn Phú Trọng" },
+  new FloorRoomInfo { RoomNumber = "104", Type = "Đơn", Floor = 1, Status = "Occupied", Guest = "Nguyễn Faker", CheckInDate = "11/05/2023 13:19", CheckOutDate = "12/05/2023 13:37", Price = "300,000", Service = "Nguyễn Faker" },
+       new FloorRoomInfo { RoomNumber = "105", Type = "Đơn", Floor = 1, Status = "Occupied", Guest = "Nguyễn Phú Trọng", CheckInDate = "11/05/2023 08:47", CheckOutDate = "12/05/2023 12:00", Price = "300,000", Service = "Nguyễn Phú Trọng" },
+
+             // Floor 2
+         new FloorRoomInfo { RoomNumber = "201", Type = "Đôi", Floor = 2, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+              new FloorRoomInfo { RoomNumber = "202", Type = "Đôi", Floor = 2, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+new FloorRoomInfo { RoomNumber = "203", Type = "Đôi", Floor = 2, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+                new FloorRoomInfo { RoomNumber = "204", Type = "Đôi", Floor = 2, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+             new FloorRoomInfo { RoomNumber = "205", Type = "Đôi", Floor = 2, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+
+     // Floor 3
+           new FloorRoomInfo { RoomNumber = "301", Type = "Đơn", Floor = 3, Status = "Occupied", Guest = "Lê sánh ba", CheckInDate = "11/05/2023 09:52", CheckOutDate = "11/05/2023 13:00", Price = "45,500,300", Service = "Lê sánh ba" },
+   new FloorRoomInfo { RoomNumber = "302", Type = "Đơn", Floor = 3, Status = "Occupied", Guest = "Nguyễn Faker", CheckInDate = "11/05/2023 13:19", CheckOutDate = "13/05/2023 13:37", Price = "300,000", Service = "Nguyễn Faker" },
+    new FloorRoomInfo { RoomNumber = "303", Type = "Đơn", Floor = 3, Status = "Occupied", Guest = "HOÀNG VIỄN Lĩ", CheckInDate = "11/05/2023 13:19", CheckOutDate = "08/05/2024 13:00", Price = "8", Service = "HOÀNG VIỄN Lĩ" },
+        new FloorRoomInfo { RoomNumber = "304", Type = "Đơn", Floor = 3, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "Booking Mặc định" },
+          new FloorRoomInfo { RoomNumber = "305", Type = "Đơn", Floor = 3, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+         new FloorRoomInfo { RoomNumber = "306", Type = "Đơn", Floor = 3, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+
+        // Floor 4
+            new FloorRoomInfo { RoomNumber = "401", Type = "Đơn", Floor = 4, Status = "Occupied", Guest = "BK Hoài", CheckInDate = "05/05/2023 13:47", CheckOutDate = "23/05/2023 12:00", Price = "1,800,000", Service = "BK Hoài" },
+              new FloorRoomInfo { RoomNumber = "402", Type = "Đơn", Floor = 4, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+      new FloorRoomInfo { RoomNumber = "403", Type = "Đơn", Floor = 4, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+         new FloorRoomInfo { RoomNumber = "404", Type = "Đơn", Floor = 4, Status = "Occupied", Guest = "ANDREX", CheckInDate = "09/05/2023 11:02", CheckOutDate = "11/05/2023 15:58", Price = "1,200,000", Service = "ANDREX" },
+     new FloorRoomInfo { RoomNumber = "405", Type = "Đơn", Floor = 4, Status = "Occupied", Guest = "lê con chó", CheckInDate = "09/05/2023 15:05", CheckOutDate = "11/05/2023 15:58", Price = "1,800,000", Service = "lê con chó" },
+
+        // Floor 5
+       new FloorRoomInfo { RoomNumber = "501", Type = "Phòng gia đình", Floor = 5, Status = "Occupied", Guest = "KỸ sư Đình", CheckInDate = "11/05/2023 13:48", CheckOutDate = "13/05/2023 12:00", Price = "930,000", Service = "KỸ sư Đình" },
+   new FloorRoomInfo { RoomNumber = "502", Type = "Phòng gia đình", Floor = 5, Status = "Maintenance", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+                new FloorRoomInfo { RoomNumber = "503", Type = "Phòng gia đình", Floor = 5, Status = "Occupied", Guest = "Phạm Văn Khang", CheckInDate = "11/05/2023 11:21", CheckOutDate = "13/05/2023 12:00", Price = "1,000,000", Service = "Phạm Văn Khang" },
+          new FloorRoomInfo { RoomNumber = "504", Type = "Phòng gia đình", Floor = 5, Status = "Occupied", Guest = "KỸ sư Đình", CheckInDate = "11/05/2023 13:48", CheckOutDate = "13/05/2023 12:00", Price = "930,000", Service = "KỸ sư Đình" },
+            new FloorRoomInfo { RoomNumber = "505", Type = "Phòng gia đình", Floor = 5, Status = "Available", Guest = "-", CheckInDate = "-", CheckOutDate = "-", Price = "-", Service = "-" },
+  new FloorRoomInfo { RoomNumber = "506", Type = "VIP", Floor = 5, Status = "Occupied", Guest = "Sứ hành", CheckInDate = "09/05/2023 17:24", CheckOutDate = "11/05/2023 13:58", Price = "18,520,000", Service = "Sứ hành" }
+    };
+        }
+
+        /// <summary>
+        /// Display rooms grouped by floor
+        /// </summary>
+        private void DisplayFloorView()
+        {
+            try
+            {
+                Panel containerPanel = this.Controls.Find("pnlFloorContainer", true).FirstOrDefault() as Panel;
+                if (containerPanel != null)
+                {
+                    containerPanel.Controls.Clear();
+                    int y = 10;
+
+                    // Group rooms by floor
+                    var floorGroups = allRooms.GroupBy(r => r.Floor).OrderBy(g => g.Key);
+
+                    foreach (var floorGroup in floorGroups)
+                    {
+                        // Create floor header panel with info
+                        Panel floorHeaderPanel = CreateFloorHeader(floorGroup.Key);
+                        floorHeaderPanel.Location = new Point(10, y);
+                        containerPanel.Controls.Add(floorHeaderPanel);
+                        y += floorHeaderPanel.Height + 10;
+
+                        // Create rooms panel for this floor
+                        Panel floorRoomsPanel = new Panel();
+                        floorRoomsPanel.Width = containerPanel.Width - 30;
+                        floorRoomsPanel.BackColor = Color.Transparent;
+                        floorRoomsPanel.AutoSize = true;
+
+                        int roomX = 10;
+                        int roomY = 10;
+                        int cardWidth = 220;
+                        int cardHeight = 140;
+                        int spacing = 10;
+                        int cardsPerRow = (floorRoomsPanel.Width - 20) / (cardWidth + spacing);
+                        if (cardsPerRow < 1) cardsPerRow = 1;
+
+                        int col = 0;
+                        foreach (var room in floorGroup.OrderBy(r => r.RoomNumber))
+                        {
+                            Panel roomCard = CreateRoomCard(room);
+                            roomCard.Location = new Point(roomX, roomY);
+                            floorRoomsPanel.Controls.Add(roomCard);
+
+                            col++;
+                            if (col >= cardsPerRow)
+                            {
+                                col = 0;
+                                roomY += cardHeight + spacing;
+                                roomX = 10;
+                            }
+                            else
+                            {
+                                roomX += cardWidth + spacing;
+                            }
+                        }
+
+                        floorRoomsPanel.Height = roomY + cardHeight + 10;
+                        floorRoomsPanel.Location = new Point(10, y);
+                        containerPanel.Controls.Add(floorRoomsPanel);
+                        y += floorRoomsPanel.Height + 20;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error displaying floor view: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Create floor header panel with room count statistics
+        /// </summary>
+        private Panel CreateFloorHeader(int floorNumber)
+        {
+            Panel headerPanel = new Panel();
+            headerPanel.Width = 100;
+            headerPanel.Height = 150;
+            headerPanel.BackColor = Color.FromArgb(70, 130, 180);
+            headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+            // Floor name
+            Label lblFloor = new Label();
+            lblFloor.Text = $"Tầng {floorNumber}";
+            lblFloor.Font = new Font("Segoe UI", 13, FontStyle.Bold);
+            lblFloor.ForeColor = Color.White;
+            lblFloor.TextAlign = ContentAlignment.MiddleCenter;
+            lblFloor.Location = new Point(0, 10);
+            lblFloor.Size = new Size(100, 30);
+            headerPanel.Controls.Add(lblFloor);
+
+            // Room count statistics
+            var floorRooms = allRooms.Where(r => r.Floor == floorNumber).ToList();
+            var availCount = floorRooms.Count(r => r.Status == "Available");
+            var occupiedCount = floorRooms.Count(r => r.Status == "Occupied");
+            var reservedCount = floorRooms.Count(r => r.Status == "Reserved");
+            var maintenanceCount = floorRooms.Count(r => r.Status == "Maintenance");
+
+            Label lblStats = new Label();
+            lblStats.Text = $"✅ {availCount}\n👥 {occupiedCount}\n📅 {reservedCount}\n🔧 {maintenanceCount}";
+            lblStats.Font = new Font("Segoe UI", 9);
+            lblStats.ForeColor = Color.White;
+            lblStats.TextAlign = ContentAlignment.MiddleCenter;
+            lblStats.Location = new Point(0, 45);
+            lblStats.Size = new Size(100, 95);
+            headerPanel.Controls.Add(lblStats);
+
+            return headerPanel;
+        }
+
+        /// <summary>
+        /// Create room card with colorful background based on status
+        /// </summary>
+        private Panel CreateRoomCard(FloorRoomInfo room)
+        {
+            Panel card = new Panel();
+            card.Width = 220;
+            card.Height = 140;
+            card.BackColor = GetStatusCardColor(room.Status);
+            card.BorderStyle = BorderStyle.FixedSingle;
+            card.Padding = new Padding(10);
+            card.Cursor = Cursors.Hand;
+
+            // Room number header
+            Label lblRoomHeader = new Label();
+            lblRoomHeader.Text = $"{room.RoomNumber} - {room.Type}";
+            lblRoomHeader.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            lblRoomHeader.ForeColor = room.Status == "Available" ? Color.FromArgb(50, 50, 50) : Color.White;
+            lblRoomHeader.Location = new Point(10, 8);
+            lblRoomHeader.Size = new Size(180, 20);
+            lblRoomHeader.AutoEllipsis = true;
+            card.Controls.Add(lblRoomHeader);
+
+            // Menu button (three dots)
+            Button btnMenu = new Button();
+            btnMenu.Text = "⋯";
+            btnMenu.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            btnMenu.ForeColor = room.Status == "Available" ? Color.Gray : Color.White;
+            btnMenu.BackColor = Color.Transparent;
+            btnMenu.FlatStyle = FlatStyle.Flat;
+            btnMenu.Size = new Size(30, 25);
+            btnMenu.Location = new Point(185, 5);
+            btnMenu.FlatAppearance.BorderSize = 0;
+            btnMenu.Cursor = Cursors.Hand;
+            card.Controls.Add(btnMenu);
+
+            // Room details
+            Label lblDetails = new Label();
+            if (room.Status == "Available")
+            {
+                lblDetails.Text = "Phòng trống";
+                lblDetails.Font = new Font("Segoe UI", 9, FontStyle.Italic);
+                lblDetails.ForeColor = Color.FromArgb(80, 80, 80);
+            }
+            else if (room.Status == "Maintenance")
+            {
+                lblDetails.Text = "Bảo trì\n\n(Đang sửa chữa)";
+                lblDetails.Font = new Font("Segoe UI", 9, FontStyle.Italic);
+                lblDetails.ForeColor = Color.White;
+            }
+            else
+            {
+                lblDetails.Text = $"{room.CheckInDate}\n{room.CheckOutDate}\nGiá: {room.Price}";
+                lblDetails.Font = new Font("Segoe UI", 8);
+                lblDetails.ForeColor = Color.White;
+            }
+            lblDetails.Location = new Point(10, 32);
+            lblDetails.Size = new Size(200, 70);
+            lblDetails.AutoSize = false;
+            card.Controls.Add(lblDetails);
+
+            // Guest/Service info footer
+            Label lblFooter = new Label();
+            lblFooter.Text = $"👤 {(string.IsNullOrEmpty(room.Service) || room.Service == "-" ? "N/A" : room.Service)}";
+            lblFooter.Font = new Font("Segoe UI", 8, FontStyle.Bold);
+            lblFooter.ForeColor = room.Status == "Available" ? Color.Gray : Color.White;
+            lblFooter.Location = new Point(10, 115);
+            lblFooter.Size = new Size(200, 20);
+            lblFooter.AutoEllipsis = true;
+            card.Controls.Add(lblFooter);
+
+            // Add hover effect
+            card.MouseEnter += (s, e) =>
+     {
+         card.BorderStyle = BorderStyle.Fixed3D;
+         card.BackColor = AdjustBrightness(GetStatusCardColor(room.Status), 0.9);
+     };
+            card.MouseLeave += (s, e) =>
+           {
+               card.BorderStyle = BorderStyle.FixedSingle;
+               card.BackColor = GetStatusCardColor(room.Status);
+           };
+
+            return card;
+        }
+
+        /// <summary>
+        /// Adjust color brightness
+        /// </summary>
+        private Color AdjustBrightness(Color color, double factor)
+        {
+            return Color.FromArgb(
+                (int)(color.R * factor),
+         (int)(color.G * factor),
+            (int)(color.B * factor)
+          );
+        }
+
+        /// <summary>
+        /// Get card background color based on room status
+        /// </summary>
+        private Color GetStatusCardColor(string status)
+        {
+            return status switch
+            {
+                "Available" => Color.FromArgb(220, 220, 220),         // Light gray
+                "Occupied" => Color.FromArgb(220, 50, 50),    // Red
+                "Maintenance" => Color.FromArgb(120, 120, 120),        // Dark gray
+                "Reserved" => Color.FromArgb(100, 180, 220),           // Blue
+                "Pending" => Color.FromArgb(255, 180, 50),             // Orange
+                _ => Color.White
+            };
+        }
+
+        /// <summary>
+        /// Get room statistics
+        /// </summary>
+        public Dictionary<string, int> GetRoomStatistics()
+        {
+            return new Dictionary<string, int>
+      {
+       { "Total", allRooms.Count },
+      { "Available", allRooms.Count(r => r.Status == "Available") },
+      { "Occupied", allRooms.Count(r => r.Status == "Occupied") },
+            { "Reserved", allRooms.Count(r => r.Status == "Reserved") },
+        { "Maintenance", allRooms.Count(r => r.Status == "Maintenance") }
+    };
+        }
+
+        private void titleLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void filterPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// Room information model for floor view
+    /// </summary>
+    public class FloorRoomInfo
+    {
+        public string RoomNumber { get; set; }
+        public string Type { get; set; }
+        public int Floor { get; set; }
+        public string Status { get; set; }
+        public string Guest { get; set; }
+        public string CheckInDate { get; set; }
+        public string CheckOutDate { get; set; }
+        public string Price { get; set; }
+        public string Service { get; set; }
+    }
+}

@@ -1,0 +1,569 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class UCRoomManagement : UserControl
+    {
+        private readonly IRoomService _roomService;
+        private readonly HotelDbContext _dbContext;
+        private List<Room> _allRooms = new();
+        private List<Amenity> _allAmenities = new();
+        private Room _currentEditingRoom = null;
+        private Amenity _currentEditingAmenity = null;
+
+        public UCRoomManagement(IRoomService roomService, HotelDbContext dbContext)
+        {
+            InitializeComponent();
+            _roomService = roomService;
+            _dbContext = dbContext;
+            ApplyStyleToDataGridView();
+        }
+
+        private async void UCRoomManagement_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                await LoadRoomDataAsync();
+                await LoadAmenityDataAsync();
+                InitializeComboBoxes();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task LoadRoomDataAsync()
+        {
+            try
+            {
+                var rooms = await _roomService.GetAllRoomsAsync();
+                _allRooms = rooms.ToList();
+                BindRoomDataToGrid(_allRooms);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task LoadAmenityDataAsync()
+        {
+            try
+            {
+                _allAmenities = _dbContext.Amenities.Where(a => a.IsDeleted == 0).ToList();
+                BindAmenityDataToGrid(_allAmenities);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải tiện ích: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void BindRoomDataToGrid(List<Room> rooms)
+        {
+            if (dgvRooms == null) return;
+
+            dgvRooms.Rows.Clear();
+            int stt = 1;
+            foreach (var room in rooms)
+            {
+                dgvRooms.Rows.Add(
+                   stt++,
+                     room.RoomId,
+                               room.Name,
+                           GetRoomType(room.RoomType),
+                 room.Price.ToString("N0"),
+                    GetRoomTypeDetails(room.RoomTypeDetails),
+                         GetStatusDisplay(room.Status),
+                  GetCurrentConditionDisplay(room.CurrentCondition)
+                    );
+            }
+        }
+
+        private void BindAmenityDataToGrid(List<Amenity> amenities)
+        {
+            if (dgvAmenities == null) return;
+
+            dgvAmenities.Rows.Clear();
+            int stt = 1;
+            foreach (var amenity in amenities)
+            {
+                dgvAmenities.Rows.Add(amenity.AmenityId, amenity.Name, "Chỉnh sửa/Xóa");
+            }
+        }
+
+        private void InitializeComboBoxes()
+        {
+            cbRoomType.Items.Clear();
+            cbRoomType.Items.Add("Tất cả loại phòng");
+            cbRoomType.Items.Add("Thường");
+            cbRoomType.Items.Add("VIP");
+            cbRoomType.Items.Add("Deluxe");
+            cbRoomType.Items.Add("Suite");
+            cbRoomType.SelectedIndex = 0;
+
+            cbRoomTypeDetails.Items.Clear();
+            cbRoomTypeDetails.Items.Add("Tất cả");
+            cbRoomTypeDetails.Items.Add("Phòng đơn");
+            cbRoomTypeDetails.Items.Add("Phòng đôi");
+            cbRoomTypeDetails.Items.Add("Phòng gia đình");
+            cbRoomTypeDetails.SelectedIndex = 0;
+
+            cbPrice.Items.Clear();
+            cbPrice.Items.Add("Tất cả giá");
+            cbPrice.Items.Add("Dưới 100,000 VND");
+            cbPrice.Items.Add("100,000 - 200,000 VND");
+            cbPrice.Items.Add("200,000 - 300,000 VND");
+            cbPrice.Items.Add("Trên 300,000 VND");
+            cbPrice.SelectedIndex = 0;
+
+            cbStatus.Items.Clear();
+            cbStatus.Items.Add("Tất cả trạng thái");
+            cbStatus.Items.Add("Chưa dọn phòng");
+            cbStatus.Items.Add("Trống");
+            cbStatus.Items.Add("Đã đặt");
+            cbStatus.SelectedIndex = 0;
+
+            cbCurrentCondition.Items.Clear();
+            cbCurrentCondition.Items.Add("Tất cả tình trạng");
+            cbCurrentCondition.Items.Add("Mới");
+            cbCurrentCondition.Items.Add("Tốt");
+            cbCurrentCondition.Items.Add("Cần sửa chữa");
+            cbCurrentCondition.SelectedIndex = 0;
+
+            cbFormRoomType.Items.Clear();
+            cbFormRoomType.Items.Add("Thường");
+            cbFormRoomType.Items.Add("VIP");
+            cbFormRoomType.Items.Add("Deluxe");
+            cbFormRoomType.Items.Add("Suite");
+            cbFormRoomType.SelectedIndex = 0;
+
+            cbFormRoomTypeDetails.Items.Clear();
+            cbFormRoomTypeDetails.Items.Add("Phòng đơn");
+            cbFormRoomTypeDetails.Items.Add("Phòng đôi");
+            cbFormRoomTypeDetails.Items.Add("Phòng gia đình");
+            cbFormRoomTypeDetails.SelectedIndex = 0;
+
+            cbFormStatus.Items.Clear();
+            cbFormStatus.Items.Add("Chưa dọn phòng");
+            cbFormStatus.Items.Add("Trống");
+            cbFormStatus.Items.Add("Đã đặt");
+            cbFormStatus.SelectedIndex = 0;
+
+            cbFormCurrentCondition.Items.Clear();
+            cbFormCurrentCondition.Items.Add("Mới");
+            cbFormCurrentCondition.Items.Add("Tốt");
+            cbFormCurrentCondition.Items.Add("Cần sửa chữa");
+            cbFormCurrentCondition.SelectedIndex = 0;
+        }
+
+        private string GetRoomType(int roomType) => roomType switch { 1 => "Thường", 2 => "VIP", 3 => "Deluxe", 4 => "Suite", _ => "Không xác định" };
+        private string GetRoomTypeDetails(int details) => details switch { 1 => "Phòng đơn", 2 => "Phòng đôi", 3 => "Phòng gia đình", _ => "Không xác định" };
+        private string GetStatusDisplay(int status) => status switch { 0 => "Chưa dọn phòng", 1 => "Trống", 2 => "Đã đặt", _ => "Không xác định" };
+        private string GetCurrentConditionDisplay(int condition) => condition switch { 0 => "Mới", 1 => "Tốt", 2 => "Cần sửa chữa", _ => "Không xác định" };
+
+        // ===== ROOM TAB EVENT HANDLERS =====
+        private async void tbRoomId_TextChanged(object sender, EventArgs e) => await ApplyFiltersAsync();
+        private async void tbRoomName_TextChanged(object sender, EventArgs e) => await ApplyFiltersAsync();
+        private async void cbRoomType_SelectedIndexChanged(object sender, EventArgs e) => await ApplyFiltersAsync();
+        private async void cbRoomTypeDetails_SelectedIndexChanged(object sender, EventArgs e) => await ApplyFiltersAsync();
+        private async void cbPrice_SelectedIndexChanged(object sender, EventArgs e) => await ApplyFiltersAsync();
+        private async void cbStatus_SelectedIndexChanged(object sender, EventArgs e) => await ApplyFiltersAsync();
+        private async void cbCurrentCondition_SelectedIndexChanged(object sender, EventArgs e) => await ApplyFiltersAsync();
+
+        private async Task ApplyFiltersAsync()
+        {
+            try
+            {
+                var filteredRooms = _allRooms.AsEnumerable();
+
+                string roomId = tbRoomId?.Text?.Trim() ?? "";
+                if (!string.IsNullOrEmpty(roomId))
+                    filteredRooms = filteredRooms.Where(r => r.RoomId.Contains(roomId, StringComparison.OrdinalIgnoreCase));
+
+                string roomName = tbRoomName?.Text?.Trim() ?? "";
+                if (!string.IsNullOrEmpty(roomName))
+                    filteredRooms = filteredRooms.Where(r => r.Name.Contains(roomName, StringComparison.OrdinalIgnoreCase));
+
+                int roomTypeIndex = cbRoomType?.SelectedIndex ?? 0;
+                if (roomTypeIndex > 0)
+                    filteredRooms = filteredRooms.Where(r => r.RoomType == roomTypeIndex);
+
+                int detailsIndex = cbRoomTypeDetails?.SelectedIndex ?? 0;
+                if (detailsIndex > 0)
+                    filteredRooms = filteredRooms.Where(r => r.RoomTypeDetails == detailsIndex);
+
+                int priceIndex = cbPrice?.SelectedIndex ?? 0;
+                filteredRooms = priceIndex switch
+                {
+                    1 => filteredRooms.Where(r => r.Price < 100000),
+                    2 => filteredRooms.Where(r => r.Price >= 100000 && r.Price < 200000),
+                    3 => filteredRooms.Where(r => r.Price >= 200000 && r.Price < 300000),
+                    4 => filteredRooms.Where(r => r.Price >= 300000),
+                    _ => filteredRooms
+                };
+
+                int statusIndex = cbStatus?.SelectedIndex ?? 0;
+                if (statusIndex > 0)
+                    filteredRooms = filteredRooms.Where(r => r.Status == statusIndex - 1);
+
+                int conditionIndex = cbCurrentCondition?.SelectedIndex ?? 0;
+                if (conditionIndex > 0)
+                    filteredRooms = filteredRooms.Where(r => r.CurrentCondition == conditionIndex - 1);
+
+                BindRoomDataToGrid(filteredRooms.ToList());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi lọc dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnAddRoom_Click(object sender, EventArgs e)
+        {
+            _currentEditingRoom = null;
+            ClearForm();
+            gbRoomInfo.Text = "THÊM PHÒNG MỚI";
+            pnlForm.Visible = true;
+            pnlGrid.Visible = false;
+        }
+
+        private void btnEditRoom_Click(object sender, EventArgs e)
+        {
+            if (dgvRooms.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn phòng cần chỉnh sửa", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                var roomId = dgvRooms.SelectedRows[0].Cells["colRoomId"].Value?.ToString();
+                var room = _allRooms.FirstOrDefault(r => r.RoomId == roomId);
+
+                if (room != null)
+                {
+                    _currentEditingRoom = room;
+                    PopulateForm(room);
+                    gbRoomInfo.Text = "CHỈNH SỬA PHÒNG";
+                    pnlForm.Visible = true;
+                    pnlGrid.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnDeleteRoom_Click(object sender, EventArgs e)
+        {
+            if (dgvRooms.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn phòng cần xem chi tiết", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                var roomId = dgvRooms.SelectedRows[0].Cells["colRoomId"].Value?.ToString();
+                var room = _allRooms.FirstOrDefault(r => r.RoomId == roomId);
+
+                if (room != null)
+                {
+                    FrmRoomDetails detailsForm = new FrmRoomDetails(room, _dbContext);
+                    detailsForm.ShowDialog();
+
+                    _ = LoadRoomDataAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void btnSaveRoom_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(tbFormRoomId.Text))
+                {
+                    MessageBox.Show("Mã phòng không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tbFormRoomId.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(tbFormRoomName.Text))
+                {
+                    MessageBox.Show("Tên phòng không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tbFormRoomName.Focus();
+                    return;
+                }
+
+                if (!int.TryParse(tbFormPrice.Text, out int price) || price <= 0)
+                {
+                    MessageBox.Show("Giá phòng phải là số dương", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tbFormPrice.Focus();
+                    return;
+                }
+
+                var room = new Room
+                {
+                    RoomId = tbFormRoomId.Text.Trim(),
+                    Name = tbFormRoomName.Text.Trim(),
+                    RoomType = cbFormRoomType.SelectedIndex + 1,
+                    RoomTypeDetails = cbFormRoomTypeDetails.SelectedIndex + 1,
+                    Price = price,
+                    Status = cbFormStatus.SelectedIndex,
+                    CurrentCondition = cbFormCurrentCondition.SelectedIndex,
+                    IsDeleted = 0
+                };
+
+                bool result;
+                if (_currentEditingRoom == null)
+                {
+                    result = (await _roomService.CreateRoomAsync(room)) != null;
+                }
+                else
+                {
+                    room.RoomId = _currentEditingRoom.RoomId;
+                    room.IsDeleted = _currentEditingRoom.IsDeleted;
+                    result = await _roomService.UpdateRoomAsync(room);
+                }
+
+                if (result)
+                {
+                    MessageBox.Show("Lưu phòng thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await LoadRoomDataAsync();
+                    await ApplyFiltersAsync();
+                    ClearForm();
+                    pnlForm.Visible = false;
+                    pnlGrid.Visible = true;
+                }
+                else
+                {
+                    MessageBox.Show("Lưu phòng thất bại", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancelForm_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+            pnlForm.Visible = false;
+            pnlGrid.Visible = true;
+            _currentEditingRoom = null;
+        }
+
+        private async void btnRefresh_Click(object sender, EventArgs e)
+        {
+            await LoadRoomDataAsync();
+            ResetFilters();
+        }
+
+        // ===== AMENITY TAB EVENT HANDLERS =====
+        private void btnAddAmenity_Click(object sender, EventArgs e)
+        {
+            _currentEditingAmenity = null;
+            ClearAmenityForm();
+            gbAmenityInfo.Text = "THÊM TIỆN ÍCH MỚI";
+            pnlAmenityForm.Visible = true;
+            pnlAmenityMain.Visible = false;
+        }
+
+        private void btnEditAmenity_Click(object sender, EventArgs e)
+        {
+            if (dgvAmenities.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn tiện ích cần chỉnh sửa", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                var amenityId = dgvAmenities.SelectedRows[0].Cells["colAmenityId"].Value?.ToString();
+                var amenity = _allAmenities.FirstOrDefault(a => a.AmenityId == amenityId);
+
+                if (amenity != null)
+                {
+                    _currentEditingAmenity = amenity;
+                    PopulateAmenityForm(amenity);
+                    gbAmenityInfo.Text = "CHỈNH SỬA TIỆN ÍCH";
+                    pnlAmenityForm.Visible = true;
+                    pnlAmenityMain.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void btnDeleteAmenity_Click(object sender, EventArgs e)
+        {
+            if (dgvAmenities.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn tiện ích cần xóa", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (MessageBox.Show("Bạn có chắc muốn xóa tiện ích này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
+            try
+            {
+                var amenityId = dgvAmenities.SelectedRows[0].Cells["colAmenityId"].Value?.ToString();
+                var amenity = _allAmenities.FirstOrDefault(a => a.AmenityId == amenityId);
+                if (amenity != null)
+                {
+                    amenity.IsDeleted = 1;
+                    _dbContext.Amenities.Update(amenity);
+                    await _dbContext.SaveChangesAsync();
+                    await LoadAmenityDataAsync();
+                    MessageBox.Show("Xóa tiện ích thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void btnSaveAmenity_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(tbAmenityId.Text))
+                {
+                    MessageBox.Show("Mã tiện ích không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tbAmenityId.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(tbAmenityName.Text))
+                {
+                    MessageBox.Show("Tên tiện ích không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tbAmenityName.Focus();
+                    return;
+                }
+
+                if (_currentEditingAmenity == null)
+                {
+                    var amenity = new Amenity
+                    {
+                        AmenityId = tbAmenityId.Text.Trim(),
+                        Name = tbAmenityName.Text.Trim(),
+                        IsDeleted = 0
+                    };
+                    _dbContext.Amenities.Add(amenity);
+                }
+                else
+                {
+                    _currentEditingAmenity.AmenityId = tbAmenityId.Text.Trim();
+                    _currentEditingAmenity.Name = tbAmenityName.Text.Trim();
+                    _dbContext.Amenities.Update(_currentEditingAmenity);
+                }
+
+                await _dbContext.SaveChangesAsync();
+                MessageBox.Show("Lưu tiện ích thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                await LoadAmenityDataAsync();
+                ClearAmenityForm();
+                pnlAmenityForm.Visible = false;
+                pnlAmenityMain.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnCancelAmenity_Click(object sender, EventArgs e)
+        {
+            ClearAmenityForm();
+            pnlAmenityForm.Visible = false;
+            pnlAmenityMain.Visible = true;
+            _currentEditingAmenity = null;
+        }
+
+        // ===== HELPER METHODS =====
+        private void PopulateForm(Room room)
+        {
+            tbFormRoomId.Text = room.RoomId;
+            tbFormRoomName.Text = room.Name;
+            cbFormRoomType.SelectedIndex = room.RoomType - 1;
+            cbFormRoomTypeDetails.SelectedIndex = room.RoomTypeDetails - 1;
+            tbFormPrice.Text = room.Price.ToString();
+            cbFormStatus.SelectedIndex = room.Status;
+            cbFormCurrentCondition.SelectedIndex = room.CurrentCondition;
+        }
+
+        private void ClearForm()
+        {
+            tbFormRoomId.Clear();
+            tbFormRoomName.Clear();
+            cbFormRoomType.SelectedIndex = 0;
+            cbFormRoomTypeDetails.SelectedIndex = 0;
+            tbFormPrice.Clear();
+            cbFormStatus.SelectedIndex = 0;
+            cbFormCurrentCondition.SelectedIndex = 0;
+            _currentEditingRoom = null;
+        }
+
+        private void PopulateAmenityForm(Amenity amenity)
+        {
+            tbAmenityId.Text = amenity.AmenityId;
+            tbAmenityName.Text = amenity.Name;
+        }
+
+        private void ClearAmenityForm()
+        {
+            tbAmenityId.Clear();
+            tbAmenityName.Clear();
+            _currentEditingAmenity = null;
+        }
+
+        private void ResetFilters()
+        {
+            tbRoomId.Clear();
+            tbRoomName.Clear();
+            cbRoomType.SelectedIndex = 0;
+            cbRoomTypeDetails.SelectedIndex = 0;
+            cbPrice.SelectedIndex = 0;
+            cbStatus.SelectedIndex = 0;
+            cbCurrentCondition.SelectedIndex = 0;
+        }
+
+        private void ApplyStyleToDataGridView()
+        {
+            if (dgvRooms == null) return;
+
+            dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvRooms.AllowUserToAddRows = false;
+            dgvRooms.AllowUserToDeleteRows = false;
+            dgvRooms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRooms.MultiSelect = false;
+
+            if (dgvAmenities != null)
+            {
+                dgvAmenities.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dgvAmenities.AllowUserToAddRows = false;
+                dgvAmenities.AllowUserToDeleteRows = false;
+                dgvAmenities.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgvAmenities.MultiSelect = false;
+            }
+        }
+    }
+}

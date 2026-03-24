@@ -1,0 +1,54 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class DashboardForm : Form
+    {
+        public DashboardForm()
+        {
+            InitializeComponent();
+        }
+
+        private void MenuItemClick(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            string menuItem = btn?.Tag?.ToString() ?? "";
+
+            switch (menuItem)
+            {
+                case "DASHBOARD":
+                    MessageBox.Show("Dashboard selected");
+                    break;
+                case "ROOM MANAGEMENT":
+                    MessageBox.Show("Room Management selected");
+                    break;
+                case "BOOKING MANAGEMENT":
+                    MessageBox.Show("Booking Management selected");
+                    break;
+                case "CUSTOMER MANAGEMENT":
+                    MessageBox.Show("Customer Management selected");
+                    break;
+                case "INVOICES & SERVICES":
+                    MessageBox.Show("Invoices & Services selected");
+                    break;
+            }
+        }
+
+        private void BottomMenuClick(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn?.Text.Contains("LOGOUT") == true)
+            {
+                this.Close();
+            }
+        }
+    }
+}

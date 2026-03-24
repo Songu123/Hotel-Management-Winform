@@ -1,0 +1,87 @@
+﻿namespace QuanLyKhachSan
+{
+    partial class BookingManagementForm
+   {
+     private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+     {
+     if (disposing && (components != null))
+   {
+ components.Dispose();
+           }
+    base.Dispose(disposing);
+}
+
+ private void InitializeComponent()
+    {
+components = new System.ComponentModel.Container();
+
+        Panel mainPanel = new Panel();
+mainPanel.Dock = DockStyle.Fill;
+    mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+  Panel headerPanel = new Panel();
+      headerPanel.Height = 60;
+   headerPanel.Dock = DockStyle.Top;
+  headerPanel.BackColor = Color.White;
+     headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+Label titleLabel = new Label();
+         titleLabel.Text = "Booking Management";
+      titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+ titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+     titleLabel.Location = new Point(30, 8);
+titleLabel.Size = new Size(400, 40);
+        headerPanel.Controls.Add(titleLabel);
+
+  Panel toolbarPanel = new Panel();
+    toolbarPanel.Height = 60;
+  toolbarPanel.Dock = DockStyle.Top;
+     toolbarPanel.BackColor = Color.White;
+  toolbarPanel.BorderStyle = BorderStyle.FixedSingle;
+
+ Button btnNewBooking = new Button();
+  btnNewBooking.Text = "+ New Booking";
+btnNewBooking.Location = new Point(20, 12);
+      btnNewBooking.Size = new Size(130, 36);
+btnNewBooking.BackColor = Color.FromArgb(70, 130, 180);
+   btnNewBooking.ForeColor = Color.White;
+      btnNewBooking.Font = new Font("Segoe UI", 10);
+ btnNewBooking.FlatStyle = FlatStyle.Flat;
+ btnNewBooking.Cursor = Cursors.Hand;
+      toolbarPanel.Controls.Add(btnNewBooking);
+
+ DataGridView dgvBookings = new DataGridView();
+   dgvBookings.Location = new Point(20, 80);
+    dgvBookings.Size = new Size(1560, 600);
+  dgvBookings.BackgroundColor = Color.White;
+      dgvBookings.BorderStyle = BorderStyle.FixedSingle;
+  dgvBookings.AllowUserToAddRows = false;
+ dgvBookings.RowHeadersVisible = false;
+    dgvBookings.GridColor = Color.LightGray;
+ dgvBookings.Font = new Font("Segoe UI", 9);
+
+ dgvBookings.Columns.Add("BookingId", "ID");
+      dgvBookings.Columns.Add("Guest", "Guest Name");
+ dgvBookings.Columns.Add("Room", "Room");
+ dgvBookings.Columns.Add("CheckIn", "Check-In");
+   dgvBookings.Columns.Add("CheckOut", "Check-Out");
+ dgvBookings.Columns.Add("Status", "Status");
+
+ mainPanel.Controls.Add(dgvBookings);
+ mainPanel.Controls.Add(toolbarPanel);
+
+  this.AutoScaleDimensions = new SizeF(7F, 15F);
+  this.AutoScaleMode = AutoScaleMode.Font;
+     this.ClientSize = new Size(1600, 900);
+ this.Controls.Add(mainPanel);
+  this.Controls.Add(headerPanel);
+     this.Name = "BookingManagementForm";
+ this.Text = "Hotel Management - Booking Management";
+   this.StartPosition = FormStartPosition.CenterScreen;
+   this.WindowState = FormWindowState.Maximized;
+    this.Load += (s, e) => BookingManagementForm_Load(s, e);
+  }
+  }
+}

@@ -1,0 +1,79 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void ShowPanel(UserControl uc)
+        {
+            panelMain.Controls.Clear(); // Xóa nội dung cũ
+            uc.Dock = DockStyle.Fill;   // Fill panel
+            panelMain.Controls.Add(uc); // Thêm UserControl mới
+            uc.BringToFront();          // Đưa lên trên cùng
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnDashboard_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCDashboard());
+
+        }
+
+        private void btnRooms_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCRooms());
+
+        }
+
+        private void btnBooking_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCBooking());
+        }
+
+        private void btnCustomers_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCCustomers());
+
+        }
+
+        private void btnInvoice_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCInvoices());
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCServices());
+
+        }
+
+        private void btnFloorView_Click(object sender, EventArgs e)
+        {
+            // Get services from service provider
+            var serviceProvider = (IServiceProvider)Program.Services;
+            var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+            var bookingService = serviceProvider.GetService(typeof(IBookingService)) as IBookingService;
+
+            ShowPanel(new UCRoomFloorView(roomService, bookingService));
+        }
+    }
+}

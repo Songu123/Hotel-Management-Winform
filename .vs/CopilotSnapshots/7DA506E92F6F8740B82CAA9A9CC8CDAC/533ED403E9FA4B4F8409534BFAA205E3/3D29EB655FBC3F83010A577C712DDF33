@@ -1,0 +1,149 @@
+﻿File: QuanLyKhachSan\Services\Implementations\BookingService.cs
+````````csharp
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Interfaces;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.Services.Implementations
+{
+   public class BookingService : IBookingService
+   {
+   private readonly IBookingRepository _bookingRepository;
+      private readonly IRoomRepository _roomRepository;
+    private readonly ICustomerRepository _customerRepository;
+
+   public BookingService(IBookingRepository bookingRepository, IRoomRepository roomRepository, ICustomerRepository customerRepository)
+    {
+    _bookingRepository = bookingRepository;
+      _roomRepository = roomRepository;
+      _customerRepository = customerRepository;
+  }
+
+    public async Task<Booking?> CreateBookingAsync(int customerId, int roomId, DateTime checkInDate, DateTime checkOutDate)
+      {
+      var customer = await _customerRepository.GetByIdAsync(customerId);
+      if (customer == null)
+      {
+   return null;
+   }
+
+    var room = await _roomRepository.GetByIdAsync(roomId);
+     if (room == null || room.Status != 0)
+    {
+   return null;
+   }
+
+    var booking = new Booking
+   {
+  CustomerId = customerId,
+    RoomId = roomId,
+      CheckInDate = checkInDate,
+  CheckOutDate = checkOutDate,
+CreatedDate = DateTime.Now
+   };
+
+    await _bookingRepository.AddAsync(booking);
+   await _bookingRepository.SaveChangesAsync();
+      return booking;
+  }
+
+  public async Task<Booking?> GetBookingAsync(int bookingId)
+     {
+  return await _bookingRepository.GetByIdAsync(bookingId);
+   }
+
+    public async Task<bool> UpdateBookingAsync(Booking booking)
+ {
+  await _bookingRepository.UpdateAsync(booking);
+   await _bookingRepository.SaveChangesAsync();
+  return true;
+    }
+
+     public async Task<bool> CancelBookingAsync(int bookingId)
+      {
+    var booking = await _bookingRepository.GetByIdAsync(bookingId);
+    if (booking == null)
+     {
+     return false;
+  }
+
+       booking.Status = BookingStatus.Cancelled;
+
+    if (booking.RoomId > 0)
+   {
+   await _roomRepository.UpdateRoomStatusAsync(booking.RoomId.ToString(), 0);
+    }
+
+   await _bookingRepository.UpdateAsync(booking);
+await _bookingRepository.SaveChangesAsync();
+   return true;
+  }
+
+   public async Task<bool> CheckInBookingAsync(int bookingId)
+  {
+      var booking = await _bookingRepository.GetByIdAsync(bookingId);
+   if (booking == null)
+  {
+     return false;
+  }
+
+  booking.Status = BookingStatus.CheckedIn;
+
+    await _roomRepository.UpdateRoomStatusAsync(booking.RoomId.ToString(), 1);
+
+  await _bookingRepository.UpdateAsync(booking);
+      await _bookingRepository.SaveChangesAsync();
+  return true;
+  }
+
+    public async Task<bool> CheckOutBookingAsync(int bookingId)
+ {
+  var booking = await _bookingRepository.GetByIdAsync(bookingId);
+     if (booking == null)
+     {
+     return false;
+    }
+
+   booking.Status = BookingStatus.CheckedOut;
+
+ await _roomRepository.UpdateRoomStatusAsync(booking.RoomId.ToString(), 0);
+
+   await _bookingRepository.UpdateAsync(booking);
+await _bookingRepository.SaveChangesAsync();
+      return true;
+     }
+
+ public async Task<IEnumerable<Booking>> GetCustomerBookingsAsync(int customerId)
+   {
+    return await _bookingRepository.GetByCustomerAsync(customerId);
+    }
+
+ public async Task<IEnumerable<Booking>> GetUpcomingBookingsAsync()
+    {
+      return await _bookingRepository.GetAllAsync();
+ }
+
+      public async Task<bool> IsRoomAvailableAsync(string roomId, DateTime checkInDate, DateTime checkOutDate)
+      {
+      var room = await _roomRepository.GetRoomWithTypeAsync(roomId);
+      return room != null && room.Status == 0;
+  }
+
+   public async Task<decimal> CalculateTotalPriceAsync(string roomId, DateTime checkInDate, DateTime checkOutDate)
+   {
+  var room = await _roomRepository.GetRoomWithTypeAsync(roomId);
+ if (room == null)
+      {
+      return 0;
+  }
+
+      var days = (checkOutDate - checkInDate).Days;
+      return room.Price * days;
+  }
+
+ public async Task<IEnumerable<Booking>> GetAllBookingsAsync()
+{
+    return await _bookingRepository.GetAllAsync();
+      }
+   }
+}

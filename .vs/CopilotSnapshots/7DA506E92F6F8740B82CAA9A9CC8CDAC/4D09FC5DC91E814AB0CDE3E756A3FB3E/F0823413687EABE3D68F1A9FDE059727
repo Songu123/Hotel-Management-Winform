@@ -1,0 +1,70 @@
+﻿using QuanLyKhachSan.Models;
+
+namespace QuanLyKhachSan.Services.Interfaces
+{
+    /// <summary>
+    /// Service interface cho Invoice
+    /// </summary>
+  public interface IInvoiceService
+    {
+   /// <summary>
+    /// Tạo hóa đơn nháp cho booking
+ /// </summary>
+        Task<Invoice?> CreateDraftInvoiceAsync(int bookingId);
+
+        /// <summary>
+/// Lấy hóa đơn theo ID
+        /// </summary>
+Task<Invoice?> GetInvoiceAsync(int invoiceId);
+
+        /// <summary>
+  /// Cập nhật hóa đơn
+     /// </summary>
+  Task<bool> UpdateInvoiceAsync(Invoice invoice);
+
+        /// <summary>
+        /// Phát hành hóa đơn chính thức
+/// </summary>
+ Task<bool> IssueInvoiceAsync(int invoiceId);
+
+      /// <summary>
+ /// Thanh toán hóa đơn
+        /// </summary>
+  Task<bool> PayInvoiceAsync(int invoiceId, decimal amount, PaymentMethod paymentMethod);
+
+        /// <summary>
+ /// Thêm dịch vụ vào hóa đơn
+      /// </summary>
+     Task<bool> AddServiceToInvoiceAsync(int invoiceId, int serviceId, int quantity);
+
+     /// <summary>
+        /// Xóa dịch vụ khỏi hóa đơn
+  /// </summary>
+   Task<bool> RemoveServiceFromInvoiceAsync(int invoiceDetailId);
+
+        /// <summary>
+     /// Áp dụng khuyến mãi
+ /// </summary>
+  Task<bool> ApplyDiscountAsync(int invoiceId, decimal discountAmount);
+
+        /// <summary>
+    /// Sử dụng điểm thưởng
+     /// </summary>
+    Task<bool> ApplyLoyaltyPointsAsync(int invoiceId, int points);
+
+        /// <summary>
+        /// Lấy hóa đơn theo booking
+      /// </summary>
+    Task<IEnumerable<Invoice>> GetInvoicesByBookingAsync(int bookingId);
+
+     /// <summary>
+ /// Tính doanh thu theo khoảng ngày
+  /// </summary>
+Task<decimal> GetRevenueAsync(DateTime startDate, DateTime endDate);
+
+       /// <summary>
+        /// Lấy các hóa đơn chưa thanh toán
+ /// </summary>
+  Task<IEnumerable<Invoice>> GetUnpaidInvoicesAsync();
+    }
+}

@@ -1,0 +1,277 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class UCRoomManagement : UserControl
+    {
+   private readonly IRoomService _roomService;
+        private List<Room> _allRooms = new();
+ private Room _currentEditingRoom = null;
+
+        public UCRoomManagement(IRoomService roomService)
+  {
+     InitializeComponent();
+      _roomService = roomService;
+        }
+
+  private async void UCRoomManagement_Load(object sender, EventArgs e)
+        {
+            try
+     {
+  await LoadRoomDataAsync();
+       }
+      catch (Exception ex)
+ {
+       MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}");
+            }
+        }
+
+   private async Task LoadRoomDataAsync()
+        {
+     try
+    {
+     var rooms = await _roomService.GetAllRoomsAsync();
+ _allRooms = rooms.ToList();
+       BindRoomDataToGrid(_allRooms);
+            }
+            catch (Exception ex)
+     {
+   MessageBox.Show($"Lỗi tải phòng: {ex.Message}");
+         }
+        }
+
+   private void BindRoomDataToGrid(List<Room> rooms)
+        {
+            if (dgvRooms == null) return;
+
+            dgvRooms.Rows.Clear();
+        foreach (var room in rooms)
+      {
+     dgvRooms.Rows.Add(
+   room.RoomId,
+         room.Name,
+      GetRoomType(room.RoomType),
+     GetStatusDisplay(room.Status),
+           room.Price.ToString("N0"),
+  room.RoomTypeDetails.ToString(),
+  GetFloorNumber(room.RoomId),
+       ""
+   );
+          }
+        }
+
+        private string GetRoomType(int roomType)
+  {
+          return roomType switch
+          {
+          1 => "Single",
+   2 => "Double",
+       3 => "Deluxe",
+     4 => "Suite",
+     _ => "Unknown"
+     };
+     }
+
+        private string GetStatusDisplay(int status)
+   {
+      return status switch
+            {
+     0 => "✓ Available",
+                1 => "📅 Reserved",
+            2 => "🏠 Occupied",
+          3 => "🔧 Maintenance",
+    _ => "❓ Unknown"
+};
+      }
+
+      private int GetFloorNumber(string roomId)
+        {
+     if (string.IsNullOrEmpty(roomId) || roomId.Length < 1)
+      return 1;
+    if (int.TryParse(roomId[0].ToString(), out var floor))
+         return floor;
+          return 1;
+ }
+
+     // ===== FILTER & SEARCH =====
+     private async void OnSearchChanged(object sender, EventArgs e)
+      {
+        await ApplyFiltersAsync();
+        }
+
+   private async void OnStatusFilterChanged(object sender, EventArgs e)
+        {
+        await ApplyFiltersAsync();
+  }
+
+      private async void OnRoomTypeFilterChanged(object sender, EventArgs e)
+  {
+      await ApplyFiltersAsync();
+  }
+
+    private async Task ApplyFiltersAsync()
+        {
+ try
+        {
+     var searchTerm = tbSearch?.Text;
+     var statusText = cbStatus?.SelectedItem?.ToString();
+     var selectedTypeIndex = cbRoomType?.SelectedIndex ?? 0;
+
+          int? status = null;
+      if (!string.IsNullOrEmpty(statusText) && statusText != "All Status")
+    {
+ status = statusText switch
+     {
+   "✓ Available" => 0,
+     "📅 Reserved" => 1,
+            "🏠 Occupied" => 2,
+    "🔧 Maintenance" => 3,
+          _ => null
+   };
+         }
+
+   int? roomTypeId = null;
+      if (selectedTypeIndex > 0)
+        {
+   roomTypeId = selectedTypeIndex;
+       }
+
+         var filteredRooms = await _roomService.SearchAndFilterRoomsAsync(searchTerm, status, roomTypeId);
+   _allRooms = filteredRooms.ToList();
+  BindRoomDataToGrid(_allRooms);
+     }
+       catch (Exception ex)
+       {
+        MessageBox.Show($"Lỗi lọc dữ liệu: {ex.Message}");
+            }
+}
+
+        // ===== CRUD OPERATIONS =====
+        private void OnAddRoomClick(object sender, EventArgs e)
+        {
+      _currentEditingRoom = null;
+    ClearForm();
+    MessageBox.Show("Form cleared for new room. Fill in details and click Save.");
+        }
+
+    private void OnEditRoomClick(object sender, EventArgs e)
+ {
+            if (dgvRooms.SelectedRows.Count == 0)
+  {
+ MessageBox.Show("Please select a room to edit");
+     return;
+      }
+
+      try
+   {
+  var roomId = dgvRooms.SelectedRows[0].Cells[0].Value?.ToString();
+     var room = _allRooms.FirstOrDefault(r => r.RoomId == roomId);
+
+  if (room != null)
+{
+    _currentEditingRoom = room;
+   PopulateForm(room);
+   MessageBox.Show("Room loaded for editing. Modify and click Save.");
+    }
+     }
+      catch (Exception ex)
+    {
+           MessageBox.Show($"Lỗi: {ex.Message}");
+ }
+ }
+
+    private void OnDeleteRoomClick(object sender, EventArgs e)
+        {
+  if (dgvRooms.SelectedRows.Count == 0)
+   {
+      MessageBox.Show("Please select a room to delete");
+    return;
+    }
+
+   if (MessageBox.Show("Are you sure you want to delete this room?", "Confirm Delete", MessageBoxButtons.YesNo) == DialogResult.No)
+      return;
+
+            try
+            {
+      var roomId = dgvRooms.SelectedRows[0].Cells[0].Value?.ToString();
+         MessageBox.Show($"Delete room {roomId} implementation pending");
+  }
+    catch (Exception ex)
+     {
+         MessageBox.Show($"Lỗi: {ex.Message}");
+       }
+  }
+
+    private void OnRefreshClick(object sender, EventArgs e)
+     {
+      _ = LoadRoomDataAsync();
+   ClearForm();
+        }
+
+   private void OnDataGridViewCellClick(object sender, DataGridViewCellEventArgs e)
+ {
+    if (dgvRooms.SelectedRows.Count > 0)
+   {
+         var roomId = dgvRooms.SelectedRows[0].Cells[0].Value?.ToString();
+     var room = _allRooms.FirstOrDefault(r => r.RoomId == roomId);
+       if (room != null)
+  {
+         PopulateForm(room);
+   }
+   }
+        }
+
+ private void OnSaveClick(object sender, EventArgs e)
+     {
+ try
+         {
+     if (string.IsNullOrWhiteSpace(tbRoomNumber.Text))
+     {
+   MessageBox.Show("Room number is required");
+           return;
+    }
+
+   MessageBox.Show("Save room implementation pending");
+   }
+        catch (Exception ex)
+ {
+   MessageBox.Show($"Lỗi: {ex.Message}");
+}
+        }
+
+     private void OnCancelClick(object sender, EventArgs e)
+        {
+            _currentEditingRoom = null;
+            ClearForm();
+        }
+
+      // ===== HELPER METHODS =====
+        private void PopulateForm(Room room)
+        {
+          tbRoomNumber.Text = room.Name;
+ tbFloor.Text = GetFloorNumber(room.RoomId).ToString();
+  tbPrice.Text = room.Price.ToString();
+   tbNotes.Text = "";
+}
+
+   private void ClearForm()
+        {
+     tbRoomNumber.Clear();
+            tbFloor.Clear();
+            tbPrice.Clear();
+        tbNotes.Clear();
+   _currentEditingRoom = null;
+    }
+  }
+}

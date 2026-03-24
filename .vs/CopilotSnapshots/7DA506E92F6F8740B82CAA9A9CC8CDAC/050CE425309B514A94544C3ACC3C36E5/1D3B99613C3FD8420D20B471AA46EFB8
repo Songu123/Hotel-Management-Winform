@@ -1,0 +1,35 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyKhachSan.Models
+{
+    [Table("CHITIETTHUEDICHVU")]
+ public class ServiceRentalDetail
+    {
+   [Key]
+      [Column("maCTT")]
+   [StringLength(20)]
+  [ForeignKey("RentalDetail")]
+    public string RentalDetailId { get; set; } = string.Empty;
+
+        [Key]
+    [Column("maDV")]
+        [StringLength(20)]
+[ForeignKey("Service")]
+  public string ServiceId { get; set; } = string.Empty;
+
+ [Key]
+  [Column("ngaySuDung")]
+       public DateTime UsageDate { get; set; }
+
+    [Column("SoLuong")]
+     public int Quantity { get; set; }
+
+[Column("giaDV")]
+      public int Price { get; set; }
+
+    // Navigation properties
+ public virtual RentalDetail? RentalDetail { get; set; }
+     public virtual Service? Service { get; set; }
+ }
+}

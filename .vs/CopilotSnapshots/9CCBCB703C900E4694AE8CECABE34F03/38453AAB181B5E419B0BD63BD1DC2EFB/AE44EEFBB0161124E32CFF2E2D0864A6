@@ -1,0 +1,213 @@
+﻿using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Interfaces;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.Services.Implementations
+{
+    /// <summary>
+    /// Invoice Service implementation
+    /// </summary>
+    public class InvoiceService : IInvoiceService
+    {
+    private readonly IInvoiceRepository _invoiceRepository;
+ private readonly IBookingRepository _bookingRepository;
+        private readonly ICustomerRepository _customerRepository;
+
+ public InvoiceService(IInvoiceRepository invoiceRepository, IBookingRepository bookingRepository, ICustomerRepository customerRepository)
+      {
+ _invoiceRepository = invoiceRepository;
+    _bookingRepository = bookingRepository;
+        _customerRepository = customerRepository;
+}
+
+ public async Task<Invoice?> CreateDraftInvoiceAsync(int bookingId)
+      {
+ var booking = await _bookingRepository.GetByIdAsync(bookingId);
+   if (booking == null)
+     {
+      return null;
+        }
+
+   var days = (booking.CheckOutDate - booking.CheckInDate).Days;
+      var roomAmount = booking.RoomPricePerNight * days;
+
+        var invoice = new Invoice
+      {
+     InvoiceNumber = await _invoiceRepository.GenerateInvoiceNumberAsync(),
+      BookingId = bookingId,
+         CustomerId = booking.CustomerId,
+  RoomAmount = roomAmount,
+         ServiceAmount = 0,
+DiscountAmount = 0,
+  Status = InvoiceStatus.Draft,
+       CreatedDate = DateTime.Now
+        };
+
+await _invoiceRepository.AddAsync(invoice);
+ await _invoiceRepository.SaveChangesAsync();
+     return invoice;
+      }
+
+    public async Task<Invoice?> GetInvoiceAsync(int invoiceId)
+      {
+      return await _invoiceRepository.GetInvoiceWithDetailsAsync(invoiceId);
+    }
+
+     public async Task<bool> UpdateInvoiceAsync(Invoice invoice)
+        {
+      invoice.UpdatedDate = DateTime.Now;
+   await _invoiceRepository.UpdateAsync(invoice);
+     await _invoiceRepository.SaveChangesAsync();
+      return true;
+       }
+
+    public async Task<bool> IssueInvoiceAsync(int invoiceId)
+  {
+  var invoice = await _invoiceRepository.GetByIdAsync(invoiceId);
+     if (invoice == null || invoice.Status != InvoiceStatus.Draft)
+    {
+        return false;
+        }
+
+  invoice.Status = InvoiceStatus.Issued;
+      invoice.UpdatedDate = DateTime.Now;
+       await _invoiceRepository.UpdateAsync(invoice);
+     await _invoiceRepository.SaveChangesAsync();
+  return true;
+     }
+
+     public async Task<bool> PayInvoiceAsync(int invoiceId, decimal amount, PaymentMethod paymentMethod)
+       {
+        var invoice = await _invoiceRepository.GetByIdAsync(invoiceId);
+      if (invoice == null || invoice.Status == InvoiceStatus.Cancelled)
+        {
+        return false;
+        }
+
+      invoice.PaidAmount = amount;
+      invoice.PaymentMethod = paymentMethod;
+        invoice.PaidDate = DateTime.Now;
+
+    if (amount >= invoice.TotalAmount)
+         {
+        invoice.Status = InvoiceStatus.Paid;
+          }
+   else if (invoice.Status != InvoiceStatus.Paid)
+        {
+         invoice.Status = InvoiceStatus.Issued;
+     }
+
+   invoice.UpdatedDate = DateTime.Now;
+     await _invoiceRepository.UpdateAsync(invoice);
+    await _invoiceRepository.SaveChangesAsync();
+    return true;
+   }
+
+    public async Task<bool> AddServiceToInvoiceAsync(int invoiceId, int serviceId, int quantity)
+      {
+      var invoice = await _invoiceRepository.GetByIdAsync(invoiceId);
+        if (invoice == null || invoice.Status != InvoiceStatus.Draft)
+       {
+   return false;
+     }
+
+ var detail = new InvoiceDetail
+      {
+         InvoiceId = invoiceId,
+      ServiceId = serviceId,
+         Quantity = quantity,
+     UnitPrice = 0, // Sẽ được set từ Service
+    UsageDate = DateTime.Now
+ };
+
+     // Lưu chi tiết
+   await _invoiceRepository._context.InvoiceDetails.AddAsync(detail);
+
+ // Cập nhật ServiceAmount
+  invoice.ServiceAmount += detail.Amount;
+     invoice.UpdatedDate = DateTime.Now;
+
+     await _invoiceRepository.UpdateAsync(invoice);
+     await _invoiceRepository.SaveChangesAsync();
+    return true;
+       }
+
+   public async Task<bool> RemoveServiceFromInvoiceAsync(int invoiceDetailId)
+       {
+      var detail = await _invoiceRepository._context.InvoiceDetails.FindAsync(invoiceDetailId);
+    if (detail == null)
+         {
+return false;
+       }
+
+  var invoice = await _invoiceRepository.GetByIdAsync(detail.InvoiceId);
+      if (invoice == null)
+     {
+       return false;
+    }
+
+  invoice.ServiceAmount -= detail.Amount;
+        _invoiceRepository._context.InvoiceDetails.Remove(detail);
+  await _invoiceRepository.UpdateAsync(invoice);
+     await _invoiceRepository.SaveChangesAsync();
+  return true;
+       }
+
+     public async Task<bool> ApplyDiscountAsync(int invoiceId, decimal discountAmount)
+      {
+   var invoice = await _invoiceRepository.GetByIdAsync(invoiceId);
+    if (invoice == null)
+         {
+         return false;
+        }
+
+    invoice.DiscountAmount = discountAmount;
+       invoice.UpdatedDate = DateTime.Now;
+        await _invoiceRepository.UpdateAsync(invoice);
+     await _invoiceRepository.SaveChangesAsync();
+        return true;
+        }
+
+     public async Task<bool> ApplyLoyaltyPointsAsync(int invoiceId, int points)
+{
+      var invoice = await _invoiceRepository.GetByIdAsync(invoiceId);
+     if (invoice == null)
+       {
+         return false;
+   }
+
+  var customer = await _customerRepository.GetByIdAsync(invoice.CustomerId);
+      if (customer == null || customer.LoyaltyPoints < points)
+    {
+  return false;
+       }
+
+  // Giả sử 1 điểm = 1000 VND
+      var pointValue = points * 1000m;
+
+ invoice.LoyaltyPointsUsed = points;
+      invoice.LoyaltyPointsValue = pointValue;
+  invoice.UpdatedDate = DateTime.Now;
+
+     await _customerRepository.DeductLoyaltyPointsAsync(invoice.CustomerId, points);
+     await _invoiceRepository.UpdateAsync(invoice);
+   await _invoiceRepository.SaveChangesAsync();
+   return true;
+    }
+
+    public async Task<IEnumerable<Invoice>> GetInvoicesByBookingAsync(int bookingId)
+       {
+       return await _invoiceRepository.GetByBookingAsync(bookingId);
+       }
+
+    public async Task<decimal> GetRevenueAsync(DateTime startDate, DateTime endDate)
+      {
+       return await _invoiceRepository.GetRevenueByDateRangeAsync(startDate, endDate);
+    }
+
+     public async Task<IEnumerable<Invoice>> GetUnpaidInvoicesAsync()
+        {
+   return await _invoiceRepository.GetUnpaidInvoicesAsync();
+        }
+    }
+}

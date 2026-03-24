@@ -1,0 +1,154 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class UCRoomFloorView
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+       {
+        components.Dispose();
+          }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            mainPanel = new Panel();
+            filterPanel = new Panel();
+            btnAvailable = new Button();
+            btnOccupied = new Button();
+            btnReserved = new Button();
+            btnMaintenance = new Button();
+            containerPanel = new Panel();
+            titleLabel = new Label();
+            mainPanel.SuspendLayout();
+            filterPanel.SuspendLayout();
+            containerPanel.SuspendLayout();
+            SuspendLayout();
+            // 
+            // mainPanel
+            // 
+            mainPanel.AutoScroll = true;
+            mainPanel.BackColor = Color.FromArgb(250, 250, 250);
+            mainPanel.Controls.Add(filterPanel);
+            mainPanel.Controls.Add(containerPanel);
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.Location = new Point(0, 0);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Padding = new Padding(20);
+            mainPanel.Size = new Size(1234, 803);
+            mainPanel.TabIndex = 0;
+            // 
+            // filterPanel
+            // 
+            filterPanel.AutoSize = true;
+            filterPanel.BackColor = Color.White;
+            filterPanel.BorderStyle = BorderStyle.FixedSingle;
+            filterPanel.Controls.Add(btnAvailable);
+            filterPanel.Controls.Add(btnOccupied);
+            filterPanel.Controls.Add(btnReserved);
+            filterPanel.Controls.Add(btnMaintenance);
+            filterPanel.Dock = DockStyle.Top;
+            filterPanel.Location = new Point(20, 20);
+            filterPanel.Name = "filterPanel";
+            filterPanel.Padding = new Padding(20);
+            filterPanel.Size = new Size(1194, 72);
+            filterPanel.TabIndex = 1;
+            filterPanel.Paint += filterPanel_Paint;
+            // 
+            // btnAvailable
+            // 
+            btnAvailable.BackColor = Color.FromArgb(220, 220, 220);
+            btnAvailable.FlatStyle = FlatStyle.Flat;
+            btnAvailable.Location = new Point(20, 12);
+            btnAvailable.Name = "btnAvailable";
+            btnAvailable.Size = new Size(110, 35);
+            btnAvailable.TabIndex = 0;
+            btnAvailable.Text = "✅ Available";
+            btnAvailable.UseVisualStyleBackColor = false;
+            // 
+            // btnOccupied
+            // 
+            btnOccupied.BackColor = Color.FromArgb(220, 50, 50);
+            btnOccupied.FlatStyle = FlatStyle.Flat;
+            btnOccupied.ForeColor = Color.White;
+            btnOccupied.Location = new Point(140, 12);
+            btnOccupied.Name = "btnOccupied";
+            btnOccupied.Size = new Size(110, 35);
+            btnOccupied.TabIndex = 1;
+            btnOccupied.Text = "👥 Occupied";
+            btnOccupied.UseVisualStyleBackColor = false;
+            // 
+            // btnReserved
+            // 
+            btnReserved.BackColor = Color.FromArgb(100, 180, 220);
+            btnReserved.FlatStyle = FlatStyle.Flat;
+            btnReserved.ForeColor = Color.White;
+            btnReserved.Location = new Point(260, 12);
+            btnReserved.Name = "btnReserved";
+            btnReserved.Size = new Size(110, 35);
+            btnReserved.TabIndex = 2;
+            btnReserved.Text = "📅 Reserved";
+            btnReserved.UseVisualStyleBackColor = false;
+            // 
+            // btnMaintenance
+            // 
+            btnMaintenance.BackColor = Color.FromArgb(120, 120, 120);
+            btnMaintenance.FlatStyle = FlatStyle.Flat;
+            btnMaintenance.ForeColor = Color.White;
+            btnMaintenance.Location = new Point(380, 12);
+            btnMaintenance.Name = "btnMaintenance";
+            btnMaintenance.Size = new Size(130, 35);
+            btnMaintenance.TabIndex = 3;
+            btnMaintenance.Text = "🔧 Maintenance";
+            btnMaintenance.UseVisualStyleBackColor = false;
+            // 
+            // containerPanel
+            // 
+            containerPanel.AutoScroll = true;
+            containerPanel.BackColor = Color.FromArgb(250, 250, 250);
+            containerPanel.Controls.Add(titleLabel);
+            containerPanel.Dock = DockStyle.Fill;
+            containerPanel.Location = new Point(20, 20);
+            containerPanel.Name = "containerPanel";
+            containerPanel.Padding = new Padding(10);
+            containerPanel.Size = new Size(1194, 763);
+            containerPanel.TabIndex = 2;
+            // 
+            // titleLabel
+            // 
+            titleLabel.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            titleLabel.Location = new Point(0, 75);
+            titleLabel.Name = "titleLabel";
+            titleLabel.Size = new Size(800, 40);
+            titleLabel.TabIndex = 0;
+            titleLabel.Text = "🏨 Room Floor View - Hotel Status";
+            titleLabel.Click += titleLabel_Click;
+            // 
+            // UCRoomFloorView
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(mainPanel);
+            Name = "UCRoomFloorView";
+            Size = new Size(1234, 803);
+            Load += UCRoomFloorView_Load;
+            mainPanel.ResumeLayout(false);
+            mainPanel.PerformLayout();
+            filterPanel.ResumeLayout(false);
+            containerPanel.ResumeLayout(false);
+            ResumeLayout(false);
+        }
+        private Panel mainPanel;
+        private Label titleLabel;
+        private Panel filterPanel;
+        private Button btnAvailable;
+        private Button btnOccupied;
+        private Button btnReserved;
+        private Button btnMaintenance;
+        private Panel containerPanel;
+    }
+}

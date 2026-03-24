@@ -1,0 +1,87 @@
+﻿namespace QuanLyKhachSan
+{
+    partial class CustomerManagementForm
+    {
+  private System.ComponentModel.IContainer components = null;
+
+    protected override void Dispose(bool disposing)
+     {
+ if (disposing && (components != null))
+    {
+ components.Dispose();
+         }
+  base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+      {
+components = new System.ComponentModel.Container();
+
+   Panel mainPanel = new Panel();
+   mainPanel.Dock = DockStyle.Fill;
+mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+Panel headerPanel = new Panel();
+  headerPanel.Height = 60;
+headerPanel.Dock = DockStyle.Top;
+headerPanel.BackColor = Color.White;
+ headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+ Label titleLabel = new Label();
+   titleLabel.Text = "Customer Management";
+    titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+ titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+  titleLabel.Location = new Point(30, 8);
+   titleLabel.Size = new Size(400, 40);
+ headerPanel.Controls.Add(titleLabel);
+
+ Panel toolbarPanel = new Panel();
+toolbarPanel.Height = 60;
+ toolbarPanel.Dock = DockStyle.Top;
+toolbarPanel.BackColor = Color.White;
+ toolbarPanel.BorderStyle = BorderStyle.FixedSingle;
+
+ Button btnAddCustomer = new Button();
+   btnAddCustomer.Text = "+ Add Customer";
+ btnAddCustomer.Location = new Point(20, 12);
+  btnAddCustomer.Size = new Size(130, 36);
+btnAddCustomer.BackColor = Color.FromArgb(70, 130, 180);
+   btnAddCustomer.ForeColor = Color.White;
+   btnAddCustomer.Font = new Font("Segoe UI", 10);
+ btnAddCustomer.FlatStyle = FlatStyle.Flat;
+btnAddCustomer.Cursor = Cursors.Hand;
+   toolbarPanel.Controls.Add(btnAddCustomer);
+
+   DataGridView dgvCustomers = new DataGridView();
+  dgvCustomers.Location = new Point(20, 80);
+ dgvCustomers.Size = new Size(1560, 600);
+  dgvCustomers.BackgroundColor = Color.White;
+     dgvCustomers.BorderStyle = BorderStyle.FixedSingle;
+  dgvCustomers.AllowUserToAddRows = false;
+   dgvCustomers.RowHeadersVisible = false;
+ dgvCustomers.GridColor = Color.LightGray;
+ dgvCustomers.Font = new Font("Segoe UI", 9);
+
+    dgvCustomers.Columns.Add("CustomerId", "ID");
+    dgvCustomers.Columns.Add("Name", "Full Name");
+   dgvCustomers.Columns.Add("Phone", "Phone");
+  dgvCustomers.Columns.Add("Email", "Email");
+    dgvCustomers.Columns.Add("Type", "Type");
+ dgvCustomers.Columns.Add("LoyaltyPoints", "Points");
+
+  mainPanel.Controls.Add(dgvCustomers);
+ mainPanel.Controls.Add(toolbarPanel);
+
+  this.AutoScaleDimensions = new SizeF(7F, 15F);
+        this.AutoScaleMode = AutoScaleMode.Font;
+   this.ClientSize = new Size(1600, 900);
+  this.Controls.Add(mainPanel);
+this.Controls.Add(headerPanel);
+  this.Name = "CustomerManagementForm";
+this.Text = "Hotel Management - Customer Management";
+   this.StartPosition = FormStartPosition.CenterScreen;
+  this.WindowState = FormWindowState.Maximized;
+  this.Load += (s, e) => CustomerManagementForm_Load(s, e);
+     }
+}
+}

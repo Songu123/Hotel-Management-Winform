@@ -1,0 +1,37 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyKhachSan.Models
+{
+    [Table("HOADON")]
+ public class Invoice
+    {
+        [Key]
+      [Column("maHD")]
+  [StringLength(20)]
+ public string InvoiceId { get; set; } = string.Empty;
+
+        [Column("maCTT")]
+ [StringLength(20)]
+ [ForeignKey("RentalDetail")]
+public string RentalDetailId { get; set; } = string.Empty;
+
+    [Column("giamGia")]
+        public int Discount { get; set; }
+
+    [Column("phuThu")]
+public int Surcharge { get; set; }
+
+     [Column("ngayThanhToan")]
+  public DateTime PaymentDate { get; set; }
+
+  [Column("phuongThucThanhToan")]
+ public int PaymentMethod { get; set; }
+
+ [Column("xuLy")]
+   public int IsDeleted { get; set; } = 0;
+
+        // Navigation properties
+   public virtual RentalDetail? RentalDetail { get; set; }
+    }
+}

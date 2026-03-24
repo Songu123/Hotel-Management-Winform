@@ -1,0 +1,207 @@
+﻿using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class RoomManagementForm : Form
+    {
+        private readonly IRoomService _roomService;
+        private List<Room> _allRooms = new();
+        private IEnumerable<RoomType> _roomTypes = new List<RoomType>();
+
+        public RoomManagementForm(IRoomService roomService)
+        {
+            InitializeComponent();
+            _roomService = roomService;
+        }
+
+        private async void RoomManagementForm_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                await LoadRoomDataAsync();
+                await LoadRoomTypesAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải dữ liệu phòng: " + ex.Message);
+            }
+        }
+
+        private async Task LoadRoomDataAsync()
+        {
+            try
+            {
+                var rooms = await _roomService.GetAllRoomsAsync();
+                _allRooms = rooms.ToList();
+                BindRoomDataToGrid(_allRooms);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message);
+            }
+        }
+
+        private async Task LoadRoomTypesAsync()
+        {
+            try
+            {
+                _roomTypes = await _roomService.GetAllRoomTypesAsync();
+                if (cbRoomType != null)
+                {
+                    cbRoomType.Items.Clear();
+                    cbRoomType.Items.Add("Tất cả loại phòng");
+                    foreach (var roomType in _roomTypes)
+                    {
+                        cbRoomType.Items.Add($"{roomType.Name} - {roomType.PricePerNight:N0}đ/đêm");
+                    }
+                    cbRoomType.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải loại phòng: " + ex.Message);
+            }
+        }
+
+        private void BindRoomDataToGrid(List<Room> rooms)
+        {
+            if (dgvRooms == null) return;
+
+            dgvRooms.Rows.Clear();
+            foreach (var room in rooms)
+            {
+                dgvRooms.Rows.Add(
+                    room.RoomId,
+                    room.RoomNumber,
+                    room.RoomType?.Name ?? "N/A",
+                    GetStatusDisplay(room.Status),
+                    room.RoomType?.PricePerNight.ToString("N0") ?? "0",
+                    room.RoomType?.MaxCapacity.ToString() ?? "0",
+                    room.Notes ?? ""
+                );
+            }
+        }
+
+        private string GetStatusDisplay(RoomStatus status)
+        {
+            return status switch
+            {
+                RoomStatus.Available => "✓ Trống",
+                RoomStatus.Reserved => "📅 Đã đặt",
+                RoomStatus.Occupied => "🏠 Có người ở",
+                RoomStatus.Maintenance => "🔧 Bảo trì",
+                RoomStatus.OutOfService => "❌ Không sử dụng",
+                _ => "❓ Không xác định"
+            };
+        }
+
+        private RoomStatus GetStatusFromDisplay(string display)
+        {
+            return display switch
+            {
+                "Tất cả" => RoomStatus.Available,
+                "✓ Trống" => RoomStatus.Available,
+                "📅 Đã đặt" => RoomStatus.Reserved,
+                "🏠 Có người ở" => RoomStatus.Occupied,
+                "🔧 Bảo trì" => RoomStatus.Maintenance,
+                "❌ Không sử dụng" => RoomStatus.OutOfService,
+                _ => RoomStatus.Available
+            };
+        }
+
+        private async void OnSearchChanged(object sender, EventArgs e)
+        {
+            await ApplyFiltersAsync();
+        }
+
+        private async void OnStatusFilterChanged(object sender, EventArgs e)
+        {
+            await ApplyFiltersAsync();
+        }
+
+        private async void OnRoomTypeFilterChanged(object sender, EventArgs e)
+        {
+            await ApplyFiltersAsync();
+        }
+
+        private async Task ApplyFiltersAsync()
+        {
+            try
+            {
+                var searchTerm = tbSearch?.Text;
+                var statusText = cbStatus?.SelectedItem?.ToString();
+                var selectedTypeIndex = cbRoomType?.SelectedIndex ?? 0;
+
+                RoomStatus? status = null;
+                if (!string.IsNullOrEmpty(statusText) && statusText != "Tất cả")
+                {
+                    status = GetStatusFromDisplay(statusText);
+                }
+
+                int? roomTypeId = null;
+                if (selectedTypeIndex > 0 && selectedTypeIndex - 1 < _roomTypes.Count())
+                {
+                    var selectedType = _roomTypes.ElementAt(selectedTypeIndex - 1);
+                    roomTypeId = selectedType.RoomTypeId;
+                }
+
+                var filteredRooms = await _roomService.SearchAndFilterRoomsAsync(searchTerm, status, roomTypeId);
+                _allRooms = filteredRooms.ToList();
+                BindRoomDataToGrid(_allRooms);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi áp dụng bộ lọc: " + ex.Message);
+            }
+        }
+
+        private async void OnAddRoomClick(object sender, EventArgs e)
+        {
+            MessageBox.Show("Chức năng thêm phòng mới sẽ được triển khai");
+        }
+
+        private async void OnEditRoomClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvRooms == null || e.RowIndex < 0)
+                return;
+
+            try
+            {
+                var roomId = Convert.ToInt32(dgvRooms.Rows[e.RowIndex].Cells[0].Value);
+                var room = _allRooms.FirstOrDefault(r => r.RoomId == roomId);
+
+                if (room == null)
+                {
+                    MessageBox.Show("Không tìm thấy phòng!");
+                    return;
+                }
+
+                MessageBox.Show($"Chỉnh sửa phòng: {room.RoomNumber} (ID: {room.RoomId})");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi chỉnh sửa phòng: " + ex.Message);
+            }
+        }
+
+        private async void OnDeleteRoomClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvRooms == null || e.RowIndex < 0)
+                return;
+
+            try
+            {
+                if (MessageBox.Show("Bạn chắc chắn muốn xóa phòng này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+
+                var roomId = Convert.ToInt32(dgvRooms.Rows[e.RowIndex].Cells[0].Value);
+                MessageBox.Show($"Xóa phòng ID: {roomId}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi xóa phòng: " + ex.Message);
+            }
+        }
+    }
+}

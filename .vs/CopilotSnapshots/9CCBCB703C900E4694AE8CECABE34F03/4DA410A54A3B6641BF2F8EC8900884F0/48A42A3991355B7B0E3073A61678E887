@@ -1,0 +1,206 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class RoomManagementForm
+    {
+        private System.ComponentModel.IContainer components = null;
+        private DataGridView dgvRooms = new();
+        private TextBox tbSearch = new();
+        private ComboBox cbStatus = new();
+        private ComboBox cbRoomType = new();
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            components = new System.ComponentModel.Container();
+
+            // Main layout
+            TableLayoutPanel mainLayout = new TableLayoutPanel();
+            mainLayout.Dock = DockStyle.Fill;
+            mainLayout.RowCount = 3;
+            mainLayout.ColumnCount = 1;
+            mainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 100));
+            mainLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 80));
+            mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            mainLayout.BackColor = Color.FromArgb(245, 247, 250);
+
+            // ========== HEADER PANEL ==========
+            Panel headerPanel = new Panel();
+            headerPanel.BackColor = Color.White;
+            headerPanel.BorderStyle = BorderStyle.FixedSingle;
+            headerPanel.Padding = new Padding(30, 15, 30, 15);
+
+            Label titleLabel = new Label();
+            titleLabel.Text = "Quản Lý Phòng";
+            titleLabel.Font = new Font("Segoe UI", 28, FontStyle.Bold);
+            titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            titleLabel.Location = new Point(0, 5);
+            titleLabel.Size = new Size(500, 40);
+            titleLabel.Anchor = AnchorStyles.Left;
+            headerPanel.Controls.Add(titleLabel);
+
+            Label subtitleLabel = new Label();
+            subtitleLabel.Text = "Quản lý kho phòng khách sạn và cập nhật trạng thái.";
+            subtitleLabel.Font = new Font("Segoe UI", 10);
+            subtitleLabel.ForeColor = Color.Gray;
+            subtitleLabel.Location = new Point(0, 50);
+            subtitleLabel.Size = new Size(500, 20);
+            subtitleLabel.Anchor = AnchorStyles.Left;
+            headerPanel.Controls.Add(subtitleLabel);
+
+            Button btnAddRoom = new Button();
+            btnAddRoom.Text = "+ THÊM PHÒNG MỚI";
+            btnAddRoom.Location = new Point(1200, 30);
+            btnAddRoom.Size = new Size(150, 40);
+            btnAddRoom.BackColor = Color.FromArgb(52, 152, 219);
+            btnAddRoom.ForeColor = Color.White;
+            btnAddRoom.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            btnAddRoom.FlatStyle = FlatStyle.Flat;
+            btnAddRoom.Cursor = Cursors.Hand;
+            btnAddRoom.Anchor = AnchorStyles.Right;
+            btnAddRoom.Click += OnAddRoomClick;
+            headerPanel.Controls.Add(btnAddRoom);
+
+            mainLayout.Controls.Add(headerPanel, 0, 0);
+
+            // ========== FILTER PANEL ==========
+            Panel filterPanel = new Panel();
+            filterPanel.BackColor = Color.White;
+            filterPanel.BorderStyle = BorderStyle.FixedSingle;
+            filterPanel.Padding = new Padding(20);
+
+            Label filterLabel = new Label();
+            filterLabel.Text = "Trạng thái:";
+            filterLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            filterLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            filterLabel.Location = new Point(20, 15);
+            filterLabel.Size = new Size(80, 25);
+            filterLabel.Anchor = AnchorStyles.Left;
+            filterPanel.Controls.Add(filterLabel);
+
+            cbStatus.Location = new Point(110, 15);
+            cbStatus.Size = new Size(150, 28);
+            cbStatus.Items.Add("Tất cả");
+            cbStatus.Items.Add("Trống");
+            cbStatus.Items.Add("Đã đặt");
+            cbStatus.Items.Add("Có người ở");
+            cbStatus.Items.Add("Bảo trì");
+            cbStatus.Items.Add("Không sử dụng");
+            cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbStatus.SelectedIndex = 0;
+            cbStatus.Anchor = AnchorStyles.Left;
+            cbStatus.SelectedIndexChanged += OnStatusFilterChanged;
+            filterPanel.Controls.Add(cbStatus);
+
+            Label typeLabel = new Label();
+            typeLabel.Text = "Loại phòng:";
+            typeLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            typeLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            typeLabel.Location = new Point(350, 15);
+            typeLabel.Size = new Size(80, 25);
+            typeLabel.Anchor = AnchorStyles.Left;
+            filterPanel.Controls.Add(typeLabel);
+
+            cbRoomType.Location = new Point(440, 15);
+            cbRoomType.Size = new Size(200, 28);
+            cbRoomType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbRoomType.Anchor = AnchorStyles.Left;
+            cbRoomType.SelectedIndexChanged += OnRoomTypeFilterChanged;
+            filterPanel.Controls.Add(cbRoomType);
+
+            Label searchLabel = new Label();
+            searchLabel.Text = "Tìm kiếm:";
+            searchLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            searchLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            searchLabel.Location = new Point(800, 15);
+            searchLabel.Size = new Size(80, 25);
+            searchLabel.Anchor = AnchorStyles.Left;
+            filterPanel.Controls.Add(searchLabel);
+
+            tbSearch.Location = new Point(890, 15);
+            tbSearch.Size = new Size(350, 28);
+            tbSearch.Font = new Font("Segoe UI", 10);
+            tbSearch.PlaceholderText = "Tìm theo số phòng hoặc loại phòng...";
+            tbSearch.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            tbSearch.TextChanged += OnSearchChanged;
+            filterPanel.Controls.Add(tbSearch);
+
+            mainLayout.Controls.Add(filterPanel, 0, 1);
+
+            // ========== CONTENT PANEL ==========
+            Panel contentPanel = new Panel();
+            contentPanel.Dock = DockStyle.Fill;
+            contentPanel.Padding = new Padding(20);
+            contentPanel.BackColor = Color.FromArgb(245, 247, 250);
+            contentPanel.AutoScroll = true;
+
+            dgvRooms.Dock = DockStyle.Fill;
+            dgvRooms.BackgroundColor = Color.White;
+            dgvRooms.BorderStyle = BorderStyle.FixedSingle;
+            dgvRooms.AllowUserToAddRows = false;
+            dgvRooms.ReadOnly = false;
+            dgvRooms.RowHeadersVisible = false;
+            dgvRooms.GridColor = Color.LightGray;
+            dgvRooms.Font = new Font("Segoe UI", 10);
+            dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvRooms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRooms.MultiSelect = false;
+            dgvRooms.RowTemplate.Height = 35;
+
+            // Thêm các cột
+            dgvRooms.Columns.Add("RoomId", "ID");
+            dgvRooms.Columns.Add("RoomNumber", "SỐ PHÒNG");
+            dgvRooms.Columns.Add("Type", "LOẠI PHÒNG");
+            dgvRooms.Columns.Add("Status", "TRẠNG THÁI");
+            dgvRooms.Columns.Add("Price", "GIÁ/ĐÊM");
+            dgvRooms.Columns.Add("Capacity", "CHỨA");
+            dgvRooms.Columns.Add("Notes", "GHI CHÚ");
+
+            // Ẩn cột ID
+            dgvRooms.Columns[0].Visible = false;
+
+            // Thêm cột nút Edit
+            DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
+            editButtonColumn.HeaderText = "Sửa";
+            editButtonColumn.Text = "Sửa";
+            editButtonColumn.UseColumnTextForButtonValue = true;
+            editButtonColumn.DefaultCellStyle.BackColor = Color.FromArgb(52, 152, 219);
+            editButtonColumn.DefaultCellStyle.ForeColor = Color.White;
+            dgvRooms.Columns.Add(editButtonColumn);
+
+            // Thêm cột nút Delete
+            DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
+            deleteButtonColumn.HeaderText = "Xóa";
+            deleteButtonColumn.Text = "Xóa";
+            deleteButtonColumn.UseColumnTextForButtonValue = true;
+            deleteButtonColumn.DefaultCellStyle.BackColor = Color.FromArgb(231, 76, 60);
+            deleteButtonColumn.DefaultCellStyle.ForeColor = Color.White;
+            dgvRooms.Columns.Add(deleteButtonColumn);
+
+            // Xử lý sự kiện click trên cột nút
+            dgvRooms.CellClick += OnEditRoomClick;
+            dgvRooms.CellClick += OnDeleteRoomClick;
+
+            contentPanel.Controls.Add(dgvRooms);
+            mainLayout.Controls.Add(contentPanel, 0, 2);
+
+            this.AutoScaleDimensions = new SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new Size(1400, 900);
+            this.Controls.Add(mainLayout);
+            this.Name = "RoomManagementForm";
+            this.Text = "Quản Lý Khách Sạn - Quản Lý Phòng";
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.WindowState = FormWindowState.Maximized;
+            this.Load += (s, e) => RoomManagementForm_Load(s, e);
+            this.FormClosing += RoomManagementForm_FormClosing;
+        }
+    }
+}

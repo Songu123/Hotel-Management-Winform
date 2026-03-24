@@ -1,0 +1,22 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyKhachSan.Models
+{
+    [Table("PHANQUYEN")]
+    public class Role
+    {
+        [Key]
+        [Column("maPQ")]
+        [StringLength(20)]
+        public string RoleId { get; set; }
+
+        [Column("tenPQ")]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        // Navigation properties
+        public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
+        public virtual ICollection<RoleFunction> RoleFunctions { get; set; } = new List<RoleFunction>();
+    }
+}

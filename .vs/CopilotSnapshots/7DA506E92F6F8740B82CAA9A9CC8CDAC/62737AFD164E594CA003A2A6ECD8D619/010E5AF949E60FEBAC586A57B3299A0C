@@ -1,0 +1,25 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyKhachSan.Models
+{
+    [Table("LOAIPHONG")]
+    public class RoomType
+    {
+      [Key]
+     [Column("maLP")]
+        [StringLength(20)]
+        public string RoomTypeId { get; set; }
+
+        [Column("tenLP")]
+     [StringLength(50)]
+        public string Name { get; set; }
+
+    [Column("moTa")]
+        [StringLength(500)]
+        public string Description { get; set; }
+
+      [Column("xuLy")]
+        public int IsDeleted { get; set; } = 0;
+    }
+}

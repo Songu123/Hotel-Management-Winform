@@ -1,0 +1,178 @@
+﻿namespace QuanLyKhachSan.Models
+{
+    /// <summary>
+    /// Đại diện cho một hóa đơn thanh toán
+    /// </summary>
+    public class Invoice
+    {
+        /// <summary>
+  /// ID duy nhất của hóa đơn
+        /// </summary>
+        public int InvoiceId { get; set; }
+
+  /// <summary>
+        /// Số hóa đơn (định dạng: INV-YYYYMMDD-000X)
+        /// </summary>
+ public string InvoiceNumber { get; set; } = string.Empty;
+
+    /// <summary>
+     /// ID booking liên quan
+    /// </summary>
+    public int BookingId { get; set; }
+
+    /// <summary>
+        /// ID khách hàng
+   /// </summary>
+    public int CustomerId { get; set; }
+
+  /// <summary>
+  /// Tổng tiền phòng
+     /// </summary>
+        public decimal RoomAmount { get; set; } = 0;
+
+   /// <summary>
+        /// Tổng tiền dịch vụ phát sinh
+ /// </summary>
+        public decimal ServiceAmount { get; set; } = 0;
+
+      /// <summary>
+        /// Tổng tiền trước khi áp dụng khuyến mãi
+   /// </summary>
+  public decimal SubTotal
+        {
+get { return RoomAmount + ServiceAmount; }
+        }
+
+        /// <summary>
+      /// Tiền khuyến mãi/giảm giá
+        /// </summary>
+        public decimal DiscountAmount { get; set; } = 0;
+
+   /// <summary>
+   /// Điểm thưởng sử dụng để trừ tiền
+      /// </summary>
+  public int LoyaltyPointsUsed { get; set; } = 0;
+
+      /// <summary>
+ /// Giá trị tiền từ điểm thưởng (nếu áp dụng)
+   /// </summary>
+        public decimal LoyaltyPointsValue { get; set; } = 0;
+
+        /// <summary>
+     /// Tổng tiền cần thanh toán
+      /// </summary>
+        public decimal TotalAmount
+      {
+            get { return SubTotal - DiscountAmount - LoyaltyPointsValue; }
+        }
+
+        /// <summary>
+  /// Tiền đã thanh toán
+        /// </summary>
+        public decimal PaidAmount { get; set; } = 0;
+
+    /// <summary>
+  /// Trạng thái hóa đơn
+        /// </summary>
+        public InvoiceStatus Status { get; set; } = InvoiceStatus.Draft;
+
+   /// <summary>
+        /// Phương thức thanh toán
+   /// </summary>
+        public PaymentMethod? PaymentMethod { get; set; }
+
+ /// <summary>
+  /// Ghi chú hóa đơn
+/// </summary>
+        public string Notes { get; set; } = string.Empty;
+
+        /// <summary>
+  /// Ngày tạo hóa đơn
+        /// </summary>
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+     /// <summary>
+  /// Ngày cập nhật lần cuối
+        /// </summary>
+        public DateTime? UpdatedDate { get; set; }
+
+        /// <summary>
+        /// Ngày thanh toán
+  /// </summary>
+        public DateTime? PaidDate { get; set; }
+
+   /// <summary>
+    /// Navigation property: Thông tin booking
+    /// </summary>
+     public Booking? Booking { get; set; }
+
+        /// <summary>
+        /// Navigation property: Thông tin khách hàng
+ /// </summary>
+    public Customer? Customer { get; set; }
+
+        /// <summary>
+        /// Navigation property: Chi tiết các dịch vụ trong hóa đơn
+  /// </summary>
+ public ICollection<InvoiceDetail>? Details { get; set; } = new List<InvoiceDetail>();
+    }
+
+    /// <summary>
+    /// Chi tiết từng dịch vụ trong hóa đơn
+ /// </summary>
+    public class InvoiceDetail
+    {
+  /// <summary>
+    /// ID duy nhất của chi tiết
+        /// </summary>
+        public int InvoiceDetailId { get; set; }
+
+        /// <summary>
+      /// ID hóa đơn
+   /// </summary>
+        public int InvoiceId { get; set; }
+
+      /// <summary>
+        /// ID dịch vụ
+  /// </summary>
+        public int ServiceId { get; set; }
+
+        /// <summary>
+        /// Số lượng dịch vụ sử dụng
+ /// </summary>
+        public int Quantity { get; set; } = 1;
+
+        /// <summary>
+   /// Giá dịch vụ tại thời điểm sử dụng
+        /// </summary>
+        public decimal UnitPrice { get; set; }
+
+     /// <summary>
+     /// Thành tiền = Số lượng × Giá
+    /// </summary>
+  public decimal Amount
+        {
+       get { return Quantity * UnitPrice; }
+        }
+
+        /// <summary>
+    /// Ngày sử dụng dịch vụ
+  /// </summary>
+        public DateTime UsageDate { get; set; } = DateTime.Now;
+
+        /// <summary>
+   /// Ghi chú chi tiết
+ /// </summary>
+public string Notes { get; set; } = string.Empty;
+
+     /// <summary>
+        /// Navigation property: Hóa đơn chứa chi tiết này
+   /// </summary>
+        public Invoice? Invoice { get; set; }
+
+   /// <summary>
+ /// Navigation property: Dịch vụ liên quan
+      /// </summary>
+        public Service? Service { get; set; }
+    }
+}

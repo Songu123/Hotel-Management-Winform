@@ -1,0 +1,69 @@
+﻿namespace QuanLyKhachSan.Repositories.Interfaces
+{
+ /// <summary>
+    /// Generic Repository interface cho các CRUD operations
+    /// </summary>
+    /// <typeparam name="T">Entity type</typeparam>
+    public interface IRepository<T> where T : class
+    {
+        /// <summary>
+        /// Lấy tất cả entities
+   /// </summary>
+        Task<IEnumerable<T>> GetAllAsync();
+
+        /// <summary>
+        /// Lấy entity theo ID
+        /// </summary>
+        Task<T?> GetByIdAsync(int id);
+
+        /// <summary>
+        /// Thêm entity mới
+      /// </summary>
+        Task AddAsync(T entity);
+
+        /// <summary>
+        /// Thêm nhiều entities
+        /// </summary>
+     Task AddRangeAsync(IEnumerable<T> entities);
+
+     /// <summary>
+     /// Cập nhật entity
+        /// </summary>
+        Task UpdateAsync(T entity);
+
+   /// <summary>
+        /// Cập nhật nhiều entities
+        /// </summary>
+   Task UpdateRangeAsync(IEnumerable<T> entities);
+
+        /// <summary>
+        /// Xóa entity theo ID
+        /// </summary>
+     Task DeleteAsync(int id);
+
+        /// <summary>
+        /// Xóa entity
+        /// </summary>
+        Task DeleteAsync(T entity);
+
+        /// <summary>
+        /// Xóa nhiều entities
+        /// </summary>
+     Task DeleteRangeAsync(IEnumerable<T> entities);
+
+     /// <summary>
+        /// Kiểm tra entity có tồn tại không
+        /// </summary>
+        Task<bool> ExistsAsync(int id);
+
+ /// <summary>
+        /// Đếm tổng số entities
+        /// </summary>
+        Task<int> CountAsync();
+
+  /// <summary>
+ /// Lưu thay đổi vào database
+        /// </summary>
+        Task SaveChangesAsync();
+    }
+}

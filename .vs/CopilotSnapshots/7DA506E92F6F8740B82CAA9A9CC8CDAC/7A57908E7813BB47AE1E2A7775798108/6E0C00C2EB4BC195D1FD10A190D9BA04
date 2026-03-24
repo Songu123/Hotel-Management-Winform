@@ -1,0 +1,319 @@
+﻿using Microsoft.EntityFrameworkCore;
+using QuanLyKhachSan.Models;
+
+namespace QuanLyKhachSan.Data
+{
+    /// <summary>
+    /// Entity Framework Core DbContext cho hệ thống quản lý khách sạn
+    /// </summary>
+    public class HotelDbContext : DbContext
+    {
+        // DbSets for entities
+        public DbSet<RoomType> RoomTypes { get; set; } = null!;
+        public DbSet<Room> Rooms { get; set; } = null!;
+        public DbSet<Customer> Customers { get; set; } = null!;
+        public DbSet<Booking> Bookings { get; set; } = null!;
+        public DbSet<Service> Services { get; set; } = null!;
+        public DbSet<Invoice> Invoices { get; set; } = null!;
+        public DbSet<InvoiceDetail> InvoiceDetails { get; set; } = null!;
+
+        /// <summary>
+        /// Constructor nhận connection string từ DI container
+        /// </summary>
+        public HotelDbContext(DbContextOptions<HotelDbContext> options) : base(options)
+        {
+        }
+
+        /// <summary>
+        /// Cấu hình model, relationships, constraints
+        /// </summary>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // ===== RoomType Configuration =====
+            modelBuilder.Entity<RoomType>(entity =>
+ {
+     entity.HasKey(e => e.RoomTypeId);
+     entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+     entity.Property(e => e.Description).HasMaxLength(500);
+     entity.Property(e => e.PricePerNight).HasColumnType("decimal(10,2)").IsRequired();
+     entity.Property(e => e.Amenities).HasMaxLength(1000);
+     entity.HasMany(e => e.Rooms).WithOne(r => r.RoomType).HasForeignKey(r => r.RoomTypeId);
+ });
+
+            // ===== Room Configuration =====
+            modelBuilder.Entity<Room>(entity =>
+                  {
+                      entity.HasKey(e => e.RoomId);
+                      entity.Property(e => e.RoomNumber).IsRequired().HasMaxLength(20);
+                      entity.Property(e => e.Status).HasConversion<int>();
+                      entity.Property(e => e.Notes).HasMaxLength(500);
+                      entity.HasOne(e => e.RoomType).WithMany(rt => rt.Rooms).HasForeignKey(e => e.RoomTypeId);
+                      entity.HasMany(e => e.Bookings).WithOne(b => b.Room).HasForeignKey(b => b.RoomId);
+
+                      // Index cho việc tìm kiếm nhanh
+                      entity.HasIndex(e => e.RoomNumber).IsUnique();
+                      entity.HasIndex(e => e.Status);
+                  });
+
+            // ===== Customer Configuration =====
+            modelBuilder.Entity<Customer>(entity =>
+                   {
+                       entity.HasKey(e => e.CustomerId);
+                       entity.Property(e => e.FullName).IsRequired().HasMaxLength(150);
+                       entity.Property(e => e.PhoneNumber).HasMaxLength(20);
+                       entity.Property(e => e.Email).HasMaxLength(100);
+                       entity.Property(e => e.IdentityNumber).HasMaxLength(50);
+                       entity.Property(e => e.IdentityType).HasMaxLength(20);
+                       entity.Property(e => e.Address).HasMaxLength(500);
+                       entity.Property(e => e.Type).HasConversion<int>();
+                       entity.Property(e => e.Notes).HasMaxLength(1000);
+                       entity.HasMany(e => e.Bookings).WithOne(b => b.Customer).HasForeignKey(b => b.CustomerId);
+
+                       // Index cho tìm kiếm
+                       entity.HasIndex(e => e.PhoneNumber);
+                       entity.HasIndex(e => e.Email);
+                       entity.HasIndex(e => e.IdentityNumber);
+                   });
+
+            // ===== Booking Configuration =====
+            modelBuilder.Entity<Booking>(entity =>
+      {
+          entity.HasKey(e => e.BookingId);
+          entity.Property(e => e.Status).HasConversion<int>();
+          entity.Property(e => e.RoomPricePerNight).HasColumnType("decimal(10,2)").IsRequired();
+          entity.Property(e => e.DepositAmount).HasColumnType("decimal(10,2)");
+          entity.Property(e => e.Notes).HasMaxLength(1000);
+          entity.HasOne(e => e.Customer).WithMany(c => c.Bookings).HasForeignKey(e => e.CustomerId);
+          entity.HasOne(e => e.Room).WithMany(r => r.Bookings).HasForeignKey(e => e.RoomId);
+          entity.HasMany(e => e.Invoices).WithOne(i => i.Booking).HasForeignKey(i => i.BookingId);
+
+          // Index cho tìm kiếm
+          entity.HasIndex(e => e.Status);
+          entity.HasIndex(e => e.CheckInDate);
+          entity.HasIndex(e => e.CheckOutDate);
+          entity.HasIndex(e => new { e.CustomerId, e.Status });
+      });
+
+            // ===== Service Configuration =====
+            modelBuilder.Entity<Service>(entity =>
+           {
+               entity.HasKey(e => e.ServiceId);
+               entity.Property(e => e.Name).IsRequired().HasMaxLength(150);
+               entity.Property(e => e.Description).HasMaxLength(500);
+               entity.Property(e => e.Type).HasConversion<int>();
+               entity.Property(e => e.Price).HasColumnType("decimal(10,2)").IsRequired();
+               entity.Property(e => e.Unit).HasMaxLength(50);
+               entity.HasMany(e => e.InvoiceDetails).WithOne(id => id.Service).HasForeignKey(id => id.ServiceId);
+
+               // Index
+               entity.HasIndex(e => e.Type);
+           });
+
+            // ===== Invoice Configuration =====
+            // ===== Invoice Configuration =====
+            modelBuilder.Entity<Invoice>(entity =>
+            {
+                entity.HasKey(e => e.InvoiceId);
+                entity.Property(e => e.InvoiceNumber).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.RoomAmount).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.ServiceAmount).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.DiscountAmount).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.LoyaltyPointsValue).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.PaidAmount).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.Status).HasConversion<int>();
+                entity.Property(e => e.PaymentMethod).HasConversion<int?>();
+                entity.Property(e => e.Notes).HasMaxLength(1000);
+
+                // Quan hệ với Booking → cascade được
+                entity.HasOne(e => e.Booking)
+                      .WithMany(b => b.Invoices)
+                      .HasForeignKey(e => e.BookingId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Quan hệ với Customer → NO ACTION để tránh multiple cascade paths
+                entity.HasOne(e => e.Customer)
+                      .WithMany()
+                      .HasForeignKey(e => e.CustomerId)
+                      .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasMany(e => e.Details)
+                      .WithOne(id => id.Invoice)
+                      .HasForeignKey(id => id.InvoiceId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Index
+                entity.HasIndex(e => e.InvoiceNumber).IsUnique();
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.CreatedDate);
+                entity.HasIndex(e => new { e.CustomerId, e.Status });
+            });
+
+            // ===== InvoiceDetail Configuration =====
+            modelBuilder.Entity<InvoiceDetail>(entity =>
+            {
+                entity.HasKey(e => e.InvoiceDetailId);
+                entity.Property(e => e.Quantity).IsRequired();
+                entity.Property(e => e.UnitPrice).HasColumnType("decimal(10,2)").IsRequired();
+                entity.Property(e => e.Notes).HasMaxLength(500);
+                entity.HasOne(e => e.Invoice).WithMany(i => i.Details).HasForeignKey(e => e.InvoiceId);
+                entity.HasOne(e => e.Service).WithMany(s => s.InvoiceDetails).HasForeignKey(e => e.ServiceId);
+            });
+
+            // Seed data (optional - thêm dữ liệu mẫu)
+            SeedData(modelBuilder);
+        }
+
+        /// <summary>
+        /// Thêm dữ liệu mẫu vào database
+        private void SeedData(ModelBuilder modelBuilder)
+        {
+            // ===== Seed RoomTypes =====
+            modelBuilder.Entity<RoomType>().HasData(
+                new RoomType
+                {
+                    RoomTypeId = 1,
+                    Name = "Phòng Đơn",
+                    Description = "Phòng ngủ đơn tiêu chuẩn",
+                    MaxCapacity = 1,
+                    PricePerNight = 500000,
+                    Amenities = "WiFi, Tivi 42 inch, Phòng tắm riêng",
+                    CreatedDate = DateTime.Now
+                },
+                new RoomType
+                {
+                    RoomTypeId = 2,
+                    Name = "Phòng Đôi",
+                    Description = "Phòng ngủ đôi tiêu chuẩn",
+                    MaxCapacity = 2,
+                    PricePerNight = 750000,
+                    Amenities = "WiFi, Tivi 42 inch, Phòng tắm riêng, Minibar",
+                    CreatedDate = DateTime.Now
+                },
+                new RoomType
+                {
+                    RoomTypeId = 3,
+                    Name = "Suite Deluxe",
+                    Description = "Phòng suite cao cấp",
+                    MaxCapacity = 4,
+                    PricePerNight = 1500000,
+                    Amenities = "WiFi, Tivi 55 inch, Phòng tắm sang trọng, Minibar, Ban công",
+                    CreatedDate = DateTime.Now
+                }
+            );
+
+            // ===== Seed Rooms =====
+            modelBuilder.Entity<Room>().HasData(
+                new Room { RoomId = 1, RoomNumber = "101", RoomTypeId = 1, Status = RoomStatus.Available, Notes = "", CreatedDate = DateTime.Now },
+                new Room { RoomId = 2, RoomNumber = "102", RoomTypeId = 1, Status = RoomStatus.Available, Notes = "", CreatedDate = DateTime.Now },
+                new Room { RoomId = 3, RoomNumber = "201", RoomTypeId = 2, Status = RoomStatus.Available, Notes = "", CreatedDate = DateTime.Now },
+                new Room { RoomId = 4, RoomNumber = "202", RoomTypeId = 2, Status = RoomStatus.Available, Notes = "", CreatedDate = DateTime.Now },
+                new Room { RoomId = 5, RoomNumber = "301", RoomTypeId = 3, Status = RoomStatus.Available, Notes = "", CreatedDate = DateTime.Now }
+            );
+
+            // ===== Seed Customers =====
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer { CustomerId = 1, FullName = "Nguyễn Văn A", PhoneNumber = "0912345678", Email = "a@gmail.com", IdentityNumber = "123456789", Type = CustomerType.Individual, CreatedDate = DateTime.Now },
+                new Customer { CustomerId = 2, FullName = "Trần Thị B", PhoneNumber = "0987654321", Email = "b@gmail.com", IdentityNumber = "987654321", Type = CustomerType.VIP, CreatedDate = DateTime.Now }
+            );
+
+            // ===== Seed Bookings =====
+            modelBuilder.Entity<Booking>().HasData(
+                new Booking
+                {
+                    BookingId = 1,
+                    CustomerId = 1,
+                    RoomId = 1,
+                    CheckInDate = DateTime.Today,
+                    CheckOutDate = DateTime.Today.AddDays(2),
+                    RoomPricePerNight = 500000,
+                    Status = BookingStatus.Confirmed,
+                    DepositAmount = 100000,
+                    Notes = "",
+                    CreatedDate = DateTime.Now
+                },
+                new Booking
+                {
+                    BookingId = 2,
+                    CustomerId = 2,
+                    RoomId = 3,
+                    CheckInDate = DateTime.Today,
+                    CheckOutDate = DateTime.Today.AddDays(3),
+                    RoomPricePerNight = 750000,
+                    Status = BookingStatus.Confirmed,
+                    DepositAmount = 150000,
+                    Notes = "",
+                    CreatedDate = DateTime.Now
+                }
+            );
+
+            // ===== Seed Services =====
+            modelBuilder.Entity<Service>().HasData(
+                new Service { ServiceId = 1, Name = "Nước uống tại phòng", Type = ServiceType.RoomService, Price = 50000, Unit = "lần", CreatedDate = DateTime.Now },
+                new Service { ServiceId = 2, Name = "Ăn sáng", Type = ServiceType.RoomService, Price = 150000, Unit = "người", CreatedDate = DateTime.Now },
+                new Service { ServiceId = 3, Name = "Giặt ủi quần áo", Type = ServiceType.Laundry, Price = 100000, Unit = "bộ", CreatedDate = DateTime.Now },
+                new Service { ServiceId = 4, Name = "Massage 60 phút", Type = ServiceType.Spa, Price = 300000, Unit = "người", CreatedDate = DateTime.Now },
+                new Service { ServiceId = 5, Name = "Đưa đón sân bay", Type = ServiceType.AirportTransfer, Price = 400000, Unit = "lần", CreatedDate = DateTime.Now }
+            );
+
+            // ===== Seed Invoices =====
+            modelBuilder.Entity<Invoice>().HasData(
+                new Invoice
+                {
+                    InvoiceId = 1,
+                    InvoiceNumber = "INV-001",
+                    BookingId = 1,
+                    CustomerId = 1,
+                    RoomAmount = 500000 * 2,
+                    ServiceAmount = 50000,
+                    DiscountAmount = 0,
+                    LoyaltyPointsValue = 0,
+                    PaidAmount = 1050000,
+                    Status = InvoiceStatus.Paid,
+                    PaymentMethod = PaymentMethod.Cash,
+                    Notes = "",
+                    CreatedDate = DateTime.Now
+                },
+                new Invoice
+                {
+                    InvoiceId = 2,
+                    InvoiceNumber = "INV-002",
+                    BookingId = 2,
+                    CustomerId = 2,
+                    RoomAmount = 750000 * 3,
+                    ServiceAmount = 150000,
+                    DiscountAmount = 0,
+                    LoyaltyPointsValue = 0,
+                    PaidAmount = 2400000,
+                    Status = InvoiceStatus.Paid,
+                    PaymentMethod = PaymentMethod.Card,
+                    Notes = "",
+                    CreatedDate = DateTime.Now
+                }
+            );
+
+            // ===== Seed InvoiceDetails =====
+            modelBuilder.Entity<InvoiceDetail>().HasData(
+                new InvoiceDetail
+                {
+                    InvoiceDetailId = 1,
+                    InvoiceId = 1,
+                    ServiceId = 1,
+                    Quantity = 1,
+                    UnitPrice = 50000,
+                    Notes = ""
+                },
+                new InvoiceDetail
+                {
+                    InvoiceDetailId = 2,
+                    InvoiceId = 2,
+                    ServiceId = 2,
+                    Quantity = 1,
+                    UnitPrice = 150000,
+                    Notes = ""
+                }
+            );
+        }
+    }
+}

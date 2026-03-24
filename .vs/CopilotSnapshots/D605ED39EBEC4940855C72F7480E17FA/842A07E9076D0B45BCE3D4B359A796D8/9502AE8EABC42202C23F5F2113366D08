@@ -1,0 +1,89 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class UCRoomManagement
+    {
+      private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+  {
+   if (disposing && (components != null))
+            {
+      components.Dispose();
+            }
+   base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+   this.components = new System.ComponentModel.Container();
+        this.Name = "UCRoomManagement";
+        this.Size = new System.Drawing.Size(1126, 650);
+        this.Load += new System.EventHandler(this.UCRoomManagement_Load);
+        }
+
+      // These are declared in the partial class
+    private System.Windows.Forms.TabControl tabMainControl;
+        private System.Windows.Forms.TabPage tabRoom;
+        private System.Windows.Forms.TabPage tabAmenity;
+        
+  // Room Tab Controls
+  private System.Windows.Forms.Panel pnlGrid;
+      private System.Windows.Forms.Panel pnlForm;
+        private System.Windows.Forms.DataGridView dgvRooms;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSTT;
+ private System.Windows.Forms.DataGridViewTextBoxColumn colRoomId;
+     private System.Windows.Forms.DataGridViewTextBoxColumn colRoomName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRoomType;
+  private System.Windows.Forms.DataGridViewTextBoxColumn colPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRoomTypeDetails;
+   private System.Windows.Forms.DataGridViewTextBoxColumn colStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCurrentCondition;
+  
+        private System.Windows.Forms.Panel pnlFilter;
+   private System.Windows.Forms.TextBox tbRoomId;
+        private System.Windows.Forms.TextBox tbRoomName;
+        private System.Windows.Forms.ComboBox cbRoomType;
+    private System.Windows.Forms.ComboBox cbRoomTypeDetails;
+        private System.Windows.Forms.ComboBox cbPrice;
+        private System.Windows.Forms.ComboBox cbStatus;
+        private System.Windows.Forms.ComboBox cbCurrentCondition;
+        private System.Windows.Forms.Button btnSearch;
+     private System.Windows.Forms.Button btnRefresh;
+     
+   private System.Windows.Forms.Panel pnlButtons;
+        private System.Windows.Forms.Button btnAddRoom;
+        private System.Windows.Forms.Button btnEditRoom;
+        private System.Windows.Forms.Button btnDeleteRoom;
+        
+   private System.Windows.Forms.GroupBox gbRoomInfo;
+        private System.Windows.Forms.TextBox tbFormRoomId;
+        private System.Windows.Forms.TextBox tbFormRoomName;
+private System.Windows.Forms.ComboBox cbFormRoomType;
+        private System.Windows.Forms.ComboBox cbFormRoomTypeDetails;
+        private System.Windows.Forms.TextBox tbFormPrice;
+        private System.Windows.Forms.ComboBox cbFormStatus;
+        private System.Windows.Forms.ComboBox cbFormCurrentCondition;
+ private System.Windows.Forms.Button btnSaveRoom;
+    private System.Windows.Forms.Button btnCancelForm;
+        
+        // Amenity Tab Controls
+   private System.Windows.Forms.DataGridView dgvAmenities;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAmenityId;
+   private System.Windows.Forms.DataGridViewTextBoxColumn colAmenityName;
+    private System.Windows.Forms.DataGridViewTextBoxColumn colAmenityActions;
+  
+        private System.Windows.Forms.Panel pnlAmenityMain;
+        private System.Windows.Forms.Panel pnlAmenityForm;
+        private System.Windows.Forms.Panel pnlAmenityButtons;
+        
+        private System.Windows.Forms.Button btnAddAmenity;
+ private System.Windows.Forms.Button btnEditAmenity;
+        private System.Windows.Forms.Button btnDeleteAmenity;
+  
+        private System.Windows.Forms.GroupBox gbAmenityInfo;
+  private System.Windows.Forms.TextBox tbAmenityId;
+        private System.Windows.Forms.TextBox tbAmenityName;
+        private System.Windows.Forms.Button btnSaveAmenity;
+        private System.Windows.Forms.Button btnCancelAmenity;
+    }
+}

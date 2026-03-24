@@ -1,0 +1,777 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Repositories.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class DashboardForm : Form
+    {
+        private readonly IRoomService _roomService;
+   private readonly IBookingService _bookingService;
+        private readonly IInvoiceService _invoiceService;
+        private readonly IServiceProvider _serviceProvider;
+  private readonly ICustomerRepository _customerRepository;
+
+        public DashboardForm(
+     IRoomService roomService, 
+      IBookingService bookingService, 
+       IInvoiceService invoiceService,
+    IServiceProvider serviceProvider,
+            ICustomerRepository customerRepository)
+        {
+            InitializeComponent();
+            _roomService = roomService;
+          _bookingService = bookingService;
+  _invoiceService = invoiceService;
+            _serviceProvider = serviceProvider;
+            _customerRepository = customerRepository;
+     }
+
+ private async void DashboardForm_Load(object sender, EventArgs e)
+     {
+            try
+            {
+                await LoadDashboardData();
+   }
+  catch (Exception ex)
+            {
+       MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message);
+      }
+        }
+
+        private async Task LoadDashboardData()
+        {
+    // Tính toán thống kê
+     var allRooms = await _roomService.GetAllRoomsAsync();
+       var availableRooms = await _roomService.GetAvailableRoomsAsync();
+       var upcomingCheckIns = await _bookingService.GetUpcomingCheckInsAsync(1);
+
+   // Cập nhật giao diện với dữ liệu thực
+     UpdateOccupancyRate(allRooms.Count(), availableRooms.Count());
+            UpdateCheckInsPending(upcomingCheckIns.Count());
+
+ // Load revenue data
+        await UpdateRevenueData();
+        }
+
+        private void UpdateOccupancyRate(int totalRooms, int availableRooms)
+ {
+  if (totalRooms > 0)
+            {
+      int occupiedRooms = totalRooms - availableRooms;
+  int occupancyRate = (occupiedRooms * 100) / totalRooms;
+  // Cập nhật label occupancy rate
+            }
+        }
+
+     private void UpdateCheckInsPending(int count)
+        {
+        // Cập nhật label check-ins pending
+        }
+
+        private async Task UpdateRevenueData()
+      {
+   try
+       {
+     DateTime today = DateTime.Now.Date;
+decimal dailyRevenue = await _invoiceService.GetRevenueAsync(today, today.AddHours(23).AddMinutes(59).AddSeconds(59));
+           // Cập nhật label revenue
+         }
+         catch (Exception ex)
+   {
+     MessageBox.Show("Lỗi tải doanh thu: " + ex.Message);
+  }
+      }
+
+      private void MenuItemClick(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            string menuItem = btn?.Tag?.ToString() ?? "";
+
+        try
+  {
+          switch (menuItem)
+      {
+            case "DASHBOARD":
+  ShowDashboardContent();
+                break;
+
+  case "ROOM MANAGEMENT":
+              ShowRoomManagementContent();
+     break;
+
+              case "BOOKING MANAGEMENT":
+            ShowBookingManagementContent();
+         break;
+
+        case "CUSTOMER MANAGEMENT":
+      ShowCustomerManagementContent();
+               break;
+
+               case "INVOICES & SERVICES":
+ ShowInvoiceManagementContent();
+break;
+     }
+       }
+        catch (Exception ex)
+   {
+    MessageBox.Show($"Lỗi: {ex.Message}");
+    }
+        }
+
+        private void ShowDashboardContent()
+        {
+     if (contentPanel != null)
+       {
+                CreateDashboardContent(contentPanel);
+           contentPanel.Refresh();
+            }
+     }
+
+        private void ShowRoomManagementContent()
+        {
+            if (contentPanel != null)
+            {
+     contentPanel.Controls.Clear();
+
+    // Header
+    Panel headerPanel = new Panel();
+                headerPanel.Height = 100;
+       headerPanel.Dock = DockStyle.Top;
+     headerPanel.BackColor = Color.White;
+                headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+        Label titleLabel = new Label();
+     titleLabel.Text = "Room Management";
+         titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+  titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+           titleLabel.Location = new Point(30, 8);
+   titleLabel.Size = new Size(500, 40);
+     headerPanel.Controls.Add(titleLabel);
+
+  Label subtitleLabel = new Label();
+         subtitleLabel.Text = "Manage hotel room inventory and status.";
+        subtitleLabel.Font = new Font("Segoe UI", 10);
+           subtitleLabel.ForeColor = Color.Gray;
+            subtitleLabel.Location = new Point(30, 50);
+         subtitleLabel.Size = new Size(500, 30);
+     headerPanel.Controls.Add(subtitleLabel);
+
+     Button btnAddRoom = new Button();
+       btnAddRoom.Text = "+ ADD NEW ROOM";
+            btnAddRoom.Location = new Point(700, 30);
+         btnAddRoom.Size = new Size(150, 40);
+        btnAddRoom.BackColor = Color.FromArgb(30, 40, 60);
+         btnAddRoom.ForeColor = Color.White;
+       btnAddRoom.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+  btnAddRoom.FlatStyle = FlatStyle.Flat;
+    btnAddRoom.Cursor = Cursors.Hand;
+  btnAddRoom.Click += (s, e) => AddNewRoom();
+          headerPanel.Controls.Add(btnAddRoom);
+
+     contentPanel.Controls.Add(headerPanel);
+
+          // Filter Panel
+                Panel filterPanel = new Panel();
+              filterPanel.Height = 60;
+      filterPanel.Dock = DockStyle.Top;
+        filterPanel.BackColor = Color.White;
+             filterPanel.BorderStyle = BorderStyle.FixedSingle;
+        filterPanel.Padding = new Padding(20);
+
+          Label filterLabel = new Label();
+                filterLabel.Text = "Status:";
+  filterLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+         filterLabel.ForeColor = Color.FromArgb(30, 40, 60);
+           filterLabel.Location = new Point(20, 15);
+          filterLabel.Size = new Size(80, 25);
+  filterPanel.Controls.Add(filterLabel);
+
+         ComboBox cbStatus = new ComboBox();
+    cbStatus.Location = new Point(110, 15);
+      cbStatus.Size = new Size(150, 25);
+                cbStatus.Items.Add("All");
+ cbStatus.Items.Add("Available");
+                cbStatus.Items.Add("Reserved");
+      cbStatus.Items.Add("Occupied");
+   cbStatus.Items.Add("Maintenance");
+     cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+     cbStatus.SelectedIndex = 0;
+   cbStatus.SelectedIndexChanged += async (s, e) => await RefreshRoomData(cbStatus.SelectedItem?.ToString() ?? "All");
+     filterPanel.Controls.Add(cbStatus);
+
+     contentPanel.Controls.Add(filterPanel);
+
+         // DataGridView
+    DataGridView dgvRooms = new DataGridView();
+     dgvRooms.Name = "dgvRooms";
+  dgvRooms.Dock = DockStyle.Fill;
+     dgvRooms.BackgroundColor = Color.White;
+                dgvRooms.BorderStyle = BorderStyle.FixedSingle;
+           dgvRooms.AllowUserToAddRows = false;
+        dgvRooms.ReadOnly = false;
+          dgvRooms.RowHeadersVisible = false;
+                dgvRooms.GridColor = Color.LightGray;
+          dgvRooms.Font = new Font("Segoe UI", 10);
+       dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                dgvRooms.Columns.Add("RoomId", "ROOM ID");
+                dgvRooms.Columns.Add("RoomNo", "ROOM NO");
+         dgvRooms.Columns.Add("Type", "TYPE");
+     dgvRooms.Columns.Add("Status", "STATUS");
+                dgvRooms.Columns.Add("Price", "PRICE/NIGHT");
+
+          // Load data from service
+    LoadRoomData(dgvRooms);
+
+       contentPanel.Controls.Add(dgvRooms);
+    contentPanel.Refresh();
+}
+        }
+
+        private async void LoadRoomData(DataGridView dgv)
+      {
+            try
+     {
+      dgv.Rows.Clear();
+     var rooms = await _roomService.GetAllRoomsAsync();
+    foreach (var room in rooms)
+      {
+                    dgv.Rows.Add(room.RoomId, room.RoomNumber, room.RoomType, room.Status, $"${room.PricePerNight}");
+     }
+ }
+    catch (Exception ex)
+{
+      MessageBox.Show($"Lỗi tải dữ liệu phòng: {ex.Message}");
+            }
+        }
+
+    private async Task RefreshRoomData(string status)
+        {
+   var dgv = contentPanel?.Controls.Find("dgvRooms", false).FirstOrDefault() as DataGridView;
+            if (dgv != null)
+         {
+                try
+     {
+     dgv.Rows.Clear();
+      var rooms = await _roomService.GetAllRoomsAsync();
+      
+         var filteredRooms = status == "All" 
+   ? rooms 
+    : rooms.Where(r => r.Status == status).ToList();
+    
+   foreach (var room in filteredRooms)
+       {
+            dgv.Rows.Add(room.RoomId, room.RoomNumber, room.RoomType, room.Status, $"${room.PricePerNight}");
+       }
+    }
+     catch (Exception ex)
+     {
+  MessageBox.Show($"Lỗi: {ex.Message}");
+    }
+          }
+        }
+
+        private void AddNewRoom()
+        {
+   MessageBox.Show("Chức năng thêm phòng mới sẽ được triển khai");
+        }
+
+        private void ShowBookingManagementContent()
+     {
+  if (contentPanel != null)
+        {
+                contentPanel.Controls.Clear();
+
+        // Header
+             Panel headerPanel = new Panel();
+        headerPanel.Height = 100;
+        headerPanel.Dock = DockStyle.Top;
+      headerPanel.BackColor = Color.White;
+          headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+      Label titleLabel = new Label();
+          titleLabel.Text = "Booking Management";
+     titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+ titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+       titleLabel.Location = new Point(30, 8);
+        titleLabel.Size = new Size(500, 40);
+         headerPanel.Controls.Add(titleLabel);
+
+Label subtitleLabel = new Label();
+         subtitleLabel.Text = "Manage room reservations and guest check-ins.";
+                subtitleLabel.Font = new Font("Segoe UI", 10);
+             subtitleLabel.ForeColor = Color.Gray;
+         subtitleLabel.Location = new Point(30, 50);
+       subtitleLabel.Size = new Size(500, 30);
+         headerPanel.Controls.Add(subtitleLabel);
+
+   Button btnNewBooking = new Button();
+                btnNewBooking.Text = "+ NEW BOOKING";
+              btnNewBooking.Location = new Point(700, 30);
+    btnNewBooking.Size = new Size(150, 40);
+      btnNewBooking.BackColor = Color.FromArgb(30, 40, 60);
+            btnNewBooking.ForeColor = Color.White;
+       btnNewBooking.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+      btnNewBooking.FlatStyle = FlatStyle.Flat;
+          btnNewBooking.Cursor = Cursors.Hand;
+         btnNewBooking.Click += (s, e) => CreateNewBooking();
+        headerPanel.Controls.Add(btnNewBooking);
+
+       contentPanel.Controls.Add(headerPanel);
+
+      // Filter Panel
+           Panel filterPanel = new Panel();
+   filterPanel.Height = 60;
+                filterPanel.Dock = DockStyle.Top;
+ filterPanel.BackColor = Color.White;
+            filterPanel.BorderStyle = BorderStyle.FixedSingle;
+     filterPanel.Padding = new Padding(20);
+
+    Label filterLabel = new Label();
+     filterLabel.Text = "Status:";
+            filterLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+      filterLabel.ForeColor = Color.FromArgb(30, 40, 60);
+         filterLabel.Location = new Point(20, 15);
+     filterLabel.Size = new Size(80, 25);
+        filterPanel.Controls.Add(filterLabel);
+
+             ComboBox cbStatus = new ComboBox();
+    cbStatus.Location = new Point(110, 15);
+    cbStatus.Size = new Size(150, 25);
+              cbStatus.Items.Add("All");
+             cbStatus.Items.Add("Pending");
+                cbStatus.Items.Add("Confirmed");
+     cbStatus.Items.Add("Checked-In");
+      cbStatus.Items.Add("Checked-Out");
+            cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+    cbStatus.SelectedIndex = 0;
+    cbStatus.SelectedIndexChanged += async (s, e) => await RefreshBookingData(cbStatus.SelectedItem?.ToString() ?? "All");
+             filterPanel.Controls.Add(cbStatus);
+
+          contentPanel.Controls.Add(filterPanel);
+
+ // DataGridView
+                DataGridView dgvBookings = new DataGridView();
+            dgvBookings.Name = "dgvBookings";
+           dgvBookings.Dock = DockStyle.Fill;
+ dgvBookings.BackgroundColor = Color.White;
+             dgvBookings.BorderStyle = BorderStyle.FixedSingle;
+  dgvBookings.AllowUserToAddRows = false;
+         dgvBookings.ReadOnly = false;
+   dgvBookings.RowHeadersVisible = false;
+    dgvBookings.GridColor = Color.LightGray;
+          dgvBookings.Font = new Font("Segoe UI", 10);
+      dgvBookings.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+       dgvBookings.Columns.Add("BookingId", "BOOKING ID");
+       dgvBookings.Columns.Add("GuestName", "GUEST NAME");
+                dgvBookings.Columns.Add("Room", "ROOM");
+    dgvBookings.Columns.Add("CheckIn", "CHECK-IN");
+       dgvBookings.Columns.Add("CheckOut", "CHECK-OUT");
+              dgvBookings.Columns.Add("Status", "STATUS");
+
+        // Load data from service
+                LoadBookingData(dgvBookings);
+
+        contentPanel.Controls.Add(dgvBookings);
+      contentPanel.Refresh();
+            }
+ }
+
+        private async void LoadBookingData(DataGridView dgv)
+        {
+    try
+            {
+         dgv.Rows.Clear();
+                var bookings = await _bookingService.GetUpcomingCheckInsAsync(30);
+      foreach (var booking in bookings)
+  {
+          dgv.Rows.Add(booking.BookingId, booking.GuestName, booking.RoomNumber, 
+          booking.CheckInDate.ToString("MMM dd, yyyy"), 
+      booking.CheckOutDate.ToString("MMM dd, yyyy"), 
+              booking.Status);
+       }
+   }
+catch (Exception ex)
+   {
+    MessageBox.Show($"Lỗi tải dữ liệu booking: {ex.Message}");
+    }
+        }
+
+        private async Task RefreshBookingData(string status)
+        {
+var dgv = contentPanel?.Controls.Find("dgvBookings", false).FirstOrDefault() as DataGridView;
+            if (dgv != null)
+            {
+                try
+                {
+      dgv.Rows.Clear();
+         var bookings = await _bookingService.GetUpcomingCheckInsAsync(30);
+      
+              var filteredBookings = status == "All" 
+  ? bookings 
+             : bookings.Where(b => b.Status == status).ToList();
+  
+           foreach (var booking in filteredBookings)
+ {
+   dgv.Rows.Add(booking.BookingId, booking.GuestName, booking.RoomNumber, 
+        booking.CheckInDate.ToString("MMM dd, yyyy"), 
+  booking.CheckOutDate.ToString("MMM dd, yyyy"), 
+    booking.Status);
+     }
+     }
+         catch (Exception ex)
+      {
+          MessageBox.Show($"Lỗi: {ex.Message}");
+         }
+        }
+     }
+
+   private void CreateNewBooking()
+        {
+MessageBox.Show("Chức năng tạo booking mới sẽ được triển khai");
+        }
+
+        private void ShowCustomerManagementContent()
+        {
+       if (contentPanel != null)
+        {
+   contentPanel.Controls.Clear();
+
+         // Header
+         Panel headerPanel = new Panel();
+ headerPanel.Height = 100;
+  headerPanel.Dock = DockStyle.Top;
+      headerPanel.BackColor = Color.White;
+                headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+                Label titleLabel = new Label();
+          titleLabel.Text = "Customer Management";
+        titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+   titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+           titleLabel.Location = new Point(30, 8);
+            titleLabel.Size = new Size(500, 40);
+    headerPanel.Controls.Add(titleLabel);
+
+Label subtitleLabel = new Label();
+       subtitleLabel.Text = "Manage guest profiles and loyalty programs.";
+      subtitleLabel.Font = new Font("Segoe UI", 10);
+ subtitleLabel.ForeColor = Color.Gray;
+    subtitleLabel.Location = new Point(30, 50);
+            subtitleLabel.Size = new Size(500, 30);
+  headerPanel.Controls.Add(subtitleLabel);
+
+     Button btnAddCustomer = new Button();
+   btnAddCustomer.Text = "+ ADD CUSTOMER";
+         btnAddCustomer.Location = new Point(700, 30);
+btnAddCustomer.Size = new Size(150, 40);
+        btnAddCustomer.BackColor = Color.FromArgb(30, 40, 60);
+  btnAddCustomer.ForeColor = Color.White;
+     btnAddCustomer.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+         btnAddCustomer.FlatStyle = FlatStyle.Flat;
+        btnAddCustomer.Cursor = Cursors.Hand;
+        btnAddCustomer.Click += (s, e) => AddNewCustomer();
+      headerPanel.Controls.Add(btnAddCustomer);
+
+       contentPanel.Controls.Add(headerPanel);
+
+       // Filter Panel
+       Panel filterPanel = new Panel();
+         filterPanel.Height = 60;
+        filterPanel.Dock = DockStyle.Top;
+     filterPanel.BackColor = Color.White;
+     filterPanel.BorderStyle = BorderStyle.FixedSingle;
+    filterPanel.Padding = new Padding(20);
+
+       Label filterLabel = new Label();
+   filterLabel.Text = "Type:";
+       filterLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+    filterLabel.ForeColor = Color.FromArgb(30, 40, 60);
+     filterLabel.Location = new Point(20, 15);
+     filterLabel.Size = new Size(80, 25);
+       filterPanel.Controls.Add(filterLabel);
+
+    ComboBox cbType = new ComboBox();
+         cbType.Location = new Point(110, 15);
+                cbType.Size = new Size(150, 25);
+      cbType.Items.Add("All");
+         cbType.Items.Add("Individual");
+     cbType.Items.Add("Corporate");
+             cbType.Items.Add("VIP");
+cbType.DropDownStyle = ComboBoxStyle.DropDownList;
+     cbType.SelectedIndex = 0;
+ cbType.SelectedIndexChanged += async (s, e) => await RefreshCustomerData(cbType.SelectedItem?.ToString() ?? "All");
+     filterPanel.Controls.Add(cbType);
+
+           contentPanel.Controls.Add(filterPanel);
+
+      // DataGridView
+  DataGridView dgvCustomers = new DataGridView();
+        dgvCustomers.Name = "dgvCustomers";
+                dgvCustomers.Dock = DockStyle.Fill;
+       dgvCustomers.BackgroundColor = Color.White;
+     dgvCustomers.BorderStyle = BorderStyle.FixedSingle;
+dgvCustomers.AllowUserToAddRows = false;
+   dgvCustomers.ReadOnly = false;
+        dgvCustomers.RowHeadersVisible = false;
+   dgvCustomers.GridColor = Color.LightGray;
+         dgvCustomers.Font = new Font("Segoe UI", 10);
+     dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+           dgvCustomers.Columns.Add("CustomerId", "CUSTOMER ID");
+     dgvCustomers.Columns.Add("FullName", "FULL NAME");
+   dgvCustomers.Columns.Add("Phone", "PHONE");
+         dgvCustomers.Columns.Add("Email", "EMAIL");
+  dgvCustomers.Columns.Add("Type", "TYPE");
+
+  // Load data from service
+            LoadCustomerData(dgvCustomers);
+
+      contentPanel.Controls.Add(dgvCustomers);
+    contentPanel.Refresh();
+            }
+}
+
+        private async void LoadCustomerData(DataGridView dgv)
+        {
+ try
+  {
+          dgv.Rows.Clear();
+      var customers = await _customerRepository.GetAllAsync();
+      foreach (var customer in customers)
+       {
+         dgv.Rows.Add(customer.CustomerId, customer.FullName, customer.Phone, customer.Email, customer.CustomerType);
+         }
+ }
+            catch (Exception ex)
+            {
+        MessageBox.Show($"Lỗi tải dữ liệu khách hàng: {ex.Message}");
+ }
+        }
+
+        private async Task RefreshCustomerData(string type)
+  {
+            var dgv = contentPanel?.Controls.Find("dgvCustomers", false).FirstOrDefault() as DataGridView;
+            if (dgv != null)
+          {
+    try
+          {
+               dgv.Rows.Clear();
+          var customers = await _customerRepository.GetAllAsync();
+  
+         var filteredCustomers = type == "All" 
+ ? customers 
+            : customers.Where(c => c.CustomerType == type).ToList();
+ 
+   foreach (var customer in filteredCustomers)
+        {
+   dgv.Rows.Add(customer.CustomerId, customer.FullName, customer.Phone, customer.Email, customer.CustomerType);
+         }
+   }
+              catch (Exception ex)
+    {
+        MessageBox.Show($"Lỗi: {ex.Message}");
+          }
+ }
+        }
+
+        private void AddNewCustomer()
+        {
+        MessageBox.Show("Chức năng thêm khách hàng mới sẽ được triển khai");
+        }
+
+        private void ShowInvoiceManagementContent()
+        {
+            if (contentPanel != null)
+   {
+        contentPanel.Controls.Clear();
+
+                // Header
+      Panel headerPanel = new Panel();
+          headerPanel.Height = 100;
+      headerPanel.Dock = DockStyle.Top;
+     headerPanel.BackColor = Color.White;
+             headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+         Label titleLabel = new Label();
+     titleLabel.Text = "Invoices & Services";
+     titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+    titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+         titleLabel.Location = new Point(30, 8);
+  titleLabel.Size = new Size(500, 40);
+    headerPanel.Controls.Add(titleLabel);
+
+          Label subtitleLabel = new Label();
+       subtitleLabel.Text = "Manage guest accounts, process payments, and add premium amenities.";
+     subtitleLabel.Font = new Font("Segoe UI", 10);
+      subtitleLabel.ForeColor = Color.Gray;
+     subtitleLabel.Location = new Point(30, 50);
+      subtitleLabel.Size = new Size(500, 30);
+  headerPanel.Controls.Add(subtitleLabel);
+
+            Button btnExport = new Button();
+   btnExport.Text = "📊 EXPORT";
+       btnExport.Location = new Point(550, 30);
+    btnExport.Size = new Size(130, 40);
+                btnExport.BackColor = Color.FromArgb(200, 200, 200);
+    btnExport.ForeColor = Color.Black;
+          btnExport.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+         btnExport.FlatStyle = FlatStyle.Flat;
+          btnExport.Cursor = Cursors.Hand;
+ btnExport.Click += (s, e) => ExportInvoices();
+          headerPanel.Controls.Add(btnExport);
+
+        Button btnNewInvoice = new Button();
+    btnNewInvoice.Text = "+ NEW INVOICE";
+       btnNewInvoice.Location = new Point(700, 30);
+                btnNewInvoice.Size = new Size(150, 40);
+    btnNewInvoice.BackColor = Color.FromArgb(30, 40, 60);
+     btnNewInvoice.ForeColor = Color.White;
+    btnNewInvoice.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+   btnNewInvoice.FlatStyle = FlatStyle.Flat;
+      btnNewInvoice.Cursor = Cursors.Hand;
+            btnNewInvoice.Click += (s, e) => CreateNewInvoice();
+         headerPanel.Controls.Add(btnNewInvoice);
+
+           contentPanel.Controls.Add(headerPanel);
+
+    // Filter Panel
+     Panel filterPanel = new Panel();
+        filterPanel.Height = 60;
+        filterPanel.Dock = DockStyle.Top;
+            filterPanel.BackColor = Color.White;
+                filterPanel.BorderStyle = BorderStyle.FixedSingle;
+    filterPanel.Padding = new Padding(20);
+
+          Label filterLabel = new Label();
+      filterLabel.Text = "Status:";
+             filterLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+          filterLabel.ForeColor = Color.FromArgb(30, 40, 60);
+         filterLabel.Location = new Point(20, 15);
+     filterLabel.Size = new Size(80, 25);
+          filterPanel.Controls.Add(filterLabel);
+
+    ComboBox cbStatus = new ComboBox();
+      cbStatus.Location = new Point(110, 15);
+    cbStatus.Size = new Size(150, 25);
+     cbStatus.Items.Add("All");
+  cbStatus.Items.Add("Paid");
+                cbStatus.Items.Add("Unpaid");
+                cbStatus.Items.Add("Pending");
+       cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+           cbStatus.SelectedIndex = 0;
+  cbStatus.SelectedIndexChanged += async (s, e) => await RefreshInvoiceData(cbStatus.SelectedItem?.ToString() ?? "All");
+ filterPanel.Controls.Add(cbStatus);
+
+     contentPanel.Controls.Add(filterPanel);
+
+  // DataGridView
+       DataGridView dgvInvoices = new DataGridView();
+ dgvInvoices.Name = "dgvInvoices";
+                dgvInvoices.Dock = DockStyle.Fill;
+            dgvInvoices.BackgroundColor = Color.White;
+          dgvInvoices.BorderStyle = BorderStyle.FixedSingle;
+           dgvInvoices.AllowUserToAddRows = false;
+           dgvInvoices.ReadOnly = true;
+                dgvInvoices.RowHeadersVisible = false;
+     dgvInvoices.GridColor = Color.LightGray;
+     dgvInvoices.Font = new Font("Segoe UI", 10);
+     dgvInvoices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+     dgvInvoices.Columns.Add("InvoiceId", "INVOICE ID");
+  dgvInvoices.Columns.Add("GuestName", "GUEST NAME");
+        dgvInvoices.Columns.Add("InvoiceDate", "DATE");
+        dgvInvoices.Columns.Add("Amount", "AMOUNT");
+              dgvInvoices.Columns.Add("Status", "STATUS");
+
+    // Load data from service
+          LoadInvoiceData(dgvInvoices);
+
+   contentPanel.Controls.Add(dgvInvoices);
+        contentPanel.Refresh();
+     }
+        }
+
+  private async void LoadInvoiceData(DataGridView dgv)
+        {
+       try
+  {
+           dgv.Rows.Clear();
+      var invoices = await _invoiceService.GetUnpaidInvoicesAsync();
+     foreach (var invoice in invoices)
+        {
+     dgv.Rows.Add(invoice.InvoiceId, invoice.GuestName, 
+       invoice.InvoiceDate.ToString("MMM dd, yyyy"), 
+       $"${invoice.Amount}", invoice.Status);
+          }
+    }
+       catch (Exception ex)
+    {
+       MessageBox.Show($"Lỗi tải dữ liệu hóa đơn: {ex.Message}");
+            }
+ }
+
+        private async Task RefreshInvoiceData(string status)
+        {
+            var dgv = contentPanel?.Controls.Find("dgvInvoices", false).FirstOrDefault() as DataGridView;
+     if (dgv != null)
+     {
+       try
+        {
+  dgv.Rows.Clear();
+           var invoices = await _invoiceService.GetUnpaidInvoicesAsync();
+       
+            var filteredInvoices = status == "All" 
+ ? invoices 
+     : invoices.Where(i => i.Status == status).ToList();
+              
+ foreach (var invoice in filteredInvoices)
+       {
+                dgv.Rows.Add(invoice.InvoiceId, invoice.GuestName, 
+          invoice.InvoiceDate.ToString("MMM dd, yyyy"), 
+       $"${invoice.Amount}", invoice.Status);
+        }
+    }
+    catch (Exception ex)
+  {
+         MessageBox.Show($"Lỗi: {ex.Message}");
+        }
+  }
+        }
+
+    private void ExportInvoices()
+        {
+          MessageBox.Show("Chức năng xuất báo cáo sẽ được triển khai");
+        }
+
+        private void CreateNewInvoice()
+     {
+    MessageBox.Show("Chức năng tạo hóa đơn mới sẽ được triển khai");
+        }
+
+        private void BottomMenuClick(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+  if (btn?.Text.Contains("LOGOUT") == true)
+      {
+   this.Close();
+                Application.Exit();
+  }
+            else if (btn?.Text.Contains("HELP CENTER") == true)
+            {
+  MessageBox.Show(
+     "Hotel Management System v1.0\n\n" +
+    "Hệ thống quản lý khách sạn hiện đại.\n\n" +
+     "Các tính năng:\n" +
+     "- Quản lý phòng\n" +
+             "- Quản lý booking\n" +
+      "- Quản lý khách hàng\n" +
+           "- Quản lý hóa đơn\n\n" +
+              "Liên hệ hỗ trợ: support@hotel.com",
+     "Trợ giúp");
+ }
+        }
+  }
+}

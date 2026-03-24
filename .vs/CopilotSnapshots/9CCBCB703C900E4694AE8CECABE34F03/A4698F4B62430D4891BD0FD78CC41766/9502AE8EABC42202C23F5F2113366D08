@@ -1,0 +1,236 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class UCRoomManagement
+    {
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            actionPanel = new Panel();
+            subtitleLabel = new Label();
+            titleLabel = new Label();
+            btnAdd = new Button();
+            btnEdit = new Button();
+            btnDelete = new Button();
+            btnRefresh = new Button();
+            listPanel = new Panel();
+            listTitle = new Label();
+            dataGridView1 = new DataGridView();
+            RoomNumber = new DataGridViewTextBoxColumn();
+            Status = new DataGridViewTextBoxColumn();
+            RoomType = new DataGridViewTextBoxColumn();
+            Floor = new DataGridViewTextBoxColumn();
+            CreateDate = new DataGridViewTextBoxColumn();
+            UpdatedDate = new DataGridViewTextBoxColumn();
+            actionPanel.SuspendLayout();
+            listPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            SuspendLayout();
+            // 
+            // actionPanel
+            // 
+            actionPanel.BackColor = Color.White;
+            actionPanel.BorderStyle = BorderStyle.FixedSingle;
+            actionPanel.Controls.Add(subtitleLabel);
+            actionPanel.Controls.Add(titleLabel);
+            actionPanel.Controls.Add(btnAdd);
+            actionPanel.Controls.Add(btnEdit);
+            actionPanel.Controls.Add(btnDelete);
+            actionPanel.Controls.Add(btnRefresh);
+            actionPanel.Dock = DockStyle.Top;
+            actionPanel.Location = new Point(0, 0);
+            actionPanel.Name = "actionPanel";
+            actionPanel.Padding = new Padding(20);
+            actionPanel.Size = new Size(1207, 127);
+            actionPanel.TabIndex = 6;
+            // 
+            // subtitleLabel
+            // 
+            subtitleLabel.Font = new Font("Segoe UI", 11F);
+            subtitleLabel.ForeColor = Color.Gray;
+            subtitleLabel.Location = new Point(384, 19);
+            subtitleLabel.Name = "subtitleLabel";
+            subtitleLabel.Size = new Size(600, 25);
+            subtitleLabel.TabIndex = 1;
+            subtitleLabel.Text = "Manage and monitor all hotel rooms";
+            // 
+            // titleLabel
+            // 
+            titleLabel.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            titleLabel.Location = new Point(-1, -1);
+            titleLabel.Name = "titleLabel";
+            titleLabel.Size = new Size(600, 40);
+            titleLabel.TabIndex = 0;
+            titleLabel.Text = "🏨 Room Management";
+            // 
+            // btnAdd
+            // 
+            btnAdd.BackColor = Color.FromArgb(40, 200, 150);
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.ForeColor = Color.White;
+            btnAdd.Location = new Point(20, 67);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(120, 35);
+            btnAdd.TabIndex = 0;
+            btnAdd.Text = "➕ Add Room";
+            btnAdd.UseVisualStyleBackColor = false;
+            // 
+            // btnEdit
+            // 
+            btnEdit.BackColor = Color.FromArgb(70, 130, 180);
+            btnEdit.FlatStyle = FlatStyle.Flat;
+            btnEdit.ForeColor = Color.White;
+            btnEdit.Location = new Point(150, 67);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new Size(100, 35);
+            btnEdit.TabIndex = 1;
+            btnEdit.Text = "✏️ Edit";
+            btnEdit.UseVisualStyleBackColor = false;
+            // 
+            // btnDelete
+            // 
+            btnDelete.BackColor = Color.FromArgb(220, 100, 100);
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.ForeColor = Color.White;
+            btnDelete.Location = new Point(260, 67);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(100, 35);
+            btnDelete.TabIndex = 2;
+            btnDelete.Text = "🗑️ Delete";
+            btnDelete.UseVisualStyleBackColor = false;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.BackColor = Color.FromArgb(100, 150, 200);
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.ForeColor = Color.White;
+            btnRefresh.Location = new Point(370, 67);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(100, 35);
+            btnRefresh.TabIndex = 3;
+            btnRefresh.Text = "🔄 Refresh";
+            btnRefresh.UseVisualStyleBackColor = false;
+            // 
+            // listPanel
+            // 
+            listPanel.AutoSize = true;
+            listPanel.BackColor = Color.White;
+            listPanel.BorderStyle = BorderStyle.FixedSingle;
+            listPanel.Controls.Add(dataGridView1);
+            listPanel.Controls.Add(listTitle);
+            listPanel.Dock = DockStyle.Top;
+            listPanel.Location = new Point(0, 127);
+            listPanel.Name = "listPanel";
+            listPanel.Padding = new Padding(20);
+            listPanel.Size = new Size(1207, 239);
+            listPanel.TabIndex = 7;
+            // 
+            // listTitle
+            // 
+            listTitle.AutoSize = true;
+            listTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            listTitle.ForeColor = Color.FromArgb(30, 40, 60);
+            listTitle.Location = new Point(40, 30);
+            listTitle.Name = "listTitle";
+            listTitle.Size = new Size(127, 25);
+            listTitle.TabIndex = 0;
+            listTitle.Text = "📋 Room List";
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { RoomNumber, Status, RoomType, Floor, CreateDate, UpdatedDate });
+            dataGridView1.Location = new Point(40, 64);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(1127, 150);
+            dataGridView1.TabIndex = 1;
+            // 
+            // RoomNumber
+            // 
+            RoomNumber.HeaderText = "RoomNumber";
+            RoomNumber.Name = "RoomNumber";
+            // 
+            // Status
+            // 
+            Status.HeaderText = "Status";
+            Status.Name = "Status";
+            // 
+            // RoomType
+            // 
+            RoomType.HeaderText = "RoomType";
+            RoomType.Name = "RoomType";
+            // 
+            // Floor
+            // 
+            Floor.HeaderText = "Floor";
+            Floor.Name = "Floor";
+            // 
+            // CreateDate
+            // 
+            CreateDate.HeaderText = "CreateDate";
+            CreateDate.Name = "CreateDate";
+            // 
+            // UpdatedDate
+            // 
+            UpdatedDate.HeaderText = "UpdatedDate";
+            UpdatedDate.Name = "UpdatedDate";
+            // 
+            // UCRoomManagement
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(listPanel);
+            Controls.Add(actionPanel);
+            Name = "UCRoomManagement";
+            Size = new Size(1207, 681);
+            actionPanel.ResumeLayout(false);
+            listPanel.ResumeLayout(false);
+            listPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private Panel actionPanel;
+        private Label subtitleLabel;
+        private Label titleLabel;
+        private Button btnAdd;
+        private Button btnEdit;
+        private Button btnDelete;
+        private Button btnRefresh;
+        private Panel listPanel;
+        private Label listTitle;
+        private DataGridView dataGridView1;
+        private DataGridViewTextBoxColumn RoomNumber;
+        private DataGridViewTextBoxColumn Status;
+        private DataGridViewTextBoxColumn RoomType;
+        private DataGridViewTextBoxColumn Floor;
+        private DataGridViewTextBoxColumn CreateDate;
+        private DataGridViewTextBoxColumn UpdatedDate;
+    }
+}

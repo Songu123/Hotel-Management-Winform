@@ -1,0 +1,33 @@
+﻿using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan
+{
+    public partial class RoomManagementForm : Form
+    {
+        private readonly IRoomService _roomService;
+
+        public RoomManagementForm(IRoomService roomService)
+      {
+        InitializeComponent();
+      _roomService = roomService;
+  }
+
+        private async void RoomManagementForm_Load(object sender, EventArgs e)
+     {
+     try
+ {
+  await LoadRoomDataAsync();
+   }
+        catch (Exception ex)
+            {
+  MessageBox.Show("Lỗi tải dữ liệu phòng: " + ex.Message);
+ }
+    }
+
+  private async Task LoadRoomDataAsync()
+       {
+  var rooms = await _roomService.GetAllRoomsAsync();
+  // Bind data to DataGridView
+}
+    }
+}

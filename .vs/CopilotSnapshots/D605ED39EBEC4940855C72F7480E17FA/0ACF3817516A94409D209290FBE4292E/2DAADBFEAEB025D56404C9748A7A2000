@@ -1,0 +1,273 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Models;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class FrmRoomDetails : Form
+    {
+   private Room _room;
+     private HotelDbContext _dbContext;
+        private List<RoomAmenity> _roomAmenities = new();
+
+        public FrmRoomDetails(Room room, HotelDbContext dbContext)
+    {
+         InitializeComponent();
+          _room = room;
+  _dbContext = dbContext;
+    LoadRoomDetails();
+        }
+
+    private void LoadRoomDetails()
+        {
+          try
+       {
+             // Load thông tin phòng
+     tbRoomId.Text = _room.RoomId;
+tbRoomName.Text = _room.Name;
+    cbRoomType.SelectedIndex = _room.RoomType - 1;
+      cbRoomTypeDetails.SelectedIndex = _room.RoomTypeDetails - 1;
+ tbPrice.Text = _room.Price.ToString("N0");
+     cbStatus.SelectedIndex = _room.Status;
+      cbCurrentCondition.SelectedIndex = _room.CurrentCondition;
+
+         // Load tiện ích của phòng
+       LoadRoomAmenities();
+
+        // Load danh sách tiện ích khác
+         LoadAvailableAmenities();
+            }
+            catch (Exception ex)
+            {
+        MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+      }
+
+        private void LoadRoomAmenities()
+      {
+   try
+   {
+            _roomAmenities = _dbContext.RoomAmenities
+        .Where(ra => ra.RoomId == _room.RoomId)
+           .ToList();
+
+              BindRoomAmenitiesGrid();
+       }
+    catch (Exception ex)
+     {
+                MessageBox.Show($"Lỗi tải tiện ích: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+        }
+
+        private void BindRoomAmenitiesGrid()
+      {
+      dgvRoomAmenities.Rows.Clear();
+      int stt = 1;
+          foreach (var ra in _roomAmenities)
+       {
+   var amenity = _dbContext.Amenities.FirstOrDefault(a => a.AmenityId == ra.AmenityId);
+    if (amenity != null)
+     {
+       dgvRoomAmenities.Rows.Add(
+       stt++,
+             amenity.AmenityId,
+          amenity.Name,
+            ra.Quantity,
+    "Xóa"
+ );
+   }
+            }
+        }
+
+    private void LoadAvailableAmenities()
+   {
+            try
+  {
+         var allAmenities = _dbContext.Amenities.Where(a => a.IsDeleted == 0).ToList();
+  var usedAmenityIds = _roomAmenities.Select(ra => ra.AmenityId).ToList();
+              var availableAmenities = allAmenities.Where(a => !usedAmenityIds.Contains(a.AmenityId)).ToList();
+
+      cbAmenity.Items.Clear();
+   cbAmenity.Items.Add("-- Chọn tiện ích --");
+       foreach (var amenity in availableAmenities)
+        {
+          cbAmenity.Items.Add(amenity);
+          cbAmenity.DisplayMember = "Name";
+          cbAmenity.ValueMember = "AmenityId";
+    }
+    cbAmenity.SelectedIndex = 0;
+            }
+   catch (Exception ex)
+      {
+                MessageBox.Show($"Lỗi tải danh sách tiện ích: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+ private void InitializeComponent()
+        {
+            this.Text = "Thông Tin Chi Tiết Phòng";
+            this.Width = 1000;
+            this.Height = 700;
+          this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = Color.White;
+
+            // Main panel
+          var pnlMain = new Panel { Dock = DockStyle.Fill, AutoScroll = true };
+
+  // Info section
+          var pnlInfo = new GroupBox { Text = "THÔNG TIN CHI TIẾT PHÒNG", Dock = DockStyle.Top, Height = 180, Padding = new Padding(15), BackColor = Color.White };
+
+            var lblRoomId = new Label { Text = "Mã phòng:", Location = new Point(20, 30), AutoSize = true, Font = new Font("Segoe UI", 9F) };
+        tbRoomId = new TextBox { Location = new Point(150, 27), Width = 200, ReadOnly = true, Font = new Font("Segoe UI", 9F) };
+
+   var lblRoomName = new Label { Text = "Tên phòng:", Location = new Point(420, 30), AutoSize = true, Font = new Font("Segoe UI", 9F) };
+            tbRoomName = new TextBox { Location = new Point(550, 27), Width = 200, ReadOnly = true, Font = new Font("Segoe UI", 9F) };
+
+        var lblRoomType = new Label { Text = "Loại phòng:", Location = new Point(20, 70), AutoSize = true, Font = new Font("Segoe UI", 9F) };
+    cbRoomType = new ComboBox { Location = new Point(150, 67), Width = 200, DropDownStyle = ComboBoxStyle.DropDownList, Enabled = false, Font = new Font("Segoe UI", 9F) };
+  cbRoomType.Items.AddRange(new[] { "Thường", "VIP", "Deluxe", "Suite" });
+
+  var lblRoomTypeDetails = new Label { Text = "Chi tiết loại:", Location = new Point(420, 70), AutoSize = true, Font = new Font("Segoe UI", 9F) };
+            cbRoomTypeDetails = new ComboBox { Location = new Point(550, 67), Width = 200, DropDownStyle = ComboBoxStyle.DropDownList, Enabled = false, Font = new Font("Segoe UI", 9F) };
+      cbRoomTypeDetails.Items.AddRange(new[] { "Phòng đơn", "Phòng đôi", "Phòng gia đình" });
+
+    var lblPrice = new Label { Text = "Giá phòng:", Location = new Point(20, 110), AutoSize = true, Font = new Font("Segoe UI", 9F) };
+      tbPrice = new TextBox { Location = new Point(150, 107), Width = 200, ReadOnly = true, Font = new Font("Segoe UI", 9F) };
+
+   var lblStatus = new Label { Text = "Tình trạng:", Location = new Point(420, 110), AutoSize = true, Font = new Font("Segoe UI", 9F) };
+            cbStatus = new ComboBox { Location = new Point(550, 107), Width = 200, DropDownStyle = ComboBoxStyle.DropDownList, Enabled = false, Font = new Font("Segoe UI", 9F) };
+      cbStatus.Items.AddRange(new[] { "Chưa dọn phòng", "Trống", "Đã đặt" });
+
+     var lblCondition = new Label { Text = "Hiện trạng:", Location = new Point(20, 150), AutoSize = true, Font = new Font("Segoe UI", 9F) };
+          cbCurrentCondition = new ComboBox { Location = new Point(150, 147), Width = 200, DropDownStyle = ComboBoxStyle.DropDownList, Enabled = false, Font = new Font("Segoe UI", 9F) };
+            cbCurrentCondition.Items.AddRange(new[] { "Mới", "Tốt", "Cần sửa chữa" });
+
+ pnlInfo.Controls.AddRange(new Control[] { lblRoomId, tbRoomId, lblRoomName, tbRoomName, lblRoomType, cbRoomType, lblRoomTypeDetails, cbRoomTypeDetails, lblPrice, tbPrice, lblStatus, cbStatus, lblCondition, cbCurrentCondition });
+            pnlMain.Controls.Add(pnlInfo);
+
+   // Amenities section
+         var pnlAmenities = new GroupBox { Text = "DANH SÁCH TIỆN ÍCH CÓ TRONG PHÒNG", Dock = DockStyle.Top, Height = 280, Padding = new Padding(15), BackColor = Color.White, Margin = new Padding(0, 10, 0, 0) };
+
+      dgvRoomAmenities = new DataGridView { Dock = DockStyle.Fill, AllowUserToAddRows = false, AllowUserToDeleteRows = false, BackgroundColor = Color.White, RowTemplate = { Height = 25 }, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, SelectionMode = DataGridViewSelectionMode.FullRowSelect };
+            dgvRoomAmenities.Columns.AddRange(
+      new DataGridViewTextBoxColumn { HeaderText = "STT", Name = "colSTT", Width = 40 },
+              new DataGridViewTextBoxColumn { HeaderText = "MÃ TIỆN ÍCH", Name = "colAmenityId", Width = 100 },
+              new DataGridViewTextBoxColumn { HeaderText = "TÊN TIỆN ÍCH", Name = "colAmenityName", Width = 250 },
+       new DataGridViewTextBoxColumn { HeaderText = "SỐ LƯỢNG", Name = "colQuantity", Width = 80 },
+            new DataGridViewLinkColumn { HeaderText = "HÀNH ĐỘNG", Name = "colAction", Text = "Xóa", UseColumnTextForLinkValue = true, Width = 80 }
+ );
+            dgvRoomAmenities.CellClick += DgvRoomAmenities_CellClick;
+
+        pnlAmenities.Controls.Add(dgvRoomAmenities);
+       pnlMain.Controls.Add(pnlAmenities);
+
+            // Add amenity section
+        var pnlAddAmenity = new GroupBox { Text = "THÊM TIỆN ÍCH CHO PHÒNG", Dock = DockStyle.Top, Height = 120, Padding = new Padding(15), BackColor = Color.White, Margin = new Padding(0, 10, 0, 0) };
+
+            var lblAmenitySelect = new Label { Text = "Chọn tiện ích:", Location = new Point(20, 30), AutoSize = true, Font = new Font("Segoe UI", 9F) };
+    cbAmenity = new ComboBox { Location = new Point(120, 27), Width = 300, DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 9F) };
+
+            var lblQuantity = new Label { Text = "Số lượng:", Location = new Point(470, 30), AutoSize = true, Font = new Font("Segoe UI", 9F) };
+            numQuantity = new NumericUpDown { Location = new Point(540, 27), Width = 80, Value = 1, Minimum = 1, Maximum = 100 };
+
+            var btnAdd = new Button { Text = "Thêm tiện ích", Location = new Point(680, 25), Width = 120, Height = 30, BackColor = Color.SeaGreen, ForeColor = Color.White, Font = new Font("Segoe UI", 9F, FontStyle.Bold), FlatStyle = FlatStyle.Flat };
+  btnAdd.Click += (s, e) => AddAmenityToRoom();
+
+       pnlAddAmenity.Controls.AddRange(new Control[] { lblAmenitySelect, cbAmenity, lblQuantity, numQuantity, btnAdd });
+        pnlMain.Controls.Add(pnlAddAmenity);
+
+       // Buttons section
+     var pnlButtons = new Panel { Dock = DockStyle.Bottom, Height = 60, BackColor = Color.WhiteSmoke };
+
+            var btnClose = new Button { Text = "Đóng", Location = new Point(800, 15), Width = 100, Height = 30, BackColor = Color.Gray, ForeColor = Color.White, Font = new Font("Segoe UI", 9F, FontStyle.Bold), FlatStyle = FlatStyle.Flat, DialogResult = DialogResult.OK };
+          btnClose.Click += (s, e) => this.Close();
+
+     pnlButtons.Controls.Add(btnClose);
+
+  this.Controls.Add(pnlMain);
+          this.Controls.Add(pnlButtons);
+ }
+
+        private void DgvRoomAmenities_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 4 && e.RowIndex >= 0) // Cột "Hành động"
+    {
+        if (MessageBox.Show("Bạn có chắc muốn xóa tiện ích này không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+       {
+            RemoveAmenityFromRoom(e.RowIndex);
+      }
+  }
+        }
+
+        private void AddAmenityToRoom()
+     {
+   try
+            {
+      if (cbAmenity.SelectedIndex <= 0)
+     {
+               MessageBox.Show("Vui lòng chọn tiện ích", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+           return;
+    }
+
+     var selectedAmenity = cbAmenity.SelectedItem as Amenity;
+   if (selectedAmenity == null) return;
+
+       var roomAmenity = new RoomAmenity
+          {
+               RoomId = _room.RoomId,
+         AmenityId = selectedAmenity.AmenityId,
+        Quantity = (int)numQuantity.Value
+  };
+
+        _dbContext.RoomAmenities.Add(roomAmenity);
+     _dbContext.SaveChanges();
+
+     MessageBox.Show("Thêm tiện ích thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadRoomAmenities();
+          LoadAvailableAmenities();
+  }
+          catch (Exception ex)
+      {
+          MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+       }
+        }
+
+   private void RemoveAmenityFromRoom(int rowIndex)
+      {
+      try
+    {
+       var amenityId = dgvRoomAmenities.Rows[rowIndex].Cells[1].Value?.ToString();
+    var roomAmenity = _roomAmenities.FirstOrDefault(ra => ra.AmenityId == amenityId);
+
+         if (roomAmenity != null)
+{
+    _dbContext.RoomAmenities.Remove(roomAmenity);
+         _dbContext.SaveChanges();
+
+ MessageBox.Show("Xóa tiện ích thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      LoadRoomAmenities();
+       LoadAvailableAmenities();
+         }
+ }
+     catch (Exception ex)
+            {
+          MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+  }
+
+        private TextBox tbRoomId;
+        private TextBox tbRoomName;
+        private ComboBox cbRoomType;
+        private ComboBox cbRoomTypeDetails;
+private TextBox tbPrice;
+        private ComboBox cbStatus;
+  private ComboBox cbCurrentCondition;
+      private DataGridView dgvRoomAmenities;
+        private ComboBox cbAmenity;
+        private NumericUpDown numQuantity;
+    }
+}

@@ -1,0 +1,43 @@
+﻿using QuanLyKhachSan.Repositories.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class CustomerManagementForm : Form
+    {
+        private readonly ICustomerRepository _customerRepository;
+
+        public CustomerManagementForm(ICustomerRepository customerRepository)
+        {
+            InitializeComponent();
+            _customerRepository = customerRepository;
+        }
+
+        private async void CustomerManagementForm_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                await LoadCustomerDataAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải dữ liệu khách hàng: " + ex.Message);
+            }
+        }
+
+        private async Task LoadCustomerDataAsync()
+        {
+            var customers = await _customerRepository.GetAllAsync();
+            // Bind data to DataGridView
+        }
+
+        private void AddNewCustomer()
+        {
+            MessageBox.Show("Add new customer");
+        }
+
+        private void SearchCustomer(string searchTerm)
+        {
+            // Search logic
+        }
+    }
+}

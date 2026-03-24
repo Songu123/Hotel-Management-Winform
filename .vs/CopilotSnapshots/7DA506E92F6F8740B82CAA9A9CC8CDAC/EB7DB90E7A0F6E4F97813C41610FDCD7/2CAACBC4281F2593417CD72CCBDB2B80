@@ -1,0 +1,96 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class UCRooms
+    {
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            panel1 = new Panel();
+            panel2 = new Panel();
+            panel3 = new Panel();
+
+            SuspendLayout();
+
+            Panel[] panels = { panel1, panel2, panel3 };
+            for (int i = 0; i < panels.Length; i++)
+            {
+                var p = panels[i];
+                p.BackColor = Color.WhiteSmoke;
+                p.BorderStyle = BorderStyle.FixedSingle;
+                p.Size = new Size(350, 200);
+                p.Location = new Point(36 + i * 386, 50);
+
+                // PictureBox
+                PictureBox pic = new PictureBox();
+                pic.Size = new Size(100, 100);
+                pic.Location = new Point(10, 10);
+                pic.SizeMode = PictureBoxSizeMode.StretchImage;
+                p.Controls.Add(pic);
+
+                // Label tên phòng
+                Label lblName = new Label();
+                lblName.Text = $"Phòng {i + 1}";
+                lblName.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                lblName.Location = new Point(120, 20);
+                lblName.AutoSize = true;
+                p.Controls.Add(lblName);
+
+                // Label trạng thái phòng
+                Label lblStatus = new Label();
+                lblStatus.Text = "Trống";
+                lblStatus.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+                lblStatus.ForeColor = Color.Green;
+                lblStatus.Location = new Point(120, 50);
+                lblStatus.AutoSize = true;
+                p.Controls.Add(lblStatus);
+
+                // Button hiển thị, không logic
+                Button btnBook = new Button();
+                btnBook.Text = "Đặt phòng";
+                btnBook.Size = new Size(100, 30);
+                btnBook.Location = new Point(120, 120);
+                btnBook.BackColor = Color.FromArgb(0, 123, 255);
+                btnBook.ForeColor = Color.White;
+                btnBook.FlatStyle = FlatStyle.Flat;
+                p.Controls.Add(btnBook);
+
+                this.Controls.Add(p);
+            }
+
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Name = "UCRooms";
+            Size = new Size(1234, 803);
+            ResumeLayout(false);
+        }
+        #endregion
+
+        private Panel panel1;
+        private Panel panel2;
+        private Panel panel3;
+
+    }
+}

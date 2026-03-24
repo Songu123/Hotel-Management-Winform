@@ -1,0 +1,34 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyKhachSan.Models
+{
+    [Table("DICHVU")]
+    public class Service
+    {
+        [Key]
+        [Column("maDV")]
+        [StringLength(20)]
+        public string ServiceId { get; set; } = string.Empty;
+
+        [Column("tenDV")]
+        [StringLength(100)]
+        public string Name { get; set; } = string.Empty;
+
+        [Column("loaiDV")]
+        [StringLength(128)]
+        public string Type { get; set; } = string.Empty;
+
+        [Column("giaDV")]
+        public int Price { get; set; }
+
+        [Column("hinhAnh")]
+        public string Image { get; set; } = string.Empty;
+
+        [Column("xuLy")]
+        public int IsDeleted { get; set; } = 0;
+
+        // Navigation properties
+        public virtual ICollection<ServiceRentalDetail> ServiceRentalDetails { get; set; } = new List<ServiceRentalDetail>();
+    }
+}

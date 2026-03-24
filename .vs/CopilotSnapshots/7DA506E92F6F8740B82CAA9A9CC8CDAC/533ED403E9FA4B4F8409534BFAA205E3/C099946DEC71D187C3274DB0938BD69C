@@ -1,0 +1,159 @@
+﻿using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Interfaces;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.Services.Implementations
+{
+   /// <summary>
+  /// Booking Service implementation
+    /// </summary>
+  public class BookingService : IBookingService
+   {
+   private readonly IBookingRepository _bookingRepository;
+      private readonly IRoomRepository _roomRepository;
+    private readonly ICustomerRepository _customerRepository;
+
+   public BookingService(IBookingRepository bookingRepository, IRoomRepository roomRepository, ICustomerRepository customerRepository)
+    {
+    _bookingRepository = bookingRepository;
+      _roomRepository = roomRepository;
+      _customerRepository = customerRepository;
+  }
+
+    public async Task<Booking?> CreateBookingAsync(string customerId, string roomId, DateTime checkInDate, DateTime checkOutDate)
+      {
+      // Kiểm tra khách hàng tồn tại
+      var customer = await _customerRepository.GetCustomerWithDetailsAsync(customerId);
+      if (customer == null)
+      {
+   return null;
+   }
+
+        // Kiểm tra phòng tồn tại và sẵn sàng
+    var room = await _roomRepository.GetRoomWithTypeAsync(roomId);
+     if (room == null || room.Status != 0)
+    {
+   return null;
+   }
+
+      var booking = new Booking
+      {
+  CustomerId = customerId,
+    RoomId = roomId,
+      CheckInDate = checkInDate,
+  CheckOutDate = checkOutDate,
+Status = 0,
+  CreatedDate = DateTime.Now
+   };
+
+    await _bookingRepository.AddAsync(booking);
+   await _bookingRepository.SaveChangesAsync();
+      return booking;
+  }
+
+    public async Task<Booking?> GetBookingAsync(string bookingId)
+     {
+  return await _bookingRepository.GetByIdAsync(bookingId);
+   }
+
+    public async Task<bool> UpdateBookingAsync(Booking booking)
+ {
+  await _bookingRepository.UpdateAsync(booking);
+   await _bookingRepository.SaveChangesAsync();
+      return true;
+    }
+
+     public async Task<bool> CancelBookingAsync(string bookingId)
+      {
+    var booking = await _bookingRepository.GetByIdAsync(bookingId);
+    if (booking == null)
+     {
+     return false;
+    }
+
+       booking.Status = 2;
+
+    // Cập nhật phòng về trạng thái Available
+     if (!string.IsNullOrEmpty(booking.RoomId))
+   {
+   await _roomRepository.UpdateRoomStatusAsync(booking.RoomId, 0);
+    }
+
+   await _bookingRepository.UpdateAsync(booking);
+await _bookingRepository.SaveChangesAsync();
+   return true;
+  }
+
+   public async Task<bool> CheckInBookingAsync(string bookingId)
+  {
+      var booking = await _bookingRepository.GetByIdAsync(bookingId);
+   if (booking == null)
+  {
+       return false;
+  }
+
+  booking.Status = 1;
+
+    // Cập nhật phòng sang trạng thái Occupied
+  await _roomRepository.UpdateRoomStatusAsync(booking.RoomId, 1);
+
+  await _bookingRepository.UpdateAsync(booking);
+      await _bookingRepository.SaveChangesAsync();
+  return true;
+  }
+
+    public async Task<bool> CheckOutBookingAsync(string bookingId)
+ {
+  var booking = await _bookingRepository.GetByIdAsync(bookingId);
+     if (booking == null)
+     {
+     return false;
+    }
+
+   booking.Status = 3;
+
+  // Cập nhật phòng về trạng thái Available
+     await _roomRepository.UpdateRoomStatusAsync(booking.RoomId, 0);
+
+   await _bookingRepository.UpdateAsync(booking);
+       await _bookingRepository.SaveChangesAsync();
+      return true;
+     }
+
+ public async Task<IEnumerable<Booking>> GetCustomerBookingsAsync(string customerId)
+   {
+    return await _bookingRepository.GetByCustomerAsync(customerId);
+    }
+
+   public async Task<IEnumerable<Booking>> GetUpcomingBookingsAsync()
+    {
+      return await _bookingRepository.GetAllAsync();
+     }
+
+      public async Task<bool> IsRoomAvailableAsync(string roomId, DateTime checkInDate, DateTime checkOutDate)
+      {
+      var room = await _roomRepository.GetRoomWithTypeAsync(roomId);
+      return room != null && room.Status == 0;
+     }
+
+   public async Task<decimal> CalculateTotalPriceAsync(string roomId, DateTime checkInDate, DateTime checkOutDate)
+   {
+      var room = await _roomRepository.GetRoomWithTypeAsync(roomId);
+      if (room == null)
+      {
+      return 0;
+  }
+
+      var days = (checkOutDate - checkInDate).Days;
+      return room.Price * days;
+  }
+
+ /// <summary>
+      /// Lấy tất cả booking
+        /// </summary>
+   public async Task<IEnumerable<Booking>> GetAllBookingsAsync()
+{
+    return await _bookingRepository.GetAllAsync();
+      }
+   }
+}

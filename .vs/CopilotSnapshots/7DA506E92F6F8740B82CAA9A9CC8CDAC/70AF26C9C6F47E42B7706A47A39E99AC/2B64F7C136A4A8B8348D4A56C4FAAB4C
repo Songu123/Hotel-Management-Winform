@@ -1,0 +1,55 @@
+﻿using QuanLyKhachSan.Models;
+
+namespace QuanLyKhachSan.Repositories.Interfaces
+{
+    /// <summary>
+    /// Repository interface cho Customer entity
+    /// </summary>
+    public interface ICustomerRepository : IRepository<Customer>
+    {
+  /// <summary>
+     /// Tìm khách hàng theo số điện thoại
+        /// </summary>
+      Task<Customer?> GetByPhoneNumberAsync(string phoneNumber);
+
+     /// <summary>
+        /// Tìm khách hàng theo email
+      /// </summary>
+   Task<Customer?> GetByEmailAsync(string email);
+
+ /// <summary>
+   /// Tìm khách hàng theo số giấy tờ tùy thân
+        /// </summary>
+     Task<Customer?> GetByIdentityNumberAsync(string identityNumber);
+
+ /// <summary>
+        /// Lấy khách hàng theo loại
+   /// </summary>
+    Task<IEnumerable<Customer>> GetByTypeAsync(CustomerType type);
+
+/// <summary>
+        /// Tìm khách hàng theo tên (tìm kiếm gần đúng)
+      /// </summary>
+     Task<IEnumerable<Customer>> SearchByNameAsync(string name);
+
+ /// <summary>
+        /// Lấy khách hàng VIP (có điểm thưởng cao)
+      /// </summary>
+      Task<IEnumerable<Customer>> GetVIPCustomersAsync(int minPoints = 1000);
+
+ /// <summary>
+ /// Cập nhật điểm thưởng của khách hàng
+  /// </summary>
+        Task<bool> UpdateLoyaltyPointsAsync(int customerId, int points);
+
+      /// <summary>
+        /// Tăng điểm thưởng
+ /// </summary>
+Task<bool> AddLoyaltyPointsAsync(int customerId, int points);
+
+/// <summary>
+  /// Giảm điểm thưởng
+     /// </summary>
+        Task<bool> DeductLoyaltyPointsAsync(int customerId, int points);
+    }
+}

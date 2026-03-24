@@ -1,0 +1,349 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    /// <summary>
+    /// Form để Add/Edit Room
+    /// </summary>
+    public partial class RoomForm : Form
+    {
+  private readonly IRoomService _roomService;
+        private readonly List<RoomType> _roomTypes;
+        private readonly List<Floor> _floors;
+ private UCRooms.RoomInfo _editingRoom;
+    private bool _isEditMode;
+
+    /// <summary>
+        /// Constructor for Add mode
+        /// </summary>
+        public RoomForm(IRoomService roomService, List<RoomType> roomTypes, List<Floor> floors)
+        {
+InitializeComponent();
+  _roomService = roomService;
+           _roomTypes = roomTypes;
+     _floors = floors;
+          _isEditMode = false;
+          _editingRoom = null;
+        }
+
+   /// <summary>
+/// Constructor for Edit mode
+     /// </summary>
+     public RoomForm(IRoomService roomService, List<RoomType> roomTypes, List<Floor> floors, 
+ int roomId, string roomNumber, string roomType, int floor, UCRooms.RoomStatus status, double price) 
+     : this(roomService, roomTypes, floors)
+    {
+_editingRoom = new UCRooms.RoomInfo
+   {
+          RoomId = roomId,
+  RoomNumber = roomNumber,
+           Type = roomType,
+       Floor = floor,
+     Status = status,
+    Price = price
+     };
+      _isEditMode = true;
+        }
+
+       private void RoomForm_Load(object sender, EventArgs e)
+       {
+  try
+         {
+  InitializeControls();
+         if (_isEditMode && _editingRoom != null)
+      {
+     LoadRoomData();
+   this.Text = $"Edit Room {_editingRoom.RoomNumber}";
+            }
+ else
+   {
+        this.Text = "Add New Room";
+      }
+      }
+    catch (Exception ex)
+      {
+     MessageBox.Show($"Error initializing form: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+   }
+
+     /// <summary>
+        /// Initialize form controls
+        /// </summary>
+      private void InitializeControls()
+         {
+         // Room Type ComboBox
+      Label lblRoomType = new Label { Text = "Room Type:", Location = new Point(20, 20), AutoSize = true };
+ ComboBox cbxRoomType = new ComboBox
+      {
+        Name = "cbxRoomType",
+      Location = new Point(150, 20),
+      Width = 250,
+           DropDownStyle = ComboBoxStyle.DropDownList
+      };
+      foreach (var type in _roomTypes)
+   {
+        cbxRoomType.Items.Add(type.Name);
+         }
+   this.Controls.Add(lblRoomType);
+     this.Controls.Add(cbxRoomType);
+
+      // Floor ComboBox
+  Label lblFloor = new Label { Text = "Floor:", Location = new Point(20, 60), AutoSize = true };
+ ComboBox cbxFloor = new ComboBox
+ {
+  Name = "cbxFloor",
+    Location = new Point(150, 60),
+      Width = 250,
+      DropDownStyle = ComboBoxStyle.DropDownList
+         };
+        cbxFloor.Items.Add("Floor 1");
+        cbxFloor.Items.Add("Floor 2");
+    cbxFloor.Items.Add("Floor 3");
+  cbxFloor.Items.Add("Floor 4");
+     cbxFloor.Items.Add("Floor 5");
+        this.Controls.Add(lblFloor);
+         this.Controls.Add(cbxFloor);
+
+  // Room Number TextBox (Read-only in Edit mode)
+  Label lblRoomNo = new Label { Text = "Room Number:", Location = new Point(20, 100), AutoSize = true };
+          TextBox tbxRoomNo = new TextBox
+      {
+             Name = "tbxRoomNo",
+         Location = new Point(150, 100),
+              Width = 250,
+          ReadOnly = _isEditMode
+          };
+        this.Controls.Add(lblRoomNo);
+         this.Controls.Add(tbxRoomNo);
+
+    // Price TextBox
+          Label lblPrice = new Label { Text = "Price per Night:", Location = new Point(20, 140), AutoSize = true };
+   TextBox tbxPrice = new TextBox
+ {
+  Name = "tbxPrice",
+         Location = new Point(150, 140),
+       Width = 250
+    };
+        this.Controls.Add(lblPrice);
+           this.Controls.Add(tbxPrice);
+
+   // Status ComboBox (Only in Edit mode)
+            if (_isEditMode)
+ {
+        Label lblStatus = new Label { Text = "Status:", Location = new Point(20, 180), AutoSize = true };
+  ComboBox cbxStatus = new ComboBox
+       {
+   Name = "cbxStatus",
+         Location = new Point(150, 180),
+     Width = 250,
+        DropDownStyle = ComboBoxStyle.DropDownList
+         };
+       cbxStatus.Items.Add("Available");
+       cbxStatus.Items.Add("Occupied");
+ cbxStatus.Items.Add("Reserved");
+     cbxStatus.Items.Add("Maintenance");
+         this.Controls.Add(lblStatus);
+          this.Controls.Add(cbxStatus);
+            }
+
+      // Notes TextBox
+         Label lblNotes = new Label { Text = "Notes:", Location = new Point(20, _isEditMode ? 220 : 180), AutoSize = true };
+      TextBox tbxNotes = new TextBox
+   {
+    Name = "tbxNotes",
+      Location = new Point(150, _isEditMode ? 220 : 180),
+  Width = 250,
+        Height = 80,
+         Multiline = true
+       };
+       this.Controls.Add(lblNotes);
+  this.Controls.Add(tbxNotes);
+
+   // Buttons
+    int buttonY = _isEditMode ? 320 : 280;
+
+  Button btnSave = new Button
+  {
+        Name = "btnSave",
+      Text = _isEditMode ? "Update" : "Add",
+     Location = new Point(150, buttonY),
+         Width = 100,
+           Height = 35
+ };
+btnSave.Click += BtnSave_Click;
+        this.Controls.Add(btnSave);
+
+  Button btnCancel = new Button
+ {
+     Name = "btnCancel",
+        Text = "Cancel",
+       Location = new Point(270, buttonY),
+              Width = 100,
+      Height = 35
+     };
+   btnCancel.Click += (s, e) => this.DialogResult = DialogResult.Cancel;
+     this.Controls.Add(btnCancel);
+
+ this.ClientSize = new Size(450, buttonY + 60);
+        this.FormBorderStyle = FormBorderStyle.FixedDialog;
+  this.StartPosition = FormStartPosition.CenterParent;
+  this.MaximizeBox = false;
+    this.MinimizeBox = false;
+        }
+
+        /// <summary>
+   /// Load existing room data for edit
+        /// </summary>
+    private void LoadRoomData()
+        {
+         if (_editingRoom == null) return;
+
+      TextBox tbxRoomNo = this.Controls.Find("tbxRoomNo", true).FirstOrDefault() as TextBox;
+      TextBox tbxPrice = this.Controls.Find("tbxPrice", true).FirstOrDefault() as TextBox;
+       TextBox tbxNotes = this.Controls.Find("tbxNotes", true).FirstOrDefault() as TextBox;
+       ComboBox cbxRoomType = this.Controls.Find("cbxRoomType", true).FirstOrDefault() as ComboBox;
+ ComboBox cbxFloor = this.Controls.Find("cbxFloor", true).FirstOrDefault() as ComboBox;
+       ComboBox cbxStatus = this.Controls.Find("cbxStatus", true).FirstOrDefault() as ComboBox;
+
+     if (tbxRoomNo != null) tbxRoomNo.Text = _editingRoom.RoomNumber;
+     if (tbxPrice != null) tbxPrice.Text = _editingRoom.Price.ToString();
+          if (tbxNotes != null) tbxNotes.Text = "";
+
+   if (cbxRoomType != null) cbxRoomType.SelectedItem = _editingRoom.Type;
+ if (cbxFloor != null) cbxFloor.SelectedIndex = _editingRoom.Floor - 1;
+
+          if (cbxStatus != null)
+       {
+         var statusStr = _editingRoom.Status switch
+     {
+     UCRooms.RoomStatus.Available => "Available",
+     UCRooms.RoomStatus.Occupied => "Occupied",
+ UCRooms.RoomStatus.Reserved => "Reserved",
+  UCRooms.RoomStatus.Maintenance => "Maintenance",
+        _ => "Available"
+     };
+  cbxStatus.SelectedItem = statusStr;
+ }
+        }
+
+    /// <summary>
+        /// Handle Save button click
+  /// </summary>
+private async void BtnSave_Click(object sender, EventArgs e)
+        {
+  try
+     {
+       // Validate inputs
+    TextBox tbxRoomNo = this.Controls.Find("tbxRoomNo", true).FirstOrDefault() as TextBox;
+       TextBox tbxPrice = this.Controls.Find("tbxPrice", true).FirstOrDefault() as TextBox;
+   ComboBox cbxRoomType = this.Controls.Find("cbxRoomType", true).FirstOrDefault() as ComboBox;
+      ComboBox cbxFloor = this.Controls.Find("cbxFloor", true).FirstOrDefault() as ComboBox;
+
+    if (string.IsNullOrWhiteSpace(tbxRoomNo?.Text))
+            {
+       MessageBox.Show("Room Number is required!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+     return;
+           }
+
+     if (!decimal.TryParse(tbxPrice?.Text, out var price))
+          {
+     MessageBox.Show("Price must be a valid number!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+         return;
+  }
+
+    if (cbxRoomType?.SelectedItem == null)
+            {
+ MessageBox.Show("Room Type is required!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+ }
+
+       if (cbxFloor?.SelectedItem == null)
+           {
+         MessageBox.Show("Floor is required!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    return;
+   }
+
+        if (_roomService == null)
+              {
+MessageBox.Show("Room Service not available!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+   return;
+          }
+
+      var selectedFloor = cbxFloor.SelectedIndex + 1;
+
+       if (_isEditMode && _editingRoom != null)
+          {
+  // Update existing room
+           var roomToUpdate = new Room
+        {
+        RoomId = _editingRoom.RoomId,
+     RoomNumber = tbxRoomNo.Text,
+     RoomTypeId = _roomTypes.FirstOrDefault(rt => rt.Name == cbxRoomType.SelectedItem?.ToString())?.RoomTypeId ?? 1,
+    FloorId = selectedFloor,
+             Status = GetStatusFromString(this.Controls.Find("cbxStatus", true).FirstOrDefault() as ComboBox),
+     Notes = (this.Controls.Find("tbxNotes", true).FirstOrDefault() as TextBox)?.Text ?? ""
+   };
+
+     bool updated = await _roomService.UpdateRoomAsync(roomToUpdate);
+        if (updated)
+              {
+           this.DialogResult = DialogResult.OK;
+           this.Close();
+     }
+       else
+          {
+MessageBox.Show("Failed to update room!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+     }
+    }
+      else
+            {
+      // Add new room
+      var newRoom = new Room
+     {
+      RoomNumber = tbxRoomNo.Text,
+      RoomTypeId = _roomTypes.FirstOrDefault(rt => rt.Name == cbxRoomType.SelectedItem?.ToString())?.RoomTypeId ?? 1,
+     FloorId = selectedFloor,
+        Status = RoomStatus.Available,
+        Notes = (this.Controls.Find("tbxNotes", true).FirstOrDefault() as TextBox)?.Text ?? ""
+       };
+
+     var created = await _roomService.CreateRoomAsync(newRoom);
+  if (created != null)
+         {
+            this.DialogResult = DialogResult.OK;
+          this.Close();
+  }
+      else
+       {
+  MessageBox.Show("Failed to add room!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+   }
+          }
+   }
+        catch (Exception ex)
+          {
+      MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+        }
+
+      /// <summary>
+      /// Convert status string to enum
+        /// </summary>
+     private RoomStatus GetStatusFromString(ComboBox cbxStatus)
+        {
+var selectedStatus = cbxStatus?.SelectedItem?.ToString() ?? "Available";
+        return selectedStatus switch
+    {
+        "Occupied" => RoomStatus.Occupied,
+         "Reserved" => RoomStatus.Reserved,
+   "Maintenance" => RoomStatus.Maintenance,
+            _ => RoomStatus.Available
+   };
+        }
+    }
+}

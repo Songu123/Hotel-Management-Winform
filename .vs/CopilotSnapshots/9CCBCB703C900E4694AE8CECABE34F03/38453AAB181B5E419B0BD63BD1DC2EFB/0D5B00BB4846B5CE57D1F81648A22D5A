@@ -1,0 +1,119 @@
+﻿using Microsoft.EntityFrameworkCore;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Interfaces;
+
+namespace QuanLyKhachSan.Repositories.Implementations
+{
+ /// <summary>
+    /// Invoice Repository implementation
+    /// </summary>
+    public class InvoiceRepository : Repository<Invoice>, IInvoiceRepository
+  {
+  public InvoiceRepository(HotelDbContext context) : base(context)
+    {
+     }
+
+      public async Task<Invoice?> GetByInvoiceNumberAsync(string invoiceNumber)
+      {
+      return await _dbSet.FirstOrDefaultAsync(i => i.InvoiceNumber == invoiceNumber);
+    }
+
+   public async Task<IEnumerable<Invoice>> GetByStatusAsync(InvoiceStatus status)
+        {
+ return await _dbSet
+      .Where(i => i.Status == status)
+        .Include(i => i.Customer)
+      .Include(i => i.Details)
+     .ThenInclude(d => d.Service)
+       .OrderByDescending(i => i.CreatedDate)
+         .ToListAsync();
+    }
+
+   public async Task<IEnumerable<Invoice>> GetByBookingAsync(int bookingId)
+  {
+     return await _dbSet
+   .Where(i => i.BookingId == bookingId)
+      .Include(i => i.Details)
+    .ThenInclude(d => d.Service)
+      .ToListAsync();
+    }
+
+  public async Task<IEnumerable<Invoice>> GetByCustomerAsync(int customerId)
+ {
+      return await _dbSet
+ .Where(i => i.CustomerId == customerId)
+    .Include(i => i.Booking)
+         .Include(i => i.Details)
+      .OrderByDescending(i => i.CreatedDate)
+.ToListAsync();
+  }
+
+     public async Task<IEnumerable<Invoice>> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
+   {
+       return await _dbSet
+     .Where(i => i.CreatedDate >= startDate && i.CreatedDate <= endDate)
+        .Include(i => i.Customer)
+       .Include(i => i.Details)
+ .OrderByDescending(i => i.CreatedDate)
+     .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Invoice>> GetUnpaidInvoicesAsync()
+ {
+   return await _dbSet
+  .Where(i => i.Status == InvoiceStatus.Issued && i.PaidAmount < i.TotalAmount)
+        .Include(i => i.Customer)
+  .Include(i => i.Details)
+        .OrderBy(i => i.CreatedDate)
+   .ToListAsync();
+    }
+
+      public async Task<Invoice?> GetInvoiceWithDetailsAsync(int invoiceId)
+    {
+      return await _dbSet
+  .Include(i => i.Customer)
+   .Include(i => i.Booking)
+     .ThenInclude(b => b.Customer)
+      .Include(i => i.Details)
+      .ThenInclude(d => d.Service)
+   .FirstOrDefaultAsync(i => i.InvoiceId == invoiceId);
+    }
+
+      public async Task<decimal> GetRevenueByDateRangeAsync(DateTime startDate, DateTime endDate)
+    {
+    return await _dbSet
+  .Where(i => i.PaidDate >= startDate && i.PaidDate <= endDate && i.Status == InvoiceStatus.Paid)
+  .SumAsync(i => i.PaidAmount);
+    }
+
+      public async Task<decimal> GetRevenueByStatusAsync(InvoiceStatus status)
+    {
+      return await _dbSet
+   .Where(i => i.Status == status)
+.SumAsync(i => i.TotalAmount);
+   }
+
+ public async Task<string> GenerateInvoiceNumberAsync()
+       {
+   var today = DateTime.Now;
+      var dateString = today.ToString("yyyyMMdd");
+    var lastInvoice = await _dbSet
+.Where(i => i.InvoiceNumber.StartsWith($"INV-{dateString}"))
+     .OrderByDescending(i => i.InvoiceNumber)
+    .FirstOrDefaultAsync();
+
+      var nextNumber = 1;
+   if (lastInvoice != null)
+     {
+     var lastNumberStr = lastInvoice.InvoiceNumber.Substring(lastInvoice.InvoiceNumber.Length - 4);
+    if (int.TryParse(lastNumberStr, out var lastNumber))
+      {
+        nextNumber = lastNumber + 1;
+      }
+    }
+
+  return $"INV-{dateString}-{nextNumber:D4}";
+    }
+  }
+}

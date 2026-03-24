@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="UI\FrmEditRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\FrmRoomDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\UCBooking.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCCustomers.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCInvoices.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCReports.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCRoomCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCRoomCards.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCRoomFloorView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCRoomManagement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCRooms.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\UCServices.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

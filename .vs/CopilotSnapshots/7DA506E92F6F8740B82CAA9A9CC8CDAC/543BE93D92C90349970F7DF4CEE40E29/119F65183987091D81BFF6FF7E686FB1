@@ -1,0 +1,48 @@
+﻿namespace QuanLyKhachSan.Models
+{
+    /// <summary>
+    /// Đại diện cho một dịch vụ mà khách sạn cung cấp
+    /// </summary>
+    public class Service
+    {
+        /// <summary>
+      /// ID duy nhất của dịch vụ
+  /// </summary>
+        public int ServiceId { get; set; }
+
+        /// <summary>
+        /// Tên dịch vụ (VD: Nước uống, Ăn sáng, Giặt ủi...)
+     /// </summary>
+public string Name { get; set; } = string.Empty;
+
+ /// <summary>
+   /// Mô tả chi tiết dịch vụ
+     /// </summary>
+    public string Description { get; set; } = string.Empty;
+
+     /// <summary>
+       /// Loại dịch vụ
+      /// </summary>
+ public ServiceType Type { get; set; }
+
+        /// <summary>
+    /// Giá của dịch vụ (VND)
+  /// </summary>
+        public decimal Price { get; set; }
+
+   /// <summary>
+/// Đơn vị tính của dịch vụ (lần, bộ, ngày...)
+        /// </summary>
+        public string Unit { get; set; } = "lần";
+
+      /// <summary>
+/// Ngày tạo dịch vụ
+        /// </summary>
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// Navigation property: Danh sách chi tiết hóa đơn sử dụng dịch vụ này
+     /// </summary>
+ public ICollection<InvoiceDetail>? InvoiceDetails { get; set; } = new List<InvoiceDetail>();
+    }
+}

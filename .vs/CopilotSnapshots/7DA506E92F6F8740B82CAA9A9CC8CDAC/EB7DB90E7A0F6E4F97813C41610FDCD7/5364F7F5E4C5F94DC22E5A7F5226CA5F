@@ -1,0 +1,143 @@
+﻿using Microsoft.EntityFrameworkCore;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Interfaces;
+
+namespace QuanLyKhachSan.Repositories.Implementations
+{
+    /// <summary>
+    /// Room Repository implementation
+    /// </summary>
+    public class RoomRepository : Repository<Room>, IRoomRepository
+    {
+  public RoomRepository(HotelDbContext context) : base(context)
+        {
+  }
+
+      public async Task<Room?> GetByRoomNumberAsync(string roomNumber)
+     {
+      return await _dbSet.FirstOrDefaultAsync(r => r.RoomNumber == roomNumber);
+    }
+
+    public async Task<IEnumerable<Room>> GetByRoomTypeAndStatusAsync(int roomTypeId, RoomStatus status)
+        {
+ return await _dbSet
+     .Where(r => r.RoomTypeId == roomTypeId && r.Status == status)
+          .ToListAsync();
+        }
+
+public async Task<IEnumerable<Room>> GetAvailableRoomsAsync()
+      {
+  return await _dbSet
+.Where(r => r.Status == RoomStatus.Available)
+      .Include(r => r.RoomType)
+ .ToListAsync();
+      }
+
+    public async Task<IEnumerable<Room>> GetAvailableRoomsByTypeAsync(int roomTypeId)
+         {
+    return await _dbSet
+       .Where(r => r.RoomTypeId == roomTypeId && r.Status == RoomStatus.Available)
+  .Include(r => r.RoomType)
+    .ToListAsync();
+      }
+
+public async Task<IEnumerable<Room>> GetMaintenanceRoomsAsync()
+  {
+      return await _dbSet
+.Where(r => r.Status == RoomStatus.Maintenance || r.Status == RoomStatus.OutOfService)
+         .ToListAsync();
+  }
+
+ public async Task<bool> UpdateRoomStatusAsync(int roomId, RoomStatus newStatus)
+     {
+ var room = await GetByIdAsync(roomId);
+      if (room == null)
+     {
+     return false;
+  }
+
+     room.Status = newStatus;
+ room.UpdatedDate = DateTime.Now;
+        await UpdateAsync(room);
+     await SaveChangesAsync();
+     return true;
+  }
+
+  public async Task<Room?> GetRoomWithTypeAsync(int roomId)
+      {
+   return await _dbSet
+     .Include(r => r.RoomType)
+  .FirstOrDefaultAsync(r => r.RoomId == roomId);
+      }
+
+      public async Task<List<Room>> FindAvailableRoomsAsync(int roomTypeId, DateTime checkInDate, DateTime checkOutDate)
+       {
+ // Lấy tất cả phòng của loại phòng
+var roomsOfType = await _dbSet
+     .Where(r => r.RoomTypeId == roomTypeId)
+   .Include(r => r.Bookings)
+ .ToListAsync();
+
+      // Lọc những phòng không có booking trùng lặp trong khoảng ngày
+       var availableRooms = roomsOfType.Where(r =>
+    {
+      var hasConflictingBooking = r.Bookings?.Any(b =>
+(b.CheckInDate < checkOutDate && b.CheckOutDate > checkInDate) &&
+   (b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.CheckedIn)
+) ?? false;
+
+         return !hasConflictingBooking && r.Status == RoomStatus.Available;
+     }).ToList();
+
+ return availableRooms;
+      }
+
+      /// <summary>
+      /// Tìm kiếm phòng theo số phòng
+  /// </summary>
+     public async Task<IEnumerable<Room>> SearchRoomsAsync(string searchTerm)
+ {
+            return await _dbSet
+                .Where(r => r.RoomNumber.Contains(searchTerm) || r.RoomType!.Name.Contains(searchTerm))
+           .Include(r => r.RoomType)
+         .ToListAsync();
+        }
+
+     /// <summary>
+        /// Tìm kiếm và lọc phòng với nhiều tiêu chí
+        /// </summary>
+   public async Task<IEnumerable<Room>> SearchAndFilterRoomsAsync(string? searchTerm, RoomStatus? status, int? roomTypeId)
+        {
+        var query = _dbSet.Include(r => r.RoomType).AsQueryable();
+
+   // Tìm kiếm theo số phòng hoặc tên loại phòng
+  if (!string.IsNullOrWhiteSpace(searchTerm))
+      {
+    query = query.Where(r => r.RoomNumber.Contains(searchTerm) || r.RoomType!.Name.Contains(searchTerm));
+     }
+
+ // Lọc theo trạng thái
+     if (status.HasValue)
+      {
+        query = query.Where(r => r.Status == status.Value);
+      }
+
+       // Lọc theo loại phòng
+            if (roomTypeId.HasValue)
+          {
+     query = query.Where(r => r.RoomTypeId == roomTypeId.Value);
+     }
+
+  return await query.ToListAsync();
+        }
+
+        /// <summary>
+        /// Lấy tất cả loại phòng
+        /// </summary>
+  public async Task<IEnumerable<RoomType>> GetAllRoomTypesAsync()
+     {
+    return await _context.RoomTypes.ToListAsync();
+    }
+    }
+}

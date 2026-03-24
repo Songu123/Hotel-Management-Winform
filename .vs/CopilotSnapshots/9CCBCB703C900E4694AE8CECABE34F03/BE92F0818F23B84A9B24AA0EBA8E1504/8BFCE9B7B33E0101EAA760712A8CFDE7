@@ -1,0 +1,137 @@
+﻿using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Repositories.Interfaces;
+
+namespace QuanLyKhachSan
+{
+    public partial class CustomerManagementForm : Form
+    {
+        private readonly ICustomerRepository _customerRepository;
+
+        public CustomerManagementForm(ICustomerRepository customerRepository)
+      {
+         InitializeComponent();
+   _customerRepository = customerRepository;
+  }
+
+      private async void CustomerManagementForm_Load(object sender, EventArgs e)
+  {
+ try
+  {
+      await LoadCustomerDataAsync();
+ }
+            catch (Exception ex)
+          {
+       MessageBox.Show("Lỗi tải dữ liệu khách hàng: " + ex.Message);
+ }
+    }
+
+     private async Task LoadCustomerDataAsync()
+  {
+  var customers = await _customerRepository.GetAllAsync();
+   // Bind data to DataGridView
+    }
+  }
+}
+
+partial class CustomerManagementForm
+{
+   private System.ComponentModel.IContainer components = null;
+
+  private void InitializeComponent()
+   {
+    components = new System.ComponentModel.Container();
+
+       Panel mainPanel = new Panel();
+  mainPanel.Dock = DockStyle.Fill;
+mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+  Panel headerPanel = new Panel();
+  headerPanel.Height = 60;
+headerPanel.Dock = DockStyle.Top;
+headerPanel.BackColor = Color.White;
+    headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+  Label titleLabel = new Label();
+  titleLabel.Text = "Customer Management";
+   titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+ titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+  titleLabel.Location = new Point(30, 8);
+titleLabel.Size = new Size(400, 40);
+ headerPanel.Controls.Add(titleLabel);
+
+ Panel toolbarPanel = new Panel();
+    toolbarPanel.Height = 60;
+toolbarPanel.Dock = DockStyle.Top;
+  toolbarPanel.BackColor = Color.White;
+    toolbarPanel.BorderStyle = BorderStyle.FixedSingle;
+
+Button btnAddCustomer = new Button();
+  btnAddCustomer.Text = "+ Add Customer";
+btnAddCustomer.Location = new Point(20, 12);
+   btnAddCustomer.Size = new Size(130, 36);
+ btnAddCustomer.BackColor = Color.FromArgb(70, 130, 180);
+ btnAddCustomer.ForeColor = Color.White;
+btnAddCustomer.Font = new Font("Segoe UI", 10);
+   btnAddCustomer.FlatStyle = FlatStyle.Flat;
+ btnAddCustomer.Cursor = Cursors.Hand;
+  btnAddCustomer.Click += (s, e) => AddNewCustomer();
+ toolbarPanel.Controls.Add(btnAddCustomer);
+
+ Label searchLabel = new Label();
+  searchLabel.Text = "Search:";
+    searchLabel.Location = new Point(350, 18);
+  searchLabel.Size = new Size(60, 20);
+ toolbarPanel.Controls.Add(searchLabel);
+
+  TextBox tbSearch = new TextBox();
+tbSearch.Location = new Point(410, 15);
+ tbSearch.Size = new Size(200, 25);
+  tbSearch.PlaceholderText = "Enter name or phone...";
+ tbSearch.TextChanged += (s, e) => SearchCustomer(tbSearch.Text);
+ toolbarPanel.Controls.Add(tbSearch);
+
+   DataGridView dgvCustomers = new DataGridView();
+dgvCustomers.Location = new Point(20, 80);
+   dgvCustomers.Size = new Size(1560, 600);
+  dgvCustomers.BackgroundColor = Color.White;
+ dgvCustomers.BorderStyle = BorderStyle.FixedSingle;
+   dgvCustomers.AllowUserToAddRows = false;
+ dgvCustomers.ReadOnly = false;
+   dgvCustomers.RowHeadersVisible = false;
+ dgvCustomers.GridColor = Color.LightGray;
+  dgvCustomers.Font = new Font("Segoe UI", 9);
+
+    dgvCustomers.Columns.Add("CustomerId", "ID");
+dgvCustomers.Columns.Add("Name", "Full Name");
+dgvCustomers.Columns.Add("Phone", "Phone");
+  dgvCustomers.Columns.Add("Email", "Email");
+ dgvCustomers.Columns.Add("Type", "Type");
+   dgvCustomers.Columns.Add("LoyaltyPoints", "Points");
+ dgvCustomers.Columns.Add("Action", "Action");
+
+  mainPanel.Controls.Add(dgvCustomers);
+   mainPanel.Controls.Add(toolbarPanel);
+
+ this.AutoScaleDimensions = new SizeF(7F, 15F);
+   this.AutoScaleMode = AutoScaleMode.Font;
+  this.ClientSize = new Size(1600, 800);
+ this.Controls.Add(mainPanel);
+ this.Controls.Add(headerPanel);
+this.Name = "CustomerManagementForm";
+  this.Text = "Hotel Management - Customer Management";
+  this.StartPosition = FormStartPosition.CenterScreen;
+  this.WindowState = FormWindowState.Maximized;
+  this.Load += (s, e) => CustomerManagementForm_Load(s, e);
+  }
+
+   private void AddNewCustomer()
+    {
+ MessageBox.Show("Add new customer");
+   }
+
+  private void SearchCustomer(string searchTerm)
+  {
+    // Search logic
+ }
+  }
+}

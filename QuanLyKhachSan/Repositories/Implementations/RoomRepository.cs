@@ -1,0 +1,106 @@
+﻿using Microsoft.EntityFrameworkCore;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Interfaces;
+
+namespace QuanLyKhachSan.Repositories.Implementations
+{
+    public class RoomRepository : Repository<Room>, IRoomRepository
+    {
+  public RoomRepository(HotelDbContext context) : base(context)
+      {
+      }
+
+   public async Task<Room?> GetByRoomNumberAsync(string roomNumber)
+        {
+  return await _dbSet.FirstOrDefaultAsync(r => r.Name == roomNumber);
+   }
+
+        public async Task<IEnumerable<Room>> GetByRoomTypeAndStatusAsync(int roomTypeId, int status)
+        {
+            return await _dbSet
+  .Where(r => r.RoomType == roomTypeId && r.Status == status)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Room>> GetAvailableRoomsAsync()
+        {
+            return await _dbSet
+            .Where(r => r.Status == 0)
+  .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Room>> GetAvailableRoomsByTypeAsync(int roomTypeId)
+        {
+            return await _dbSet
+.Where(r => r.RoomType == roomTypeId && r.Status == 0)
+     .ToListAsync();
+  }
+
+      public async Task<IEnumerable<Room>> GetMaintenanceRoomsAsync()
+        {
+            return await _dbSet
+.Where(r => r.Status == 2 || r.Status == 3)
+           .ToListAsync();
+        }
+
+        public async Task<bool> UpdateRoomStatusAsync(string roomId, int newStatus)
+        {
+            var room = await _dbSet.FirstOrDefaultAsync(r => r.RoomId == roomId);
+    if (room == null)
+      {
+     return false;
+        }
+
+    room.Status = newStatus;
+   await _context.SaveChangesAsync();
+        return true;
+        }
+
+        public async Task<Room?> GetRoomWithTypeAsync(string roomId)
+        {
+  return await _dbSet
+     .FirstOrDefaultAsync(r => r.RoomId == roomId);
+  }
+
+        public async Task<List<Room>> FindAvailableRoomsAsync(int roomTypeId, DateTime checkInDate, DateTime checkOutDate)
+        {
+     var roomsOfType = await _dbSet
+       .Where(r => r.RoomType == roomTypeId)
+     .ToListAsync();
+
+            var availableRooms = roomsOfType.Where(r => r.Status == 0).ToList();
+
+         return availableRooms;
+        }
+
+   public async Task<IEnumerable<Room>> SearchRoomsAsync(string searchTerm)
+   {
+          return await _dbSet
+  .Where(r => r.Name.Contains(searchTerm))
+    .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Room>> SearchAndFilterRoomsAsync(string? searchTerm, int? status, int? roomTypeId)
+        {
+  var query = _dbSet.AsQueryable();
+
+    if (!string.IsNullOrWhiteSpace(searchTerm))
+{
+           query = query.Where(r => r.Name.Contains(searchTerm));
+            }
+
+          if (status.HasValue)
+            {
+       query = query.Where(r => r.Status == status.Value);
+            }
+
+            if (roomTypeId.HasValue)
+    {
+       query = query.Where(r => r.RoomType == roomTypeId.Value);
+}
+
+      return await query.ToListAsync();
+      }
+    }
+}

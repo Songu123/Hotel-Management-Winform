@@ -1,0 +1,59 @@
+﻿File: QuanLyKhachSan\Configuration\ServiceCollectionExtensions.cs
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Repositories.Implementations;
+using QuanLyKhachSan.Repositories.Interfaces;
+using QuanLyKhachSan.Services.Implementations;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.Configuration
+{
+    /// <summary>
+    /// Extension methods để cấu hình Dependency Injection và Database
+    /// </summary>
+    public static class ServiceCollectionExtensions
+    {
+        /// <summary>
+        /// Đăng ký các services cho Hotel Management System
+        /// </summary>
+        public static IServiceCollection AddHotelManagementServices(this IServiceCollection services, string connectionString)
+        {
+            // Đăng ký DbContext
+            services.AddDbContext<HotelDbContext>(options =>
+                options.UseSqlServer(connectionString,
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(typeof(HotelDbContext).Assembly.FullName);
+                    }));
+
+            // Đăng ký Repositories
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IBookingRepository, BookingRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+
+            // Đăng ký Services
+            services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<IInvoiceService, InvoiceService>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Khởi tạo database (tạo tables nếu chưa tồn tại)
+        /// </summary>
+        public static async Task InitializeDatabaseAsync(IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<HotelDbContext>();
+
+            // Tạo database nếu chưa tồn tại
+            await dbContext.Database.EnsureCreatedAsync();
+
+            // Seed dữ liệu
+            HotelDbSeeder.SeedDatabase(dbContext);
+        }
+    }
+}

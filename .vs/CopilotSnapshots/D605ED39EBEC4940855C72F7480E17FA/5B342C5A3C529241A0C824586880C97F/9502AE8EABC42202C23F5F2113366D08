@@ -1,0 +1,633 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class UCRoomManagement
+    {
+  private System.ComponentModel.IContainer components = null;
+
+    protected override void Dispose(bool disposing)
+      {
+            if (disposing && (components != null))
+            {
+    components.Dispose();
+    }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+     {
+     pnlMain = new Panel();
+        pnlHeader = new Panel();
+      lblTitle = new Label();
+        lblSubtitle = new Label();
+     pnlFilter = new Panel();
+            lblRoomId = new Label();
+   tbRoomId = new TextBox();
+         lblRoomName = new Label();
+            tbRoomName = new TextBox();
+          lblRoomType = new Label();
+       cbRoomType = new ComboBox();
+            lblRoomTypeDetails = new Label();
+   cbRoomTypeDetails = new ComboBox();
+      lblPrice = new Label();
+  cbPrice = new ComboBox();
+       lblStatus = new Label();
+    cbStatus = new ComboBox();
+            lblCurrentCondition = new Label();
+            cbCurrentCondition = new ComboBox();
+      btnSearch = new Button();
+        btnRefresh = new Button();
+        pnlButtons = new Panel();
+     btnAddRoom = new Button();
+            btnEditRoom = new Button();
+    btnDeleteRoom = new Button();
+   pnlGrid = new Panel();
+        dgvRooms = new DataGridView();
+            colSTT = new DataGridViewTextBoxColumn();
+      colRoomId = new DataGridViewTextBoxColumn();
+   colRoomName = new DataGridViewTextBoxColumn();
+            colRoomType = new DataGridViewTextBoxColumn();
+            colPrice = new DataGridViewTextBoxColumn();
+            colRoomTypeDetails = new DataGridViewTextBoxColumn();
+  colStatus = new DataGridViewTextBoxColumn();
+      colCurrentCondition = new DataGridViewTextBoxColumn();
+pnlForm = new Panel();
+ gbRoomInfo = new GroupBox();
+        pnlFormContent = new Panel();
+            lblFormRoomId = new Label();
+            tbFormRoomId = new TextBox();
+         lblFormRoomName = new Label();
+            tbFormRoomName = new TextBox();
+ lblFormRoomType = new Label();
+ cbFormRoomType = new ComboBox();
+   lblFormRoomTypeDetails = new Label();
+         cbFormRoomTypeDetails = new ComboBox();
+            lblFormPrice = new Label();
+     tbFormPrice = new TextBox();
+          lblFormStatus = new Label();
+       cbFormStatus = new ComboBox();
+    lblFormCurrentCondition = new Label();
+  cbFormCurrentCondition = new ComboBox();
+      pnlFormButtons = new Panel();
+         btnSaveRoom = new Button();
+      btnCancelForm = new Button();
+    pnlMain.SuspendLayout();
+        pnlHeader.SuspendLayout();
+   pnlFilter.SuspendLayout();
+       pnlButtons.SuspendLayout();
+    pnlGrid.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)dgvRooms).BeginInit();
+ pnlForm.SuspendLayout();
+            gbRoomInfo.SuspendLayout();
+   pnlFormContent.SuspendLayout();
+       pnlFormButtons.SuspendLayout();
+            SuspendLayout();
+
+            pnlMain.Controls.Add(pnlForm);
+        pnlMain.Controls.Add(pnlGrid);
+     pnlMain.Controls.Add(pnlHeader);
+    pnlMain.Dock = DockStyle.Fill;
+            pnlMain.Location = new Point(0, 0);
+        pnlMain.Name = "pnlMain";
+         pnlMain.Size = new Size(1126, 650);
+       pnlMain.TabIndex = 0;
+
+            pnlHeader.BackColor = Color.FromArgb(70, 130, 180);
+          pnlHeader.Controls.Add(lblTitle);
+       pnlHeader.Controls.Add(lblSubtitle);
+         pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(0, 0);
+          pnlHeader.Name = "pnlHeader";
+  pnlHeader.Size = new Size(1126, 80);
+            pnlHeader.TabIndex = 1;
+
+       lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.White;
+          lblTitle.Location = new Point(20, 15);
+    lblTitle.Name = "lblTitle";
+      lblTitle.Size = new Size(194, 30);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "QUẢN LÝ PHÒNG";
+
+          lblSubtitle.AutoSize = true;
+ lblSubtitle.Font = new Font("Segoe UI", 10F, FontStyle.Italic);
+   lblSubtitle.ForeColor = Color.LightGray;
+          lblSubtitle.Location = new Point(20, 45);
+            lblSubtitle.Name = "lblSubtitle";
+  lblSubtitle.Size = new Size(459, 19);
+            lblSubtitle.TabIndex = 1;
+    lblSubtitle.Text = "Thực hiện các chức năng quản lý phòng, thêm, sửa, xóa thông tin phòng";
+
+    pnlFilter.BackColor = Color.White;
+    pnlFilter.BorderStyle = BorderStyle.FixedSingle;
+       pnlFilter.Controls.Add(lblRoomId);
+       pnlFilter.Controls.Add(tbRoomId);
+            pnlFilter.Controls.Add(lblRoomName);
+      pnlFilter.Controls.Add(tbRoomName);
+   pnlFilter.Controls.Add(lblRoomType);
+       pnlFilter.Controls.Add(cbRoomType);
+            pnlFilter.Controls.Add(lblRoomTypeDetails);
+  pnlFilter.Controls.Add(cbRoomTypeDetails);
+            pnlFilter.Controls.Add(lblPrice);
+     pnlFilter.Controls.Add(cbPrice);
+          pnlFilter.Controls.Add(lblStatus);
+       pnlFilter.Controls.Add(cbStatus);
+  pnlFilter.Controls.Add(lblCurrentCondition);
+  pnlFilter.Controls.Add(cbCurrentCondition);
+ pnlFilter.Controls.Add(btnSearch);
+            pnlFilter.Controls.Add(btnRefresh);
+         pnlFilter.Dock = DockStyle.Top;
+      pnlFilter.Location = new Point(10, 80);
+     pnlFilter.Name = "pnlFilter";
+            pnlFilter.Size = new Size(1100, 100);
+            pnlFilter.TabIndex = 2;
+
+            lblRoomId.AutoSize = true;
+    lblRoomId.Location = new Point(15, 15);
+            lblRoomId.Name = "lblRoomId";
+        lblRoomId.Size = new Size(65, 15);
+      lblRoomId.TabIndex = 0;
+  lblRoomId.Text = "Mã phòng:";
+
+       tbRoomId.Location = new Point(80, 12);
+        tbRoomId.Name = "tbRoomId";
+      tbRoomId.Size = new Size(100, 23);
+      tbRoomId.TabIndex = 1;
+ tbRoomId.TextChanged += tbRoomId_TextChanged;
+
+    lblRoomName.AutoSize = true;
+      lblRoomName.Location = new Point(200, 15);
+            lblRoomName.Name = "lblRoomName";
+            lblRoomName.Size = new Size(66, 15);
+  lblRoomName.TabIndex = 2;
+      lblRoomName.Text = "Tên phòng:";
+
+   tbRoomName.Location = new Point(265, 12);
+        tbRoomName.Name = "tbRoomName";
+            tbRoomName.Size = new Size(100, 23);
+  tbRoomName.TabIndex = 3;
+            tbRoomName.TextChanged += tbRoomName_TextChanged;
+
+            lblRoomType.AutoSize = true;
+   lblRoomType.Location = new Point(385, 15);
+ lblRoomType.Name = "lblRoomType";
+            lblRoomType.Size = new Size(70, 15);
+            lblRoomType.TabIndex = 4;
+ lblRoomType.Text = "Loại phòng:";
+
+cbRoomType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbRoomType.FormattingEnabled = true;
+            cbRoomType.Location = new Point(460, 12);
+   cbRoomType.Name = "cbRoomType";
+  cbRoomType.Size = new Size(100, 23);
+          cbRoomType.TabIndex = 5;
+    cbRoomType.SelectedIndexChanged += cbRoomType_SelectedIndexChanged;
+
+   lblRoomTypeDetails.AutoSize = true;
+      lblRoomTypeDetails.Location = new Point(580, 15);
+         lblRoomTypeDetails.Name = "lblRoomTypeDetails";
+         lblRoomTypeDetails.Size = new Size(108, 15);
+      lblRoomTypeDetails.TabIndex = 6;
+       lblRoomTypeDetails.Text = "Chi tiết loại phòng:";
+
+            cbRoomTypeDetails.DropDownStyle = ComboBoxStyle.DropDownList;
+          cbRoomTypeDetails.FormattingEnabled = true;
+            cbRoomTypeDetails.Location = new Point(694, 12);
+      cbRoomTypeDetails.Name = "cbRoomTypeDetails";
+   cbRoomTypeDetails.Size = new Size(100, 23);
+       cbRoomTypeDetails.TabIndex = 7;
+     cbRoomTypeDetails.SelectedIndexChanged += cbRoomTypeDetails_SelectedIndexChanged;
+
+          lblPrice.AutoSize = true;
+            lblPrice.Location = new Point(15, 50);
+            lblPrice.Name = "lblPrice";
+ lblPrice.Size = new Size(65, 15);
+     lblPrice.TabIndex = 8;
+            lblPrice.Text = "Giá phòng:";
+
+          cbPrice.DropDownStyle = ComboBoxStyle.DropDownList;
+   cbPrice.FormattingEnabled = true;
+        cbPrice.Location = new Point(80, 47);
+   cbPrice.Name = "cbPrice";
+            cbPrice.Size = new Size(100, 23);
+  cbPrice.TabIndex = 9;
+     cbPrice.SelectedIndexChanged += cbPrice_SelectedIndexChanged;
+
+  lblStatus.AutoSize = true;
+            lblStatus.Location = new Point(200, 50);
+            lblStatus.Name = "lblStatus";
+      lblStatus.Size = new Size(64, 15);
+            lblStatus.TabIndex = 10;
+            lblStatus.Text = "Tình trạng:";
+
+ cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbStatus.FormattingEnabled = true;
+     cbStatus.Location = new Point(265, 47);
+   cbStatus.Name = "cbStatus";
+         cbStatus.Size = new Size(100, 23);
+            cbStatus.TabIndex = 11;
+       cbStatus.SelectedIndexChanged += cbStatus_SelectedIndexChanged;
+
+    lblCurrentCondition.AutoSize = true;
+      lblCurrentCondition.Location = new Point(385, 50);
+       lblCurrentCondition.Name = "lblCurrentCondition";
+            lblCurrentCondition.Size = new Size(66, 15);
+   lblCurrentCondition.TabIndex = 12;
+       lblCurrentCondition.Text = "Hiện trạng:";
+
+    cbCurrentCondition.DropDownStyle = ComboBoxStyle.DropDownList;
+       cbCurrentCondition.FormattingEnabled = true;
+       cbCurrentCondition.Location = new Point(460, 47);
+       cbCurrentCondition.Name = "cbCurrentCondition";
+            cbCurrentCondition.Size = new Size(100, 23);
+        cbCurrentCondition.TabIndex = 13;
+ cbCurrentCondition.SelectedIndexChanged += cbCurrentCondition_SelectedIndexChanged;
+
+   btnSearch.BackColor = Color.SteelBlue;
+      btnSearch.FlatStyle = FlatStyle.Flat;
+            btnSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+ btnSearch.ForeColor = Color.White;
+       btnSearch.Location = new Point(920, 30);
+        btnSearch.Name = "btnSearch";
+        btnSearch.Size = new Size(90, 35);
+    btnSearch.TabIndex = 14;
+        btnSearch.Text = "Tìm kiếm";
+          btnSearch.UseVisualStyleBackColor = false;
+
+            btnRefresh.BackColor = Color.Gray;
+   btnRefresh.FlatStyle = FlatStyle.Flat;
+btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+     btnRefresh.ForeColor = Color.White;
+     btnRefresh.Location = new Point(1020, 30);
+   btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(90, 35);
+       btnRefresh.TabIndex = 15;
+            btnRefresh.Text = "Làm mới";
+    btnRefresh.UseVisualStyleBackColor = false;
+            btnRefresh.Click += btnRefresh_Click;
+
+            pnlButtons.BackColor = Color.White;
+            pnlButtons.BorderStyle = BorderStyle.FixedSingle;
+         pnlButtons.Controls.Add(btnAddRoom);
+            pnlButtons.Controls.Add(btnEditRoom);
+            pnlButtons.Controls.Add(btnDeleteRoom);
+            pnlButtons.Dock = DockStyle.Top;
+            pnlButtons.Location = new Point(10, 180);
+     pnlButtons.Name = "pnlButtons";
+      pnlButtons.Size = new Size(1100, 50);
+pnlButtons.TabIndex = 3;
+
+            btnAddRoom.BackColor = Color.SeaGreen;
+btnAddRoom.FlatStyle = FlatStyle.Flat;
+      btnAddRoom.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+  btnAddRoom.ForeColor = Color.White;
+            btnAddRoom.Location = new Point(15, 10);
+  btnAddRoom.Name = "btnAddRoom";
+ btnAddRoom.Size = new Size(120, 30);
+         btnAddRoom.TabIndex = 0;
+            btnAddRoom.Text = "Thêm phòng mới";
+         btnAddRoom.UseVisualStyleBackColor = false;
+     btnAddRoom.Click += btnAddRoom_Click;
+
+         btnEditRoom.BackColor = Color.DodgerBlue;
+            btnEditRoom.FlatStyle = FlatStyle.Flat;
+            btnEditRoom.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+  btnEditRoom.ForeColor = Color.White;
+  btnEditRoom.Location = new Point(145, 10);
+            btnEditRoom.Name = "btnEditRoom";
+   btnEditRoom.Size = new Size(120, 30);
+     btnEditRoom.TabIndex = 1;
+            btnEditRoom.Text = "Sửa phòng";
+  btnEditRoom.UseVisualStyleBackColor = false;
+            btnEditRoom.Click += btnEditRoom_Click;
+
+            btnDeleteRoom.BackColor = Color.Tomato;
+       btnDeleteRoom.FlatStyle = FlatStyle.Flat;
+            btnDeleteRoom.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnDeleteRoom.ForeColor = Color.White;
+       btnDeleteRoom.Location = new Point(275, 10);
+            btnDeleteRoom.Name = "btnDeleteRoom";
+     btnDeleteRoom.Size = new Size(120, 30);
+   btnDeleteRoom.TabIndex = 2;
+         btnDeleteRoom.Text = "Xem chi tiết";
+   btnDeleteRoom.UseVisualStyleBackColor = false;
+            btnDeleteRoom.Click += btnDeleteRoom_Click;
+
+ pnlGrid.BackColor = Color.White;
+   pnlGrid.BorderStyle = BorderStyle.FixedSingle;
+            pnlGrid.Controls.Add(dgvRooms);
+        pnlGrid.Controls.Add(pnlButtons);
+            pnlGrid.Controls.Add(pnlFilter);
+       pnlGrid.Dock = DockStyle.Fill;
+         pnlGrid.Location = new Point(0, 80);
+     pnlGrid.Name = "pnlGrid";
+    pnlGrid.Padding = new Padding(10);
+    pnlGrid.Size = new Size(1126, 570);
+     pnlGrid.TabIndex = 4;
+
+  dgvRooms.AllowUserToAddRows = false;
+            dgvRooms.AllowUserToDeleteRows = false;
+          dgvRooms.BackgroundColor = Color.White;
+      dgvRooms.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+ dgvRooms.Columns.AddRange(new DataGridViewColumn[] { colSTT, colRoomId, colRoomName, colRoomType, colPrice, colRoomTypeDetails, colStatus, colCurrentCondition });
+            dgvRooms.Dock = DockStyle.Fill;
+            dgvRooms.Location = new Point(10, 230);
+     dgvRooms.Name = "dgvRooms";
+        dgvRooms.RowTemplate.Height = 25;
+            dgvRooms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+    dgvRooms.Size = new Size(1100, 330);
+      dgvRooms.TabIndex = 0;
+
+        colSTT.HeaderText = "STT";
+    colSTT.Name = "colSTT";
+    colSTT.Width = 40;
+
+    colRoomId.HeaderText = "MÃ PHÒNG";
+            colRoomId.Name = "colRoomId";
+            colRoomId.Width = 100;
+
+       colRoomName.HeaderText = "TÊN PHÒNG";
+            colRoomName.Name = "colRoomName";
+colRoomName.Width = 120;
+
+            colRoomType.HeaderText = "LOẠI PHÒNG";
+            colRoomType.Name = "colRoomType";
+    colRoomType.Width = 100;
+
+      colPrice.HeaderText = "GIÁ PHÒNG";
+      colPrice.Name = "colPrice";
+        colPrice.Width = 120;
+
+            colRoomTypeDetails.HeaderText = "CHI TIẾT LOẠI PHÒNG";
+    colRoomTypeDetails.Name = "colRoomTypeDetails";
+         colRoomTypeDetails.Width = 150;
+
+            colStatus.HeaderText = "TÌNH TRẠNG";
+          colStatus.Name = "colStatus";
+    colStatus.Width = 110;
+
+            colCurrentCondition.HeaderText = "HIỆN TRẠNG";
+         colCurrentCondition.Name = "colCurrentCondition";
+      colCurrentCondition.Width = 100;
+
+            pnlForm.Controls.Add(gbRoomInfo);
+    pnlForm.Dock = DockStyle.Fill;
+       pnlForm.Location = new Point(0, 80);
+      pnlForm.Name = "pnlForm";
+            pnlForm.Size = new Size(1126, 570);
+       pnlForm.TabIndex = 5;
+      pnlForm.Visible = false;
+
+      gbRoomInfo.Controls.Add(pnlFormContent);
+            gbRoomInfo.Controls.Add(pnlFormButtons);
+            gbRoomInfo.Dock = DockStyle.Fill;
+            gbRoomInfo.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+    gbRoomInfo.ForeColor = Color.DodgerBlue;
+     gbRoomInfo.Location = new Point(0, 0);
+         gbRoomInfo.Name = "gbRoomInfo";
+    gbRoomInfo.Padding = new Padding(15);
+            gbRoomInfo.Size = new Size(1126, 570);
+   gbRoomInfo.TabIndex = 0;
+         gbRoomInfo.TabStop = false;
+            gbRoomInfo.Text = "THÊM PHÒNG MỚI";
+
+     pnlFormContent.Controls.Add(lblFormRoomId);
+            pnlFormContent.Controls.Add(tbFormRoomId);
+            pnlFormContent.Controls.Add(lblFormRoomName);
+            pnlFormContent.Controls.Add(tbFormRoomName);
+        pnlFormContent.Controls.Add(lblFormRoomType);
+       pnlFormContent.Controls.Add(cbFormRoomType);
+            pnlFormContent.Controls.Add(lblFormRoomTypeDetails);
+ pnlFormContent.Controls.Add(cbFormRoomTypeDetails);
+      pnlFormContent.Controls.Add(lblFormPrice);
+            pnlFormContent.Controls.Add(tbFormPrice);
+       pnlFormContent.Controls.Add(lblFormStatus);
+     pnlFormContent.Controls.Add(cbFormStatus);
+            pnlFormContent.Controls.Add(lblFormCurrentCondition);
+          pnlFormContent.Controls.Add(cbFormCurrentCondition);
+            pnlFormContent.Dock = DockStyle.Fill;
+            pnlFormContent.Location = new Point(15, 33);
+            pnlFormContent.Name = "pnlFormContent";
+      pnlFormContent.Size = new Size(1096, 507);
+ pnlFormContent.TabIndex = 0;
+
+            lblFormRoomId.AutoSize = true;
+            lblFormRoomId.Font = new Font("Segoe UI", 9F);
+     lblFormRoomId.ForeColor = Color.Black;
+          lblFormRoomId.Location = new Point(20, 20);
+            lblFormRoomId.Name = "lblFormRoomId";
+ lblFormRoomId.Size = new Size(65, 15);
+  lblFormRoomId.TabIndex = 0;
+         lblFormRoomId.Text = "Mã phòng:";
+
+        tbFormRoomId.Font = new Font("Segoe UI", 9F);
+   tbFormRoomId.Location = new Point(85, 17);
+       tbFormRoomId.Name = "tbFormRoomId";
+    tbFormRoomId.Size = new Size(150, 23);
+         tbFormRoomId.TabIndex = 1;
+
+        lblFormRoomName.AutoSize = true;
+ lblFormRoomName.Font = new Font("Segoe UI", 9F);
+            lblFormRoomName.ForeColor = Color.Black;
+  lblFormRoomName.Location = new Point(280, 20);
+       lblFormRoomName.Name = "lblFormRoomName";
+            lblFormRoomName.Size = new Size(66, 15);
+     lblFormRoomName.TabIndex = 2;
+            lblFormRoomName.Text = "Tên phòng:";
+
+     tbFormRoomName.Font = new Font("Segoe UI", 9F);
+       tbFormRoomName.Location = new Point(345, 17);
+            tbFormRoomName.Name = "tbFormRoomName";
+            tbFormRoomName.Size = new Size(150, 23);
+            tbFormRoomName.TabIndex = 3;
+
+      lblFormRoomType.AutoSize = true;
+        lblFormRoomType.Font = new Font("Segoe UI", 9F);
+ lblFormRoomType.ForeColor = Color.Black;
+ lblFormRoomType.Location = new Point(540, 20);
+        lblFormRoomType.Name = "lblFormRoomType";
+            lblFormRoomType.Size = new Size(70, 15);
+lblFormRoomType.TabIndex = 4;
+            lblFormRoomType.Text = "Loại phòng:";
+
+  cbFormRoomType.Font = new Font("Segoe UI", 9F);
+            cbFormRoomType.FormattingEnabled = true;
+   cbFormRoomType.Location = new Point(605, 17);
+            cbFormRoomType.Name = "cbFormRoomType";
+          cbFormRoomType.Size = new Size(150, 23);
+       cbFormRoomType.TabIndex = 5;
+
+            lblFormRoomTypeDetails.AutoSize = true;
+     lblFormRoomTypeDetails.Font = new Font("Segoe UI", 9F);
+ lblFormRoomTypeDetails.ForeColor = Color.Black;
+            lblFormRoomTypeDetails.Location = new Point(800, 20);
+    lblFormRoomTypeDetails.Name = "lblFormRoomTypeDetails";
+            lblFormRoomTypeDetails.Size = new Size(108, 15);
+            lblFormRoomTypeDetails.TabIndex = 6;
+            lblFormRoomTypeDetails.Text = "Chi tiết loại phòng:";
+
+            cbFormRoomTypeDetails.Font = new Font("Segoe UI", 9F);
+   cbFormRoomTypeDetails.FormattingEnabled = true;
+            cbFormRoomTypeDetails.Location = new Point(897, 17);
+cbFormRoomTypeDetails.Name = "cbFormRoomTypeDetails";
+cbFormRoomTypeDetails.Size = new Size(150, 23);
+            cbFormRoomTypeDetails.TabIndex = 7;
+
+  lblFormPrice.AutoSize = true;
+         lblFormPrice.Font = new Font("Segoe UI", 9F);
+            lblFormPrice.ForeColor = Color.Black;
+ lblFormPrice.Location = new Point(20, 65);
+            lblFormPrice.Name = "lblFormPrice";
+ lblFormPrice.Size = new Size(65, 15);
+            lblFormPrice.TabIndex = 8;
+            lblFormPrice.Text = "Giá phòng:";
+
+            tbFormPrice.Font = new Font("Segoe UI", 9F);
+     tbFormPrice.Location = new Point(85, 62);
+            tbFormPrice.Name = "tbFormPrice";
+            tbFormPrice.Size = new Size(150, 23);
+            tbFormPrice.TabIndex = 9;
+
+        lblFormStatus.AutoSize = true;
+     lblFormStatus.Font = new Font("Segoe UI", 9F);
+    lblFormStatus.ForeColor = Color.Black;
+  lblFormStatus.Location = new Point(280, 65);
+    lblFormStatus.Name = "lblFormStatus";
+       lblFormStatus.Size = new Size(64, 15);
+            lblFormStatus.TabIndex = 10;
+          lblFormStatus.Text = "Tình trạng:";
+
+       cbFormStatus.Font = new Font("Segoe UI", 9F);
+            cbFormStatus.FormattingEnabled = true;
+            cbFormStatus.Location = new Point(345, 62);
+            cbFormStatus.Name = "cbFormStatus";
+            cbFormStatus.Size = new Size(150, 23);
+            cbFormStatus.TabIndex = 11;
+
+        lblFormCurrentCondition.AutoSize = true;
+            lblFormCurrentCondition.Font = new Font("Segoe UI", 9F);
+     lblFormCurrentCondition.ForeColor = Color.Black;
+        lblFormCurrentCondition.Location = new Point(540, 65);
+   lblFormCurrentCondition.Name = "lblFormCurrentCondition";
+            lblFormCurrentCondition.Size = new Size(66, 15);
+            lblFormCurrentCondition.TabIndex = 12;
+lblFormCurrentCondition.Text = "Hiện trạng:";
+
+            cbFormCurrentCondition.Font = new Font("Segoe UI", 9F);
+            cbFormCurrentCondition.FormattingEnabled = true;
+       cbFormCurrentCondition.Location = new Point(605, 62);
+       cbFormCurrentCondition.Name = "cbFormCurrentCondition";
+            cbFormCurrentCondition.Size = new Size(150, 23);
+ cbFormCurrentCondition.TabIndex = 13;
+
+     pnlFormButtons.Controls.Add(btnSaveRoom);
+            pnlFormButtons.Controls.Add(btnCancelForm);
+   pnlFormButtons.Dock = DockStyle.Bottom;
+            pnlFormButtons.Location = new Point(15, 540);
+            pnlFormButtons.Name = "pnlFormButtons";
+         pnlFormButtons.Size = new Size(1096, 35);
+            pnlFormButtons.TabIndex = 1;
+
+            btnSaveRoom.BackColor = Color.SeaGreen;
+        btnSaveRoom.FlatStyle = FlatStyle.Flat;
+      btnSaveRoom.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+       btnSaveRoom.ForeColor = Color.White;
+        btnSaveRoom.Location = new Point(906, 2);
+        btnSaveRoom.Name = "btnSaveRoom";
+      btnSaveRoom.Size = new Size(90, 30);
+ btnSaveRoom.TabIndex = 0;
+   btnSaveRoom.Text = "Lưu";
+  btnSaveRoom.UseVisualStyleBackColor = false;
+            btnSaveRoom.Click += btnSaveRoom_Click;
+
+     btnCancelForm.BackColor = Color.Gray;
+     btnCancelForm.FlatStyle = FlatStyle.Flat;
+  btnCancelForm.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+  btnCancelForm.ForeColor = Color.White;
+         btnCancelForm.Location = new Point(1002, 2);
+            btnCancelForm.Name = "btnCancelForm";
+       btnCancelForm.Size = new Size(90, 30);
+            btnCancelForm.TabIndex = 1;
+   btnCancelForm.Text = "Hủy";
+        btnCancelForm.UseVisualStyleBackColor = false;
+    btnCancelForm.Click += btnCancelForm_Click;
+
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(pnlMain);
+            Name = "UCRoomManagement";
+    Size = new Size(1126, 650);
+     Load += UCRoomManagement_Load;
+  pnlMain.ResumeLayout(false);
+            pnlHeader.ResumeLayout(false);
+     pnlHeader.PerformLayout();
+         pnlFilter.ResumeLayout(false);
+ pnlFilter.PerformLayout();
+    pnlButtons.ResumeLayout(false);
+    pnlGrid.ResumeLayout(false);
+    ((System.ComponentModel.ISupportInitialize)dgvRooms).EndInit();
+   pnlForm.ResumeLayout(false);
+   gbRoomInfo.ResumeLayout(false);
+            pnlFormContent.ResumeLayout(false);
+  pnlFormContent.PerformLayout();
+   pnlFormButtons.ResumeLayout(false);
+  ResumeLayout(false);
+        }
+
+        private Panel pnlMain;
+        private Panel pnlHeader;
+        private Label lblTitle;
+        private Label lblSubtitle;
+        private Panel pnlFilter;
+     private Label lblRoomId;
+        private TextBox tbRoomId;
+        private Label lblRoomName;
+   private TextBox tbRoomName;
+        private Label lblRoomType;
+        private ComboBox cbRoomType;
+  private Label lblRoomTypeDetails;
+        private ComboBox cbRoomTypeDetails;
+        private Label lblPrice;
+     private ComboBox cbPrice;
+        private Label lblStatus;
+        private ComboBox cbStatus;
+        private Label lblCurrentCondition;
+        private ComboBox cbCurrentCondition;
+  private Button btnSearch;
+   private Button btnRefresh;
+        private Panel pnlButtons;
+        private Button btnAddRoom;
+        private Button btnEditRoom;
+        private Button btnDeleteRoom;
+        private Panel pnlGrid;
+private DataGridView dgvRooms;
+        private DataGridViewTextBoxColumn colSTT;
+        private DataGridViewTextBoxColumn colRoomId;
+        private DataGridViewTextBoxColumn colRoomName;
+      private DataGridViewTextBoxColumn colRoomType;
+     private DataGridViewTextBoxColumn colPrice;
+      private DataGridViewTextBoxColumn colRoomTypeDetails;
+        private DataGridViewTextBoxColumn colStatus;
+      private DataGridViewTextBoxColumn colCurrentCondition;
+        private Panel pnlForm;
+        private GroupBox gbRoomInfo;
+        private Panel pnlFormContent;
+ private Label lblFormRoomId;
+        private TextBox tbFormRoomId;
+  private Label lblFormRoomName;
+        private TextBox tbFormRoomName;
+        private Label lblFormRoomType;
+   private ComboBox cbFormRoomType;
+        private Label lblFormRoomTypeDetails;
+   private ComboBox cbFormRoomTypeDetails;
+        private Label lblFormPrice;
+        private TextBox tbFormPrice;
+        private Label lblFormStatus;
+   private ComboBox cbFormStatus;
+  private Label lblFormCurrentCondition;
+        private ComboBox cbFormCurrentCondition;
+        private Panel pnlFormButtons;
+        private Button btnSaveRoom;
+        private Button btnCancelForm;
+    }
+}

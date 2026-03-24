@@ -1,0 +1,24 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyKhachSan.Models
+{
+ [Table("TIENICH")]
+    public class Amenity
+    {
+     [Key]
+ [Column("maTI")]
+[StringLength(20)]
+public string AmenityId { get; set; }
+
+  [Column("tenTI")]
+        [StringLength(30)]
+   public string Name { get; set; }
+
+       [Column("xuLy")]
+      public int IsDeleted { get; set; } = 0;
+
+      // Navigation properties
+        public virtual ICollection<RoomAmenity> RoomAmenities { get; set; } = new List<RoomAmenity>();
+    }
+}

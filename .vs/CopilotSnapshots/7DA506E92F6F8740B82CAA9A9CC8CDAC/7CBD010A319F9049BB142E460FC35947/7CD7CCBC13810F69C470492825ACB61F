@@ -1,0 +1,172 @@
+﻿using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Interfaces;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.Services.Implementations
+{
+    /// <summary>
+    /// Room Service implementation
+    /// </summary>
+   public class RoomService : IRoomService
+    {
+     private readonly IRoomRepository _roomRepository;
+
+ public RoomService(IRoomRepository roomRepository)
+      {
+      _roomRepository = roomRepository;
+    }
+
+     public async Task<IEnumerable<Room>> GetAllRoomsAsync()
+       {
+      return await _roomRepository.GetAllAsync();
+  }
+
+    public async Task<Room?> GetRoomAsync(int roomId)
+{
+   return await _roomRepository.GetRoomWithTypeAsync(roomId);
+   }
+
+      public async Task<Room> CreateRoomAsync(Room room)
+   {
+        room.CreatedDate = DateTime.Now;
+    room.Status = RoomStatus.Available;
+      await _roomRepository.AddAsync(room);
+   await _roomRepository.SaveChangesAsync();
+     return room;
+  }
+
+   public async Task<bool> UpdateRoomAsync(Room room)
+ {
+  room.UpdatedDate = DateTime.Now;
+    await _roomRepository.UpdateAsync(room);
+    await _roomRepository.SaveChangesAsync();
+      return true;
+  }
+
+     public async Task<bool> DeleteRoomAsync(int roomId)
+        {
+    var room = await _roomRepository.GetByIdAsync(roomId);
+    if (room == null)
+  {
+ return false;
+     }
+
+// Kiểm tra xem phòng có booking nào không
+  var hasBookings = room.Bookings?.Any(b => b.Status != BookingStatus.Cancelled && b.Status != BookingStatus.CheckedOut) ?? false;
+    if (hasBookings)
+     {
+     return false; // Không thể xóa phòng có booking hoạt động
+    }
+
+    await _roomRepository.DeleteAsync(roomId);
+        await _roomRepository.SaveChangesAsync();
+    return true;
+   }
+
+     public async Task<List<Room>> GetAvailableRoomsByTypeAndDateAsync(int roomTypeId, DateTime checkInDate, DateTime checkOutDate)
+  {
+return await _roomRepository.FindAvailableRoomsAsync(roomTypeId, checkInDate, checkOutDate);
+  }
+
+public async Task<bool> UpdateRoomStatusAsync(int roomId, RoomStatus newStatus)
+        {
+        return await _roomRepository.UpdateRoomStatusAsync(roomId, newStatus);
+      }
+
+     public async Task<IEnumerable<Room>> GetAvailableRoomsAsync()
+ {
+      return await _roomRepository.GetAvailableRoomsAsync();
+     }
+
+public async Task<IEnumerable<Room>> GetMaintenanceRoomsAsync()
+     {
+ return await _roomRepository.GetMaintenanceRoomsAsync();
+      }
+
+      public async Task<decimal> CalculateRoomRevenueAsync(DateTime startDate, DateTime endDate)
+     {
+       // Tính doanh thu từ các booking hoàn tất trong khoảng ngày
+      var allBookings = await _roomRepository.GetAllAsync();
+       var filteredBookings = allBookings
+   .Where(r => r.Bookings != null && r.Bookings.Any(b => 
+  b.Status == BookingStatus.CheckedOut &&
+        b.CheckOutDate >= startDate && 
+    b.CheckOutDate <= endDate))
+      .SelectMany(r => r.Bookings!)
+      .ToList();
+
+       decimal totalRevenue = 0;
+  foreach (var booking in filteredBookings)
+     {
+       var days = (booking.CheckOutDate - booking.CheckInDate).Days;
+   totalRevenue += booking.RoomPricePerNight * days;
+  }
+
+   return totalRevenue;
+      }
+
+   public async Task<Dictionary<RoomStatus, int>> GetRoomStatusStatisticsAsync()
+ {
+   var allRooms = await GetAllRoomsAsync();
+     var statistics = allRooms
+     .GroupBy(r => r.Status)
+     .ToDictionary(g => g.Key, g => g.Count());
+
+  return statistics;
+  }
+
+   /// <summary>
+        /// Tìm kiếm phòng theo số phòng hoặc loại phòng
+  /// </summary>
+        public async Task<IEnumerable<Room>> SearchRoomsAsync(string searchTerm)
+   {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+         return await GetAllRoomsAsync();
+
+   return await _roomRepository.SearchRoomsAsync(searchTerm);
+  }
+
+     /// <summary>
+        /// Lọc phòng theo trạng thái
+     /// </summary>
+    public async Task<IEnumerable<Room>> FilterByStatusAsync(RoomStatus status)
+    {
+   var allRooms = await GetAllRoomsAsync();
+      return allRooms.Where(r => r.Status == status);
+    }
+
+       /// <summary>
+    /// Lọc phòng theo loại phòng
+        /// </summary>
+  public async Task<IEnumerable<Room>> FilterByRoomTypeAsync(int roomTypeId)
+     {
+      var allRooms = await GetAllRoomsAsync();
+  return allRooms.Where(r => r.RoomTypeId == roomTypeId);
+      }
+
+      /// <summary>
+/// Lọc phòng theo trạng thái và loại phòng
+  /// </summary>
+   public async Task<IEnumerable<Room>> FilterByStatusAndTypeAsync(RoomStatus status, int roomTypeId)
+    {
+      var allRooms = await GetAllRoomsAsync();
+    return allRooms.Where(r => r.Status == status && r.RoomTypeId == roomTypeId);
+     }
+
+    /// <summary>
+     /// Tìm kiếm và lọc phòng với nhiều tiêu chí
+ /// </summary>
+      public async Task<IEnumerable<Room>> SearchAndFilterRoomsAsync(string? searchTerm, RoomStatus? status, int? roomTypeId)
+     {
+       return await _roomRepository.SearchAndFilterRoomsAsync(searchTerm, status, roomTypeId);
+        }
+
+        /// <summary>
+ /// Lấy tất cả loại phòng
+  /// </summary>
+ public async Task<IEnumerable<RoomType>> GetAllRoomTypesAsync()
+      {
+    return await _roomRepository.GetAllRoomTypesAsync();
+        }
+    }
+}

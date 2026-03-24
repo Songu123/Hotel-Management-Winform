@@ -1,0 +1,43 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyKhachSan.Models
+{
+   [Table("CHITIETTHUE")]
+    public class RentalDetail
+    {
+ [Key]
+        [Column("maCTT")]
+        [StringLength(20)]
+        public string RentalDetailId { get; set; }
+
+ [Column("maKH")]
+  [StringLength(20)]
+       [ForeignKey("Customer")]
+      public string CustomerId { get; set; }
+
+[Column("maNV")]
+    [StringLength(20)]
+        [ForeignKey("Employee")]
+      public string EmployeeId { get; set; }
+
+  [Column("ngayLapPhieu")]
+ public DateTime CreatedDate { get; set; }
+
+ [Column("tienDatCoc")]
+       public int DepositAmount { get; set; }
+
+  [Column("tinhTrangXuLy")]
+    public int ProcessingStatus { get; set; }
+
+ [Column("xuLy")]
+        public int IsDeleted { get; set; } = 0;
+
+      // Navigation properties
+ public virtual Customer Customer { get; set; }
+    public virtual Employee Employee { get; set; }
+        public virtual ICollection<RoomRentalDetail> RoomRentalDetails { get; set; } = new List<RoomRentalDetail>();
+        public virtual ICollection<ServiceRentalDetail> ServiceRentalDetails { get; set; } = new List<ServiceRentalDetail>();
+        public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+    }
+}

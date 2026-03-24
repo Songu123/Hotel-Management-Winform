@@ -1,0 +1,124 @@
+﻿# Seed Data Implementation for Hotel Management Database
+
+## Overview
+A comprehensive seed data system has been created for the Hotel Management database. The system automatically populates the database with initial data when the application starts.
+
+## Files Created/Modified
+
+### 1. **QuanLyKhachSan/Data/SeedData.cs** (NEW)
+Contains the `SeedData` static class with a `SeedDatabase()` method that seeds the following data:
+
+#### Data Seeded:
+
+**Roles (4 records)**
+- ADMIN - Administrator with all permissions
+- MANAGER - Manager with most permissions
+- STAFF - Staff with limited permissions
+- RECEPTIONIST - Receptionist with specific permissions
+
+**Functions (8 records)**
+- F001: Manage Users
+- F002: Manage Rooms
+- F003: Manage Bookings
+- F004: Manage Customers
+- F005: Manage Services
+- F006: Manage Invoices
+- F007: View Reports
+- F008: Manage Employees
+
+**Role-Function Permissions**
+- Admin: Full access to all functions
+- Manager: Access to F002-F007 (everything except user management)
+- Staff: Access to F002-F005 (rooms, bookings, customers, services)
+- Receptionist: Access to F003, F004, F006 (bookings, customers, invoices)
+
+**Employees (5 records)**
+- EMP001: Nguyễn Văn A - Position 1
+- EMP002: Trần Thị B - Position 2
+- EMP003: Lê Văn C - Position 3
+- EMP004: Phạm Thị D - Position 4
+- EMP005: Hoàng Văn E - Position 5
+
+**Accounts (5 records)**
+- admin/admin123 - ADMIN role
+- manager/manager123 - MANAGER role
+- staff1/staff123 - STAFF role
+- receptionist/receptionist123 - RECEPTIONIST role
+- staff2/staff123 - STAFF role
+
+**Customers (5 records)**
+- KH001: Trần Minh Huy (Vietnamese)
+- KH002: Ngô Thị Hương (Vietnamese)
+- KH003: John Smith (American)
+- KH004: Maria Garcia (Spanish)
+- KH005: Phạm Đức Thành (Vietnamese)
+
+**Amenities (8 records)**
+- AM001: WiFi Free
+- AM002: Air Conditioning
+- AM003: Television
+- AM004: Hot Water
+- AM005: Mini Bar
+- AM006: Safe Box
+- AM007: Bathrobe
+- AM008: Hair Dryer
+
+**Services (6 records)**
+- SV001: Room Service (Food & Beverage) - 50,000 VND
+- SV002: Laundry Service (Cleaning) - 30,000 VND
+- SV003: Massage Service (Wellness) - 150,000 VND
+- SV004: Airport Transfer (Transportation) - 200,000 VND
+- SV005: Parking Service (Parking) - 100,000 VND
+- SV006: Breakfast Buffet (Food & Beverage) - 80,000 VND
+
+**Rooms (10 records)**
+- 101-103: Floor 1 rooms (3 rooms)
+- 201-203: Floor 2 rooms (3 rooms)
+- 301-304: Floor 3 rooms (4 rooms)
+- Mix of room types: 1 (Single), 2 (Double), 3 (Deluxe), 4 (Suite)
+- Price range: 500,000 - 1,500,000 VND
+
+**Room Amenities**
+- Each room is equipped with appropriate amenities
+- Premium rooms have more amenities than standard rooms
+
+### 2. **QuanLyKhachSan/Configuration/ServiceCollectionExtensions.cs** (MODIFIED)
+Updated the `InitializeDatabaseAsync()` method to:
+1. Create the database if it doesn't exist
+2. Call `SeedData.SeedDatabase(dbContext)` to populate initial data
+
+## How It Works
+
+1. When the application starts, `Program.cs` calls `ServiceCollectionExtensions.InitializeDatabaseAsync()`
+2. The database is created using `EnsureCreatedAsync()`
+3. `SeedData.SeedDatabase()` is automatically called
+4. The method checks if data already exists using `.Any()` before seeding
+5. This prevents duplicate data on subsequent runs
+
+## Security Note
+⚠️ **Important:** The current implementation includes plain-text passwords for demonstration purposes. In production:
+- Use password hashing (e.g., BCrypt, Argon2)
+- Never store plain-text passwords in seed data
+- Use proper authentication mechanisms
+
+## Testing the Seed Data
+
+To verify the seed data was created:
+
+1. Run the application
+2. Check the SQL Server database tables:
+   - PHANQUYEN (Roles)
+   - CHUCNANG (Functions)
+   - CHITIETCHUCNANG (RoleFunction)
+   - NHANVIEN (Employees)
+   - TAIKHOAN (Accounts)
+   - KHACHHANG (Customers)
+   - TIENICH (Amenities)
+   - DICHVU (Services)
+   - PHONG (Rooms)
+   - PHONG_TIENICH (RoomAmenities)
+
+## Data Integrity
+- All foreign key relationships are properly maintained
+- Composite keys are respected (RoleFunction, RoomAmenity)
+- Status fields are set to appropriate values (1 for active, 0 for inactive)

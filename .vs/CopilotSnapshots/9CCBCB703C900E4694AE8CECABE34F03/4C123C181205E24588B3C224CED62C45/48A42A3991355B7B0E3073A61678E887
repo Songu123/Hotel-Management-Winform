@@ -1,0 +1,95 @@
+﻿namespace QuanLyKhachSan
+{
+    partial class RoomManagementForm
+    {
+       private System.ComponentModel.IContainer components = null;
+
+       protected override void Dispose(bool disposing)
+        {
+ if (disposing && (components != null))
+   {
+         components.Dispose();
+      }
+       base.Dispose(disposing);
+       }
+
+        private void InitializeComponent()
+        {
+components = new System.ComponentModel.Container();
+
+   // Main panel
+  Panel mainPanel = new Panel();
+     mainPanel.Dock = DockStyle.Fill;
+mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+    // Header panel
+            Panel headerPanel = new Panel();
+          headerPanel.Height = 60;
+          headerPanel.Dock = DockStyle.Top;
+      headerPanel.BackColor = Color.White;
+     headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+    Label titleLabel = new Label();
+      titleLabel.Text = "Room Management";
+    titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+      titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+   titleLabel.Location = new Point(30, 8);
+   titleLabel.Size = new Size(400, 40);
+           headerPanel.Controls.Add(titleLabel);
+
+   // Toolbar
+         Panel toolbarPanel = new Panel();
+   toolbarPanel.Height = 60;
+    toolbarPanel.Dock = DockStyle.Top;
+toolbarPanel.BackColor = Color.White;
+toolbarPanel.BorderStyle = BorderStyle.FixedSingle;
+
+        Button btnAddRoom = new Button();
+    btnAddRoom.Text = "+ Add New Room";
+btnAddRoom.Location = new Point(20, 12);
+ btnAddRoom.Size = new Size(130, 36);
+btnAddRoom.BackColor = Color.FromArgb(70, 130, 180);
+  btnAddRoom.ForeColor = Color.White;
+btnAddRoom.Font = new Font("Segoe UI", 10);
+ btnAddRoom.FlatStyle = FlatStyle.Flat;
+    btnAddRoom.Cursor = Cursors.Hand;
+ toolbarPanel.Controls.Add(btnAddRoom);
+
+        // DataGridView
+   DataGridView dgvRooms = new DataGridView();
+       dgvRooms.Location = new Point(20, 80);
+ dgvRooms.Size = new Size(1560, 600);
+    dgvRooms.BackgroundColor = Color.White;
+dgvRooms.BorderStyle = BorderStyle.FixedSingle;
+  dgvRooms.AllowUserToAddRows = false;
+ dgvRooms.RowHeadersVisible = false;
+ dgvRooms.GridColor = Color.LightGray;
+ dgvRooms.Font = new Font("Segoe UI", 9);
+
+   dgvRooms.Columns.Add("RoomId", "ID");
+  dgvRooms.Columns.Add("RoomNumber", "Room No.");
+dgvRooms.Columns.Add("Type", "Room Type");
+   dgvRooms.Columns.Add("Status", "Status");
+    dgvRooms.Columns.Add("Price", "Price/Night");
+
+  mainPanel.Controls.Add(dgvRooms);
+  mainPanel.Controls.Add(toolbarPanel);
+
+this.AutoScaleDimensions = new SizeF(7F, 15F);
+ this.AutoScaleMode = AutoScaleMode.Font;
+        this.ClientSize = new Size(1600, 900);
+   this.Controls.Add(mainPanel);
+  this.Controls.Add(headerPanel);
+        this.Name = "RoomManagementForm";
+ this.Text = "Hotel Management - Room Management";
+    this.StartPosition = FormStartPosition.CenterScreen;
+   this.WindowState = FormWindowState.Maximized;
+      this.Load += (s, e) => LoadRoomData();
+       }
+
+   private void LoadRoomData()
+        {
+  // Load từ service
+      }
+    }
+}

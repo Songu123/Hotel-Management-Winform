@@ -1,0 +1,473 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class UCRooms : UserControl
+    {
+        // Room data model
+private List<RoomInfo> allRooms = new List<RoomInfo>();
+ private readonly IRoomService _roomService;
+        private List<RoomType> _roomTypes = new List<RoomType>();
+        private List<Floor> _floors = new List<Floor>();
+
+        public UCRooms()
+        {
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// Constructor with dependency injection
+    /// </summary>
+    public UCRooms(IRoomService roomService) : this()
+        {
+        _roomService = roomService;
+        }
+
+     private async void UCRoomsCls_Load(object sender, EventArgs e)
+    {
+ try
+        {
+       await LoadRoomDataFromDatabaseAsync();
+      InitializeComboBoxes();
+      LoadRoomsToGrid();
+ AttachEventHandlers();
+      }
+        catch (Exception ex)
+       {
+      MessageBox.Show($"Error loading rooms: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+   // Fallback to sample data
+  InitializeRoomData();
+       InitializeComboBoxes();
+    LoadRoomsToGrid();
+          AttachEventHandlers();
+    }
+        }
+
+   /// <summary>
+  /// Load room data from database
+ /// </summary>
+   private async Task LoadRoomDataFromDatabaseAsync()
+ {
+  try
+    {
+     allRooms.Clear();
+
+   if (_roomService == null)
+    {
+        InitializeRoomData();
+   return;
+     }
+
+         var dbRooms = await _roomService.GetAllRoomsAsync();
+      var roomTypes = (await _roomService.GetAllRoomTypesAsync()).ToList();
+ _roomTypes = roomTypes;
+
+      foreach (var dbRoom in dbRooms)
+     {
+      var roomInfo = new RoomInfo
+        {
+   RoomId = dbRoom.RoomId,
+     RoomNumber = dbRoom.RoomNumber,
+          Type = dbRoom.RoomType?.Name ?? "Unknown",
+       Floor = dbRoom.Floor?.FloorNumber ?? ExtractFloorFromRoomNumber(dbRoom.RoomNumber),
+     Status = GetRoomStatus(dbRoom.Status),
+    Price = (double)(dbRoom.RoomType?.PricePerNight ?? 0),
+         Guest = "-",
+  CheckIn = "-",
+         CheckOut = "-",
+  RoomTypeId = dbRoom.RoomTypeId,
+       FloorId = dbRoom.FloorId,
+ DbStatus = dbRoom.Status
+         };
+
+  allRooms.Add(roomInfo);
+      }
+      }
+  catch (Exception ex)
+ {
+        MessageBox.Show($"Error loading from database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+     InitializeRoomData();
+  }
+        }
+
+        /// <summary>
+        /// Convert RoomStatus enum to display string
+        /// </summary>
+        private RoomStatus GetRoomStatus(Models.RoomStatus dbStatus)
+        {
+         return dbStatus switch
+            {
+              Models.RoomStatus.Available => RoomStatus.Available,
+          Models.RoomStatus.Occupied => RoomStatus.Occupied,
+       Models.RoomStatus.Reserved => RoomStatus.Reserved,
+     Models.RoomStatus.Maintenance => RoomStatus.Maintenance,
+       _ => RoomStatus.Available
+            };
+        }
+
+     /// <summary>
+        /// Extract floor number from room number
+        /// </summary>
+     private int ExtractFloorFromRoomNumber(string roomNumber)
+     {
+        if (string.IsNullOrEmpty(roomNumber) || roomNumber.Length < 1)
+          return 1;
+
+if (int.TryParse(roomNumber[0].ToString(), out var floor))
+       return floor;
+
+      return 1;
+        }
+
+        /// <summary>
+  /// Initialize ComboBox with data
+  /// </summary>
+        private void InitializeComboBoxes()
+        {
+         // Initialize Room Type ComboBox
+        ComboBox cbxType = this.Controls.Find("cbxRoomType", true).FirstOrDefault() as ComboBox;
+            if (cbxType != null)
+   {
+  cbxType.Items.Clear();
+       cbxType.Items.Add("All");
+              foreach (var type in _roomTypes)
+ {
+                    cbxType.Items.Add(type.Name);
+ }
+        cbxType.SelectedIndex = 0;
+     }
+
+      // Initialize Status ComboBox
+       ComboBox cbxStatus = this.Controls.Find("cbxStatus", true).FirstOrDefault() as ComboBox;
+     if (cbxStatus != null)
+        {
+         cbxStatus.Items.Clear();
+          cbxStatus.Items.Add("All");
+   cbxStatus.Items.Add("Available");
+        cbxStatus.Items.Add("Occupied");
+    cbxStatus.Items.Add("Reserved");
+         cbxStatus.Items.Add("Maintenance");
+           cbxStatus.SelectedIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Initialize sample room data (fallback)
+        /// </summary>
+      private void InitializeRoomData()
+    {
+         allRooms = new List<RoomInfo>
+        {
+                new RoomInfo { RoomId = 1, RoomNumber = "101", Type = "Single", Floor = 1, Status = RoomStatus.Available, Price = 50, Guest = "-", CheckIn = "-", CheckOut = "-" },
+             new RoomInfo { RoomId = 2, RoomNumber = "102", Type = "Double", Floor = 1, Status = RoomStatus.Occupied, Price = 80, Guest = "Nguyễn Văn A", CheckIn = "2024-01-15", CheckOut = "2024-01-18" },
+ new RoomInfo { RoomId = 3, RoomNumber = "103", Type = "Suite", Floor = 1, Status = RoomStatus.Available, Price = 150, Guest = "-", CheckIn = "-", CheckOut = "-" },
+         new RoomInfo { RoomId = 4, RoomNumber = "201", Type = "Double", Floor = 2, Status = RoomStatus.Occupied, Price = 80, Guest = "Trần Thị B", CheckIn = "2024-01-16", CheckOut = "2024-01-20" },
+ new RoomInfo { RoomId = 5, RoomNumber = "202", Type = "Deluxe", Floor = 2, Status = RoomStatus.Available, Price = 200, Guest = "-", CheckIn = "-", CheckOut = "-" },
+                new RoomInfo { RoomId = 6, RoomNumber = "203", Type = "Single", Floor = 2, Status = RoomStatus.Maintenance, Price = 50, Guest = "-", CheckIn = "-", CheckOut = "-" },
+          new RoomInfo { RoomId = 7, RoomNumber = "301", Type = "Suite", Floor = 3, Status = RoomStatus.Available, Price = 150, Guest = "-", CheckIn = "-", CheckOut = "-" },
+         new RoomInfo { RoomId = 8, RoomNumber = "302", Type = "Deluxe", Floor = 3, Status = RoomStatus.Reserved, Price = 200, Guest = "Hoàng Văn C", CheckIn = "2024-02-01", CheckOut = "2024-02-05" },
+       };
+        }
+
+        /// <summary>
+        /// Load rooms into DataGridView
+        /// </summary>
+        private void LoadRoomsToGrid(List<RoomInfo> rooms = null)
+        {
+  var dataSource = rooms ?? allRooms;
+
+            DataGridView dgv = this.Controls.Find("dgvRooms", true).FirstOrDefault() as DataGridView;
+          if (dgv != null)
+            {
+  dgv.Rows.Clear();
+  foreach (var room in dataSource.OrderBy(r => r.RoomNumber))
+       {
+      dgv.Rows.Add(
+ room.RoomNumber,
+   room.Type,
+             room.Floor,
+           GetStatusDisplay(room.Status),
+   "$" + room.Price,
+        room.Guest,
+              room.CheckIn,
+         room.CheckOut,
+      "Edit | Delete"
+       );
+
+      // Color code rows by status
+   DataGridViewRow lastRow = dgv.Rows[dgv.Rows.Count - 1];
+            lastRow.DefaultCellStyle.BackColor = GetStatusColor(room.Status);
+      }
+    }
+        }
+
+ /// <summary>
+        /// Get colored status display
+        /// </summary>
+        private string GetStatusDisplay(RoomStatus status)
+        {
+      return status switch
+   {
+     RoomStatus.Available => "✅ Available",
+        RoomStatus.Occupied => "👥 Occupied",
+    RoomStatus.Maintenance => "🔧 Maintenance",
+  RoomStatus.Reserved => "📅 Reserved",
+          _ => "Unknown"
+};
+    }
+
+        /// <summary>
+        /// Get color based on status
+        /// </summary>
+     private Color GetStatusColor(RoomStatus status)
+    {
+ return status switch
+            {
+     RoomStatus.Available => Color.FromArgb(200, 240, 200),    // Light green
+            RoomStatus.Occupied => Color.FromArgb(240, 200, 200),     // Light red
+    RoomStatus.Reserved => Color.FromArgb(200, 220, 240),     // Light blue
+        RoomStatus.Maintenance => Color.FromArgb(240, 230, 200),  // Light orange
+          _ => Color.White
+    };
+        }
+
+        /// <summary>
+        /// Attach event handlers to controls
+   /// </summary>
+      private void AttachEventHandlers()
+        {
+     Button btnSearch = this.Controls.Find("btnSearch", true).FirstOrDefault() as Button;
+        Button btnAdd = this.Controls.Find("btnAddRoom", true).FirstOrDefault() as Button;
+            Button btnEdit = this.Controls.Find("btnEditRoom", true).FirstOrDefault() as Button;
+         Button btnDelete = this.Controls.Find("btnDeleteRoom", true).FirstOrDefault() as Button;
+         Button btnRefresh = this.Controls.Find("btnRefresh", true).FirstOrDefault() as Button;
+       DataGridView dgv = this.Controls.Find("dgvRooms", true).FirstOrDefault() as DataGridView;
+
+     if (btnSearch != null) btnSearch.Click += BtnSearch_Click;
+   if (btnAdd != null) btnAdd.Click += BtnAdd_Click;
+            if (btnEdit != null) btnEdit.Click += BtnEdit_Click;
+            if (btnDelete != null) btnDelete.Click += BtnDelete_Click;
+            if (btnRefresh != null) btnRefresh.Click += BtnRefresh_Click;
+if (dgv != null) dgv.CellClick += Dgv_CellClick;
+        }
+
+ /// <summary>
+      /// Search and filter rooms
+        /// </summary>
+  private void BtnSearch_Click(object sender, EventArgs e)
+        {
+            TextBox tbxSearch = this.Controls.Find("tbxSearchRoom", true).FirstOrDefault() as TextBox;
+            ComboBox cbxType = this.Controls.Find("cbxRoomType", true).FirstOrDefault() as ComboBox;
+     ComboBox cbxStatus = this.Controls.Find("cbxStatus", true).FirstOrDefault() as ComboBox;
+
+   var filtered = allRooms.AsEnumerable();
+
+            // Filter by room number
+        if (tbxSearch != null && !string.IsNullOrWhiteSpace(tbxSearch.Text))
+     {
+             filtered = filtered.Where(r => r.RoomNumber.Contains(tbxSearch.Text));
+    }
+
+     // Filter by type
+    if (cbxType != null && cbxType.SelectedItem?.ToString() != "All")
+            {
+      filtered = filtered.Where(r => r.Type == cbxType.SelectedItem?.ToString());
+            }
+
+            // Filter by status
+     if (cbxStatus != null && cbxStatus.SelectedItem?.ToString() != "All")
+            {
+    var statusStr = cbxStatus.SelectedItem?.ToString();
+   RoomStatus? status = statusStr switch
+        {
+       "Available" => RoomStatus.Available,
+   "Occupied" => RoomStatus.Occupied,
+"Maintenance" => RoomStatus.Maintenance,
+   "Reserved" => RoomStatus.Reserved,
+              _ => null
+                };
+
+    if (status.HasValue)
+          filtered = filtered.Where(r => r.Status == status.Value);
+     }
+
+         LoadRoomsToGrid(filtered.ToList());
+      }
+
+        /// <summary>
+    /// Add new room
+    /// </summary>
+  private void BtnAdd_Click(object sender, EventArgs e)
+        {
+  MessageBox.Show("Add Room Dialog\n\n✓ Room Number\n✓ Room Type\n✓ Floor\n✓ Price", "Add Room", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        /// <summary>
+    /// Edit selected room
+        /// </summary>
+        private void BtnEdit_Click(object sender, EventArgs e)
+    {
+   DataGridView dgv = this.Controls.Find("dgvRooms", true).FirstOrDefault() as DataGridView;
+      if (dgv != null && dgv.SelectedRows.Count > 0)
+        {
+        string roomNo = dgv.SelectedRows[0].Cells[0].Value?.ToString();
+   MessageBox.Show($"Edit Room {roomNo}\n\n✓ Price\n✓ Status\n✓ Notes", "Edit Room", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      }
+       else
+ {
+ MessageBox.Show("Please select a room first!", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+     }
+
+        /// <summary>
+        /// Delete selected room
+        /// </summary>
+        private async void BtnDelete_Click(object sender, EventArgs e)
+        {
+   DataGridView dgv = this.Controls.Find("dgvRooms", true).FirstOrDefault() as DataGridView;
+     if (dgv != null && dgv.SelectedRows.Count > 0)
+            {
+ string roomNo = dgv.SelectedRows[0].Cells[0].Value?.ToString();
+        var selectedRoom = allRooms.FirstOrDefault(r => r.RoomNumber == roomNo);
+
+      DialogResult result = MessageBox.Show($"Delete room {roomNo}? This action cannot be undone.",
+     "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+   if (result == DialogResult.Yes)
+        {
+                  try
+      {
+             if (_roomService != null && selectedRoom != null)
+ {
+       bool deleted = await _roomService.DeleteRoomAsync(selectedRoom.RoomId);
+   if (deleted)
+          {
+   allRooms.Remove(selectedRoom);
+            LoadRoomsToGrid();
+        MessageBox.Show("Room deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+           else
+      {
+  MessageBox.Show("Cannot delete room with active bookings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+      }
+       }
+  catch (Exception ex)
+           {
+        MessageBox.Show($"Error deleting room: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+           }
+                }
+            }
+            else
+       {
+        MessageBox.Show("Please select a room first!", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+  /// <summary>
+        /// Refresh the room list
+        /// </summary>
+   private async void BtnRefresh_Click(object sender, EventArgs e)
+        {
+          try
+            {
+                await LoadRoomDataFromDatabaseAsync();
+    LoadRoomsToGrid();
+                TextBox tbxSearch = this.Controls.Find("tbxSearchRoom", true).FirstOrDefault() as TextBox;
+ComboBox cbxType = this.Controls.Find("cbxRoomType", true).FirstOrDefault() as ComboBox;
+                ComboBox cbxStatus = this.Controls.Find("cbxStatus", true).FirstOrDefault() as ComboBox;
+
+ if (tbxSearch != null) tbxSearch.Clear();
+    if (cbxType != null) cbxType.SelectedIndex = 0;
+          if (cbxStatus != null) cbxStatus.SelectedIndex = 0;
+
+         MessageBox.Show("Room list refreshed!", "Refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+       catch (Exception ex)
+  {
+              MessageBox.Show($"Error refreshing: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+ }
+
+        /// <summary>
+     /// Handle DataGridView cell click for row selection
+        /// </summary>
+        private void Dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+if (e.RowIndex >= 0)
+         {
+    DataGridView dgv = sender as DataGridView;
+                if (dgv != null)
+    {
+             // Highlight selected row
+        dgv.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(220, 240, 250);
+    }
+      }
+      }
+
+   /// <summary>
+    /// Get room occupancy statistics
+  /// </summary>
+        public Dictionary<string, int> GetRoomStatistics()
+        {
+return new Dictionary<string, int>
+            {
+              { "Total", allRooms.Count },
+  { "Available", allRooms.Count(r => r.Status == RoomStatus.Available) },
+    { "Occupied", allRooms.Count(r => r.Status == RoomStatus.Occupied) },
+                { "Maintenance", allRooms.Count(r => r.Status == RoomStatus.Maintenance) },
+             { "Reserved", allRooms.Count(r => r.Status == RoomStatus.Reserved) }
+          };
+        }
+
+        /// <summary>
+        /// Get revenue information
+        /// </summary>
+    public decimal GetDailyRevenue()
+      {
+    return (decimal)allRooms
+     .Where(r => r.Status == RoomStatus.Occupied)
+            .Sum(r => r.Price);
+   }
+  }
+
+    /// <summary>
+    /// Room Status Enum
+    /// </summary>
+    public enum RoomStatus
+  {
+    Available,
+        Occupied,
+        Maintenance,
+ Reserved
+    }
+
+    /// <summary>
+    /// Room Information Model
+    /// </summary>
+    public class RoomInfo
+    {
+        public int RoomId { get; set; }
+        public string RoomNumber { get; set; }
+        public string Type { get; set; }
+        public int Floor { get; set; }
+        public RoomStatus Status { get; set; }
+      public double Price { get; set; }
+        public string Guest { get; set; }
+        public string CheckIn { get; set; }
+   public string CheckOut { get; set; }
+public int RoomTypeId { get; set; }
+        public int FloorId { get; set; }
+        public Models.RoomStatus DbStatus { get; set; }
+    }
+}

@@ -1,0 +1,63 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyKhachSan.Models
+{
+    [Table("HOADON")]
+    public class Invoice
+    {
+      [Key]
+       [Column("maHD")]
+       [StringLength(20)]
+       public string InvoiceId { get; set; }
+
+      [Column("maCTT")]
+         [StringLength(20)]
+        [ForeignKey("RentalDetail")]
+     public string RentalDetailId { get; set; }
+
+        [Column("soHD")]
+    [StringLength(20)]
+        public string InvoiceNumber { get; set; }
+
+     [Column("trangThai")]
+        public int Status { get; set; } = 0;
+
+        [Column("maKH")]
+        [StringLength(20)]
+        public string CustomerId { get; set; }
+
+  [Column("giamGia")]
+        public decimal DiscountAmount { get; set; } = 0;
+
+        [Column("tienPhong")]
+        public decimal RoomAmount { get; set; } = 0;
+
+ [Column("tienDV")]
+        public decimal ServiceAmount { get; set; } = 0;
+
+        [Column("tongTien")]
+        public decimal TotalAmount { get; set; } = 0;
+
+        [Column("daThanhToan")]
+        public decimal PaidAmount { get; set; } = 0;
+
+        [Column("ngayTao")]
+   public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        [Column("ngayCapNhat")]
+        public DateTime UpdatedDate { get; set; } = DateTime.Now;
+
+        [Column("ngayThanhToan")]
+        public DateTime? PaidDate { get; set; }
+
+       [Column("phuongThucThanhToan")]
+ public int PaymentMethod { get; set; }
+
+     [Column("xuLy")]
+ public int IsDeleted { get; set; } = 0;
+
+    // Navigation properties
+      public virtual RentalDetail RentalDetail { get; set; }
+   }
+}

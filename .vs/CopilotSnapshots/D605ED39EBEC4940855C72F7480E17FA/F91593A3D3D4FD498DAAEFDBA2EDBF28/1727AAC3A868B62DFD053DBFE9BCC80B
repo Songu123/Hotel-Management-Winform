@@ -1,0 +1,702 @@
+﻿File: QuanLyKhachSan\UI\UCRoomManagement.Designer.cs
+````````csharp
+namespace QuanLyKhachSan.UI
+{
+    partial class UCRoomManagement
+    {
+        private System.ComponentModel.IContainer components = null;
+
+protected override void Dispose(bool disposing)
+        {
+     if (disposing && (components != null))
+            {
+      components.Dispose();
+          }
+         base.Dispose(disposing);
+        }
+
+    private void InitializeComponent()
+        {
+            this.pnlMain = new System.Windows.Forms.Panel();
+   this.pnlHeader = new System.Windows.Forms.Panel();
+   this.lblTitle = new System.Windows.Forms.Label();
+ this.lblSubtitle = new System.Windows.Forms.Label();
+        this.pnlFilter = new System.Windows.Forms.Panel();
+   this.lblRoomId = new System.Windows.Forms.Label();
+ this.tbRoomId = new System.Windows.Forms.TextBox();
+      this.lblRoomName = new System.Windows.Forms.Label();
+   this.tbRoomName = new System.Windows.Forms.TextBox();
+     this.lblRoomType = new System.Windows.Forms.Label();
+    this.cbRoomType = new System.Windows.Forms.ComboBox();
+     this.lblRoomTypeDetails = new System.Windows.Forms.Label();
+        this.cbRoomTypeDetails = new System.Windows.Forms.ComboBox();
+    this.lblPrice = new System.Windows.Forms.Label();
+          this.cbPrice = new System.Windows.Forms.ComboBox();
+   this.lblStatus = new System.Windows.Forms.Label();
+       this.cbStatus = new System.Windows.Forms.ComboBox();
+       this.lblCurrentCondition = new System.Windows.Forms.Label();
+  this.cbCurrentCondition = new System.Windows.Forms.ComboBox();
+this.btnSearch = new System.Windows.Forms.Button();
+     this.btnRefresh = new System.Windows.Forms.Button();
+        this.pnlButtons = new System.Windows.Forms.Panel();
+   this.btnAddRoom = new System.Windows.Forms.Button();
+    this.btnEditRoom = new System.Windows.Forms.Button();
+    this.btnDeleteRoom = new System.Windows.Forms.Button();
+      this.pnlGrid = new System.Windows.Forms.Panel();
+  this.dgvRooms = new System.Windows.Forms.DataGridView();
+   this.colSTT = new System.Windows.Forms.DataGridViewTextBoxColumn();
+ this.colRoomId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+ this.colRoomName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRoomType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+         this.colPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+ this.colRoomTypeDetails = new System.Windows.Forms.DataGridViewTextBoxColumn();
+   this.colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+        this.colCurrentCondition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+     this.pnlForm = new System.Windows.Forms.Panel();
+  this.gbRoomInfo = new System.Windows.Forms.GroupBox();
+      this.pnlFormContent = new System.Windows.Forms.Panel();
+      this.lblFormRoomId = new System.Windows.Forms.Label();
+    this.tbFormRoomId = new System.Windows.Forms.TextBox();
+      this.lblFormRoomName = new System.Windows.Forms.Label();
+ this.tbFormRoomName = new System.Windows.Forms.TextBox();
+  this.lblFormRoomType = new System.Windows.Forms.Label();
+  this.cbFormRoomType = new System.Windows.Forms.ComboBox();
+    this.lblFormRoomTypeDetails = new System.Windows.Forms.Label();
+ this.cbFormRoomTypeDetails = new System.Windows.Forms.ComboBox();
+     this.lblFormPrice = new System.Windows.Forms.Label();
+  this.tbFormPrice = new System.Windows.Forms.TextBox();
+   this.lblFormStatus = new System.Windows.Forms.Label();
+        this.cbFormStatus = new System.Windows.Forms.ComboBox();
+    this.lblFormCurrentCondition = new System.Windows.Forms.Label();
+   this.cbFormCurrentCondition = new System.Windows.Forms.ComboBox();
+ this.pnlFormButtons = new System.Windows.Forms.Panel();
+   this.btnSaveRoom = new System.Windows.Forms.Button();
+ this.btnCancelForm = new System.Windows.Forms.Button();
+
+ this.pnlMain.SuspendLayout();
+      this.pnlHeader.SuspendLayout();
+          this.pnlFilter.SuspendLayout();
+ this.pnlButtons.SuspendLayout();
+      this.pnlGrid.SuspendLayout();
+     ((System.ComponentModel.ISupportInitialize)(this.dgvRooms)).BeginInit();
+        this.pnlForm.SuspendLayout();
+          this.gbRoomInfo.SuspendLayout();
+ this.pnlFormContent.SuspendLayout();
+            this.pnlFormButtons.SuspendLayout();
+        this.ResumeLayout(false);
+
+    // pnlMain
+       this.pnlMain.Controls.Add(this.pnlHeader);
+            this.pnlMain.Controls.Add(this.pnlFilter);
+            this.pnlMain.Controls.Add(this.pnlButtons);
+            this.pnlMain.Controls.Add(this.pnlGrid);
+   this.pnlMain.Controls.Add(this.pnlForm);
+this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+  this.pnlMain.Location = new System.Drawing.Point(0, 0);
+this.pnlMain.Name = "pnlMain";
+      this.pnlMain.Size = new System.Drawing.Size(1126, 650);
+       this.pnlMain.TabIndex = 0;
+
+     // pnlHeader
+    this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.pnlHeader.Controls.Add(this.lblTitle);
+            this.pnlHeader.Controls.Add(this.lblSubtitle);
+     this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+      this.pnlHeader.Name = "pnlHeader";
+   this.pnlHeader.Size = new System.Drawing.Size(1126, 80);
+    this.pnlHeader.TabIndex = 1;
+
+  // lblTitle
+            this.lblTitle.AutoSize = true;
+  this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(20, 15);
+         this.lblTitle.Name = "lblTitle";
+    this.lblTitle.Size = new System.Drawing.Size(186, 30);
+            this.lblTitle.TabIndex = 0;
+          this.lblTitle.Text = "QUẢN LÝ PHÒNG";
+
+     // lblSubtitle
+          this.lblSubtitle.AutoSize = true;
+    this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+       this.lblSubtitle.ForeColor = System.Drawing.Color.LightGray;
+  this.lblSubtitle.Location = new System.Drawing.Point(20, 45);
+    this.lblSubtitle.Name = "lblSubtitle";
+            this.lblSubtitle.Size = new System.Drawing.Size(455, 19);
+            this.lblSubtitle.TabIndex = 1;
+ this.lblSubtitle.Text = "Thực hiện các chức năng quản lý phòng, thêm, sửa, xóa thông tin phòng";
+
+   // pnlFilter
+    this.pnlFilter.BackColor = System.Drawing.Color.White;
+ this.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.pnlFilter.Controls.Add(this.lblRoomId);
+     this.pnlFilter.Controls.Add(this.tbRoomId);
+      this.pnlFilter.Controls.Add(this.lblRoomName);
+       this.pnlFilter.Controls.Add(this.tbRoomName);
+            this.pnlFilter.Controls.Add(this.lblRoomType);
+            this.pnlFilter.Controls.Add(this.cbRoomType);
+  this.pnlFilter.Controls.Add(this.lblRoomTypeDetails);
+            this.pnlFilter.Controls.Add(this.cbRoomTypeDetails);
+this.pnlFilter.Controls.Add(this.lblPrice);
+  this.pnlFilter.Controls.Add(this.cbPrice);
+            this.pnlFilter.Controls.Add(this.lblStatus);
+            this.pnlFilter.Controls.Add(this.cbStatus);
+            this.pnlFilter.Controls.Add(this.lblCurrentCondition);
+            this.pnlFilter.Controls.Add(this.cbCurrentCondition);
+            this.pnlFilter.Controls.Add(this.btnSearch);
+          this.pnlFilter.Controls.Add(this.btnRefresh);
+   this.pnlFilter.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlFilter.Location = new System.Drawing.Point(0, 80);
+     this.pnlFilter.Name = "pnlFilter";
+       this.pnlFilter.Size = new System.Drawing.Size(1126, 200);
+ this.pnlFilter.TabIndex = 2;
+
+            // lblRoomId
+  this.lblRoomId.AutoSize = true;
+ this.lblRoomId.Location = new System.Drawing.Point(15, 15);
+            this.lblRoomId.Name = "lblRoomId";
+            this.lblRoomId.Size = new System.Drawing.Size(59, 15);
+         this.lblRoomId.TabIndex = 0;
+    this.lblRoomId.Text = "Mã phòng:";
+
+            // tbRoomId
+this.tbRoomId.Location = new System.Drawing.Point(80, 12);
+            this.tbRoomId.Name = "tbRoomId";
+       this.tbRoomId.Size = new System.Drawing.Size(130, 23);
+    this.tbRoomId.TabIndex = 1;
+            this.tbRoomId.TextChanged += new System.EventHandler(this.tbRoomId_TextChanged);
+
+      // lblRoomName
+   this.lblRoomName.AutoSize = true;
+        this.lblRoomName.Location = new System.Drawing.Point(230, 15);
+    this.lblRoomName.Name = "lblRoomName";
+      this.lblRoomName.Size = new System.Drawing.Size(63, 15);
+    this.lblRoomName.TabIndex = 2;
+ this.lblRoomName.Text = "Tên phòng:";
+
+            // tbRoomName
+        this.tbRoomName.Location = new System.Drawing.Point(300, 12);
+       this.tbRoomName.Name = "tbRoomName";
+            this.tbRoomName.Size = new System.Drawing.Size(140, 23);
+      this.tbRoomName.TabIndex = 3;
+   this.tbRoomName.TextChanged += new System.EventHandler(this.tbRoomName_TextChanged);
+
+            // lblRoomType
+            this.lblRoomType.AutoSize = true;
+            this.lblRoomType.Location = new System.Drawing.Point(460, 15);
+            this.lblRoomType.Name = "lblRoomType";
+            this.lblRoomType.Size = new System.Drawing.Size(71, 15);
+this.lblRoomType.TabIndex = 4;
+       this.lblRoomType.Text = "Loại phòng:";
+
+        // cbRoomType
+        this.cbRoomType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+         this.cbRoomType.FormattingEnabled = true;
+  this.cbRoomType.Location = new System.Drawing.Point(535, 12);
+     this.cbRoomType.Name = "cbRoomType";
+       this.cbRoomType.Size = new System.Drawing.Size(140, 23);
+    this.cbRoomType.TabIndex = 5;
+            this.cbRoomType.SelectedIndexChanged += new System.EventHandler(this.cbRoomType_SelectedIndexChanged);
+
+         // lblRoomTypeDetails
+            this.lblRoomTypeDetails.AutoSize = true;
+     this.lblRoomTypeDetails.Location = new System.Drawing.Point(690, 15);
+    this.lblRoomTypeDetails.Name = "lblRoomTypeDetails";
+        this.lblRoomTypeDetails.Size = new System.Drawing.Size(91, 15);
+            this.lblRoomTypeDetails.TabIndex = 6;
+     this.lblRoomTypeDetails.Text = "Chi tiết loại phòng:";
+
+            // cbRoomTypeDetails
+            this.cbRoomTypeDetails.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRoomTypeDetails.FormattingEnabled = true;
+            this.cbRoomTypeDetails.Location = new System.Drawing.Point(787, 12);
+      this.cbRoomTypeDetails.Name = "cbRoomTypeDetails";
+        this.cbRoomTypeDetails.Size = new System.Drawing.Size(140, 23);
+  this.cbRoomTypeDetails.TabIndex = 7;
+       this.cbRoomTypeDetails.SelectedIndexChanged += new System.EventHandler(this.cbRoomTypeDetails_SelectedIndexChanged);
+
+ // lblPrice
+     this.lblPrice.AutoSize = true;
+ this.lblPrice.Location = new System.Drawing.Point(15, 50);
+ this.lblPrice.Name = "lblPrice";
+            this.lblPrice.Size = new System.Drawing.Size(54, 15);
+        this.lblPrice.TabIndex = 8;
+        this.lblPrice.Text = "Giá phòng:";
+
+      // cbPrice
+            this.cbPrice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPrice.FormattingEnabled = true;
+        this.cbPrice.Location = new System.Drawing.Point(80, 47);
+   this.cbPrice.Name = "cbPrice";
+            this.cbPrice.Size = new System.Drawing.Size(130, 23);
+   this.cbPrice.TabIndex = 9;
+   this.cbPrice.SelectedIndexChanged += new System.EventHandler(this.cbPrice_SelectedIndexChanged);
+
+// lblStatus
+  this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(230, 50);
+        this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(65, 15);
+         this.lblStatus.TabIndex = 10;
+    this.lblStatus.Text = "Tình trạng:";
+
+    // cbStatus
+   this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+         this.cbStatus.FormattingEnabled = true;
+   this.cbStatus.Location = new System.Drawing.Point(300, 47);
+   this.cbStatus.Name = "cbStatus";
+            this.cbStatus.Size = new System.Drawing.Size(140, 23);
+  this.cbStatus.TabIndex = 11;
+            this.cbStatus.SelectedIndexChanged += new System.EventHandler(this.cbStatus_SelectedIndexChanged);
+
+        // lblCurrentCondition
+    this.lblCurrentCondition.AutoSize = true;
+            this.lblCurrentCondition.Location = new System.Drawing.Point(460, 50);
+            this.lblCurrentCondition.Name = "lblCurrentCondition";
+            this.lblCurrentCondition.Size = new System.Drawing.Size(68, 15);
+       this.lblCurrentCondition.TabIndex = 12;
+   this.lblCurrentCondition.Text = "Hiện trạng:";
+
+   // cbCurrentCondition
+   this.cbCurrentCondition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cbCurrentCondition.FormattingEnabled = true;
+this.cbCurrentCondition.Location = new System.Drawing.Point(535, 47);
+         this.cbCurrentCondition.Name = "cbCurrentCondition";
+          this.cbCurrentCondition.Size = new System.Drawing.Size(140, 23);
+            this.cbCurrentCondition.TabIndex = 13;
+         this.cbCurrentCondition.SelectedIndexChanged += new System.EventHandler(this.cbCurrentCondition_SelectedIndexChanged);
+
+          // btnSearch
+    this.btnSearch.BackColor = System.Drawing.Color.SteelBlue;
+     this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+          this.btnSearch.ForeColor = System.Drawing.Color.White;
+       this.btnSearch.Location = new System.Drawing.Point(920, 30);
+       this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(90, 35);
+            this.btnSearch.TabIndex = 14;
+            this.btnSearch.Text = "Tìm kiếm";
+   this.btnSearch.UseVisualStyleBackColor = false;
+
+      // btnRefresh
+  this.btnRefresh.BackColor = System.Drawing.Color.Gray;
+       this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+       this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+   this.btnRefresh.ForeColor = System.Drawing.Color.White;
+    this.btnRefresh.Location = new System.Drawing.Point(1020, 30);
+            this.btnRefresh.Name = "btnRefresh";
+      this.btnRefresh.Size = new System.Drawing.Size(90, 35);
+            this.btnRefresh.TabIndex = 15;
+     this.btnRefresh.Text = "Làm mới";
+    this.btnRefresh.UseVisualStyleBackColor = false;
+          this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+
+            // pnlButtons
+   this.pnlButtons.BackColor = System.Windows.Forms.Color.White;
+         this.pnlButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlButtons.Controls.Add(this.btnAddRoom);
+       this.pnlButtons.Controls.Add(this.btnEditRoom);
+this.pnlButtons.Controls.Add(this.btnDeleteRoom);
+    this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Top;
+         this.pnlButtons.Location = new System.Drawing.Point(0, 280);
+     this.pnlButtons.Name = "pnlButtons";
+   this.pnlButtons.Size = new System.Drawing.Size(1126, 50);
+        this.pnlButtons.TabIndex = 3;
+
+            // btnAddRoom
+  this.btnAddRoom.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnAddRoom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+   this.btnAddRoom.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+  this.btnAddRoom.ForeColor = System.Drawing.Color.White;
+     this.btnAddRoom.Location = new System.Drawing.Point(15, 10);
+            this.btnAddRoom.Name = "btnAddRoom";
+this.btnAddRoom.Size = new System.Drawing.Size(120, 30);
+            this.btnAddRoom.TabIndex = 0;
+            this.btnAddRoom.Text = "Thêm phòng mới";
+            this.btnAddRoom.UseVisualStyleBackColor = false;
+    this.btnAddRoom.Click += new System.EventHandler(this.btnAddRoom_Click);
+
+            // btnEditRoom
+     this.btnEditRoom.BackColor = System.Drawing.Color.DodgerBlue;
+            this.btnEditRoom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+         this.btnEditRoom.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnEditRoom.ForeColor = System.Drawing.Color.White;
+   this.btnEditRoom.Location = new System.Drawing.Point(145, 10);
+            this.btnEditRoom.Name = "btnEditRoom";
+            this.btnEditRoom.Size = new System.Drawing.Size(120, 30);
+       this.btnEditRoom.TabIndex = 1;
+            this.btnEditRoom.Text = "Sửa phòng";
+          this.btnEditRoom.UseVisualStyleBackColor = false;
+     this.btnEditRoom.Click += new System.EventHandler(this.btnEditRoom_Click);
+
+       // btnDeleteRoom
+this.btnDeleteRoom.BackColor = System.Drawing.Color.Tomato;
+            this.btnDeleteRoom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+    this.btnDeleteRoom.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+      this.btnDeleteRoom.ForeColor = System.Drawing.Color.White;
+   this.btnDeleteRoom.Location = new System.Drawing.Point(275, 10);
+            this.btnDeleteRoom.Name = "btnDeleteRoom";
+          this.btnDeleteRoom.Size = new System.Drawing.Size(120, 30);
+            this.btnDeleteRoom.TabIndex = 2;
+            this.btnDeleteRoom.Text = "Xem chi tiết";
+   this.btnDeleteRoom.UseVisualStyleBackColor = false;
+      this.btnDeleteRoom.Click += new System.EventHandler(this.btnDeleteRoom_Click);
+
+            // pnlGrid
+        this.pnlGrid.BackColor = System.Drawing.Color.White;
+  this.pnlGrid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlGrid.Controls.Add(this.dgvRooms);
+   this.pnlGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlGrid.Location = new System.Drawing.Point(0, 330);
+            this.pnlGrid.Name = "pnlGrid";
+       this.pnlGrid.Padding = new System.Windows.Forms.Padding(10);
+            this.pnlGrid.Size = new System.Drawing.Size(1126, 320);
+   this.pnlGrid.TabIndex = 4;
+
+            // dgvRooms
+          this.dgvRooms.AllowUserToAddRows = false;
+          this.dgvRooms.AllowUserToDeleteRows = false;
+            this.dgvRooms.BackgroundColor = System.Drawing.Color.White;
+        this.dgvRooms.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+          this.dgvRooms.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+        this.colSTT,
+            this.colRoomId,
+            this.colRoomName,
+      this.colRoomType,
+ this.colPrice,
+    this.colRoomTypeDetails,
+            this.colStatus,
+            this.colCurrentCondition});
+         this.dgvRooms.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvRooms.Location = new System.Drawing.Point(10, 10);
+            this.dgvRooms.Name = "dgvRooms";
+            this.dgvRooms.RowTemplate.Height = 25;
+            this.dgvRooms.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+   this.dgvRooms.Size = new System.Drawing.Size(1104, 298);
+       this.dgvRooms.TabIndex = 0;
+
+            // colSTT
+      this.colSTT.DataPropertyName = "STT";
+            this.colSTT.HeaderText = "STT";
+        this.colSTT.Name = "colSTT";
+ this.colSTT.Width = 50;
+
+            // colRoomId
+       this.colRoomId.DataPropertyName = "RoomId";
+  this.colRoomId.HeaderText = "MÃ PHÒNG";
+      this.colRoomId.Name = "colRoomId";
+
+   // colRoomName
+          this.colRoomName.DataPropertyName = "Name";
+  this.colRoomName.HeaderText = "TÊN PHÒNG";
+        this.colRoomName.Name = "colRoomName";
+
+            // colRoomType
+            this.colRoomType.DataPropertyName = "RoomType";
+            this.colRoomType.HeaderText = "LOẠI PHÒNG";
+        this.colRoomType.Name = "colRoomType";
+
+        // colPrice
+      this.colPrice.DataPropertyName = "Price";
+        this.colPrice.HeaderText = "GIÁ PHÒNG";
+   this.colPrice.Name = "colPrice";
+
+            // colRoomTypeDetails
+    this.colRoomTypeDetails.DataPropertyName = "RoomTypeDetails";
+        this.colRoomTypeDetails.HeaderText = "CHI TIẾT LOẠI PHÒNG";
+      this.colRoomTypeDetails.Name = "colRoomTypeDetails";
+
+        // colStatus
+          this.colStatus.DataPropertyName = "Status";
+        this.colStatus.HeaderText = "TÌNH TRẠNG";
+   this.colStatus.Name = "colStatus";
+
+       // colCurrentCondition
+            this.colCurrentCondition.DataPropertyName = "CurrentCondition";
+    this.colCurrentCondition.HeaderText = "HIỆN TRẠNG";
+    this.colCurrentCondition.Name = "colCurrentCondition";
+
+  // pnlForm
+            this.pnlForm.Controls.Add(this.gbRoomInfo);
+         this.pnlForm.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.pnlForm.Location = new System.Drawing.Point(0, 330);
+     this.pnlForm.Name = "pnlForm";
+     this.pnlForm.Size = new System.Drawing.Size(1126, 320);
+ this.pnlForm.TabIndex = 5;
+   this.pnlForm.Visible = false;
+
+            // gbRoomInfo
+       this.gbRoomInfo.Controls.Add(this.pnlFormContent);
+        this.gbRoomInfo.Controls.Add(this.pnlFormButtons);
+        this.gbRoomInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+    this.gbRoomInfo.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+    this.gbRoomInfo.ForeColor = System.Drawing.Color.DodgerBlue;
+      this.gbRoomInfo.Location = new System.Drawing.Point(0, 0);
+      this.gbRoomInfo.Name = "gbRoomInfo";
+ this.gbRoomInfo.Padding = new System.Windows.Forms.Padding(15);
+        this.gbRoomInfo.Size = new System.Drawing.Size(1126, 320);
+  this.gbRoomInfo.TabIndex = 0;
+this.gbRoomInfo.TabStop = false;
+  this.gbRoomInfo.Text = "THÊM PHÒNG MỚI";
+
+        // pnlFormContent
+     this.pnlFormContent.Controls.Add(this.lblFormRoomId);
+            this.pnlFormContent.Controls.Add(this.tbFormRoomId);
+          this.pnlFormContent.Controls.Add(this.lblFormRoomName);
+    this.pnlFormContent.Controls.Add(this.tbFormRoomName);
+    this.pnlFormContent.Controls.Add(this.lblFormRoomType);
+            this.pnlFormContent.Controls.Add(this.cbFormRoomType);
+      this.pnlFormContent.Controls.Add(this.lblFormRoomTypeDetails);
+            this.pnlFormContent.Controls.Add(this.cbFormRoomTypeDetails);
+      this.pnlFormContent.Controls.Add(this.lblFormPrice);
+            this.pnlFormContent.Controls.Add(this.tbFormPrice);
+            this.pnlFormContent.Controls.Add(this.lblFormStatus);
+         this.pnlFormContent.Controls.Add(this.cbFormStatus);
+  this.pnlFormContent.Controls.Add(this.lblFormCurrentCondition);
+     this.pnlFormContent.Controls.Add(this.cbFormCurrentCondition);
+            this.pnlFormContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlFormContent.Location = new System.Drawing.Point(15, 35);
+ this.pnlFormContent.Name = "pnlFormContent";
+    this.pnlFormContent.Size = new System.Drawing.Size(1096, 235);
+            this.pnlFormContent.TabIndex = 0;
+
+            // lblFormRoomId
+   this.lblFormRoomId.AutoSize = true;
+            this.lblFormRoomId.Font = new System.Drawing.Font("Segoe UI", 9F);
+   this.lblFormRoomId.ForeColor = System.Drawing.Color.Black;
+    this.lblFormRoomId.Location = new System.Drawing.Point(20, 20);
+    this.lblFormRoomId.Name = "lblFormRoomId";
+      this.lblFormRoomId.Size = new System.Drawing.Size(59, 15);
+            this.lblFormRoomId.TabIndex = 0;
+       this.lblFormRoomId.Text = "Mã phòng:";
+
+// tbFormRoomId
+            this.tbFormRoomId.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tbFormRoomId.Location = new System.Drawing.Point(85, 17);
+    this.tbFormRoomId.Name = "tbFormRoomId";
+        this.tbFormRoomId.Size = new System.Drawing.Size(150, 23);
+    this.tbFormRoomId.TabIndex = 1;
+
+       // lblFormRoomName
+  this.lblFormRoomName.AutoSize = true;
+    this.lblFormRoomName.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblFormRoomName.ForeColor = System.Drawing.Color.Black;
+            this.lblFormRoomName.Location = new System.Drawing.Point(280, 20);
+     this.lblFormRoomName.Name = "lblFormRoomName";
+      this.lblFormRoomName.Size = new System.Drawing.Size(63, 15);
+         this.lblFormRoomName.TabIndex = 2;
+  this.lblFormRoomName.Text = "Tên phòng:";
+
+      // tbFormRoomName
+      this.tbFormRoomName.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tbFormRoomName.Location = new System.Drawing.Point(345, 17);
+       this.tbFormRoomName.Name = "tbFormRoomName";
+this.tbFormRoomName.Size = new System.Drawing.Size(150, 23);
+            this.tbFormRoomName.TabIndex = 3;
+
+   // lblFormRoomType
+   this.lblFormRoomType.AutoSize = true;
+        this.lblFormRoomType.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblFormRoomType.ForeColor = System.Drawing.Color.Black;
+         this.lblFormRoomType.Location = new System.Drawing.Point(540, 20);
+  this.lblFormRoomType.Name = "lblFormRoomType";
+      this.lblFormRoomType.Size = new System.Drawing.Size(71, 15);
+            this.lblFormRoomType.TabIndex = 4;
+         this.lblFormRoomType.Text = "Loại phòng:";
+
+         // cbFormRoomType
+            this.cbFormRoomType.Font = new System.Drawing.Font("Segoe UI", 9F);
+    this.cbFormRoomType.FormattingEnabled = true;
+      this.cbFormRoomType.Location = new System.Drawing.Point(605, 17);
+  this.cbFormRoomType.Name = "cbFormRoomType";
+    this.cbFormRoomType.Size = new System.Drawing.Size(150, 23);
+            this.cbFormRoomType.TabIndex = 5;
+
+      // lblFormRoomTypeDetails
+    this.lblFormRoomTypeDetails.AutoSize = true;
+      this.lblFormRoomTypeDetails.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblFormRoomTypeDetails.ForeColor = System.Drawing.Color.Black;
+       this.lblFormRoomTypeDetails.Location = new System.Drawing.Point(800, 20);
+            this.lblFormRoomTypeDetails.Name = "lblFormRoomTypeDetails";
+  this.lblFormRoomTypeDetails.Size = new System.Drawing.Size(91, 15);
+  this.lblFormRoomTypeDetails.TabIndex = 6;
+            this.lblFormRoomTypeDetails.Text = "Chi tiết loại phòng:";
+
+         // cbFormRoomTypeDetails
+   this.cbFormRoomTypeDetails.Font = new System.Drawing.Font("Segoe UI", 9F);
+   this.cbFormRoomTypeDetails.FormattingEnabled = true;
+ this.cbFormRoomTypeDetails.Location = new System.Drawing.Point(897, 17);
+       this.cbFormRoomTypeDetails.Name = "cbFormRoomTypeDetails";
+      this.cbFormRoomTypeDetails.Size = new System.Drawing.Size(150, 23);
+     this.cbFormRoomTypeDetails.TabIndex = 7;
+
+            // lblFormPrice
+         this.lblFormPrice.AutoSize = true;
+            this.lblFormPrice.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblFormPrice.ForeColor = System.Drawing.Color.Black;
+            this.lblFormPrice.Location = new System.Drawing.Point(20, 65);
+            this.lblFormPrice.Name = "lblFormPrice";
+          this.lblFormPrice.Size = new System.Drawing.Size(54, 15);
+            this.lblFormPrice.TabIndex = 8;
+    this.lblFormPrice.Text = "Giá phòng:";
+
+        // tbFormPrice
+  this.tbFormPrice.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tbFormPrice.Location = new System.Drawing.Point(85, 62);
+            this.tbFormPrice.Name = "tbFormPrice";
+      this.tbFormPrice.Size = new System.Drawing.Size(150, 23);
+    this.tbFormPrice.TabIndex = 9;
+
+            // lblFormStatus
+          this.lblFormStatus.AutoSize = true;
+         this.lblFormStatus.Font = new System.Drawing.Font("Segoe UI", 9F);
+     this.lblFormStatus.ForeColor = System.Drawing.Color.Black;
+    this.lblFormStatus.Location = new System.Drawing.Point(280, 65);
+    this.lblFormStatus.Name = "lblFormStatus";
+ this.lblFormStatus.Size = new System.Drawing.Size(65, 15);
+    this.lblFormStatus.TabIndex = 10;
+            this.lblFormStatus.Text = "Tình trạng:";
+
+       // cbFormStatus
+            this.cbFormStatus.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cbFormStatus.FormattingEnabled = true;
+            this.cbFormStatus.Location = new System.Drawing.Point(345, 62);
+            this.cbFormStatus.Name = "cbFormStatus";
+     this.cbFormStatus.Size = new System.Drawing.Size(150, 23);
+  this.cbFormStatus.TabIndex = 11;
+
+      // lblFormCurrentCondition
+            this.lblFormCurrentCondition.AutoSize = true;
+            this.lblFormCurrentCondition.Font = new System.Drawing.Font("Segoe UI", 9F);
+    this.lblFormCurrentCondition.ForeColor = System.Drawing.Color.Black;
+            this.lblFormCurrentCondition.Location = new System.Drawing.Point(540, 65);
+            this.lblFormCurrentCondition.Name = "lblFormCurrentCondition";
+     this.lblFormCurrentCondition.Size = new System.Drawing.Size(68, 15);
+            this.lblFormCurrentCondition.TabIndex = 12;
+   this.lblFormCurrentCondition.Text = "Hiện trạng:";
+
+      // cbFormCurrentCondition
+  this.cbFormCurrentCondition.Font = new System.Drawing.Font("Segoe UI", 9F);
+         this.cbFormCurrentCondition.FormattingEnabled = true;
+        this.cbFormCurrentCondition.Location = new System.Drawing.Point(605, 62);
+      this.cbFormCurrentCondition.Name = "cbFormCurrentCondition";
+        this.cbFormCurrentCondition.Size = new System.Drawing.Size(150, 23);
+       this.cbFormCurrentCondition.TabIndex = 13;
+
+            // pnlFormButtons
+this.pnlFormButtons.Controls.Add(this.btnSaveRoom);
+ this.pnlFormButtons.Controls.Add(this.btnCancelForm);
+    this.pnlFormButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+   this.pnlFormButtons.Location = new System.Drawing.Point(15, 270);
+          this.pnlFormButtons.Name = "pnlFormButtons";
+    this.pnlFormButtons.Size = new System.Drawing.Size(1096, 35);
+            this.pnlFormButtons.TabIndex = 1;
+
+  // btnSaveRoom
+            this.btnSaveRoom.BackColor = System.Drawing.Color.SeaGreen;
+       this.btnSaveRoom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+       this.btnSaveRoom.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+      this.btnSaveRoom.ForeColor = System.Drawing.Color.White;
+    this.btnSaveRoom.Location = new System.Drawing.Point(906, 2);
+            this.btnSaveRoom.Name = "btnSaveRoom";
+            this.btnSaveRoom.Size = new System.Drawing.Size(90, 30);
+  this.btnSaveRoom.TabIndex = 0;
+            this.btnSaveRoom.Text = "Lưu";
+            this.btnSaveRoom.UseVisualStyleBackColor = false;
+     this.btnSaveRoom.Click += new System.EventHandler(this.btnSaveRoom_Click);
+
+  // btnCancelForm
+     this.btnCancelForm.BackColor = System.Drawing.Color.Gray;
+            this.btnCancelForm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelForm.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+       this.btnCancelForm.ForeColor = System.Drawing.Color.White;
+    this.btnCancelForm.Location = new System.Drawing.Point(1002, 2);
+            this.btnCancelForm.Name = "btnCancelForm";
+this.btnCancelForm.Size = new System.Drawing.Size(90, 30);
+            this.btnCancelForm.TabIndex = 1;
+          this.btnCancelForm.Text = "Hủy";
+            this.btnCancelForm.UseVisualStyleBackColor = false;
+          this.btnCancelForm.Click += new System.EventHandler(this.btnCancelForm_Click);
+
+ // UCRoomManagement
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+     this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+  this.Controls.Add(this.pnlMain);
+       this.Name = "UCRoomManagement";
+      this.Size = new System.Drawing.Size(1126, 650);
+this.Load += new System.EventHandler(this.UCRoomManagement_Load);
+
+ this.pnlMain.ResumeLayout(false);
+            this.pnlHeader.ResumeLayout(false);
+         this.pnlHeader.PerformLayout();
+            this.pnlFilter.ResumeLayout(false);
+ this.pnlFilter.PerformLayout();
+   this.pnlButtons.ResumeLayout(false);
+     this.pnlGrid.ResumeLayout(false);
+    ((System.ComponentModel.ISupportInitialize)(this.dgvRooms)).EndInit();
+        this.pnlForm.ResumeLayout(false);
+   this.gbRoomInfo.ResumeLayout(false);
+   this.pnlFormContent.ResumeLayout(false);
+    this.pnlFormContent.PerformLayout();
+   this.pnlFormButtons.ResumeLayout(false);
+ this.ResumeLayout(false);
+        }
+
+        private System.Windows.Forms.Panel pnlMain;
+     private System.Windows.Forms.Panel pnlHeader;
+  private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblSubtitle;
+        private System.Windows.Forms.Panel pnlFilter;
+        private System.Windows.Forms.Label lblRoomId;
+        private System.Windows.Forms.TextBox tbRoomId;
+        private System.Windows.Forms.Label lblRoomName;
+  private System.Windows.Forms.TextBox tbRoomName;
+        private System.Windows.Forms.Label lblRoomType;
+        private System.Windows.Forms.ComboBox cbRoomType;
+        private System.Windows.Forms.Label lblRoomTypeDetails;
+    private System.Windows.Forms.ComboBox cbRoomTypeDetails;
+    private System.Windows.Forms.Label lblPrice;
+        private System.Windows.Forms.ComboBox cbPrice;
+   private System.Windows.Forms.Label lblStatus;
+       private System.Windows.Forms.ComboBox cbStatus;
+        private System.Windows.Forms.Label lblCurrentCondition;
+        private System.Windows.Forms.ComboBox cbCurrentCondition;
+     private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Panel pnlButtons;
+        private System.Windows.Forms.Button btnAddRoom;
+        private System.Windows.Forms.Button btnEditRoom;
+        private System.Windows.Forms.Button btnDeleteRoom;
+   private System.Windows.Forms.Panel pnlGrid;
+        private System.Windows.Forms.DataGridView dgvRooms;
+      private System.Windows.Forms.DataGridViewTextBoxColumn colSTT;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRoomId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRoomName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRoomType;
+    private System.Windows.Forms.DataGridViewTextBoxColumn colPrice;
+    private System.Windows.Forms.DataGridViewTextBoxColumn colRoomTypeDetails;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCurrentCondition;
+        private System.Windows.Forms.Panel pnlForm;
+        private System.Windows.Forms.GroupBox gbRoomInfo;
+        private System.Windows.Forms.Panel pnlFormContent;
+        private System.Windows.Forms.Label lblFormRoomId;
+        private System.Windows.Forms.TextBox tbFormRoomId;
+      private System.Windows.Forms.Label lblFormRoomName;
+        private System.Windows.Forms.TextBox tbFormRoomName;
+        private System.Windows.Forms.Label lblFormRoomType;
+        private System.Windows.Forms.ComboBox cbFormRoomType;
+        private System.Windows.Forms.Label lblFormRoomTypeDetails;
+        private System.Windows.Forms.ComboBox cbFormRoomTypeDetails;
+     private System.Windows.Forms.Label lblFormPrice;
+        private System.Windows.Forms.TextBox tbFormPrice;
+        private System.Windows.Forms.Label lblFormStatus;
+        private System.Windows.Forms.ComboBox cbFormStatus;
+    private System.Windows.Forms.Label lblFormCurrentCondition;
+    private System.Windows.Forms.ComboBox cbFormCurrentCondition;
+  private System.Windows.Forms.Panel pnlFormButtons;
+        private System.Windows.Forms.Button btnSaveRoom;
+        private System.Windows.Forms.Button btnCancelForm;
+    }
+}

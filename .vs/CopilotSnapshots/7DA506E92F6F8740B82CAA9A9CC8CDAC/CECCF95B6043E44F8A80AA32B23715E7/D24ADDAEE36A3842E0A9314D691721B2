@@ -1,0 +1,433 @@
+﻿using QuanLyKhachSan.Models;
+
+namespace QuanLyKhachSan.Data
+{
+    public static class SeedData
+    {
+        public static void SeedDatabase(HotelDbContext context)
+        {
+            // Seed Roles
+            if (!context.Roles.Any())
+            {
+                var roles = new List<Role>
+  {
+     new Role { RoleId = "ADMIN", Name = "Administrator" },
+       new Role { RoleId = "MANAGER", Name = "Manager" },
+     new Role { RoleId = "STAFF", Name = "Staff" },
+new Role { RoleId = "RECEPTIONIST", Name = "Receptionist" }
+      };
+                context.Roles.AddRange(roles);
+                context.SaveChanges();
+            }
+
+            // Seed Functions
+            if (!context.Functions.Any())
+            {
+                var functions = new List<Function>
+     {
+    new Function { FunctionId = "F001", Name = "Manage Users" },
+       new Function { FunctionId = "F002", Name = "Manage Rooms" },
+       new Function { FunctionId = "F003", Name = "Manage Bookings" },
+       new Function { FunctionId = "F004", Name = "Manage Customers" },
+                  new Function { FunctionId = "F005", Name = "Manage Services" },
+    new Function { FunctionId = "F006", Name = "Manage Invoices" },
+           new Function { FunctionId = "F007", Name = "View Reports" },
+         new Function { FunctionId = "F008", Name = "Manage Employees" }
+      };
+                context.Functions.AddRange(functions);
+                context.SaveChanges();
+            }
+
+            // Seed RoleFunctions
+            if (!context.RoleFunctions.Any())
+            {
+                var roleFunctions = new List<RoleFunction>
+    {
+                    // Admin has all functions
+          new RoleFunction { RoleId = "ADMIN", FunctionId = "F001" },
+        new RoleFunction { RoleId = "ADMIN", FunctionId = "F002" },
+                  new RoleFunction { RoleId = "ADMIN", FunctionId = "F003" },
+      new RoleFunction { RoleId = "ADMIN", FunctionId = "F004" },
+          new RoleFunction { RoleId = "ADMIN", FunctionId = "F005" },
+ new RoleFunction { RoleId = "ADMIN", FunctionId = "F006" },
+           new RoleFunction { RoleId = "ADMIN", FunctionId = "F007" },
+         new RoleFunction { RoleId = "ADMIN", FunctionId = "F008" },
+     
+         // Manager
+      new RoleFunction { RoleId = "MANAGER", FunctionId = "F002" },
+            new RoleFunction { RoleId = "MANAGER", FunctionId = "F003" },
+ new RoleFunction { RoleId = "MANAGER", FunctionId = "F004" },
+   new RoleFunction { RoleId = "MANAGER", FunctionId = "F005" },
+       new RoleFunction { RoleId = "MANAGER", FunctionId = "F006" },
+    new RoleFunction { RoleId = "MANAGER", FunctionId = "F007" },
+          
+  // Staff
+   new RoleFunction { RoleId = "STAFF", FunctionId = "F002" },
+           new RoleFunction { RoleId = "STAFF", FunctionId = "F003" },
+             new RoleFunction { RoleId = "STAFF", FunctionId = "F004" },
+      new RoleFunction { RoleId = "STAFF", FunctionId = "F005" },
+         
+             // Receptionist
+             new RoleFunction { RoleId = "RECEPTIONIST", FunctionId = "F003" },
+        new RoleFunction { RoleId = "RECEPTIONIST", FunctionId = "F004" },
+    new RoleFunction { RoleId = "RECEPTIONIST", FunctionId = "F006" }
+        };
+                context.RoleFunctions.AddRange(roleFunctions);
+                context.SaveChanges();
+            }
+
+            // Seed Employees
+            if (!context.Employees.Any())
+            {
+                var employees = new List<Employee>
+       {
+         new Employee
+            {
+ EmployeeId = "EMP001",
+   Name = "Nguyễn Văn A",
+             Gender = 1,
+          DaysOff = 20,
+           Position = 1,
+DateOfBirth = new DateTime(1990, 5, 15),
+         StartDate = new DateTime(2020, 1, 10),
+   Email = "nguyenvana@hotel.com",
+   DailySalary = 300000,
+               IsDeleted = 0
+  },
+    new Employee
+          {
+           EmployeeId = "EMP002",
+        Name = "Trần Thị B",
+         Gender = 0,
+   DaysOff = 18,
+             Position = 2,
+    DateOfBirth = new DateTime(1992, 8, 22),
+             StartDate = new DateTime(2019, 6, 15),
+ Email = "tranthib@hotel.com",
+          DailySalary = 250000,
+    IsDeleted = 0
+     },
+       new Employee
+    {
+             EmployeeId = "EMP003",
+   Name = "Lê Văn C",
+        Gender = 1,
+             DaysOff = 20,
+       Position = 3,
+            DateOfBirth = new DateTime(1995, 3, 10),
+        StartDate = new DateTime(2021, 3, 20),
+            Email = "levanc@hotel.com",
+     DailySalary = 200000,
+      IsDeleted = 0
+                    },
+       new Employee
+                {
+    EmployeeId = "EMP004",
+   Name = "Phạm Thị D",
+             Gender = 0,
+        DaysOff = 20,
+       Position = 4,
+         DateOfBirth = new DateTime(1993, 11, 5),
+            StartDate = new DateTime(2020, 9, 1),
+             Email = "phamthid@hotel.com",
+          DailySalary = 220000,
+     IsDeleted = 0
+                },
+         new Employee
+ {
+                EmployeeId = "EMP005",
+Name = "Hoàng Văn E",
+ Gender = 1,
+           DaysOff = 20,
+          Position = 5,
+         DateOfBirth = new DateTime(1994, 7, 18),
+                  StartDate = new DateTime(2022, 1, 15),
+       Email = "hoangvane@hotel.com",
+             DailySalary = 180000,
+     IsDeleted = 0
+             }
+      };
+                context.Employees.AddRange(employees);
+                context.SaveChanges();
+            }
+
+            // Seed Accounts
+            if (!context.Accounts.Any())
+            {
+                var accounts = new List<Account>
+                {
+ new Account
+            {
+          Username = "admin",
+       EmployeeId = "EMP001",
+     Password = "admin123", // In production, use hashed passwords
+   Status = 1,
+    RoleId = "ADMIN",
+              IsDeleted = 0
+           },
+        new Account
+        {
+  Username = "manager",
+   EmployeeId = "EMP002",
+         Password = "manager123",
+  Status = 1,
+          RoleId = "MANAGER",
+                 IsDeleted = 0
+          },
+               new Account
+         {
+                Username = "staff1",
+             EmployeeId = "EMP003",
+             Password = "staff123",
+            Status = 1,
+                 RoleId = "STAFF",
+         IsDeleted = 0
+         },
+       new Account
+  {
+             Username = "receptionist",
+           EmployeeId = "EMP004",
+      Password = "receptionist123",
+ Status = 1,
+         RoleId = "RECEPTIONIST",
+     IsDeleted = 0
+    },
+    new Account
+      {
+                 Username = "staff2",
+        EmployeeId = "EMP005",
+     Password = "staff123",
+    Status = 1,
+         RoleId = "STAFF",
+   IsDeleted = 0
+            }
+ };
+                context.Accounts.AddRange(accounts);
+                context.SaveChanges();
+            }
+
+            // Seed Customers
+            if (!context.Customers.Any())
+            {
+                var customers = new List<Customer>
+       {
+      new Customer
+    {
+        CustomerId = "KH001",
+   Name = "Trần Minh Huy",
+             IdNumber = "123456789",
+Gender = 1,
+             PhoneNumber = "0912345678",
+                   Address = "123 Đường Lê Lợi, Quận 1, TP.HCM",
+   Nationality = "Việt Nam",
+  DateOfBirth = new DateTime(1985, 4, 20),
+         IsDeleted = 0
+   },
+   new Customer
+           {
+               CustomerId = "KH002",
+       Name = "Ngô Thị Hương",
+   IdNumber = "987654321",
+           Gender = 0,
+          PhoneNumber = "0987654321",
+            Address = "456 Đường Nguyễn Huệ, Quận 1, TP.HCM",
+       Nationality = "Việt Nam",
+      DateOfBirth = new DateTime(1990, 7, 15),
+          IsDeleted = 0
+          },
+             new Customer
+    {
+         CustomerId = "KH003",
+            Name = "John Smith",
+            IdNumber = "PASS123456",
+     Gender = 1,
+      PhoneNumber = "+1234567890",
+         Address = "789 Main Street, New York, USA",
+  Nationality = "United States",
+        DateOfBirth = new DateTime(1980, 2, 10),
+       IsDeleted = 0
+          },
+          new Customer
+      {
+           CustomerId = "KH004",
+   Name = "Maria Garcia",
+         IdNumber = "PASS654321",
+        Gender = 0,
+              PhoneNumber = "+34123456789",
+       Address = "789 Calle Principal, Madrid, España",
+         Nationality = "Spain",
+ DateOfBirth = new DateTime(1988, 9, 25),
+            IsDeleted = 0
+           },
+   new Customer
+         {
+    CustomerId = "KH005",
+       Name = "Phạm Đức Thành",
+       IdNumber = "111222333",
+               Gender = 1,
+      PhoneNumber = "0933445566",
+            Address = "890 Đường Trần Hung Đạo, Quận 5, TP.HCM",
+         Nationality = "Việt Nam",
+    DateOfBirth = new DateTime(1992, 6, 12),
+            IsDeleted = 0
+ }
+     };
+                context.Customers.AddRange(customers);
+                context.SaveChanges();
+            }
+
+            // Seed Amenities
+            if (!context.Amenities.Any())
+            {
+                var amenities = new List<Amenity>
+      {
+     new Amenity { AmenityId = "AM001", Name = "WiFi Free", IsDeleted = 0 },
+     new Amenity { AmenityId = "AM002", Name = "Air Conditioning", IsDeleted = 0 },
+    new Amenity { AmenityId = "AM003", Name = "Television", IsDeleted = 0 },
+          new Amenity { AmenityId = "AM004", Name = "Hot Water", IsDeleted = 0 },
+ new Amenity { AmenityId = "AM005", Name = "Mini Bar", IsDeleted = 0 },
+        new Amenity { AmenityId = "AM006", Name = "Safe Box", IsDeleted = 0 },
+  new Amenity { AmenityId = "AM007", Name = "Bathrobe", IsDeleted = 0 },
+         new Amenity { AmenityId = "AM008", Name = "Hair Dryer", IsDeleted = 0 }
+     };
+                context.Amenities.AddRange(amenities);
+                context.SaveChanges();
+            }
+
+            // Seed Services
+            if (!context.Services.Any())
+            {
+                var services = new List<Service>
+         {
+         new Service
+    {
+    ServiceId = "SV001",
+     Name = "Room Service",
+          Type = "Food & Beverage",
+           Price = 50000,
+            Image = "room_service.jpg",
+            IsDeleted = 0
+      },
+  new Service
+    {
+            ServiceId = "SV002",
+             Name = "Laundry Service",
+        Type = "Cleaning",
+         Price = 30000,
+        Image = "laundry.jpg",
+       IsDeleted = 0
+           },
+         new Service
+ {
+      ServiceId = "SV003",
+          Name = "Massage Service",
+             Type = "Wellness",
+      Price = 150000,
+ Image = "massage.jpg",
+    IsDeleted = 0
+       },
+        new Service
+     {
+    ServiceId = "SV004",
+  Name = "Airport Transfer",
+       Type = "Transportation",
+     Price = 200000,
+  Image = "airport_transfer.jpg",
+     IsDeleted = 0
+        },
+       new Service
+{
+        ServiceId = "SV005",
+          Name = "Parking Service",
+  Type = "Parking",
+               Price = 100000,
+      Image = "parking.jpg",
+    IsDeleted = 0
+        },
+        new Service
+          {
+      ServiceId = "SV006",
+     Name = "Breakfast Buffet",
+         Type = "Food & Beverage",
+            Price = 80000,
+       Image = "breakfast.jpg",
+              IsDeleted = 0
+          }
+         };
+                context.Services.AddRange(services);
+                context.SaveChanges();
+            }
+
+            // Seed Rooms
+            if (!context.Rooms.Any())
+            {
+                var rooms = new List<Room>
+                {
+        new Room { RoomId = "101", Name = "Room 101", RoomType = 1, Price = 500000, RoomTypeDetails = 1, Status = 0, CurrentCondition = 0, IsDeleted = 0 },
+ new Room { RoomId = "102", Name = "Room 102", RoomType = 1, Price = 500000, RoomTypeDetails = 1, Status = 0, CurrentCondition = 0, IsDeleted = 0 },
+  new Room { RoomId = "103", Name = "Room 103", RoomType = 2, Price = 700000, RoomTypeDetails = 2, Status = 0, CurrentCondition = 0, IsDeleted = 0 },
+      new Room { RoomId = "201", Name = "Room 201", RoomType = 1, Price = 500000, RoomTypeDetails = 1, Status = 0, CurrentCondition = 0, IsDeleted = 0 },
+        new Room { RoomId = "202", Name = "Room 202", RoomType = 2, Price = 700000, RoomTypeDetails = 2, Status = 0, CurrentCondition = 0, IsDeleted = 0 },
+        new Room { RoomId = "203", Name = "Room 203", RoomType = 3, Price = 1000000, RoomTypeDetails = 3, Status = 0, CurrentCondition = 0, IsDeleted = 0 },
+           new Room { RoomId = "301", Name = "Room 301", RoomType = 1, Price = 500000, RoomTypeDetails = 1, Status = 0, CurrentCondition = 0, IsDeleted = 0 },
+                    new Room { RoomId = "302", Name = "Room 302", RoomType = 2, Price = 700000, RoomTypeDetails = 2, Status = 0, CurrentCondition = 0, IsDeleted = 0 },
+       new Room { RoomId = "303", Name = "Room 303", RoomType = 3, Price = 1000000, RoomTypeDetails = 3, Status = 0, CurrentCondition = 0, IsDeleted = 0 },
+      new Room { RoomId = "304", Name = "Room 304", RoomType = 4, Price = 1500000, RoomTypeDetails = 4, Status = 0, CurrentCondition = 0, IsDeleted = 0 }
+    };
+                context.Rooms.AddRange(rooms);
+                context.SaveChanges();
+            }
+
+            // Seed RoomAmenities
+            if (!context.RoomAmenities.Any())
+            {
+                var roomAmenities = new List<RoomAmenity>
+             {
+           // Room 101
+       new RoomAmenity { RoomId = "101", AmenityId = "AM001" },
+  new RoomAmenity { RoomId = "101", AmenityId = "AM002" },
+          new RoomAmenity { RoomId = "101", AmenityId = "AM003" },
+      new RoomAmenity { RoomId = "101", AmenityId = "AM004" },
+     
+    // Room 102
+     new RoomAmenity { RoomId = "102", AmenityId = "AM001" },
+   new RoomAmenity { RoomId = "102", AmenityId = "AM002" },
+       new RoomAmenity { RoomId = "102", AmenityId = "AM003" },
+                 
+ // Room 103
+ new RoomAmenity { RoomId = "103", AmenityId = "AM001" },
+    new RoomAmenity { RoomId = "103", AmenityId = "AM002" },
+         new RoomAmenity { RoomId = "103", AmenityId = "AM003" },
+   new RoomAmenity { RoomId = "103", AmenityId = "AM004" },
+          new RoomAmenity { RoomId = "103", AmenityId = "AM005" },
+                new RoomAmenity { RoomId = "103", AmenityId = "AM006" },
+          
+   // Room 201
+  new RoomAmenity { RoomId = "201", AmenityId = "AM001" },
+           new RoomAmenity { RoomId = "201", AmenityId = "AM002" },
+  new RoomAmenity { RoomId = "201", AmenityId = "AM003" },
+              new RoomAmenity { RoomId = "201", AmenityId = "AM004" },
+        
+          // Room 202
+       new RoomAmenity { RoomId = "202", AmenityId = "AM001" },
+           new RoomAmenity { RoomId = "202", AmenityId = "AM002" },
+          new RoomAmenity { RoomId = "202", AmenityId = "AM003" },
+         new RoomAmenity { RoomId = "202", AmenityId = "AM004" },
+ new RoomAmenity { RoomId = "202", AmenityId = "AM005" },
+  
+              // Room 203
+       new RoomAmenity { RoomId = "203", AmenityId = "AM001" },
+        new RoomAmenity { RoomId = "203", AmenityId = "AM002" },
+  new RoomAmenity { RoomId = "203", AmenityId = "AM003" },
+   new RoomAmenity { RoomId = "203", AmenityId = "AM004" },
+            new RoomAmenity { RoomId = "203", AmenityId = "AM005" },
+  new RoomAmenity { RoomId = "203", AmenityId = "AM006" },
+       new RoomAmenity { RoomId = "203", AmenityId = "AM007" },
+          new RoomAmenity { RoomId = "203", AmenityId = "AM008" }
+              };
+                context.RoomAmenities.AddRange(roomAmenities);
+                context.SaveChanges();
+            }
+        }
+    }
+}

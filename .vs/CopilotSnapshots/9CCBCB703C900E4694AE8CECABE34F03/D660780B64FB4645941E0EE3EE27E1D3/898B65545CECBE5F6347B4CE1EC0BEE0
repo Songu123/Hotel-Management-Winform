@@ -1,0 +1,409 @@
+﻿namespace QuanLyKhachSan.UI
+{
+  partial class DashboardForm
+{
+        private System.ComponentModel.IContainer components = null;
+    private Panel contentPanel; // Main content area for switching panels
+
+        protected override void Dispose(bool disposing)
+        {
+      if (disposing && (components != null))
+            {
+         components.Dispose();
+   }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+       components = new System.ComponentModel.Container();
+
+            // Main panel
+            Panel mainPanel = new Panel();
+ mainPanel.Dock = DockStyle.Fill;
+    mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+            // Sidebar panel
+   Panel sidebarPanel = new Panel();
+        sidebarPanel.Width = 220;
+     sidebarPanel.Dock = DockStyle.Left;
+    sidebarPanel.BackColor = Color.FromArgb(30, 40, 60);
+
+// Logo panel
+   Panel logoPanel = new Panel();
+  logoPanel.Height = 100;
+   logoPanel.Dock = DockStyle.Top;
+logoPanel.BackColor = Color.FromArgb(20, 30, 50);
+         logoPanel.BorderStyle = BorderStyle.FixedSingle;
+
+ Label logoLabel = new Label();
+            logoLabel.Text = "🏨 HOTEL";
+            logoLabel.Font = new Font("Segoe UI", 18, FontStyle.Bold);
+    logoLabel.ForeColor = Color.White;
+         logoLabel.Dock = DockStyle.Fill;
+            logoLabel.TextAlign = ContentAlignment.MiddleCenter;
+          logoPanel.Controls.Add(logoLabel);
+
+            sidebarPanel.Controls.Add(logoPanel);
+
+    // Navigation buttons
+ string[] menuItems = { "DASHBOARD", "ROOM MANAGEMENT", "BOOKING MANAGEMENT", "CUSTOMER MANAGEMENT", "INVOICES & SERVICES" };
+         int yPos = 110;
+
+       foreach (string item in menuItems)
+            {
+    Button btnMenu = new Button();
+        btnMenu.Text = "📊 " + item;
+     btnMenu.Width = 220;
+           btnMenu.Height = 50;
+    btnMenu.Location = new Point(0, yPos);
+      btnMenu.FlatStyle = FlatStyle.Flat;
+       btnMenu.ForeColor = Color.White;
+    btnMenu.BackColor = item == "DASHBOARD" ? Color.FromArgb(70, 130, 180) : Color.Transparent;
+          btnMenu.Font = new Font("Segoe UI", 10);
+ btnMenu.FlatAppearance.BorderSize = 0;
+  btnMenu.Cursor = Cursors.Hand;
+    btnMenu.Tag = item;
+      btnMenu.Click += (s, e) => MenuItemClick(s, e);
+
+                sidebarPanel.Controls.Add(btnMenu);
+                yPos += 55;
+            }
+
+      // Bottom menu items
+        Panel bottomMenuPanel = new Panel();
+            bottomMenuPanel.Height = 130;
+  bottomMenuPanel.Dock = DockStyle.Bottom;
+            bottomMenuPanel.BackColor = Color.FromArgb(30, 40, 60);
+
+     string[] bottomItems = { "HELP CENTER", "LOGOUT" };
+        int bottomYPos = 0;
+        foreach (string item in bottomItems)
+            {
+    Button btnBottom = new Button();
+   btnBottom.Text = "❓ " + item;
+             btnBottom.Width = 220;
+      btnBottom.Height = 50;
+     btnBottom.Location = new Point(0, bottomYPos);
+        btnBottom.FlatStyle = FlatStyle.Flat;
+          btnBottom.ForeColor = Color.White;
+ btnBottom.BackColor = Color.Transparent;
+     btnBottom.Font = new Font("Segoe UI", 10);
+ btnBottom.FlatAppearance.BorderSize = 0;
+           btnBottom.Cursor = Cursors.Hand;
+        btnBottom.Click += (s, e) => BottomMenuClick(s, e);
+    bottomMenuPanel.Controls.Add(btnBottom);
+      bottomYPos += 55;
+            }
+            sidebarPanel.Controls.Add(bottomMenuPanel);
+
+      // Header panel
+            Panel headerPanel = new Panel();
+            headerPanel.Height = 60;
+       headerPanel.Dock = DockStyle.Top;
+            headerPanel.BackColor = Color.White;
+            headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+  Label headerTitleLabel = new Label();
+            headerTitleLabel.Text = "Morning Admin!";
+          headerTitleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+   headerTitleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+headerTitleLabel.Location = new Point(30, 8);
+        headerTitleLabel.Size = new Size(400, 40);
+
+            Label headerSubLabel = new Label();
+     headerSubLabel.Text = "Here's what's happening at your hotel today.";
+   headerSubLabel.Font = new Font("Segoe UI", 10);
+    headerSubLabel.ForeColor = Color.Gray;
+  headerSubLabel.Location = new Point(30, 45);
+            headerSubLabel.Size = new Size(400, 20);
+
+          Label dateLabel = new Label();
+      dateLabel.Text = DateTime.Now.ToString("MMM dd, yyyy");
+         dateLabel.Font = new Font("Segoe UI", 10);
+            dateLabel.ForeColor = Color.Gray;
+  dateLabel.TextAlign = ContentAlignment.MiddleRight;
+            dateLabel.Location = new Point(mainPanel.Width - 200, 18);
+      dateLabel.Size = new Size(150, 30);
+
+  headerPanel.Controls.Add(headerTitleLabel);
+            headerPanel.Controls.Add(headerSubLabel);
+            headerPanel.Controls.Add(dateLabel);
+
+            // Content panel - This will hold all dashboard content
+          contentPanel = new Panel();
+            contentPanel.Dock = DockStyle.Fill;
+   contentPanel.AutoScroll = true;
+        contentPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+            // Dashboard content (will be replaced when menu items are clicked)
+    CreateDashboardContent(contentPanel);
+
+   // Add panels to main
+    mainPanel.Controls.Add(contentPanel);
+     mainPanel.Controls.Add(headerPanel);
+
+  // Form settings
+ this.AutoScaleDimensions = new SizeF(7F, 15F);
+ this.AutoScaleMode = AutoScaleMode.Font;
+  this.ClientSize = new Size(1600, 900);
+      this.Controls.Add(mainPanel);
+     this.Controls.Add(sidebarPanel);
+            this.Name = "DashboardForm";
+       this.Text = "Hotel Management System - Dashboard";
+          this.StartPosition = FormStartPosition.CenterScreen;
+            this.WindowState = FormWindowState.Maximized;
+        }
+
+        private void CreateDashboardContent(Panel container)
+        {
+ container.Controls.Clear();
+
+  // Occupancy Rate Card
+    Panel occupancyCard = CreateMetricCard("OCCUPANCY RATE", "0%", "Loading...", Color.FromArgb(40, 200, 150), 20, 20);
+          container.Controls.Add(occupancyCard);
+
+         // Total Revenue Card
+  Panel revenueCard = CreateMetricCard("TOTAL REVENUE", "$0", "Daily average: $0", Color.FromArgb(70, 130, 180), 420, 20);
+       container.Controls.Add(revenueCard);
+
+       // Check-ins Pending Card
+            Panel checkInCard = CreateMetricCard("CHECK-INS PENDING", "0", "guests checking in today", Color.FromArgb(200, 120, 80), 820, 20);
+       container.Controls.Add(checkInCard);
+
+ // Recent Bookings Section
+    Label recentLabel = new Label();
+  recentLabel.Text = "Recent Bookings";
+      recentLabel.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+     recentLabel.ForeColor = Color.FromArgb(30, 40, 60);
+          recentLabel.Location = new Point(20, 220);
+    recentLabel.Size = new Size(300, 30);
+   container.Controls.Add(recentLabel);
+
+            DataGridView dgvBookings = new DataGridView();
+   dgvBookings.Location = new Point(20, 260);
+  dgvBookings.Size = new Size(730, 200);
+ dgvBookings.BackgroundColor = Color.White;
+ dgvBookings.BorderStyle = BorderStyle.FixedSingle;
+            dgvBookings.AllowUserToAddRows = false;
+        dgvBookings.ReadOnly = true;
+         dgvBookings.RowHeadersVisible = false;
+          dgvBookings.GridColor = Color.LightGray;
+     dgvBookings.Font = new Font("Segoe UI", 9);
+  dgvBookings.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+       dgvBookings.Columns.Add("GUEST", "👤 GUEST");
+ dgvBookings.Columns.Add("ROOM", "🛏️ ROOM");
+   dgvBookings.Columns.Add("DATE", "📅 DATE");
+dgvBookings.Columns.Add("STATUS", "✓ STATUS");
+            dgvBookings.Columns.Add("AMOUNT", "💰 AMOUNT");
+
+       dgvBookings.Columns[0].Width = 150;
+     dgvBookings.Columns[1].Width = 100;
+  dgvBookings.Columns[2].Width = 120;
+dgvBookings.Columns[3].Width = 120;
+    dgvBookings.Columns[4].Width = 100;
+
+            container.Controls.Add(dgvBookings);
+
+         // Room Availability Panel
+            Panel availPanel = CreateRoomAvailabilityPanel(790, 260);
+    container.Controls.Add(availPanel);
+
+ // Dashboard Stats Summary
+      Label statsLabel = new Label();
+  statsLabel.Text = "Dashboard Overview";
+       statsLabel.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+ statsLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            statsLabel.Location = new Point(20, 490);
+            statsLabel.Size = new Size(400, 30);
+   container.Controls.Add(statsLabel);
+
+     // Stats Panel
+        Panel statsPanel = new Panel();
+      statsPanel.Location = new Point(20, 530);
+   statsPanel.Size = new Size(1520, 140);
+         statsPanel.BackColor = Color.White;
+ statsPanel.BorderStyle = BorderStyle.FixedSingle;
+   statsPanel.Padding = new Padding(20);
+
+          // Row 1: Hotel Stats
+Label hotelStatsLabel = new Label();
+   hotelStatsLabel.Text = "🏨 Hotel Statistics";
+     hotelStatsLabel.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+hotelStatsLabel.ForeColor = Color.FromArgb(30, 40, 60);
+     hotelStatsLabel.Location = new Point(20, 10);
+    hotelStatsLabel.Size = new Size(200, 25);
+   statsPanel.Controls.Add(hotelStatsLabel);
+
+      Label totalBookingsLabel = new Label();
+   totalBookingsLabel.Text = "Total Active Bookings: 0";
+         totalBookingsLabel.Font = new Font("Segoe UI", 10);
+    totalBookingsLabel.ForeColor = Color.Gray;
+    totalBookingsLabel.Location = new Point(20, 40);
+  totalBookingsLabel.Size = new Size(200, 20);
+  statsPanel.Controls.Add(totalBookingsLabel);
+
+   Label totalCustomersLabel = new Label();
+     totalCustomersLabel.Text = "Total Registered Customers: 0";
+        totalCustomersLabel.Font = new Font("Segoe UI", 10);
+            totalCustomersLabel.ForeColor = Color.Gray;
+  totalCustomersLabel.Location = new Point(20, 65);
+  totalCustomersLabel.Size = new Size(250, 20);
+             statsPanel.Controls.Add(totalCustomersLabel);
+
+        Label todayStatsLabel = new Label();
+todayStatsLabel.Text = "📊 Today's Statistics";
+  todayStatsLabel.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+      todayStatsLabel.ForeColor = Color.FromArgb(30, 40, 60);
+    todayStatsLabel.Location = new Point(600, 10);
+             todayStatsLabel.Size = new Size(200, 25);
+ statsPanel.Controls.Add(todayStatsLabel);
+
+            Label todayRevenueLabel = new Label();
+  todayRevenueLabel.Text = "Today's Revenue: $0";
+        todayRevenueLabel.Font = new Font("Segoe UI", 10);
+   todayRevenueLabel.ForeColor = Color.Gray;
+            todayRevenueLabel.Location = new Point(600, 40);
+todayRevenueLabel.Size = new Size(200, 20);
+      statsPanel.Controls.Add(todayRevenueLabel);
+
+    Label lastUpdateLabel = new Label();
+     lastUpdateLabel.Text = $"Last Updated: {DateTime.Now:HH:mm:ss}";
+    lastUpdateLabel.Font = new Font("Segoe UI", 9);
+  lastUpdateLabel.ForeColor = Color.LightGray;
+           lastUpdateLabel.Location = new Point(600, 65);
+        lastUpdateLabel.Size = new Size(250, 20);
+ statsPanel.Controls.Add(lastUpdateLabel);
+
+ container.Controls.Add(statsPanel);
+  }
+
+  private Panel CreateMetricCard(string title, string value, string subtitle, Color accentColor, int x, int y)
+ {
+     Panel card = new Panel();
+      card.Location = new Point(x, y);
+      card.Size = new Size(370, 180);
+            card.BackColor = Color.White;
+            card.BorderStyle = BorderStyle.FixedSingle;
+        card.Cursor = Cursors.Hand;
+
+ // Top accent bar
+            Panel accentBar = new Panel();
+  accentBar.Height = 4;
+            accentBar.Dock = DockStyle.Top;
+    accentBar.BackColor = accentColor;
+            card.Controls.Add(accentBar);
+
+        // Title
+            Label titleLabel = new Label();
+            titleLabel.Text = title;
+            titleLabel.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+      titleLabel.ForeColor = Color.Gray;
+       titleLabel.Location = new Point(15, 15);
+            titleLabel.Size = new Size(340, 20);
+    card.Controls.Add(titleLabel);
+
+            // Value
+            Label valueLabel = new Label();
+     valueLabel.Text = value;
+    valueLabel.Font = new Font("Segoe UI", 36, FontStyle.Bold);
+   valueLabel.ForeColor = Color.FromArgb(30, 40, 60);
+  valueLabel.Location = new Point(15, 45);
+        valueLabel.Size = new Size(340, 50);
+            card.Controls.Add(valueLabel);
+
+         // Subtitle
+   Label subtitleLabel = new Label();
+     subtitleLabel.Text = subtitle;
+ subtitleLabel.Font = new Font("Segoe UI", 10);
+            subtitleLabel.ForeColor = Color.Gray;
+      subtitleLabel.Location = new Point(15, 110);
+   subtitleLabel.Size = new Size(340, 50);
+     card.Controls.Add(subtitleLabel);
+
+            return card;
+}
+
+        private Panel CreateRoomAvailabilityPanel(int x, int y)
+        {
+ Panel panel = new Panel();
+            panel.Location = new Point(x, y);
+          panel.Size = new Size(220, 220);
+     panel.BackColor = Color.White;
+ panel.BorderStyle = BorderStyle.FixedSingle;
+
+         Label titleLabel = new Label();
+       titleLabel.Text = "Room Availability";
+         titleLabel.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+         titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+        titleLabel.Location = new Point(10, 10);
+    titleLabel.Size = new Size(200, 25);
+            panel.Controls.Add(titleLabel);
+
+            // Available
+      Panel availableItem = new Panel();
+      availableItem.Location = new Point(10, 45);
+    availableItem.Size = new Size(200, 50);
+  availableItem.BackColor = Color.Transparent;
+
+ Label availLabel = new Label();
+          availLabel.Text = "● Available";
+         availLabel.Font = new Font("Segoe UI", 10);
+     availLabel.ForeColor = Color.FromArgb(40, 200, 150);
+availLabel.Location = new Point(0, 0);
+            availLabel.Size = new Size(150, 20);
+            availableItem.Controls.Add(availLabel);
+
+          Label availCount = new Label();
+  availCount.Text = "42";
+            availCount.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+  availCount.ForeColor = Color.FromArgb(30, 40, 60);
+       availCount.Location = new Point(155, 0);
+            availCount.Size = new Size(45, 20);
+     availableItem.Controls.Add(availCount);
+
+            ProgressBar availProgress = new ProgressBar();
+            availProgress.Location = new Point(0, 25);
+            availProgress.Size = new Size(200, 8);
+  availProgress.Value = 70;
+            availProgress.ForeColor = Color.FromArgb(40, 200, 150);
+        availableItem.Controls.Add(availProgress);
+
+            panel.Controls.Add(availableItem);
+
+            // Occupied
+      Panel occupiedItem = new Panel();
+     occupiedItem.Location = new Point(10, 105);
+   occupiedItem.Size = new Size(200, 50);
+  occupiedItem.BackColor = Color.Transparent;
+
+            Label occLabel = new Label();
+      occLabel.Text = "● Occupied";
+     occLabel.Font = new Font("Segoe UI", 10);
+         occLabel.ForeColor = Color.FromArgb(70, 90, 120);
+  occLabel.Location = new Point(0, 0);
+   occLabel.Size = new Size(150, 20);
+            occupiedItem.Controls.Add(occLabel);
+
+            Label occCount = new Label();
+  occCount.Text = "28";
+      occCount.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+  occCount.ForeColor = Color.FromArgb(30, 40, 60);
+     occCount.Location = new Point(155, 0);
+      occCount.Size = new Size(45, 20);
+ occupiedItem.Controls.Add(occCount);
+
+    ProgressBar occProgress = new ProgressBar();
+  occProgress.Location = new Point(0, 25);
+            occProgress.Size = new Size(200, 8);
+            occProgress.Value = 45;
+occProgress.ForeColor = Color.FromArgb(70, 90, 120);
+       occupiedItem.Controls.Add(occProgress);
+
+      panel.Controls.Add(occupiedItem);
+
+         return panel;
+     }
+    }
+}

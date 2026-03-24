@@ -1,0 +1,156 @@
+﻿namespace QuanLyKhachSan
+{
+    partial class RoomManagementForm
+    {
+        private System.ComponentModel.IContainer components = null;
+
+   protected override void Dispose(bool disposing)
+  {
+            if (disposing && (components != null))
+            {
+         components.Dispose();
+            }
+          base.Dispose(disposing);
+        }
+
+       private void InitializeComponent()
+        {
+  components = new System.ComponentModel.Container();
+
+          // Main panel
+            Panel mainPanel = new Panel();
+          mainPanel.Dock = DockStyle.Fill;
+           mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+
+         // Header
+            Panel headerPanel = new Panel();
+            headerPanel.Height = 60;
+            headerPanel.Dock = DockStyle.Top;
+            headerPanel.BackColor = Color.White;
+            headerPanel.BorderStyle = BorderStyle.FixedSingle;
+
+           Label titleLabel = new Label();
+    titleLabel.Text = "Room Management";
+            titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+   titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            titleLabel.Location = new Point(30, 8);
+       titleLabel.Size = new Size(400, 40);
+            headerPanel.Controls.Add(titleLabel);
+
+         // Toolbar
+     Panel toolbarPanel = new Panel();
+    toolbarPanel.Height = 60;
+      toolbarPanel.Dock = DockStyle.Top;
+       toolbarPanel.BackColor = Color.White;
+         toolbarPanel.BorderStyle = BorderStyle.FixedSingle;
+
+            Button btnAddRoom = new Button();
+    btnAddRoom.Text = "+ Add New Room";
+            btnAddRoom.Location = new Point(20, 12);
+    btnAddRoom.Size = new Size(130, 36);
+            btnAddRoom.BackColor = Color.FromArgb(70, 130, 180);
+       btnAddRoom.ForeColor = Color.White;
+     btnAddRoom.Font = new Font("Segoe UI", 10);
+btnAddRoom.FlatStyle = FlatStyle.Flat;
+   btnAddRoom.Cursor = Cursors.Hand;
+            btnAddRoom.Click += (s, e) => MessageBox.Show("Add new room");
+ toolbarPanel.Controls.Add(btnAddRoom);
+
+        Button btnRefresh = new Button();
+btnRefresh.Text = "🔄 Refresh";
+        btnRefresh.Location = new Point(160, 12);
+  btnRefresh.Size = new Size(100, 36);
+      btnRefresh.BackColor = Color.FromArgb(100, 100, 100);
+            btnRefresh.ForeColor = Color.White;
+ btnRefresh.Font = new Font("Segoe UI", 10);
+   btnRefresh.FlatStyle = FlatStyle.Flat;
+      btnRefresh.Cursor = Cursors.Hand;
+           btnRefresh.Click += (s, e) => LoadRoomData();
+   toolbarPanel.Controls.Add(btnRefresh);
+
+     // Status Filter
+         Label filterLabel = new Label();
+         filterLabel.Text = "Filter by Status:";
+            filterLabel.Location = new Point(350, 18);
+   filterLabel.Size = new Size(100, 20);
+            toolbarPanel.Controls.Add(filterLabel);
+
+            ComboBox cbStatus = new ComboBox();
+   cbStatus.Items.AddRange(new string[] { "All", "Available", "Reserved", "Occupied", "Maintenance" });
+            cbStatus.SelectedIndex = 0;
+  cbStatus.Location = new Point(450, 15);
+            cbStatus.Size = new Size(150, 25);
+            cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbStatus.SelectedIndexChanged += (s, e) => FilterRoomByStatus(cbStatus.SelectedItem.ToString());
+         toolbarPanel.Controls.Add(cbStatus);
+
+   mainPanel.Controls.Add(toolbarPanel);
+
+// DataGridView
+         DataGridView dgvRooms = new DataGridView();
+            dgvRooms.Location = new Point(20, 80);
+            dgvRooms.Size = new Size(1560, 600);
+            dgvRooms.BackgroundColor = Color.White;
+  dgvRooms.BorderStyle = BorderStyle.FixedSingle;
+ dgvRooms.AllowUserToAddRows = false;
+            dgvRooms.ReadOnly = false;
+            dgvRooms.RowHeadersVisible = false;
+dgvRooms.GridColor = Color.LightGray;
+       dgvRooms.Font = new Font("Segoe UI", 9);
+  dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+            dgvRooms.Columns.Add("RoomId", "ID");
+            dgvRooms.Columns.Add("RoomNumber", "Room No.");
+    dgvRooms.Columns.Add("Type", "Room Type");
+            dgvRooms.Columns.Add("Status", "Status");
+            dgvRooms.Columns.Add("Price", "Price/Night");
+            dgvRooms.Columns.Add("Capacity", "Capacity");
+        dgvRooms.Columns.Add("Amenities", "Amenities");
+       dgvRooms.Columns.Add("Action", "Action");
+
+            dgvRooms.Columns[0].Width = 50;
+       dgvRooms.Columns[1].Width = 80;
+   dgvRooms.Columns[2].Width = 100;
+ dgvRooms.Columns[3].Width = 90;
+  dgvRooms.Columns[4].Width = 100;
+         dgvRooms.Columns[5].Width = 70;
+   dgvRooms.Columns[6].Width = 150;
+            dgvRooms.Columns[7].Width = 100;
+
+dgvRooms.CellClick += (s, e) => HandleRoomCellClick(s, e, dgvRooms);
+
+           mainPanel.Controls.Add(dgvRooms);
+
+    // Form settings
+            this.AutoScaleDimensions = new SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+          this.ClientSize = new Size(1600, 800);
+   this.Controls.Add(mainPanel);
+            this.Controls.Add(headerPanel);
+      this.Name = "RoomManagementForm";
+         this.Text = "Hotel Management - Room Management";
+            this.StartPosition = FormStartPosition.CenterScreen;
+     this.WindowState = FormWindowState.Maximized;
+       this.Load += (s, e) => LoadRoomData();
+        }
+
+        private void LoadRoomData()
+    {
+            // Load từ service
+        }
+
+        private void FilterRoomByStatus(string status)
+    {
+     // Filter logic
+        }
+
+     private void HandleRoomCellClick(object sender, DataGridViewCellEventArgs e, DataGridView dgv)
+ {
+            if (e.ColumnIndex == dgv.Columns["Action"].Index)
+     {
+       int roomId = (int)dgv.Rows[e.RowIndex].Cells["RoomId"].Value;
+        MessageBox.Show($"Edit room {roomId}");
+    }
+        }
+    }
+}

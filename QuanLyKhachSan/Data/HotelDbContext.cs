@@ -1,0 +1,112 @@
+﻿using Microsoft.EntityFrameworkCore;
+using QuanLyKhachSan.Models;
+
+namespace QuanLyKhachSan.Data
+{
+  public class HotelDbContext : DbContext
+    {
+        public HotelDbContext(DbContextOptions<HotelDbContext> options) : base(options)
+        {
+        }
+
+        // DbSets for all entities
+     public DbSet<Room> Rooms { get; set; }
+ public DbSet<Customer> Customers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Function> Functions { get; set; }
+        public DbSet<RoleFunction> RoleFunctions { get; set; }
+      public DbSet<RentalDetail> RentalDetails { get; set; }
+    public DbSet<RoomRentalDetail> RoomRentalDetails { get; set; }
+        public DbSet<Amenity> Amenities { get; set; }
+    public DbSet<RoomAmenity> RoomAmenities { get; set; }
+public DbSet<Service> Services { get; set; }
+public DbSet<ServiceRentalDetail> ServiceRentalDetails { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+
+     protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+  // Configure composite keys
+     modelBuilder.Entity<RoleFunction>()
+ .HasKey(rf => new { rf.RoleId, rf.FunctionId });
+
+ modelBuilder.Entity<RoomRentalDetail>()
+            .HasKey(rrd => new { rrd.RentalDetailId, rrd.RoomId, rrd.RentalDate });
+
+    modelBuilder.Entity<RoomAmenity>()
+         .HasKey(ra => new { ra.RoomId, ra.AmenityId });
+
+            modelBuilder.Entity<ServiceRentalDetail>()
+                .HasKey(srd => new { srd.RentalDetailId, srd.ServiceId, srd.UsageDate });
+
+       // Configure foreign key relationships
+   modelBuilder.Entity<Account>()
+    .HasOne(a => a.Employee)
+  .WithMany(e => e.Accounts)
+    .HasForeignKey(a => a.EmployeeId);
+
+   modelBuilder.Entity<Account>()
+    .HasOne(a => a.Role)
+         .WithMany(r => r.Accounts)
+       .HasForeignKey(a => a.RoleId);
+
+    modelBuilder.Entity<RoleFunction>()
+                .HasOne(rf => rf.Role)
+       .WithMany(r => r.RoleFunctions)
+   .HasForeignKey(rf => rf.RoleId);
+
+            modelBuilder.Entity<RoleFunction>()
+       .HasOne(rf => rf.Function)
+       .WithMany(f => f.RoleFunctions)
+                .HasForeignKey(rf => rf.FunctionId);
+
+      modelBuilder.Entity<RentalDetail>()
+     .HasOne(rd => rd.Customer)
+  .WithMany(c => c.RentalDetails)
+    .HasForeignKey(rd => rd.CustomerId);
+
+            modelBuilder.Entity<RentalDetail>()
+       .HasOne(rd => rd.Employee)
+          .WithMany(e => e.RentalDetails)
+            .HasForeignKey(rd => rd.EmployeeId);
+
+            modelBuilder.Entity<RoomRentalDetail>()
+          .HasOne(rrd => rrd.RentalDetail)
+ .WithMany(rd => rd.RoomRentalDetails)
+         .HasForeignKey(rrd => rrd.RentalDetailId);
+
+   modelBuilder.Entity<RoomRentalDetail>()
+    .HasOne(rrd => rrd.Room)
+        .WithMany(r => r.RoomRentalDetails)
+          .HasForeignKey(rrd => rrd.RoomId);
+
+       modelBuilder.Entity<RoomAmenity>()
+        .HasOne(ra => ra.Room)
+     .WithMany(r => r.RoomAmenities)
+     .HasForeignKey(ra => ra.RoomId);
+
+        modelBuilder.Entity<RoomAmenity>()
+             .HasOne(ra => ra.Amenity)
+              .WithMany(a => a.RoomAmenities)
+              .HasForeignKey(ra => ra.AmenityId);
+
+    modelBuilder.Entity<ServiceRentalDetail>()
+          .HasOne(srd => srd.RentalDetail)
+.WithMany(rd => rd.ServiceRentalDetails)
+        .HasForeignKey(srd => srd.RentalDetailId);
+
+            modelBuilder.Entity<ServiceRentalDetail>()
+          .HasOne(srd => srd.Service)
+       .WithMany(s => s.ServiceRentalDetails)
+     .HasForeignKey(srd => srd.ServiceId);
+
+         modelBuilder.Entity<Invoice>()
+                .HasOne(i => i.RentalDetail)
+     .WithMany(rd => rd.Invoices)
+           .HasForeignKey(i => i.RentalDetailId);
+        }
+    }
+}

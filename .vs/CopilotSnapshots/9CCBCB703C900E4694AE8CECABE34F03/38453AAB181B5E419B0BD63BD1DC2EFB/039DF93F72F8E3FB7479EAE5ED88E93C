@@ -1,0 +1,33 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using QuanLyKhachSan.Configuration;
+
+namespace QuanLyKhachSan
+{
+    internal static class Program
+    {
+        /// <summary>
+        ///  The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            // Cấu hình Dependency Injection
+            var services = new ServiceCollection();
+  
+            // Connection string - điều chỉnh theo cấu hình SQL Server của bạn
+            string connectionString = "Server=localhost;Database=HotelManagementDB;Trusted_Connection=true;Encrypt=false;";
+     
+            services.AddHotelManagementServices(connectionString);
+       
+            var serviceProvider = services.BuildServiceProvider();
+       
+            // Khởi tạo database
+            ServiceCollectionExtensions.InitializeDatabaseAsync(serviceProvider).Wait();
+
+            // To customize application configuration such as set high DPI settings or default font,
+            // see https://aka.ms/applicationconfiguration.
+            ApplicationConfiguration.Initialize();
+            Application.Run(new Form1());
+        }
+    }
+}

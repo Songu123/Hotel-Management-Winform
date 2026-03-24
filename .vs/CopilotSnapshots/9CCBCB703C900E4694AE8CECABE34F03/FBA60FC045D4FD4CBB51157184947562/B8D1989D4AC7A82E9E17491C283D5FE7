@@ -1,0 +1,168 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Repositories.Interfaces;
+
+namespace QuanLyKhachSan
+{
+    public partial class DashboardForm : Form
+    {
+        private readonly IRoomService _roomService;
+        private readonly IBookingService _bookingService;
+        private readonly IInvoiceService _invoiceService;
+        private readonly IServiceProvider _serviceProvider;
+
+        public DashboardForm(
+            IRoomService roomService, 
+      IBookingService bookingService, 
+            IInvoiceService invoiceService,
+     IServiceProvider serviceProvider)
+        {
+    InitializeComponent();
+            _roomService = roomService;
+            _bookingService = bookingService;
+    _invoiceService = invoiceService;
+    _serviceProvider = serviceProvider;
+        }
+
+        private async void DashboardForm_Load(object sender, EventArgs e)
+        {
+       try
+            {
+      await LoadDashboardData();
+   }
+   catch (Exception ex)
+            {
+              MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message);
+  }
+        }
+
+      private async Task LoadDashboardData()
+   {
+            // Tính toán thống kê
+          var allRooms = await _roomService.GetAllRoomsAsync();
+        var availableRooms = await _roomService.GetAvailableRoomsAsync();
+    var upcomingCheckIns = await _bookingService.GetUpcomingCheckInsAsync(1);
+
+   // Cập nhật giao diện với dữ liệu thực
+     UpdateOccupancyRate(allRooms.Count(), availableRooms.Count());
+ UpdateCheckInsPending(upcomingCheckIns.Count());
+
+   // Load revenue data
+ await UpdateRevenueData();
+        }
+
+        private void UpdateOccupancyRate(int totalRooms, int availableRooms)
+ {
+   if (totalRooms > 0)
+    {
+      int occupiedRooms = totalRooms - availableRooms;
+     int occupancyRate = (occupiedRooms * 100) / totalRooms;
+       // Cập nhật label occupancy rate
+         }
+        }
+
+        private void UpdateCheckInsPending(int count)
+        {
+   // Cập nhật label check-ins pending
+  }
+
+        private async Task UpdateRevenueData()
+   {
+  try
+            {
+     DateTime today = DateTime.Now.Date;
+     decimal dailyRevenue = await _invoiceService.GetRevenueAsync(today, today.AddHours(23).AddMinutes(59).AddSeconds(59));
+         // Cập nhật label revenue
+      }
+ catch (Exception ex)
+            {
+  MessageBox.Show("Lỗi tải doanh thu: " + ex.Message);
+            }
+     }
+
+  private void MenuItemClick(object sender, EventArgs e)
+        {
+        Button btn = sender as Button;
+      string menuItem = btn?.Tag?.ToString() ?? "";
+
+ try
+    {
+                switch (menuItem)
+                {
+   case "DASHBOARD":
+     // Hiển thị lại Dashboard - không cần làm gì vì đã ở dashboard
+               break;
+
+              case "ROOM MANAGEMENT":
+   OpenForm<UI.RoomManagementForm>();
+           break;
+
+          case "BOOKING MANAGEMENT":
+            OpenForm<UI.BookingManagementForm>();
+ break;
+
+   case "CUSTOMER MANAGEMENT":
+           OpenForm<UI.CustomerManagementForm>();
+ break;
+
+ case "INVOICES & SERVICES":
+   OpenForm<InvoiceManagementForm>();
+      break;
+            }
+    }
+ catch (Exception ex)
+            {
+         MessageBox.Show($"Lỗi mở form: {ex.Message}");
+  }
+      }
+
+     private void OpenForm<T>() where T : Form
+        {
+            try
+            {
+           // Kiểm tra nếu form đã mở
+         foreach (Form openForm in Application.OpenForms)
+    {
+              if (openForm.GetType() == typeof(T))
+           {
+        openForm.BringToFront();
+     openForm.Focus();
+                return;
+        }
+     }
+
+  // Nếu chưa mở, tạo instance mới qua DI
+                var form = ActivatorUtilities.CreateInstance<T>(_serviceProvider);
+    form.Show();
+        }
+        catch (Exception ex)
+     {
+       MessageBox.Show($"Lỗi: {ex.Message}");
+       }
+      }
+
+        private void BottomMenuClick(object sender, EventArgs e)
+        {
+         Button btn = sender as Button;
+  if (btn?.Text.Contains("LOGOUT") == true)
+            {
+  this.Close();
+    Application.Exit();
+  }
+      else if (btn?.Text.Contains("HELP CENTER") == true)
+         {
+          MessageBox.Show(
+       "Hotel Management System v1.0\n\n" +
+         "Nhập cơ sở dữ liệu quản lý khách sạn hiện đại.\n\n" +
+        "Các tính năng:\n" +
+            "- Quản lý phòng\n" +
+            "- Quản lý booking\n" +
+           "- Quản lý khách hàng\n" +
+  "- Quản lý hóa đơn\n\n" +
+    "Liên hệ hỗ trợ: support@hotel.com",
+  "Trợ giúp");
+ }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+﻿using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class InvoiceManagementForm : Form
+    {
+        private readonly IInvoiceService _invoiceService;
+
+        public InvoiceManagementForm(IInvoiceService invoiceService)
+        {
+            InitializeComponent();
+            _invoiceService = invoiceService;
+        }
+
+        private async void InvoiceManagementForm_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                await LoadInvoiceDataAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải dữ liệu hóa đơn: " + ex.Message);
+            }
+        }
+
+        private async Task LoadInvoiceDataAsync()
+        {
+            var invoices = await _invoiceService.GetUnpaidInvoicesAsync();
+            // Bind data to DataGridView
+        }
+
+        private void CreateNewInvoice()
+        {
+            MessageBox.Show("Create new invoice functionality");
+        }
+    }
+}

@@ -1,0 +1,409 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class UCRoomManagement
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            components = new System.ComponentModel.Container();
+
+            // Main Panel
+            Panel mainPanel = new Panel();
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+            mainPanel.AutoScroll = true;
+
+            // ===== ROW 1: Header =====
+            Panel headerPanel = new Panel();
+            headerPanel.BackColor = Color.White;
+            headerPanel.BorderStyle = BorderStyle.FixedSingle;
+            headerPanel.Padding = new Padding(30, 10, 30, 10);
+            headerPanel.Height = 80;
+            headerPanel.Dock = DockStyle.Top;
+
+            Label titleLabel = new Label();
+            titleLabel.Text = "🏨 Room Management";
+            titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+            titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            titleLabel.Location = new Point(10, 10);
+            titleLabel.Size = new Size(500, 40);
+            headerPanel.Controls.Add(titleLabel);
+
+            Label subtitleLabel = new Label();
+            subtitleLabel.Text = "Manage and monitor all hotel rooms";
+            subtitleLabel.Font = new Font("Segoe UI", 10);
+            subtitleLabel.ForeColor = Color.Gray;
+            subtitleLabel.Location = new Point(10, 50);
+            subtitleLabel.Size = new Size(500, 20);
+            headerPanel.Controls.Add(subtitleLabel);
+
+            mainPanel.Controls.Add(headerPanel);
+
+            // ===== ROW 2: Filter & Search Panel =====
+            Panel filterPanel = new Panel();
+            filterPanel.BackColor = Color.White;
+            filterPanel.BorderStyle = BorderStyle.FixedSingle;
+            filterPanel.Padding = new Padding(20);
+            filterPanel.Height = 80;
+            filterPanel.Dock = DockStyle.Top;
+
+            // Search Label & TextBox
+            Label searchLabel = new Label();
+            searchLabel.Text = "🔍 Search:";
+            searchLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            searchLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            searchLabel.Location = new Point(20, 12);
+            searchLabel.Size = new Size(80, 25);
+            filterPanel.Controls.Add(searchLabel);
+
+            tbSearch = new TextBox();
+            tbSearch.Location = new Point(110, 12);
+            tbSearch.Size = new Size(200, 28);
+            tbSearch.Font = new Font("Segoe UI", 10);
+            tbSearch.PlaceholderText = "Room number...";
+            tbSearch.TextChanged += OnSearchChanged;
+            filterPanel.Controls.Add(tbSearch);
+
+            // Status Filter
+            Label statusLabel = new Label();
+            statusLabel.Text = "Status:";
+            statusLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            statusLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            statusLabel.Location = new Point(330, 12);
+            statusLabel.Size = new Size(60, 25);
+            filterPanel.Controls.Add(statusLabel);
+
+            cbStatus = new ComboBox();
+            cbStatus.Location = new Point(400, 12);
+            cbStatus.Size = new Size(150, 28);
+            cbStatus.Items.AddRange(new object[] {
+    "All Status",
+        "Available",
+  "Reserved",
+     "Occupied",
+              "Maintenance"
+     });
+            cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbStatus.SelectedIndex = 0;
+            cbStatus.SelectedIndexChanged += OnStatusFilterChanged;
+            filterPanel.Controls.Add(cbStatus);
+
+            // Room Type Filter
+            Label typeLabel = new Label();
+            typeLabel.Text = "Room Type:";
+            typeLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            typeLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            typeLabel.Location = new Point(570, 12);
+            typeLabel.Size = new Size(80, 25);
+            filterPanel.Controls.Add(typeLabel);
+
+            cbRoomType = new ComboBox();
+            cbRoomType.Location = new Point(660, 12);
+            cbRoomType.Size = new Size(200, 28);
+            cbRoomType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbRoomType.SelectedIndexChanged += OnRoomTypeFilterChanged;
+            filterPanel.Controls.Add(cbRoomType);
+
+            // Action Buttons Row
+            Label actionLabel = new Label();
+            actionLabel.Text = "Actions:";
+            actionLabel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            actionLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            actionLabel.Location = new Point(20, 45);
+            actionLabel.Size = new Size(80, 25);
+            filterPanel.Controls.Add(actionLabel);
+
+            btnAdd = new Button();
+            btnAdd.Text = "➕ Add";
+            btnAdd.Location = new Point(110, 45);
+            btnAdd.Size = new Size(100, 28);
+            btnAdd.BackColor = Color.FromArgb(40, 200, 150);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.Cursor = Cursors.Hand;
+            btnAdd.Click += OnAddRoomClick;
+            filterPanel.Controls.Add(btnAdd);
+
+            btnEdit = new Button();
+            btnEdit.Text = "✏️ Edit";
+            btnEdit.Location = new Point(220, 45);
+            btnEdit.Size = new Size(100, 28);
+            btnEdit.BackColor = Color.FromArgb(70, 130, 180);
+            btnEdit.ForeColor = Color.White;
+            btnEdit.FlatStyle = FlatStyle.Flat;
+            btnEdit.Cursor = Cursors.Hand;
+            btnEdit.Click += OnEditRoomClick;
+            filterPanel.Controls.Add(btnEdit);
+
+            btnDelete = new Button();
+            btnDelete.Text = "🗑️ Delete";
+            btnDelete.Location = new Point(330, 45);
+            btnDelete.Size = new Size(100, 28);
+            btnDelete.BackColor = Color.FromArgb(220, 100, 100);
+            btnDelete.ForeColor = Color.White;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.Cursor = Cursors.Hand;
+            btnDelete.Click += OnDeleteRoomClick;
+            filterPanel.Controls.Add(btnDelete);
+
+            btnRefresh = new Button();
+            btnRefresh.Text = "🔄 Refresh";
+            btnRefresh.Location = new Point(440, 45);
+            btnRefresh.Size = new Size(100, 28);
+            btnRefresh.BackColor = Color.FromArgb(100, 150, 200);
+            btnRefresh.ForeColor = Color.White;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.Cursor = Cursors.Hand;
+            btnRefresh.Click += OnRefreshClick;
+            filterPanel.Controls.Add(btnRefresh);
+
+            mainPanel.Controls.Add(filterPanel);
+
+            // ===== ROW 3: DataGridView =====
+            Panel gridPanel = new Panel();
+            gridPanel.BackColor = Color.White;
+            gridPanel.BorderStyle = BorderStyle.FixedSingle;
+            gridPanel.Padding = new Padding(20);
+            gridPanel.Height = 300;
+            gridPanel.Dock = DockStyle.Top;
+            gridPanel.AutoSize = true;
+
+            Label gridTitle = new Label();
+            gridTitle.Text = "📋 Room List";
+            gridTitle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            gridTitle.ForeColor = Color.FromArgb(30, 40, 60);
+            gridTitle.Location = new Point(20, 10);
+            gridTitle.Size = new Size(200, 30);
+            gridPanel.Controls.Add(gridTitle);
+
+            dgvRooms = new DataGridView();
+            dgvRooms.Location = new Point(20, 50);
+            dgvRooms.Size = new Size(1100, 250);
+            dgvRooms.BackgroundColor = Color.White;
+            dgvRooms.BorderStyle = BorderStyle.FixedSingle;
+            dgvRooms.AllowUserToAddRows = false;
+            dgvRooms.ReadOnly = false;
+            dgvRooms.RowHeadersVisible = false;
+            dgvRooms.GridColor = Color.LightGray;
+            dgvRooms.Font = new Font("Segoe UI", 10);
+            dgvRooms.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvRooms.CellClick += OnDataGridViewCellClick;
+
+            // Columns
+            dgvRooms.Columns.Add("RoomId", "ID");
+            dgvRooms.Columns.Add("RoomNumber", "🔑 Room No");
+            dgvRooms.Columns.Add("RoomType", "📏 Type");
+            dgvRooms.Columns.Add("Status", "✓ Status");
+            dgvRooms.Columns.Add("Price", "💰 Price");
+            dgvRooms.Columns.Add("Capacity", "👥 Capacity");
+            dgvRooms.Columns.Add("Floor", "🏢 Floor");
+            dgvRooms.Columns.Add("Notes", "📝 Notes");
+
+            // Style columns
+            dgvRooms.Columns[0].Visible = false; // Hide ID
+            dgvRooms.Columns[1].Width = 80;
+            dgvRooms.Columns[2].Width = 100;
+            dgvRooms.Columns[3].Width = 100;
+            dgvRooms.Columns[4].Width = 100;
+            dgvRooms.Columns[5].Width = 80;
+            dgvRooms.Columns[6].Width = 70;
+            dgvRooms.Columns[7].Width = 150;
+
+            gridPanel.Controls.Add(dgvRooms);
+            mainPanel.Controls.Add(gridPanel);
+
+            // ===== ROW 4: CRUD Form Panel =====
+            Panel crudPanel = new Panel();
+            crudPanel.BackColor = Color.White;
+            crudPanel.BorderStyle = BorderStyle.FixedSingle;
+            crudPanel.Padding = new Padding(20);
+            crudPanel.Height = 250;
+            crudPanel.Dock = DockStyle.Top;
+            crudPanel.AutoSize = true;
+
+            Label crudTitle = new Label();
+            crudTitle.Text = "✏️ Room Details Form";
+            crudTitle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            crudTitle.ForeColor = Color.FromArgb(30, 40, 60);
+            crudTitle.Location = new Point(20, 10);
+            crudTitle.Size = new Size(300, 30);
+            crudPanel.Controls.Add(crudTitle);
+
+            int formY = 50;
+
+            // Room Number
+            Label lblRoomNumber = new Label();
+            lblRoomNumber.Text = "Room Number:";
+            lblRoomNumber.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblRoomNumber.Location = new Point(20, formY);
+            lblRoomNumber.Size = new Size(120, 20);
+            crudPanel.Controls.Add(lblRoomNumber);
+
+            tbRoomNumber = new TextBox();
+            tbRoomNumber.Location = new Point(150, formY);
+            tbRoomNumber.Size = new Size(200, 28);
+            tbRoomNumber.Font = new Font("Segoe UI", 10);
+            crudPanel.Controls.Add(tbRoomNumber);
+
+            // Room Type
+            Label lblRoomTypeForm = new Label();
+            lblRoomTypeForm.Text = "Room Type:";
+            lblRoomTypeForm.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblRoomTypeForm.Location = new Point(400, formY);
+            lblRoomTypeForm.Size = new Size(120, 20);
+            crudPanel.Controls.Add(lblRoomTypeForm);
+
+            cbRoomTypeForm = new ComboBox();
+            cbRoomTypeForm.Location = new Point(530, formY - 5);
+            cbRoomTypeForm.Size = new Size(200, 28);
+            cbRoomTypeForm.DropDownStyle = ComboBoxStyle.DropDownList;
+            crudPanel.Controls.Add(cbRoomTypeForm);
+
+            // Floor
+            Label lblFloor = new Label();
+            lblFloor.Text = "Floor:";
+            lblFloor.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblFloor.Location = new Point(780, formY);
+            lblFloor.Size = new Size(80, 20);
+            crudPanel.Controls.Add(lblFloor);
+
+            tbFloor = new TextBox();
+            tbFloor.Location = new Point(880, formY);
+            tbFloor.Size = new Size(150, 28);
+            tbFloor.Font = new Font("Segoe UI", 10);
+            crudPanel.Controls.Add(tbFloor);
+
+            formY += 45;
+
+            // Status
+            Label lblStatusForm = new Label();
+            lblStatusForm.Text = "Status:";
+            lblStatusForm.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblStatusForm.Location = new Point(20, formY);
+            lblStatusForm.Size = new Size(120, 20);
+            crudPanel.Controls.Add(lblStatusForm);
+
+            cbStatusForm = new ComboBox();
+            cbStatusForm.Location = new Point(150, formY - 5);
+            cbStatusForm.Size = new Size(200, 28);
+            cbStatusForm.Items.AddRange(new object[] {
+             "Available",
+              "Reserved",
+                "Occupied",
+         "Maintenance"
+            });
+            cbStatusForm.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbStatusForm.SelectedIndex = 0;
+            crudPanel.Controls.Add(cbStatusForm);
+
+            // Price
+            Label lblPrice = new Label();
+            lblPrice.Text = "Price/Night:";
+            lblPrice.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblPrice.Location = new Point(400, formY);
+            lblPrice.Size = new Size(120, 20);
+            crudPanel.Controls.Add(lblPrice);
+
+            tbPrice = new TextBox();
+            tbPrice.Location = new Point(530, formY);
+            tbPrice.Size = new Size(200, 28);
+            tbPrice.Font = new Font("Segoe UI", 10);
+            crudPanel.Controls.Add(tbPrice);
+
+            // Capacity
+            Label lblCapacity = new Label();
+            lblCapacity.Text = "Capacity:";
+            lblCapacity.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblCapacity.Location = new Point(780, formY);
+            lblCapacity.Size = new Size(80, 20);
+            crudPanel.Controls.Add(lblCapacity);
+
+            tbCapacity = new TextBox();
+            tbCapacity.Location = new Point(880, formY);
+            tbCapacity.Size = new Size(150, 28);
+            tbCapacity.Font = new Font("Segoe UI", 10);
+            crudPanel.Controls.Add(tbCapacity);
+
+            formY += 45;
+
+            // Notes
+            Label lblNotes = new Label();
+            lblNotes.Text = "Notes:";
+            lblNotes.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblNotes.Location = new Point(20, formY);
+            lblNotes.Size = new Size(120, 20);
+            crudPanel.Controls.Add(lblNotes);
+
+            tbNotes = new TextBox();
+            tbNotes.Location = new Point(150, formY);
+            tbNotes.Size = new Size(580, 60);
+            tbNotes.Font = new Font("Segoe UI", 10);
+            tbNotes.Multiline = true;
+            crudPanel.Controls.Add(tbNotes);
+
+            // Save & Cancel Buttons
+            btnSave = new Button();
+            btnSave.Text = "💾 Save";
+            btnSave.Location = new Point(800, formY);
+            btnSave.Size = new Size(120, 40);
+            btnSave.BackColor = Color.FromArgb(40, 200, 150);
+            btnSave.ForeColor = Color.White;
+            btnSave.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.Cursor = Cursors.Hand;
+            btnSave.Click += OnSaveClick;
+            crudPanel.Controls.Add(btnSave);
+
+            btnCancel = new Button();
+            btnCancel.Text = "✕ Cancel";
+            btnCancel.Location = new Point(930, formY);
+            btnCancel.Size = new Size(120, 40);
+            btnCancel.BackColor = Color.FromArgb(220, 100, 100);
+            btnCancel.ForeColor = Color.White;
+            btnCancel.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Cursor = Cursors.Hand;
+            btnCancel.Click += OnCancelClick;
+            crudPanel.Controls.Add(btnCancel);
+
+            mainPanel.Controls.Add(crudPanel);
+
+            // Add main panel to control
+            this.Controls.Add(mainPanel);
+            this.AutoScaleDimensions = new SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.Name = "UCRoomManagement";
+            this.Size = new Size(1234, 803);
+        }
+
+        // Controls
+        private DataGridView dgvRooms;
+        private TextBox tbSearch;
+        private ComboBox cbStatus;
+        private ComboBox cbRoomType;
+        private Button btnAdd;
+        private Button btnEdit;
+        private Button btnDelete;
+        private Button btnRefresh;
+        private TextBox tbRoomNumber;
+        private ComboBox cbRoomTypeForm;
+        private TextBox tbFloor;
+        private ComboBox cbStatusForm;
+        private TextBox tbPrice;
+        private TextBox tbCapacity;
+        private TextBox tbNotes;
+        private Button btnSave;
+        private Button btnCancel;
+    }
+}

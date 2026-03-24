@@ -1,0 +1,155 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class MainForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            panel1 = new Panel();
+            button5 = new Button();
+            button4 = new Button();
+            button3 = new Button();
+            button2 = new Button();
+            button1 = new Button();
+            panel2 = new Panel();
+            HOTEL = new Label();
+            panel3 = new Panel();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            SuspendLayout();
+            // 
+            // panel1
+            // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            panel1.BackColor = SystemColors.ControlDarkDark;
+            panel1.Controls.Add(button5);
+            panel1.Controls.Add(button4);
+            panel1.Controls.Add(button3);
+            panel1.Controls.Add(button2);
+            panel1.Controls.Add(button1);
+            panel1.Location = new Point(3, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(282, 745);
+            panel1.TabIndex = 0;
+            // 
+            // button5
+            // 
+            button5.Location = new Point(9, 414);
+            button5.Name = "button5";
+            button5.Size = new Size(260, 40);
+            button5.TabIndex = 4;
+            button5.Text = "SERVICES";
+            button5.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(9, 342);
+            button4.Name = "button4";
+            button4.Size = new Size(260, 40);
+            button4.TabIndex = 3;
+            button4.Text = "INVOICES";
+            button4.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(9, 265);
+            button3.Name = "button3";
+            button3.Size = new Size(260, 40);
+            button3.TabIndex = 2;
+            button3.Text = "BOOKING MANAGEMENT";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(9, 197);
+            button2.Name = "button2";
+            button2.Size = new Size(260, 40);
+            button2.TabIndex = 1;
+            button2.Text = "ROOM MANAGEMENT";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(9, 131);
+            button1.Name = "button1";
+            button1.Size = new Size(260, 40);
+            button1.TabIndex = 0;
+            button1.Text = "DASHBOARD";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(HOTEL);
+            panel2.Location = new Point(3, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(282, 115);
+            panel2.TabIndex = 5;
+            // 
+            // HOTEL
+            // 
+            HOTEL.AutoSize = true;
+            HOTEL.Location = new Point(119, 40);
+            HOTEL.Name = "HOTEL";
+            HOTEL.Size = new Size(42, 15);
+            HOTEL.TabIndex = 0;
+            HOTEL.Text = "HOTEL";
+            // 
+            // panel3
+            // 
+            panel3.Location = new Point(293, 61);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1149, 663);
+            panel3.TabIndex = 6;
+            // 
+            // MainForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1457, 747);
+            Controls.Add(panel3);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
+            Name = "MainForm";
+            Text = "MainForm";
+            panel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            ResumeLayout(false);
+        }
+
+        #endregion
+
+        private Panel panel1;
+        private Button button3;
+        private Button button2;
+        private Button button1;
+        private Button button4;
+        private Button button5;
+        private Panel panel2;
+        private Label HOTEL;
+        private Panel panel3;
+    }
+}

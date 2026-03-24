@@ -1,0 +1,109 @@
+﻿namespace QuanLyKhachSan.Models
+{
+    /// <summary>
+    /// Đại diện cho một loại phòng trong khách sạn
+    /// </summary>
+    public class RoomType
+    {
+    /// <summary>
+      /// ID duy nhất của loại phòng
+   /// </summary>
+        public int RoomTypeId { get; set; }
+
+        /// <summary>
+      /// Tên loại phòng (VD: Phòng đơn, Phòng đôi, Suite...)
+        /// </summary>
+      public string Name { get; set; } = string.Empty;
+
+ /// <summary>
+        /// Mô tả chi tiết loại phòng
+        /// </summary>
+        public string Description { get; set; } = string.Empty;
+
+     /// <summary>
+        /// Sức chứa tối đa của phòng (số người)
+        /// </summary>
+        public int MaxCapacity { get; set; }
+
+        /// <summary>
+  /// Giá thuê theo ngày (VND)
+        /// </summary>
+        public decimal PricePerNight { get; set; }
+
+        /// <summary>
+        /// Các tính năng/tiện nghi của phòng
+      /// </summary>
+   public string Amenities { get; set; } = string.Empty;
+
+   /// <summary>
+        /// Ngày tạo loại phòng
+        /// </summary>
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// Navigation property: Danh sách phòng thuộc loại này
+        /// </summary>
+ public ICollection<Room>? Rooms { get; set; } = new List<Room>();
+    }
+
+    /// <summary>
+    /// Đại diện cho một phòng cụ thể trong khách sạn
+    /// </summary>
+    public class Room
+  {
+        /// <summary>
+        /// ID duy nhất của phòng
+    /// </summary>
+        public int RoomId { get; set; }
+
+    /// <summary>
+        /// Số phòng (VD: 101, 202...)
+     /// </summary>
+ public string RoomNumber { get; set; } = string.Empty;
+
+        /// <summary>
+        /// ID tầng
+     /// </summary>
+      public int FloorId { get; set; }
+
+    /// <summary>
+        /// ID loại phòng
+      /// </summary>
+     public int RoomTypeId { get; set; }
+
+    /// <summary>
+        /// Trạng thái hiện tại của phòng
+ /// </summary>
+        public RoomStatus Status { get; set; } = RoomStatus.Available;
+
+        /// <summary>
+        /// Ghi chú về phòng
+        /// </summary>
+   public string Notes { get; set; } = string.Empty;
+
+ /// <summary>
+        /// Ngày tạo bản ghi phòng
+    /// </summary>
+     public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// Ngày cập nhật lần cuối
+    /// </summary>
+   public DateTime? UpdatedDate { get; set; }
+
+    /// <summary>
+        /// Navigation property: Tầng
+        /// </summary>
+        public Floor? Floor { get; set; }
+
+   /// <summary>
+        /// Navigation property: Loại phòng
+        /// </summary>
+   public RoomType? RoomType { get; set; }
+
+  /// <summary>
+        /// Navigation property: Danh sách booking của phòng
+        /// </summary>
+   public ICollection<Booking>? Bookings { get; set; } = new List<Booking>();
+ }
+}

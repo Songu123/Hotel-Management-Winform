@@ -1,0 +1,289 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class UCRooms
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            components = new System.ComponentModel.Container();
+
+            // Main Panel
+            Panel mainPanel = new Panel();
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.BackColor = Color.FromArgb(245, 247, 250);
+            mainPanel.AutoScroll = true;
+            mainPanel.Padding = new Padding(20);
+
+            // Title
+            Label titleLabel = new Label();
+            titleLabel.Text = "🏨 Room Management";
+            titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+            titleLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            titleLabel.Location = new Point(20, 10);
+            titleLabel.Size = new Size(600, 40);
+            mainPanel.Controls.Add(titleLabel);
+
+            // Subtitle
+            Label subtitleLabel = new Label();
+            subtitleLabel.Text = "Manage and monitor all hotel rooms";
+            subtitleLabel.Font = new Font("Segoe UI", 11);
+            subtitleLabel.ForeColor = Color.Gray;
+            subtitleLabel.Location = new Point(20, 55);
+            subtitleLabel.Size = new Size(600, 25);
+            mainPanel.Controls.Add(subtitleLabel);
+
+            // Stats Row
+            Panel statsPanel = new Panel();
+            statsPanel.Height = 140;
+            statsPanel.Dock = DockStyle.Top;
+            statsPanel.Padding = new Padding(0, 0, 0, 20);
+            statsPanel.BackColor = Color.Transparent;
+            statsPanel.AutoSize = true;
+
+            statsPanel.Controls.Add(CreateStatCard("Total Rooms", "45", "🔑", Color.FromArgb(70, 130, 180), 0));
+            statsPanel.Controls.Add(CreateStatCard("Available", "18", "✅", Color.FromArgb(40, 200, 150), 320));
+            statsPanel.Controls.Add(CreateStatCard("Occupied", "25", "👥", Color.FromArgb(220, 100, 100), 640));
+            statsPanel.Controls.Add(CreateStatCard("Maintenance", "2", "🔧", Color.FromArgb(200, 150, 80), 960));
+
+            mainPanel.Controls.Add(statsPanel);
+
+            // Filter and Search Panel
+            Panel filterPanel = new Panel();
+            filterPanel.Height = 80;
+            filterPanel.Dock = DockStyle.Top;
+            filterPanel.BackColor = Color.White;
+            filterPanel.BorderStyle = BorderStyle.FixedSingle;
+            filterPanel.Padding = new Padding(20);
+            filterPanel.AutoSize = true;
+
+            Label filterLabel = new Label();
+            filterLabel.Text = "🔍 Search & Filter";
+            filterLabel.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            filterLabel.ForeColor = Color.FromArgb(30, 40, 60);
+            filterLabel.Location = new Point(20, 10);
+            filterLabel.AutoSize = true;
+            filterPanel.Controls.Add(filterLabel);
+
+            // Search TextBox
+            Label searchLbl = new Label();
+            searchLbl.Text = "Room Number:";
+            searchLbl.Location = new Point(20, 40);
+            searchLbl.AutoSize = true;
+            filterPanel.Controls.Add(searchLbl);
+
+            TextBox searchBox = new TextBox();
+            searchBox.Name = "tbxSearchRoom";
+            searchBox.Location = new Point(130, 40);
+            searchBox.Size = new Size(180, 25);
+            searchBox.Font = new Font("Segoe UI", 10);
+            filterPanel.Controls.Add(searchBox);
+
+            // Room Type Filter
+            Label typeLbl = new Label();
+            typeLbl.Text = "Room Type:";
+            typeLbl.Location = new Point(330, 40);
+            typeLbl.AutoSize = true;
+            filterPanel.Controls.Add(typeLbl);
+
+            ComboBox typeFilter = new ComboBox();
+            typeFilter.Name = "cbxRoomType";
+            typeFilter.Location = new Point(420, 40);
+            typeFilter.Size = new Size(150, 25);
+            typeFilter.Items.AddRange(new string[] { "All", "Single", "Double", "Suite", "Deluxe" });
+            typeFilter.SelectedIndex = 0;
+            filterPanel.Controls.Add(typeFilter);
+
+            // Status Filter
+            Label statusLbl = new Label();
+            statusLbl.Text = "Status:";
+            statusLbl.Location = new Point(590, 40);
+            statusLbl.AutoSize = true;
+            filterPanel.Controls.Add(statusLbl);
+
+            ComboBox statusFilter = new ComboBox();
+            statusFilter.Name = "cbxStatus";
+            statusFilter.Location = new Point(660, 40);
+            statusFilter.Size = new Size(150, 25);
+            statusFilter.Items.AddRange(new string[] { "All", "Available", "Occupied", "Maintenance", "Reserved" });
+            statusFilter.SelectedIndex = 0;
+            filterPanel.Controls.Add(statusFilter);
+
+            // Search Button
+            Button btnSearch = new Button();
+            btnSearch.Text = "Search";
+            btnSearch.Name = "btnSearch";
+            btnSearch.Location = new Point(820, 40);
+            btnSearch.Size = new Size(100, 25);
+            btnSearch.BackColor = Color.FromArgb(70, 130, 180);
+            btnSearch.ForeColor = Color.White;
+            btnSearch.FlatStyle = FlatStyle.Flat;
+            filterPanel.Controls.Add(btnSearch);
+
+            mainPanel.Controls.Add(filterPanel);
+
+            // Room List Panel (DataGridView)
+            Panel listPanel = new Panel();
+            listPanel.Height = 400;
+            listPanel.Dock = DockStyle.Top;
+            listPanel.BackColor = Color.White;
+            listPanel.BorderStyle = BorderStyle.FixedSingle;
+            listPanel.Padding = new Padding(20);
+            listPanel.AutoSize = true;
+
+            Label listTitle = new Label();
+            listTitle.Text = "📋 Room List";
+            listTitle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            listTitle.ForeColor = Color.FromArgb(30, 40, 60);
+            listTitle.Location = new Point(20, 10);
+            listTitle.AutoSize = true;
+            listPanel.Controls.Add(listTitle);
+
+            // DataGridView
+            DataGridView dgvRooms = new DataGridView();
+            dgvRooms.Name = "dgvRooms";
+            dgvRooms.Location = new Point(20, 45);
+            dgvRooms.Size = new Size(1160, 320);
+            dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvRooms.BackgroundColor = Color.White;
+            dgvRooms.BorderStyle = BorderStyle.FixedSingle;
+            dgvRooms.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(70, 130, 180);
+            dgvRooms.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvRooms.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            // Columns
+            dgvRooms.Columns.Add("RoomNumber", "Room No.");
+            dgvRooms.Columns.Add("RoomType", "Type");
+            dgvRooms.Columns.Add("Floor", "Floor");
+            dgvRooms.Columns.Add("Status", "Status");
+            dgvRooms.Columns.Add("Price", "Price/Night");
+            dgvRooms.Columns.Add("Guest", "Current Guest");
+            dgvRooms.Columns.Add("CheckIn", "Check-In");
+            dgvRooms.Columns.Add("CheckOut", "Check-Out");
+            dgvRooms.Columns.Add("Actions", "Actions");
+
+            // Sample Data
+            dgvRooms.Rows.Add("101", "Single", "1", "Available", "$50", "-", "-", "-", "Edit | View");
+            dgvRooms.Rows.Add("102", "Double", "1", "Occupied", "$80", "Nguyễn Văn A", "2024-01-15", "2024-01-18", "Edit | View");
+            dgvRooms.Rows.Add("103", "Suite", "1", "Available", "$150", "-", "-", "-", "Edit | View");
+            dgvRooms.Rows.Add("201", "Double", "2", "Occupied", "$80", "Trần Thị B", "2024-01-16", "2024-01-20", "Edit | View");
+            dgvRooms.Rows.Add("202", "Deluxe", "2", "Available", "$200", "-", "-", "-", "Edit | View");
+            dgvRooms.Rows.Add("203", "Single", "2", "Maintenance", "$50", "-", "-", "-", "Edit | View");
+
+            listPanel.Controls.Add(dgvRooms);
+
+            mainPanel.Controls.Add(listPanel);
+
+            // Action Buttons Panel
+            Panel actionPanel = new Panel();
+            actionPanel.Height = 50;
+            actionPanel.Dock = DockStyle.Top;
+            actionPanel.BackColor = Color.White;
+            actionPanel.BorderStyle = BorderStyle.FixedSingle;
+            actionPanel.Padding = new Padding(20);
+
+            Button btnAdd = new Button();
+            btnAdd.Text = "➕ Add Room";
+            btnAdd.Name = "btnAddRoom";
+            btnAdd.Size = new Size(120, 35);
+            btnAdd.Location = new Point(20, 8);
+            btnAdd.BackColor = Color.FromArgb(40, 200, 150);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            actionPanel.Controls.Add(btnAdd);
+
+            Button btnEdit = new Button();
+            btnEdit.Text = "✏️ Edit";
+            btnEdit.Name = "btnEditRoom";
+            btnEdit.Size = new Size(100, 35);
+            btnEdit.Location = new Point(150, 8);
+            btnEdit.BackColor = Color.FromArgb(70, 130, 180);
+            btnEdit.ForeColor = Color.White;
+            btnEdit.FlatStyle = FlatStyle.Flat;
+            actionPanel.Controls.Add(btnEdit);
+
+            Button btnDelete = new Button();
+            btnDelete.Text = "🗑️ Delete";
+            btnDelete.Name = "btnDeleteRoom";
+            btnDelete.Size = new Size(100, 35);
+            btnDelete.Location = new Point(260, 8);
+            btnDelete.BackColor = Color.FromArgb(220, 100, 100);
+            btnDelete.ForeColor = Color.White;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            actionPanel.Controls.Add(btnDelete);
+
+            Button btnRefresh = new Button();
+            btnRefresh.Text = "🔄 Refresh";
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(100, 35);
+            btnRefresh.Location = new Point(370, 8);
+            btnRefresh.BackColor = Color.FromArgb(100, 150, 200);
+            btnRefresh.ForeColor = Color.White;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            actionPanel.Controls.Add(btnRefresh);
+
+            mainPanel.Controls.Add(actionPanel);
+
+            this.Controls.Add(mainPanel);
+            this.AutoScaleDimensions = new SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.Name = "UCRooms";
+            this.Size = new Size(1234, 803);
+        }
+
+        private Panel panel1;
+        private Panel panel2;
+        private Panel panel3;
+
+        private Panel CreateStatCard(string title, string value, string icon, Color accentColor, int xPosition)
+        {
+            Panel card = new Panel();
+            card.Width = 280;
+            card.Height = 140;
+            card.Location = new Point(xPosition, 0);
+            card.BackColor = Color.White;
+            card.BorderStyle = BorderStyle.FixedSingle;
+            card.Padding = new Padding(20);
+
+            Panel accentBar = new Panel();
+            accentBar.Height = 4;
+            accentBar.Dock = DockStyle.Top;
+            accentBar.BackColor = accentColor;
+            card.Controls.Add(accentBar);
+
+            Label titleLabel = new Label();
+            titleLabel.Text = title;
+            titleLabel.Font = new Font("Segoe UI", 9);
+            titleLabel.ForeColor = Color.Gray;
+            titleLabel.Location = new Point(20, 12);
+            titleLabel.AutoSize = true;
+            card.Controls.Add(titleLabel);
+
+            Label iconLabel = new Label();
+            iconLabel.Text = icon;
+            iconLabel.Font = new Font("Segoe UI", 16);
+            iconLabel.Location = new Point(230, 10);
+            iconLabel.AutoSize = true;
+            card.Controls.Add(iconLabel);
+
+            Label valueLabel = new Label();
+            valueLabel.Text = value;
+            valueLabel.Font = new Font("Segoe UI", 28, FontStyle.Bold);
+            valueLabel.ForeColor = accentColor;
+            valueLabel.Location = new Point(20, 40);
+            valueLabel.AutoSize = true;
+            card.Controls.Add(valueLabel);
+
+            return card;
+        }
+    }
+}
