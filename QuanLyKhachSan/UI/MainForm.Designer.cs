@@ -55,7 +55,7 @@
             // 
             // button6
             // 
-            button6.Location = new Point(0, 607);
+            button6.Location = new Point(0, 289);
             button6.Name = "button6";
             button6.Size = new Size(274, 65);
             button6.TabIndex = 6;
@@ -65,7 +65,7 @@
             // 
             // btnInvoice
             // 
-            btnInvoice.Location = new Point(0, 522);
+            btnInvoice.Location = new Point(2, 606);
             btnInvoice.Name = "btnInvoice";
             btnInvoice.Size = new Size(274, 65);
             btnInvoice.TabIndex = 5;
@@ -75,7 +75,7 @@
             // 
             // btnCustomers
             // 
-            btnCustomers.Location = new Point(0, 441);
+            btnCustomers.Location = new Point(2, 525);
             btnCustomers.Name = "btnCustomers";
             btnCustomers.Size = new Size(274, 65);
             btnCustomers.TabIndex = 4;
@@ -85,7 +85,7 @@
             // 
             // btnBooking
             // 
-            btnBooking.Location = new Point(-2, 360);
+            btnBooking.Location = new Point(0, 444);
             btnBooking.Name = "btnBooking";
             btnBooking.Size = new Size(274, 65);
             btnBooking.TabIndex = 3;
@@ -95,7 +95,7 @@
             // 
             // btnFloorView
             // 
-            btnFloorView.Location = new Point(0, 288);
+            btnFloorView.Location = new Point(2, 372);
             btnFloorView.Name = "btnFloorView";
             btnFloorView.Size = new Size(274, 65);
             btnFloorView.TabIndex = 7;
