@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using QuanLyKhachSan.Data;
 using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.UI.Service;
+using QuanLyKhachSan.UI.Room_Service;
 
 namespace QuanLyKhachSan.UI
 {
@@ -21,62 +23,62 @@ namespace QuanLyKhachSan.UI
 
         private void ShowPanel(UserControl uc)
         {
-      panelMain.Controls.Clear();
-         uc.Dock = DockStyle.Fill;
-   panelMain.Controls.Add(uc);
-         uc.BringToFront();
+  panelMain.Controls.Clear();
+            uc.Dock = DockStyle.Fill;
+       panelMain.Controls.Add(uc);
+            uc.BringToFront();
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-      {
+   private void panel1_Paint(object sender, PaintEventArgs e)
+        {
 
-        }
+     }
 
         private void btnDashboard_Click(object sender, EventArgs e)
      {
-ShowPanel(new UCDashboard());
+      ShowPanel(new UCDashboard());
 
-        }
+ }
 
- private void btnRooms_Click(object sender, EventArgs e)
+    private void btnRooms_Click(object sender, EventArgs e)
         {
-       var serviceProvider = (IServiceProvider)Program.Services;
+            var serviceProvider = (IServiceProvider)Program.Services;
             var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
-            var dbContext = serviceProvider.GetService(typeof(HotelDbContext)) as HotelDbContext;
+          var dbContext = serviceProvider.GetService(typeof(HotelDbContext)) as HotelDbContext;
 
-     ShowPanel(new UCRoomManagement(roomService, dbContext));
+            ShowPanel(new UCRoom(roomService, dbContext));
         }
 
         private void btnBooking_Click(object sender, EventArgs e)
-        {
-            ShowPanel(new UCBooking());
-        }
+     {
+    ShowPanel(new UCBooking());
+  }
 
-private void btnCustomers_Click(object sender, EventArgs e)
+        private void btnCustomers_Click(object sender, EventArgs e)
         {
             ShowPanel(new UCCustomers());
 
-  }
+        }
 
-     private void btnInvoice_Click(object sender, EventArgs e)
-     {
+    private void btnInvoice_Click(object sender, EventArgs e)
+        {
             ShowPanel(new UCInvoices());
 
-        }
+   }
 
         private void button6_Click(object sender, EventArgs e)
         {
-    ShowPanel(new UCServices());
+            ShowPanel(new UCServices());
 
         }
 
-   private void btnFloorView_Click(object sender, EventArgs e)
-        {
-    var serviceProvider = (IServiceProvider)Program.Services;
+        private void btnFloorView_Click(object sender, EventArgs e)
+ {
+         var serviceProvider = (IServiceProvider)Program.Services;
             var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
-            var bookingService = serviceProvider.GetService(typeof(IBookingService)) as IBookingService;
+  var bookingService = serviceProvider.GetService(typeof(IBookingService)) as IBookingService;
 
-            ShowPanel(new UCRoomFloorView(roomService, bookingService));
+      ShowPanel(new UCRoomFloorView(roomService, bookingService));
         }
 
         private void panelMain_MouseClick(object sender, MouseEventArgs e)
@@ -84,7 +86,7 @@ private void btnCustomers_Click(object sender, EventArgs e)
 
         }
 
-        private void label2_Click(object sender, EventArgs e)
+   private void label2_Click(object sender, EventArgs e)
         {
 
         }

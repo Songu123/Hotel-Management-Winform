@@ -125,4 +125,8 @@ D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan
 D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.UCRoomCard.resources
 D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.UCRoomFloorView.resources
 D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.UCRoomCards.resources
-D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.UCRoomManagement.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.sourcelink.json
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.Service.UCServices.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.Room_Service.UCRoom.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.Room_Service.AddRoomForm.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.Room_Service.RoomDetailForm.resources

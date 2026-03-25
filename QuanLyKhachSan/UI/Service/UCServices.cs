@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QuanLyKhachSan.UI
+namespace QuanLyKhachSan.UI.Service
 {
     public partial class UCServices : UserControl
     {
         public UCServices()
-   {
-     InitializeComponent();
+        {
+            InitializeComponent();
         }
-
-   private void UCServices_Load(object sender, EventArgs e)
- {
-    // Load services data
-         }
     }
 }
