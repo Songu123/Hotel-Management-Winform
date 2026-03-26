@@ -1,0 +1,181 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.CustomerUI
+{
+    public partial class AddCustomerForm : Form
+    {
+        private readonly ICustomerService _customerService;
+
+        public AddCustomerForm(ICustomerService customerService)
+   {
+      InitializeComponent();
+            _customerService = customerService;
+      }
+
+        private void InitializeComponent()
+        {
+   this.Text = "Thêm Khách Hàng Mới";
+        this.Width = 600;
+    this.Height = 500;
+ this.StartPosition = FormStartPosition.CenterScreen;
+    this.BackColor = Color.White;
+ this.FormBorderStyle = FormBorderStyle.FixedDialog;
+    this.MaximizeBox = false;
+            this.MinimizeBox = false;
+
+   var pnlMain = new Panel { Dock = DockStyle.Fill, AutoScroll = true, Padding = new Padding(20) };
+
+     var lblTitle = new Label
+       {
+     Text = "THÔNG TIN KHÁCH HÀNG MỚI",
+  Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+            ForeColor = Color.FromArgb(0, 123, 255),
+   AutoSize = true,
+            Margin = new Padding(0, 0, 0, 20)
+          };
+        pnlMain.Controls.Add(lblTitle);
+
+     // Mã khách hàng
+     var lblMaKH = new Label { Text = "Mã khách hàng:", AutoSize = true };
+        var txtMaKH = new TextBox { Width = 300, Margin = new Padding(0, 5, 0, 15) };
+  pnlMain.Controls.Add(lblMaKH);
+    pnlMain.Controls.Add(txtMaKH);
+
+      // Tên khách hàng
+       var lblTen = new Label { Text = "Tên khách hàng:", AutoSize = true };
+      var txtTen = new TextBox { Width = 300, Margin = new Padding(0, 5, 0, 15) };
+    pnlMain.Controls.Add(lblTen);
+        pnlMain.Controls.Add(txtTen);
+
+        // CMND/CCCD
+    var lblCMND = new Label { Text = "CMND/CCCD:", AutoSize = true };
+        var txtCMND = new TextBox { Width = 300, Margin = new Padding(0, 5, 0, 15) };
+       pnlMain.Controls.Add(lblCMND);
+          pnlMain.Controls.Add(txtCMND);
+
+   // Giới tính
+      var lblGioiTinh = new Label { Text = "Giới tính:", AutoSize = true };
+            var cbGioiTinh = new ComboBox { Width = 300, DropDownStyle = ComboBoxStyle.DropDownList, Margin = new Padding(0, 5, 0, 15) };
+          cbGioiTinh.Items.AddRange(new[] { "Nam", "Nữ" });
+   cbGioiTinh.SelectedIndex = 0;
+       pnlMain.Controls.Add(lblGioiTinh);
+        pnlMain.Controls.Add(cbGioiTinh);
+
+    // Ngày sinh
+      var lblNgaySinh = new Label { Text = "Ngày sinh:", AutoSize = true };
+         var dtpNgaySinh = new DateTimePicker { Width = 300, Format = DateTimePickerFormat.Short, Margin = new Padding(0, 5, 0, 15) };
+         pnlMain.Controls.Add(lblNgaySinh);
+        pnlMain.Controls.Add(dtpNgaySinh);
+
+     // Số điện thoại
+    var lblSDT = new Label { Text = "Số điện thoại:", AutoSize = true };
+var txtSDT = new TextBox { Width = 300, Margin = new Padding(0, 5, 0, 15) };
+       pnlMain.Controls.Add(lblSDT);
+       pnlMain.Controls.Add(txtSDT);
+
+    // Địa chỉ/Quê quán
+  var lblQueQuan = new Label { Text = "Quê quán:", AutoSize = true };
+         var txtQueQuan = new TextBox { Width = 300, Multiline = true, Height = 80, Margin = new Padding(0, 5, 0, 15) };
+       pnlMain.Controls.Add(lblQueQuan);
+       pnlMain.Controls.Add(txtQueQuan);
+
+        // Quốc tịch
+         var lblQuocTich = new Label { Text = "Quốc tịch:", AutoSize = true };
+           var txtQuocTich = new TextBox { Width = 300, Margin = new Padding(0, 5, 0, 15) };
+    pnlMain.Controls.Add(lblQuocTich);
+        pnlMain.Controls.Add(txtQuocTich);
+
+  // Buttons
+    var pnlButtons = new Panel { Dock = DockStyle.Bottom, Height = 50, BackColor = Color.WhiteSmoke };
+         var btnSave = new Button
+        {
+  Text = "Lưu",
+       Location = new Point(350, 10),
+           Width = 100,
+         Height = 30,
+     BackColor = Color.SeaGreen,
+   ForeColor = Color.White,
+         Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+    FlatStyle = FlatStyle.Flat
+         };
+
+        var btnCancel = new Button
+  {
+      Text = "Hủy",
+         Location = new Point(460, 10),
+ Width = 100,
+    Height = 30,
+      BackColor = Color.Gray,
+ ForeColor = Color.White,
+Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+ FlatStyle = FlatStyle.Flat,
+   DialogResult = DialogResult.Cancel
+        };
+
+        btnSave.Click += async (s, e) =>
+   {
+   try
+      {
+        // Validation
+ if (string.IsNullOrWhiteSpace(txtMaKH.Text))
+    {
+         MessageBox.Show("Mã khách hàng không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+  txtMaKH.Focus();
+       return;
+ }
+
+ if (string.IsNullOrWhiteSpace(txtTen.Text))
+    {
+       MessageBox.Show("Tên khách hàng không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+  txtTen.Focus();
+        return;
+  }
+
+    if (string.IsNullOrWhiteSpace(txtSDT.Text))
+     {
+    MessageBox.Show("Số điện thoại không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+txtSDT.Focus();
+     return;
+            }
+
+        var customer = new Customer
+ {
+    CustomerId = txtMaKH.Text.Trim(),
+ Name = txtTen.Text.Trim(),
+   IdNumber = txtCMND.Text.Trim(),
+  Gender = cbGioiTinh.SelectedIndex,
+    DateOfBirth = dtpNgaySinh.Value,
+          PhoneNumber = txtSDT.Text.Trim(),
+      Address = txtQueQuan.Text.Trim(),
+    Nationality = txtQuocTich.Text.Trim()
+    };
+
+        await _customerService.CreateCustomerAsync(customer);
+    MessageBox.Show("Thêm khách hàng thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      this.DialogResult = DialogResult.OK;
+           this.Close();
+              }
+    catch (Exception ex)
+      {
+         MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+       }
+      };
+
+       pnlButtons.Controls.Add(btnSave);
+     pnlButtons.Controls.Add(btnCancel);
+
+ this.Controls.Add(pnlMain);
+  this.Controls.Add(pnlButtons);
+        }
+    }
+}

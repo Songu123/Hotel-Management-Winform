@@ -3,173 +3,20 @@
   "WorkspaceRootPath": "D:\\LearnC#\\QuanLyKhachSan\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\ucbooking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\ucbooking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\frmeditroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\frmeditroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\ucbooking.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\ucbooking.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\data\\hoteldbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\data\\hoteldbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\implementations\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\implementations\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\ucrooms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\ucrooms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\ucservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\ucservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Migrations\\20260324165252_SeedData.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:QuanLyKhachSan\\Migrations\\20260324165252_SeedData.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\configuration\\servicecollectionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\configuration\\servicecollectionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Migrations\\20260324164715_CreateDatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:QuanLyKhachSan\\Migrations\\20260324164715_CreateDatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\data\\hoteldbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\data\\hoteldbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\data\\hoteldbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\data\\hoteldbcontextfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\ucdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\ucdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\ucroomfloorview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\ucroomfloorview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\implementations\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\implementations\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\repositories\\implementations\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\repositories\\implementations\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\rentaldetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\rentaldetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\account.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\servicerentaldetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\servicerentaldetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\roomamenity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\roomamenity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\ucrooms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\ucrooms.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1402305658\\FINAL_BUILD_REPORT.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1402305658\\COPILOT_COMPLETION_REPORT.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1402305658\\SEED_DATA_QUICK_REF.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\amenity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\amenity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\rolefunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\rolefunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\models\\roomrentaldetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\models\\roomrentaldetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\repositories\\interfaces\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\repositories\\interfaces\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\repositories\\implementations\\invoicerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\repositories\\implementations\\invoicerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\repositories\\interfaces\\iinvoicerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\repositories\\interfaces\\iinvoicerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\interfaces\\iinvoiceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\interfaces\\iinvoiceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\implementations\\invoiceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\implementations\\invoiceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\interfaces\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\interfaces\\ibookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\repositories\\implementations\\roomrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\repositories\\implementations\\roomrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\implementations\\roomservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\implementations\\roomservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\readme_ucroommanagement.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\readme_ucroommanagement.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\frmroomdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\frmroomdetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\ucroommanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\ucroommanagement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\customerui\\addcustomerform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\customerui\\addcustomerform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -179,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 51,
+          "SelectedChildIndex": 16,
           "Children": [
             {
               "$type": "Bookmark",
@@ -200,10 +47,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
               "$type": "Bookmark",
@@ -243,543 +86,53 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
-              "Title": "UCRoomManagement.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCRoomManagement.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\UCRoomManagement.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCRoomManagement.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\UCRoomManagement.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACECAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:25:40.906Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "FrmEditRoom.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\FrmEditRoom.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\FrmEditRoom.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\FrmEditRoom.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\FrmEditRoom.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAANoBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:15:14.06Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "FrmRoomDetails.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\FrmRoomDetails.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\FrmRoomDetails.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\FrmRoomDetails.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\FrmRoomDetails.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKwBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:08:05.431Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MainForm.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\MainForm.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\MainForm.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\MainForm.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\MainForm.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:03:58.079Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "UCRooms.cs [Design]",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCRooms.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\UCRooms.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCRooms.cs [Design]",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\UCRooms.cs [Design]",
+              "Title": "AddCustomerForm.Designer.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\CustomerUI\\AddCustomerForm.Designer.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\CustomerUI\\AddCustomerForm.Designer.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\CustomerUI\\AddCustomerForm.Designer.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\CustomerUI\\AddCustomerForm.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:00:01.862Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UCServices.cs [Design]",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCServices.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\UCServices.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCServices.cs [Design]",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\UCServices.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:00:00.043Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "20260324165252_SeedData.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Migrations\\20260324165252_SeedData.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Migrations\\20260324165252_SeedData.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Migrations\\20260324165252_SeedData.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Migrations\\20260324165252_SeedData.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:52:52.415Z",
+              "WhenOpened": "2026-03-26T11:21:42.858Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "HotelDbSeeder.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Data\\HotelDbSeeder.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Data\\HotelDbSeeder.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Data\\HotelDbSeeder.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Data\\HotelDbSeeder.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAACgAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:52:12.068Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ServiceCollectionExtensions.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Configuration\\ServiceCollectionExtensions.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Configuration\\ServiceCollectionExtensions.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Configuration\\ServiceCollectionExtensions.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Configuration\\ServiceCollectionExtensions.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAApwCgAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:50:57.954Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "20260324164715_CreateDatabase.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Migrations\\20260324164715_CreateDatabase.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Migrations\\20260324164715_CreateDatabase.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Migrations\\20260324164715_CreateDatabase.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Migrations\\20260324164715_CreateDatabase.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:47:16.018Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "HotelDbContextFactory.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Data\\HotelDbContextFactory.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Data\\HotelDbContextFactory.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Data\\HotelDbContextFactory.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Data\\HotelDbContextFactory.cs",
+              "Title": "CustomerService.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\CustomerService.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Implementations\\CustomerService.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\CustomerService.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\Services\\Implementations\\CustomerService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:45:16.79Z",
+              "WhenOpened": "2026-03-26T11:21:42.648Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 40,
-              "Title": "README_UCRoomManagement.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\README_UCRoomManagement.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\README_UCRoomManagement.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\README_UCRoomManagement.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\README_UCRoomManagement.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-24T16:19:37.414Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "UCDashboard.cs [Design]",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCDashboard.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\UCDashboard.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCDashboard.cs [Design]",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\UCDashboard.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:13:50.071Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "UCRoomFloorView.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCRoomFloorView.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\UCRoomFloorView.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCRoomFloorView.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\UCRoomFloorView.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAAAawHMAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:07:37.227Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "BookingService.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\BookingService.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Implementations\\BookingService.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\BookingService.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Services\\Implementations\\BookingService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:06:20.43Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 39,
-              "Title": "RoomService.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\RoomService.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Implementations\\RoomService.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\RoomService.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Services\\Implementations\\RoomService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:05:13.452Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 38,
-              "Title": "RoomRepository.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Implementations\\RoomRepository.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Repositories\\Implementations\\RoomRepository.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Implementations\\RoomRepository.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Repositories\\Implementations\\RoomRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:04:55.556Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 37,
-              "Title": "IBookingService.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Interfaces\\IBookingService.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Interfaces\\IBookingService.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Interfaces\\IBookingService.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Services\\Interfaces\\IBookingService.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:04:28.418Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "InvoiceService.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\InvoiceService.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Implementations\\InvoiceService.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\InvoiceService.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Services\\Implementations\\InvoiceService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:02:03.747Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
-              "Title": "IInvoiceService.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Interfaces\\IInvoiceService.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Interfaces\\IInvoiceService.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Interfaces\\IInvoiceService.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Services\\Interfaces\\IInvoiceService.cs",
-              "ViewState": "AgIAAC4AAAAAAAAAAMBcwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:00:55.292Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "IInvoiceRepository.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Interfaces\\IInvoiceRepository.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Repositories\\Interfaces\\IInvoiceRepository.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Interfaces\\IInvoiceRepository.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Repositories\\Interfaces\\IInvoiceRepository.cs",
-              "ViewState": "AgIAACMAAAAAAAAAAMBcwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:00:27.503Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
-              "Title": "InvoiceRepository.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Implementations\\InvoiceRepository.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Repositories\\Implementations\\InvoiceRepository.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Implementations\\InvoiceRepository.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Repositories\\Implementations\\InvoiceRepository.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAIBZwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T16:00:13.628Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 32,
-              "Title": "ICustomerRepository.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Interfaces\\ICustomerRepository.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Repositories\\Interfaces\\ICustomerRepository.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Interfaces\\ICustomerRepository.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Repositories\\Interfaces\\ICustomerRepository.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAMBcwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:59:52.865Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "ServiceRentalDetail.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\ServiceRentalDetail.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\ServiceRentalDetail.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\ServiceRentalDetail.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\ServiceRentalDetail.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAqwCMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:51:38.815Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "RoomAmenity.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\RoomAmenity.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\RoomAmenity.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\RoomAmenity.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\RoomAmenity.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:51:25.161Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "RoomRentalDetail.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\RoomRentalDetail.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\RoomRentalDetail.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\RoomRentalDetail.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\RoomRentalDetail.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAA+wCwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:51:12.565Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "RentalDetail.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\RentalDetail.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\RentalDetail.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\RentalDetail.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\RentalDetail.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:50:56.095Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "RoleFunction.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\RoleFunction.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\RoleFunction.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\RoleFunction.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\RoleFunction.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAEBUwBkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:50:34.918Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "Service.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Service.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\Service.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Service.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\Service.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAxwCIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:50:22.475Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "Amenity.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Amenity.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\Amenity.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Amenity.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\Amenity.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAxwBgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:50:10.238Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "Employee.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Employee.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\Employee.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Employee.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\Employee.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAxwC8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:49:57.149Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Customer.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Customer.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\Customer.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Customer.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\Customer.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABYAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:49:29.478Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "CustomerRepository.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Implementations\\CustomerRepository.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Repositories\\Implementations\\CustomerRepository.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Implementations\\CustomerRepository.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Repositories\\Implementations\\CustomerRepository.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAwwDIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:43:09.546Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "SEED_DATA_QUICK_REF.md",
-              "DocumentMoniker": "C:\\Users\\Admin\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1402305658\\SEED_DATA_QUICK_REF.md",
-              "ToolTip": "C:\\Users\\Admin\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1402305658\\SEED_DATA_QUICK_REF.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-24T15:42:48.687Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "COPILOT_COMPLETION_REPORT.md",
-              "DocumentMoniker": "C:\\Users\\Admin\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1402305658\\COPILOT_COMPLETION_REPORT.md",
-              "ToolTip": "C:\\Users\\Admin\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1402305658\\COPILOT_COMPLETION_REPORT.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-24T15:42:48.625Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "FINAL_BUILD_REPORT.md",
-              "DocumentMoniker": "C:\\Users\\Admin\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1402305658\\FINAL_BUILD_REPORT.md",
-              "ToolTip": "C:\\Users\\Admin\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-1402305658\\FINAL_BUILD_REPORT.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-24T15:42:48.561Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Invoice.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Invoice.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\Invoice.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Invoice.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\Invoice.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAqwCUAAAAAAAAAAAAAAA==",
+              "Title": "UCBooking.cs [Design]",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCBooking.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UCBooking.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCBooking.cs [Design]",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UCBooking.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:42:04.361Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-26T05:28:31.399Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Room.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Room.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\Room.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Room.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\Room.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "UCBooking.Designer.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCBooking.Designer.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UCBooking.Designer.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCBooking.Designer.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UCBooking.Designer.cs",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAgwFwAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:41:49.371Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "Function.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Function.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\Function.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Function.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\Function.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAxwBUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:41:28.545Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "Role.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Role.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\Role.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Role.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\Role.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAxwBYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:41:15.694Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "Account.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Account.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Models\\Account.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Models\\Account.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Models\\Account.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:41:02.992Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "HotelDbContext.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Data\\HotelDbContext.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Data\\HotelDbContext.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Data\\HotelDbContext.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Data\\HotelDbContext.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:40:49.274Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "UCRooms.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCRooms.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\UCRooms.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\UCRooms.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\UCRooms.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T15:37:02.42Z",
+              "WhenOpened": "2026-03-26T05:28:08.216Z",
               "EditorCaption": ""
             }
           ]
