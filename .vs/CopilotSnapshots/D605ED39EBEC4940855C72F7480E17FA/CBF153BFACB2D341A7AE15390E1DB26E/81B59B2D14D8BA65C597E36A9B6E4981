@@ -1,0 +1,23 @@
+﻿namespace QuanLyKhachSan.UI.CustomerUI
+{
+    partial class AddCustomerForm
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+        {
+ components.Dispose();
+    }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+     {
+ this.components = new System.ComponentModel.Container();
+    this.Name = "AddCustomerForm";
+        this.Size = new System.Drawing.Size(600, 500);
+        }
+    }
+}
