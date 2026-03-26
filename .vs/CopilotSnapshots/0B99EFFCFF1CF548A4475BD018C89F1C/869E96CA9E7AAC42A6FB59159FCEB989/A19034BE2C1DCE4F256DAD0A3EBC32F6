@@ -1,0 +1,354 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    public partial class BookingForm : Form
+    {
+     private Room _room;
+      private DateTime _checkInDate;
+    private DateTime _checkOutDate;
+        private Customer _selectedCustomer;
+ public bool IsConfirmed { get; set; } = false;
+
+        // Customer input fields
+ private ComboBox cboCustomer;
+        private TextBox txtCustomerName;
+        private TextBox txtIDCard;
+      private TextBox txtPhone;
+   private Label lblSelectedCustomer;
+
+        public BookingForm(Room room, DateTime checkInDate, DateTime checkOutDate, List<Customer> customers = null)
+        {
+          InitializeComponent();
+     _room = room;
+   _checkInDate = checkInDate;
+            _checkOutDate = checkOutDate;
+ SetupForm(customers);
+        }
+
+        private void SetupForm(List<Customer> customers = null)
+   {
+      this.Text = "Phiếu Đặt Phòng";
+        this.Width = 900;
+  this.Height = 700;
+            this.StartPosition = FormStartPosition.CenterParent;
+        this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+
+   CreateFormContent(customers ?? new List<Customer>());
+        }
+
+        private void CreateFormContent(List<Customer> customers)
+        {
+            // Title
+      var lblTitle = new Label
+            {
+    Text = "TẠO PHIẾU ĐẶT PHÒNG",
+        Font = new Font("Segoe UI", 16, FontStyle.Bold),
+     ForeColor = Color.SteelBlue,
+                Location = new Point(20, 15),
+   AutoSize = true
+   };
+
+  // Section 1: Thông tin phiếu thuê
+       var lblSection1 = new Label
+       {
+                Text = "THÔNG TIN PHIẾU THUÊ",
+    Font = new Font("Segoe UI", 11, FontStyle.Bold),
+    ForeColor = Color.White,
+    BackColor = Color.SteelBlue,
+         Location = new Point(20, 50),
+        Width = this.Width - 60,
+   Height = 25,
+  TextAlign = ContentAlignment.MiddleLeft,
+     Padding = new Padding(10, 0, 0, 0)
+            };
+
+ // Info grid
+     var pnlInfo = new Panel
+            {
+      Location = new Point(20, 80),
+     Width = this.Width - 60,
+       Height = 80,
+        BorderStyle = BorderStyle.FixedSingle,
+                BackColor = Color.WhiteSmoke
+     };
+
+         // Calculate pricing
+          int nights = (int)(_checkOutDate - _checkInDate).TotalDays;
+            decimal totalPrice = _room.Price * nights;
+
+            var infoText = $"Mã chi tiết thuê: {Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}\n" +
+            $"Nhân viên lập phiếu: Admin\n" +
+            $"Ngày lập phiếu: {DateTime.Now:dd/MM/yyyy HH:mm:ss}\n" +
+            $"Tính trạng xử lý: Đang xử lý\n" +
+     $"Tiền đặt cọc: 0 VNĐ";
+
+            var lblInfo = new Label
+      {
+      Text = infoText,
+        Font = new Font("Segoe UI", 9),
+         Location = new Point(10, 10),
+   AutoSize = true,
+           Parent = pnlInfo
+};
+
+ // Section 2: Thông tin khách hàng
+         var lblSection2 = new Label
+    {
+     Text = "THÔNG TIN KHÁCH HÀNG",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+        ForeColor = Color.White,
+  BackColor = Color.SteelBlue,
+        Location = new Point(20, 170),
+   Width = this.Width - 60,
+                Height = 25,
+         TextAlign = ContentAlignment.MiddleLeft,
+        Padding = new Padding(10, 0, 0, 0)
+ };
+
+var pnlCustomer = new Panel
+    {
+    Location = new Point(20, 200),
+      Width = this.Width - 60,
+            Height = 150,
+   BorderStyle = BorderStyle.FixedSingle,
+             BackColor = Color.WhiteSmoke
+     };
+
+     // Label chọn khách hàng
+            var lblChooseCustomer = new Label
+      {
+       Text = "Chọn khách hàng:",
+        Font = new Font("Segoe UI", 9, FontStyle.Bold),
+      Location = new Point(10, 10),
+                AutoSize = true,
+     Parent = pnlCustomer
+    };
+
+  // ComboBox khách hàng
+       cboCustomer = new ComboBox
+          {
+     Location = new Point(130, 8),
+   Width = 400,
+              Height = 25,
+     DropDownStyle = ComboBoxStyle.DropDownList,
+         Font = new Font("Segoe UI", 9),
+              Parent = pnlCustomer
+       };
+
+    // Thêm customers vào combo
+  if (customers != null && customers.Count > 0)
+   {
+       foreach (var customer in customers)
+      {
+   cboCustomer.Items.Add($"{customer.CustomerId} - {customer.Name}");
+      }
+   }
+      cboCustomer.Items.Insert(0, "-- Chọn khách hàng --");
+  cboCustomer.SelectedIndex = 0;
+ cboCustomer.SelectedIndexChanged += CboCustomer_SelectedIndexChanged;
+
+     // Thông tin khách đã chọn
+    lblSelectedCustomer = new Label
+     {
+      Text = "",
+    Font = new Font("Segoe UI", 9),
+  Location = new Point(10, 45),
+    Width = this.Width - 100,
+    Height = 60,
+          AutoSize = true,
+         Parent = pnlCustomer,
+       ForeColor = Color.DarkGreen
+        };
+
+     // Section 3: Danh sách phòng đặt
+            var lblSection3 = new Label
+  {
+    Text = "DANH SÁCH PHÒNG ĐẶT",
+    Font = new Font("Segoe UI", 11, FontStyle.Bold),
+  ForeColor = Color.White,
+     BackColor = Color.SteelBlue,
+  Location = new Point(20, 360),
+             Width = this.Width - 60,
+       Height = 25,
+   TextAlign = ContentAlignment.MiddleLeft,
+      Padding = new Padding(10, 0, 0, 0)
+   };
+
+   // Room details table
+            var dgvRooms = new DataGridView
+  {
+       Location = new Point(20, 390),
+       Width = this.Width - 60,
+        Height = 100,
+      AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+      ReadOnly = true,
+     AllowUserToAddRows = false,
+      AllowUserToDeleteRows = false,
+      ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+     };
+
+         // Add columns
+            dgvRooms.Columns.Add("STT", "STT");
+  dgvRooms.Columns.Add("MaPhong", "Mã Phòng");
+            dgvRooms.Columns.Add("TenPhong", "Tên Phòng");
+            dgvRooms.Columns.Add("TinhTrang", "Tình Trạng");
+     dgvRooms.Columns.Add("LoaiHinhThue", "Loại Hình Thuê");
+    dgvRooms.Columns.Add("NgayThue", "Ngày Thuê");
+    dgvRooms.Columns.Add("NgayTra", "Ngày Trả");
+   dgvRooms.Columns.Add("GiaPhong", "Giá Phòng");
+
+  // Add row
+            dgvRooms.Rows.Add(
+1,
+                _room.RoomId,
+     _room.Name,
+        "Đang xử lý",
+    "Theo ngày",
+       _checkInDate.ToString("dd/MM/yyyy HH:mm:ss"),
+            _checkOutDate.ToString("dd/MM/yyyy HH:mm:ss"),
+_room.Price.ToString("N0") + " VNĐ"
+            );
+
+            // Total price
+     var pnlTotal = new Panel
+    {
+     Location = new Point(20, 495),
+  Width = this.Width - 60,
+     Height = 50,
+        BorderStyle = BorderStyle.FixedSingle,
+         BackColor = Color.White
+            };
+
+    var lblTotal = new Label
+   {
+   Text = $"Tổng cộng: {totalPrice:N0} VNĐ",
+    Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                ForeColor = Color.FromArgb(239, 68, 68),
+     Location = new Point(10, 15),
+        AutoSize = true,
+    Parent = pnlTotal
+     };
+
+            var lblNights = new Label
+        {
+ Text = $"({nights} đêm × {_room.Price:N0} VNĐ/đêm)",
+       Font = new Font("Segoe UI", 9),
+   ForeColor = Color.Gray,
+        Location = new Point(10, 35),
+           AutoSize = true,
+    Parent = pnlTotal
+    };
+
+  // Buttons
+            var btnSaveBooking = new Button
+         {
+ Text = "Lưu Phiếu Thuê",
+    Width = 120,
+            Height = 40,
+       Location = new Point(this.Width - 270, this.Height - 70),
+     BackColor = Color.FromArgb(34, 197, 94),
+      ForeColor = Color.White,
+         Font = new Font("Segoe UI", 10, FontStyle.Bold),
+        FlatStyle = FlatStyle.Flat,
+           Enabled = false
+         };
+
+  var btnCancel = new Button
+     {
+         Text = "Hủy",
+    Width = 80,
+         Height = 40,
+      Location = new Point(this.Width - 135, this.Height - 70),
+                BackColor = Color.Gray,
+        ForeColor = Color.White,
+        Font = new Font("Segoe UI", 10, FontStyle.Bold),
+    FlatStyle = FlatStyle.Flat,
+       DialogResult = DialogResult.Cancel
+   };
+
+            btnSaveBooking.Click += (s, e) =>
+            {
+      if (_selectedCustomer == null)
+       {
+         MessageBox.Show("Vui lòng chọn khách hàng!", "Cảnh báo",
+    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+            }
+
+       IsConfirmed = true;
+            MessageBox.Show($"Phiếu đặt phòng đã được lưu!\n\n" +
+   $"Khách hàng: {_selectedCustomer.Name}\n" +
+       $"Phòng: {_room.Name}\n" +
+    $"Tổng tiền: {totalPrice:N0} VNĐ",
+            "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+   this.DialogResult = DialogResult.OK;
+        this.Close();
+            };
+
+       // Kích hoạt nút lưu khi chọn khách
+  cboCustomer.SelectedIndexChanged += (s, e) =>
+ {
+       btnSaveBooking.Enabled = (cboCustomer.SelectedIndex > 0);
+      };
+
+            // Add controls
+            this.Controls.Add(lblTitle);
+         this.Controls.Add(lblSection1);
+    this.Controls.Add(pnlInfo);
+            this.Controls.Add(lblSection2);
+       this.Controls.Add(pnlCustomer);
+   this.Controls.Add(lblSection3);
+        this.Controls.Add(dgvRooms);
+            this.Controls.Add(pnlTotal);
+  this.Controls.Add(btnSaveBooking);
+     this.Controls.Add(btnCancel);
+  }
+
+        private void CboCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+    if (cboCustomer.SelectedIndex > 0)
+        {
+   var selectedText = cboCustomer.SelectedItem.ToString();
+    var parts = selectedText.Split(new string[] { " - " }, StringSplitOptions.None);
+        if (parts.Length > 0)
+                {
+             _selectedCustomer = new Customer
+        {
+              CustomerId = parts[0].Trim(),
+            CustomerName = parts.Length > 1 ? parts[1].Trim() : ""
+      };
+
+  lblSelectedCustomer.Text = $"✓ Đã chọn: {_selectedCustomer.CustomerName}\n" +
+   $"  Mã khách: {_selectedCustomer.CustomerId}";
+   }
+        }
+      else
+            {
+                _selectedCustomer = null;
+           lblSelectedCustomer.Text = "";
+            }
+    }
+
+        private void InitializeComponent()
+      {
+            this.SuspendLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+   this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+  this.ClientSize = new System.Drawing.Size(900, 700);
+            this.Name = "BookingForm";
+            this.ResumeLayout(false);
+        }
+  }
+}

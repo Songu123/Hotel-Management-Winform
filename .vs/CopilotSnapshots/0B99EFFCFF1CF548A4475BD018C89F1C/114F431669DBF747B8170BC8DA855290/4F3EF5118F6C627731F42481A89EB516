@@ -1,0 +1,171 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.CustomerUI
+{
+    public partial class AddCustomerForm : Form
+    {
+        private readonly ICustomerService _customerService;
+
+        public AddCustomerForm(ICustomerService customerService)
+        {
+            InitializeComponent();
+            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+        }
+
+        private void AddCustomerForm_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                InitializeForm();
+                AttachEventHandlers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải form: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void InitializeForm()
+        {
+            // Set default values
+            dtpNgaySinh.Value = DateTime.Now.AddYears(-18); // Default age 18
+            rbNam.Checked = true;
+
+            // Generate new customer ID
+            txtMaKH.Text = GenerateNewCustomerId();
+            txtMaKH.ReadOnly = true;
+
+            // Focus on name field
+            txtHoTen.Focus();
+        }
+
+        private string GenerateNewCustomerId()
+        {
+            // Format: KH + timestamp (e.g., KH20240101001)
+            return $"KH{DateTime.Now:yyyyMMddHHmmss}";
+        }
+
+        private void AttachEventHandlers()
+        {
+            btnLuu.Click += BtnLuu_Click;
+            btnHuy.Click += BtnHuy_Click;
+            btnClose.Click += BtnClose_Click;
+        }
+
+        private async void BtnLuu_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Validation
+                if (!ValidateInput())
+                    return;
+
+                // Create customer object
+                var customer = new Customer
+                {
+                    CustomerId = txtMaKH.Text.Trim(),
+                    Name = txtHoTen.Text.Trim(),
+                    IdNumber = txtCMND.Text.Trim(),
+                    PhoneNumber = txtSDT.Text.Trim(),
+                    DateOfBirth = dtpNgaySinh.Value,
+                    Gender = rbNam.Checked ? 1 : 0,
+                    Address = BuildAddress(),
+                    Nationality = txtQuocTich.Text.Trim(),
+                    IsDeleted = 0
+                };
+
+                // Save to database
+                await _customerService.CreateCustomerAsync(customer);
+
+                MessageBox.Show("Thêm khách hàng thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool ValidateInput()
+        {
+            // Validate name
+            if (string.IsNullOrWhiteSpace(txtHoTen.Text))
+            {
+                MessageBox.Show("Tên khách hàng không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtHoTen.Focus();
+                return false;
+            }
+
+            // Validate phone
+            if (string.IsNullOrWhiteSpace(txtSDT.Text))
+            {
+                MessageBox.Show("Số điện thoại không được để trống", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSDT.Focus();
+                return false;
+            }
+
+            // Validate phone format
+            if (!IsValidPhoneNumber(txtSDT.Text.Trim()))
+            {
+                MessageBox.Show("Số điện thoại không hợp lệ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSDT.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsValidPhoneNumber(string phoneNumber)
+        {
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+                return false;
+
+            // Kiểm tra độ dài từ 10-15 ký tự
+            if (phoneNumber.Length < 10 || phoneNumber.Length > 15)
+                return false;
+
+            // Kiểm tra chỉ chứa chữ số hoặc các ký tự hợp lệ
+            return Regex.IsMatch(phoneNumber, @"^[\d\s\-\+\(\)]+$");
+        }
+
+        private string BuildAddress()
+        {
+            var parts = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(txtDuong.Text))
+                parts.Add(txtDuong.Text.Trim());
+            if (!string.IsNullOrWhiteSpace(txtPhuongThon.Text))
+                parts.Add(txtPhuongThon.Text.Trim());
+            if (!string.IsNullOrWhiteSpace(txtQuanHuyen.Text))
+                parts.Add(txtQuanHuyen.Text.Trim());
+            if (!string.IsNullOrWhiteSpace(txtTinhThanh.Text))
+                parts.Add(txtTinhThanh.Text.Trim());
+
+            return string.Join(", ", parts);
+        }
+
+        private void BtnHuy_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void BtnClose_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+    }
+}

@@ -1,0 +1,201 @@
+﻿namespace QuanLyKhachSan.UI
+{
+    partial class ModernRoomCard
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Label lblRoomName;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label lblRoomType;
+        private System.Windows.Forms.Label lblPrice;
+        private System.Windows.Forms.Label lblRoomClass;
+        private System.Windows.Forms.Label lblDate;
+        private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.ContextMenuStrip contextMenuRoom;
+        private System.Windows.Forms.ToolStripMenuItem menuViewInfo;
+        private System.Windows.Forms.ToolStripMenuItem menuBook;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem menuClean;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblRoomName = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblRoomType = new System.Windows.Forms.Label();
+            this.lblPrice = new System.Windows.Forms.Label();
+            this.lblRoomClass = new System.Windows.Forms.Label();
+            this.lblDate = new System.Windows.Forms.Label();
+            this.lblTime = new System.Windows.Forms.Label();
+            this.contextMenuRoom = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuViewInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuBook = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuClean = new System.Windows.Forms.ToolStripMenuItem();
+
+            this.pnlHeader.SuspendLayout();
+            this.contextMenuRoom.SuspendLayout();
+            this.SuspendLayout();
+
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BackColor = System.Drawing.Color.Green;
+            this.pnlHeader.Controls.Add(this.lblRoomName);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(260, 45);
+            this.pnlHeader.TabIndex = 0;
+            // 
+            // lblRoomName
+            // 
+            this.lblRoomName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRoomName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRoomName.ForeColor = System.Drawing.Color.White;
+            this.lblRoomName.Location = new System.Drawing.Point(0, 0);
+            this.lblRoomName.Name = "lblRoomName";
+            this.lblRoomName.Size = new System.Drawing.Size(260, 45);
+            this.lblRoomName.TabIndex = 0;
+            this.lblRoomName.Text = "Phòng Ghế Tình yêu";
+            this.lblRoomName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblStatus.ForeColor = System.Drawing.Color.White;
+            this.lblStatus.Location = new System.Drawing.Point(15, 60);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(86, 17);
+            this.lblStatus.TabIndex = 1;
+            this.lblStatus.Text = "Phòng trống";
+            // 
+            // lblRoomType
+            // 
+            this.lblRoomType.AutoSize = true;
+            this.lblRoomType.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblRoomType.ForeColor = System.Drawing.Color.White;
+            this.lblRoomType.Location = new System.Drawing.Point(15, 90);
+            this.lblRoomType.Name = "lblRoomType";
+            this.lblRoomType.Size = new System.Drawing.Size(72, 17);
+            this.lblRoomType.TabIndex = 2;
+            this.lblRoomType.Text = "Phòng đôi";
+            // 
+            // lblPrice
+            // 
+            this.lblPrice.AutoSize = true;
+            this.lblPrice.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
+            this.lblPrice.ForeColor = System.Drawing.Color.White;
+            this.lblPrice.Location = new System.Drawing.Point(15, 120);
+            this.lblPrice.Name = "lblPrice";
+            this.lblPrice.Size = new System.Drawing.Size(99, 19);
+            this.lblPrice.TabIndex = 3;
+            this.lblPrice.Text = "200,000 VNĐ";
+            // 
+            // lblRoomClass
+            // 
+            this.lblRoomClass.AutoSize = true;
+            this.lblRoomClass.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblRoomClass.ForeColor = System.Drawing.Color.White;
+            this.lblRoomClass.Location = new System.Drawing.Point(135, 60);
+            this.lblRoomClass.Name = "lblRoomClass";
+            this.lblRoomClass.Size = new System.Drawing.Size(73, 17);
+            this.lblRoomClass.TabIndex = 4;
+            this.lblRoomClass.Text = "Phòng Vip";
+            // 
+            // lblDate
+            // 
+            this.lblDate.AutoSize = true;
+            this.lblDate.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblDate.ForeColor = System.Drawing.Color.White;
+            this.lblDate.Location = new System.Drawing.Point(135, 90);
+            this.lblDate.Name = "lblDate";
+            this.lblDate.Size = new System.Drawing.Size(107, 17);
+            this.lblDate.TabIndex = 5;
+            this.lblDate.Text = "Thu 26/03/2026";
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblTime.ForeColor = System.Drawing.Color.White;
+            this.lblTime.Location = new System.Drawing.Point(135, 120);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(60, 17);
+            this.lblTime.TabIndex = 6;
+            this.lblTime.Text = "22:07:02";
+            // 
+            // contextMenuRoom
+            // 
+            this.contextMenuRoom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuViewInfo,
+            this.menuBook,
+            this.toolStripSeparator1,
+            this.menuClean});
+            this.contextMenuRoom.Name = "contextMenuRoom";
+            this.contextMenuRoom.Size = new System.Drawing.Size(236, 76);
+            // 
+            // menuViewInfo
+            // 
+            this.menuViewInfo.Name = "menuViewInfo";
+            this.menuViewInfo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.menuViewInfo.Size = new System.Drawing.Size(235, 22);
+            this.menuViewInfo.Text = "Xem thông tin phòng";
+            // 
+            // menuBook
+            // 
+            this.menuBook.Name = "menuBook";
+            this.menuBook.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.menuBook.Size = new System.Drawing.Size(235, 22);
+            this.menuBook.Text = "Đặt phòng";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(232, 6);
+            // 
+            // menuClean
+            // 
+            this.menuClean.Enabled = false;
+            this.menuClean.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.menuClean.Name = "menuClean";
+            this.menuClean.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.menuClean.Size = new System.Drawing.Size(235, 22);
+            this.menuClean.Text = "Dọn phòng";
+            // 
+            // ModernRoomCard
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.ContextMenuStrip = this.contextMenuRoom;
+            this.Controls.Add(this.lblTime);
+            this.Controls.Add(this.lblDate);
+            this.Controls.Add(this.lblRoomClass);
+            this.Controls.Add(this.lblPrice);
+            this.Controls.Add(this.lblRoomType);
+            this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.pnlHeader);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.Margin = new System.Windows.Forms.Padding(8);
+            this.Name = "ModernRoomCard";
+            this.Size = new System.Drawing.Size(260, 160);
+            this.pnlHeader.ResumeLayout(false);
+            this.contextMenuRoom.ResumeLayout(false);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+        }
+    }
+}
