@@ -1,0 +1,337 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Services.RequestHandlers;
+using QuanLyKhachSan.Services.RequestHandlers.Dtos;
+using QuanLyKhachSan.Services.RequestHandlers.Interfaces;
+
+namespace QuanLyKhachSan.UI.CustomerUI
+{
+    public partial class UCCustomer : UserControl
+    {
+        private readonly ICustomerService _customerService;
+        private readonly IRefreshCustomerListRequestHandler _refreshHandler;
+        private readonly ResetSearchCriteriaRequestHandler _resetHandler;
+        private List<Customer> _allCustomers = new();
+        private Customer? _selectedCustomer = null;
+
+        public UCCustomer()
+        {
+            InitializeComponent();
+        }
+
+        public UCCustomer(ICustomerService customerService, IRefreshCustomerListRequestHandler refreshHandler, ResetSearchCriteriaRequestHandler resetHandler) : this()
+        {
+            _customerService = customerService;
+            _refreshHandler = refreshHandler;
+            _resetHandler = resetHandler;
+        }
+
+        private async void UCCustomer_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                // Kiểm tra xem _customerService có được khởi tạo hay không
+                if (_customerService == null)
+                {
+                    MessageBox.Show("Lỗi: ICustomerService chưa được khởi tạo. Vui lòng kiểm tra Dependency Injection.",
+                "Lỗi Cấu Hình", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                await LoadCustomersAsync();
+                InitializeComboBoxes();
+                AttachEventHandlers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task LoadCustomersAsync()
+        {
+            try
+            {
+                if (_customerService == null)
+                {
+                    throw new InvalidOperationException("ICustomerService chưa được khởi tạo.");
+                }
+
+                var customers = await _customerService.GetAllCustomersAsync();
+                _allCustomers = customers.ToList();
+                BindCustomersToGrid(_allCustomers);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải khách hàng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void BindCustomersToGrid(List<Customer> customers)
+        {
+            if (dgvKhachHang == null) return;
+
+            dgvKhachHang.Rows.Clear();
+            int stt = 1;
+            foreach (var customer in customers)
+            {
+                string genderDisplay = customer.Gender == 1 ? "Nam" : "Nữ";
+                string dateOfBirthDisplay = customer.DateOfBirth.ToString("dd/MM/yyyy");
+
+                dgvKhachHang.Rows.Add(
+                    stt++,
+                    customer.CustomerId,
+                    customer.Name,
+                    customer.IdNumber,
+                    dateOfBirthDisplay,
+                    genderDisplay,
+                    customer.PhoneNumber,
+                    customer.Address,
+                    customer.Nationality
+                );
+            }
+        }
+
+        private void InitializeComboBoxes()
+        {
+            cboGioiTinh.Items.Clear();
+            cboGioiTinh.Items.Add("");
+            cboGioiTinh.Items.Add("Nam");
+            cboGioiTinh.Items.Add("Nữ");
+            cboGioiTinh.SelectedIndex = 0;
+        }
+
+        private void AttachEventHandlers()
+        {
+            btnTimKiem.Click += BtnTimKiem_Click;
+            btnLamMoi.Click += BtnLamMoi_Click;
+            btnTimKiemTheoMa.Click += BtnTimKiemTheoMa_Click;
+            btnSuaKhachHang.Click += BtnSuaKhachHang_Click;
+            button1.Click += BtnThemKhachHang_Click;
+            button2.Click += BtnSuaKhachHang_Click;
+            dgvKhachHang.CellDoubleClick += DgvKhachHang_CellDoubleClick;
+            dgvKhachHang.SelectionChanged += DgvKhachHang_SelectionChanged;
+        }
+
+        private async void BtnTimKiem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_customerService == null)
+                {
+                    MessageBox.Show("Lỗi: ICustomerService chưa được khởi tạo.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string customerId = txtMaKhachHang.Text.Trim();
+                string name = txtTenKhachHang.Text.Trim();
+                string idNumber = txtCMND.Text.Trim();
+                string phoneNumber = txtSoDienThoai.Text.Trim();
+                string nationality = txtQuocTich.Text.Trim();
+                string address = txtQueQuan.Text.Trim();
+
+                int? gender = cboGioiTinh.SelectedIndex > 0 ? cboGioiTinh.SelectedIndex - 1 : null;
+                DateTime? dateOfBirthFrom = dtpNgaySinhTu.Checked ? dtpNgaySinhTu.Value : null;
+                DateTime? dateOfBirthTo = dtpNgaySinhDen.Checked ? dtpNgaySinhDen.Value : null;
+
+                var results = await _customerService.SearchAndFilterCustomersAsync(
+                    string.IsNullOrEmpty(customerId) ? null : customerId,
+                    string.IsNullOrEmpty(name) ? null : name,
+                    string.IsNullOrEmpty(idNumber) ? null : idNumber,
+                    gender,
+                    string.IsNullOrEmpty(phoneNumber) ? null : phoneNumber,
+                    string.IsNullOrEmpty(nationality) ? null : nationality,
+                    string.IsNullOrEmpty(address) ? null : address,
+                    dateOfBirthFrom,
+                    dateOfBirthTo
+                );
+
+                BindCustomersToGrid(results.ToList());
+
+                if (!results.Any())
+                {
+                    MessageBox.Show("Không tìm thấy khách hàng phù hợp", "Tìm kiếm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void BtnLamMoi_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Handle reset search criteria
+                var resetRequest = new ResetSearchCriteriaRequest { ResetAll = true };
+                var resetResult = await _resetHandler.HandleAsync(resetRequest);
+
+                if (!resetResult.Success)
+                {
+                    MessageBox.Show(resetResult.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Clear search fields
+                txtMaKhachHang.Clear();
+                txtTenKhachHang.Clear();
+                txtCMND.Clear();
+                txtSoDienThoai.Clear();
+                txtQuocTich.Clear();
+                txtQueQuan.Clear();
+                cboGioiTinh.SelectedIndex = 0;
+                dtpNgaySinhTu.Checked = false;
+                dtpNgaySinhDen.Checked = false;
+
+                // Handle refresh customer list
+                var refreshRequest = new RefreshCustomerListRequest { Type = Dtos.RefreshType.All };
+                var refreshResult = await _refreshHandler.HandleAsync(refreshRequest);
+
+                if (!refreshResult.Success)
+                {
+                    MessageBox.Show(refreshResult.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Load and display customers
+                var customers = await _refreshHandler.GetCustomersAsync();
+                _allCustomers = customers.ToList();
+                BindCustomersToGrid(_allCustomers);
+
+                MessageBox.Show(refreshResult.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void BtnTimKiemTheoMa_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_customerService == null)
+                {
+                    MessageBox.Show("Lỗi: ICustomerService chưa được khởi tạo.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string customerId = txtMaKhachHang.Text.Trim();
+                if (string.IsNullOrEmpty(customerId))
+                {
+                    MessageBox.Show("Vui lòng nhập mã khách hàng", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtMaKhachHang.Focus();
+                    return;
+                }
+
+                var customer = await _customerService.GetCustomerAsync(customerId);
+                if (customer != null)
+                {
+                    BindCustomersToGrid(new List<Customer> { customer });
+                }
+                else
+                {
+                    MessageBox.Show($"Không tìm thấy khách hàng có mã {customerId}", "Tìm kiếm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    BindCustomersToGrid(new List<Customer>());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void BtnThemKhachHang_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_customerService == null)
+                {
+                    MessageBox.Show("Lỗi: ICustomerService chưa được khởi tạo.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var addForm = new AddCustomerForm(_customerService);
+                if (addForm.ShowDialog() == DialogResult.OK)
+                {
+                    _ = LoadCustomersAsync();
+                    MessageBox.Show("Thêm khách hàng thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void BtnSuaKhachHang_Click(object sender, EventArgs e)
+        {
+            if (_selectedCustomer == null)
+            {
+                MessageBox.Show("Vui lòng chọn khách hàng cần sửa", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                if (_customerService == null)
+                {
+                    MessageBox.Show("Lỗi: ICustomerService chưa được khởi tạo.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var updateForm = new UpdateCustomerForm(_customerService, _selectedCustomer);
+                if (updateForm.ShowDialog() == DialogResult.OK)
+                {
+                    _ = LoadCustomersAsync();
+                    MessageBox.Show("Cập nhật khách hàng thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DgvKhachHang_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                BtnSuaKhachHang_Click(null, null);
+            }
+        }
+
+        private void DgvKhachHang_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvKhachHang.SelectedRows.Count > 0)
+            {
+                int rowIndex = dgvKhachHang.SelectedRows[0].Index;
+                if (rowIndex < _allCustomers.Count)
+                {
+                    _selectedCustomer = _allCustomers.FirstOrDefault(c =>
+                        c.CustomerId == dgvKhachHang.Rows[rowIndex].Cells["colMaKH"].Value.ToString());
+                }
+            }
+            else
+            {
+                _selectedCustomer = null;
+            }
+        }
+
+        private void dtpNgaySinhDen_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

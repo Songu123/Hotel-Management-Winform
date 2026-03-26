@@ -1,0 +1,418 @@
+﻿# 🎨 MODERN ROOM CARD COMPONENT - DOCUMENTATION
+
+## Overview
+
+A professional, modern room card component with built-in context menu for hotel room management. Features clean design, status indicators, and easy-to-use event handling.
+
+---
+
+## Components
+
+### 1. **ModernRoomCard** - Single Room Card
+Modern card display for a single room with status indicator and context menu.
+
+**Features:**
+- ✅ Clean modern design with shadow effects
+- ✅ Room information display (name, type, price, capacity)
+- ✅ Status indicator (Available, Occupied, Cleaning, Maintenance)
+- ✅ Right-click context menu with 3 actions
+- ✅ Professional typography and colors
+- ✅ Anti-aliased rendering
+
+**Events:**
+- `ViewDetailsClicked` - When "Xem chi tiết phòng" is clicked
+- `BookingClicked` - When "Đặt phòng" is clicked
+- `CleaningClicked` - When "Dọn dẹp phòng" is clicked
+
+### 2. **ModernRoomCardContainer** - Grid Layout Container
+Container for displaying multiple room cards in a responsive grid layout.
+
+**Features:**
+- ✅ Automatic grid layout (configurable columns)
+- ✅ Auto-scroll support
+- ✅ Responsive to window resize
+- ✅ Easy add/remove rooms
+- ✅ Status update support
+- ✅ Event bubbling from cards
+
+### 3. **ModernRoomCardDemo** - Example Usage
+Demo form showing how to use the component.
+
+---
+
+## Room Status
+
+```csharp
+public enum RoomStatusType
+{
+    Available = 0,   // 🟢 Available - Green
+Occupied = 1,       // 🔴 Occupied - Red
+    Cleaning = 2,     // 🔵 Cleaning - Blue
+    Maintenance = 3     // 🟠 Maintenance - Orange
+}
+```
+
+---
+
+## Usage Example
+
+### Basic Setup
+
+```csharp
+// Create container
+var container = new ModernRoomCardContainer();
+container.Dock = DockStyle.Fill;
+this.Controls.Add(container);
+
+// Create sample room
+var room = new Room
+{
+    RoomId = "R001",
+    Name = "Phòng 101",
+    RoomType = 1,        // 1=Single, 2=Double, 3=Family, 4=VIP, 5=Suite
+    Price = 200000,
+Status = 0
+};
+
+// Add room to container
+container.AddRoom(room, RoomStatusType.Available);
+```
+
+### Handle Events
+
+```csharp
+// Subscribe to events
+container.ViewDetailsClicked += (s, room) => 
+{
+    MessageBox.Show($"View details of {room.Name}");
+};
+
+container.BookingClicked += (s, room) => 
+{
+MessageBox.Show($"Book room {room.Name}");
+};
+
+container.CleaningClicked += (s, room) => 
+{
+    MessageBox.Show($"Clean room {room.Name}");
+};
+```
+
+### Customize Layout
+
+```csharp
+// Set number of columns
+container.SetColumnCount(4);
+
+// Set card size
+container.SetCardSize(300, 280);
+
+// Add multiple rooms
+var rooms = new List<Room> { /* ... */ };
+container.AddRooms(rooms, RoomStatusType.Available);
+```
+
+### Update Status
+
+```csharp
+// Change room status
+container.UpdateRoomStatus("R001", RoomStatusType.Occupied);
+```
+
+---
+
+## Visual Design
+
+### Color Scheme
+
+| Element | Color | RGB |
+|---------|-------|-----|
+| Available | Green | (34, 197, 94) |
+| Occupied | Red | (239, 68, 68) |
+| Cleaning | Blue | (59, 130, 246) |
+| Maintenance | Orange | (249, 115, 22) |
+| Background | Light Gray | (240, 241, 245) |
+| Text Primary | Dark Gray | (33, 33, 33) |
+| Text Secondary | Medium Gray | (100, 100, 100) |
+| Border | Light Gray | (200, 200, 200) |
+
+### Typography
+
+- **Room Number**: Segoe UI, 14px, Bold
+- **Room Type Label**: Segoe UI, 9px, Regular
+- **Room Type Value**: Segoe UI, 9px, Bold
+- **Price Label**: Segoe UI, 9px, Regular
+- **Price Value**: Segoe UI, 11px, Bold, Green
+- **Floor/Capacity**: Segoe UI, 8px, Regular
+- **Context Menu**: Segoe UI, 9px, Regular
+
+### Dimensions
+
+- **Default Card Size**: 250 × 240 pixels
+- **Minimum Card Size**: 250 × 200 pixels
+- **Default Grid Columns**: 3
+- **Horizontal Spacing**: 12 pixels
+- **Vertical Spacing**: 12 pixels
+
+---
+
+## Context Menu Options
+
+| Option | Icon | Action | Event |
+|--------|------|--------|-------|
+| Xem chi tiết phòng | 📋 | View room details | `ViewDetailsClicked` |
+| Đặt phòng | 🔑 | Make a booking | `BookingClicked` |
+| Dọn dẹp phòng | 🧹 | Clean the room | `CleaningClicked` |
+
+---
+
+## Integration with Existing System
+
+### In RoomManagementUI
+
+```csharp
+public partial class UCRoom : UserControl
+{
+    private ModernRoomCardContainer _roomContainer;
+ private IRoomService _roomService;
+
+    public UCRoom(IRoomService roomService)
+    {
+   InitializeComponent();
+    _roomService = roomService;
+ 
+        // Setup modern cards
+        _roomContainer = new ModernRoomCardContainer();
+        _roomContainer.Dock = DockStyle.Fill;
+        this.Controls.Add(_roomContainer);
+      
+        // Subscribe to events
+        _roomContainer.ViewDetailsClicked += (s, room) => ShowRoomDetails(room);
+        _roomContainer.BookingClicked += (s, room) => ShowBookingDialog(room);
+        _roomContainer.CleaningClicked += (s, room) => ShowCleaningDialog(room);
+        
+   // Load rooms
+        LoadRooms();
+    }
+ 
+    private async void LoadRooms()
+    {
+    var rooms = await _roomService.GetAllRoomsAsync();
+ foreach (var room in rooms)
+        {
+      _roomContainer.AddRoom(room, GetRoomStatus(room));
+        }
+    }
+
+    private ModernRoomCard.RoomStatus GetRoomStatus(Room room)
+    {
+        // Determine status based on room state
+        return ModernRoomCard.RoomStatus.Available;
+    }
+}
+```
+
+---
+
+## Advanced Features
+
+### Custom Event Handling
+
+```csharp
+// Create custom event handler
+_roomContainer.ViewDetailsClicked += (s, room) =>
+{
+    using (var detailsForm = new RoomDetailsForm(room))
+    {
+        if (detailsForm.ShowDialog() == DialogResult.OK)
+        {
+       // Handle result
+ }
+    }
+};
+```
+
+### Dynamic Status Updates
+
+```csharp
+// Update room status when booking is made
+var bookingForm = new BookingForm(room);
+if (bookingForm.ShowDialog() == DialogResult.OK)
+{
+    _roomContainer.UpdateRoomStatus(room.RoomId, 
+        ModernRoomCard.RoomStatus.Occupied);
+}
+```
+
+### Filtering and Sorting
+
+```csharp
+// Clear and reload with filter
+_roomContainer.ClearRooms();
+
+var availableRooms = await _roomService.GetAvailableRoomsAsync();
+foreach (var room in availableRooms)
+{
+    _roomContainer.AddRoom(room, ModernRoomCard.RoomStatus.Available);
+}
+```
+
+### Performance Optimization
+
+```csharp
+// For large room lists, batch loading
+void LoadRoomsInBatches(List<Room> rooms, int batchSize = 10)
+{
+    for (int i = 0; i < rooms.Count; i += batchSize)
+    {
+        var batch = rooms.Skip(i).Take(batchSize);
+        foreach (var room in batch)
+        {
+            _roomContainer.AddRoom(room);
+        }
+        Application.DoEvents();  // Allow UI to update
+    }
+}
+```
+
+---
+
+## Customization
+
+### Change Colors
+
+```csharp
+// You can extend ModernRoomCard to customize colors
+public class CustomRoomCard : ModernRoomCard
+{
+    protected override Color GetStatusColor(RoomStatus status)
+    {
+      // Custom color logic
+  return base.GetStatusColor(status);
+    }
+}
+```
+
+### Responsive Design
+
+```csharp
+// Adjust columns based on window size
+private void AdjustColumnsForSize()
+{
+    int columns = this.Width > 1400 ? 4 : 
+      this.Width > 900 ? 3 : 
+           this.Width > 600 ? 2 : 1;
+    _roomContainer.SetColumnCount(columns);
+}
+```
+
+---
+
+## Testing
+
+### Unit Test Example
+
+```csharp
+[TestFixture]
+public class ModernRoomCardTests
+{
+    [Test]
+    public void AddRoom_WithValidRoom_ShouldDisplayCard()
+    {
+      // Arrange
+  var container = new ModernRoomCardContainer();
+        var room = new Room { RoomId = "R001", RoomNumber = "101" };
+        
+      // Act
+        container.AddRoom(room);
+        
+    // Assert
+     Assert.AreEqual(1, container.Controls.Count);
+    }
+    
+    [Test]
+    public void ViewDetailsClicked_ShouldRaiseEvent()
+    {
+        // Arrange
+        var container = new ModernRoomCardContainer();
+  var room = new Room { RoomId = "R001" };
+        var eventRaised = false;
+      
+        container.ViewDetailsClicked += (s, r) => eventRaised = true;
+  container.AddRoom(room);
+        
+        // Act
+     var card = container.Controls[0] as ModernRoomCard;
+   card?.RaiseViewDetailsEvent();
+        
+        // Assert
+        Assert.IsTrue(eventRaised);
+    }
+}
+```
+
+---
+
+## Troubleshooting
+
+### Issue: Cards not displaying
+**Solution**: Ensure `ModernRoomCardContainer` has `Dock = DockStyle.Fill` or appropriate size set.
+
+### Issue: Context menu not showing
+**Solution**: Right-click on the card. Make sure the control is focused.
+
+### Issue: Performance issues with many cards
+**Solution**: 
+- Use pagination or virtual scrolling for large lists
+- Load rooms in batches
+- Consider caching room data
+
+### Issue: Events not firing
+**Solution**: Ensure you're subscribing to events before adding rooms.
+
+---
+
+## Files Created
+
+```
+UI/
+├── ModernRoomCard.cs              // Single card component
+├── ModernRoomCard.Designer.cs      // Designer file
+├── ModernRoomCardContainer.cs      // Grid container
+├── ModernRoomCardContainer.Designer.cs
+├── ModernRoomCardDemo.cs      // Example usage
+└── ModernRoomCardDemo.Designer.cs
+```
+
+---
+
+## Future Enhancements
+
+- [ ] Add drag-drop support
+- [ ] Add card animations (hover effects)
+- [ ] Add filtering toolbar
+- [ ] Add sorting options
+- [ ] Add search functionality
+- [ ] Add keyboard shortcuts
+- [ ] Add print functionality
+- [ ] Add export to PDF
+
+---
+
+## Summary
+
+The Modern Room Card component provides a professional, easy-to-use interface for managing hotel rooms. With its clean design, responsive layout, and rich event handling, it's perfect for modern hotel management applications.
+
+**Key Benefits:**
+- ✅ Professional appearance
+- ✅ Easy to integrate
+- ✅ Responsive design
+- ✅ Rich event system
+- ✅ Status indicators
+- ✅ Context menu support
+
+---
+
+**Status**: ✅ **COMPLETE & READY TO USE**
+
+---

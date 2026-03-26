@@ -1,0 +1,36 @@
+﻿namespace QuanLyKhachSan.UI.BookingUI
+{
+    partial class UCBookingModern : UserControl
+    {
+      private System.ComponentModel.IContainer components = null;
+        
+        // Designer controls
+  private System.Windows.Forms.Panel pnlTop;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblSubtitle;
+        private System.Windows.Forms.Label lblChiTietLoaiPhong;
+  private System.Windows.Forms.ComboBox cboChiTietLoaiPhong;
+        private System.Windows.Forms.Label lblLoaiPhong;
+     private System.Windows.Forms.ComboBox cboLoaiPhong;
+        private System.Windows.Forms.Label lblTinhTrangPhong;
+  private System.Windows.Forms.ComboBox cboTinhTrangPhong;
+        private System.Windows.Forms.Label lblGiaPhong;
+        private System.Windows.Forms.ComboBox cboGiaPhong;
+    private System.Windows.Forms.Label lblHienTrang;
+    private System.Windows.Forms.ComboBox cboHienTrang;
+        private System.Windows.Forms.GroupBox gbTinhTrangThue;
+        private System.Windows.Forms.RadioButton rdoTheoNgay;
+     private System.Windows.Forms.RadioButton rdoKhac;
+  private System.Windows.Forms.RadioButton rdoTheoGio;
+      private System.Windows.Forms.GroupBox gbThoiGianThue;
+        private System.Windows.Forms.Label lblNgayThue;
+        private System.Windows.Forms.DateTimePicker dtpNgayThue;
+        private System.Windows.Forms.Label lblNgayTra;
+  private System.Windows.Forms.DateTimePicker dtpNgayTra;
+        private System.Windows.Forms.Button btnTimKiem;
+        private System.Windows.Forms.Button btnLamMoi;
+        private System.Windows.Forms.Panel pnlBottom;
+ private System.Windows.Forms.Label lblSoDoPhong;
+        private System.Windows.Forms.FlowLayoutPanel flpRooms;
+    }
+}

@@ -1,7 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Compile Update="UI\BookingUI\BookingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="UI\BookingUI\UCBooking.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\UCBookingModern.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="UI\CustomerUI\AddCustomerForm.cs">
@@ -14,6 +20,15 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UI\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\ModernRoomCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\ModernRoomCardContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\ModernRoomCardDemo.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UI\RoomServiceUI\AddRoomForm.cs">

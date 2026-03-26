@@ -133,3 +133,8 @@ D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan
 D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.CustomerUI.UCCustomer.resources
 D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.CustomerUI.UpdateCustomerForm.resources
 D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.BookingUI.UCBooking.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.CustomerUI.AddCustomerForm.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.ModernRoomCard.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.ModernRoomCardContainer.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.BookingUI.UCBookingModern.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.ModernRoomCardDemo.resources

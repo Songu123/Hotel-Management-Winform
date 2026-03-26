@@ -1,0 +1,345 @@
+﻿namespace QuanLyKhachSan.UI.BookingUI
+{
+    partial class UCBookingModern
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+{
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+     }
+            base.Dispose(disposing);
+        }
+
+    private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.pnlTop = new System.Windows.Forms.Panel();
+         this.btnLamMoi = new System.Windows.Forms.Button();
+            this.btnTimKiem = new System.Windows.Forms.Button();
+     this.gbThoiGianThue = new System.Windows.Forms.GroupBox();
+    this.dtpNgayTra = new System.Windows.Forms.DateTimePicker();
+   this.lblNgayTra = new System.Windows.Forms.Label();
+            this.dtpNgayThue = new System.Windows.Forms.DateTimePicker();
+            this.lblNgayThue = new System.Windows.Forms.Label();
+    this.gbTinhTrangThue = new System.Windows.Forms.GroupBox();
+            this.rdoKhac = new System.Windows.Forms.RadioButton();
+    this.rdoTheoGio = new System.Windows.Forms.RadioButton();
+ this.rdoTheoNgay = new System.Windows.Forms.RadioButton();
+     this.cboHienTrang = new System.Windows.Forms.ComboBox();
+            this.lblHienTrang = new System.Windows.Forms.Label();
+       this.cboGiaPhong = new System.Windows.Forms.ComboBox();
+            this.lblGiaPhong = new System.Windows.Forms.Label();
+  this.cboTinhTrangPhong = new System.Windows.Forms.ComboBox();
+ this.lblTinhTrangPhong = new System.Windows.Forms.Label();
+   this.cboLoaiPhong = new System.Windows.Forms.ComboBox();
+            this.lblLoaiPhong = new System.Windows.Forms.Label();
+    this.cboChiTietLoaiPhong = new System.Windows.Forms.ComboBox();
+   this.lblChiTietLoaiPhong = new System.Windows.Forms.Label();
+        this.lblSubtitle = new System.Windows.Forms.Label();
+  this.lblTitle = new System.Windows.Forms.Label();
+     this.pnlBottom = new System.Windows.Forms.Panel();
+   this.flpRooms = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblSoDoPhong = new System.Windows.Forms.Label();
+            
+   this.pnlTop.SuspendLayout();
+     this.gbThoiGianThue.SuspendLayout();
+  this.gbTinhTrangThue.SuspendLayout();
+       this.pnlBottom.SuspendLayout();
+      this.SuspendLayout();
+            
+     // pnlTop
+  this.pnlTop.BackColor = System.Drawing.Color.White;
+          this.pnlTop.Controls.Add(this.btnLamMoi);
+            this.pnlTop.Controls.Add(this.btnTimKiem);
+            this.pnlTop.Controls.Add(this.gbThoiGianThue);
+          this.pnlTop.Controls.Add(this.gbTinhTrangThue);
+ this.pnlTop.Controls.Add(this.cboHienTrang);
+            this.pnlTop.Controls.Add(this.lblHienTrang);
+            this.pnlTop.Controls.Add(this.cboGiaPhong);
+        this.pnlTop.Controls.Add(this.lblGiaPhong);
+         this.pnlTop.Controls.Add(this.cboTinhTrangPhong);
+            this.pnlTop.Controls.Add(this.lblTinhTrangPhong);
+   this.pnlTop.Controls.Add(this.cboLoaiPhong);
+      this.pnlTop.Controls.Add(this.lblLoaiPhong);
+   this.pnlTop.Controls.Add(this.cboChiTietLoaiPhong);
+            this.pnlTop.Controls.Add(this.lblChiTietLoaiPhong);
+        this.pnlTop.Controls.Add(this.lblSubtitle);
+ this.pnlTop.Controls.Add(this.lblTitle);
+     this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTop.Location = new System.Drawing.Point(0, 0);
+         this.pnlTop.Name = "pnlTop";
+     this.pnlTop.Size = new System.Drawing.Size(1050, 160);
+    this.pnlTop.TabIndex = 0;
+
+       // Title
+       this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.lblTitle.ForeColor = System.Drawing.Color.SteelBlue;
+            this.lblTitle.Location = new System.Drawing.Point(16, 7);
+         this.lblTitle.Name = "lblTitle";
+      this.lblTitle.Size = new System.Drawing.Size(300, 21);
+          this.lblTitle.TabIndex = 0;
+        this.lblTitle.Text = "TẠO PHIẾU ĐẶT PHÒNG - SƠ ĐỒ PHÒNG HIỆN ĐẠI";
+    
+            // Subtitle
+     this.lblSubtitle.AutoSize = true;
+            this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSubtitle.Location = new System.Drawing.Point(17, 28);
+            this.lblSubtitle.Name = "lblSubtitle";
+        this.lblSubtitle.Size = new System.Drawing.Size(350, 17);
+   this.lblSubtitle.TabIndex = 1;
+          this.lblSubtitle.Text = "Chọn phòng từ danh sách dưới đây - Nhấp chuột phải để xem chi tiết";
+     
+        // Room Type
+       this.lblLoaiPhong.AutoSize = true;
+     this.lblLoaiPhong.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+this.lblLoaiPhong.Location = new System.Drawing.Point(213, 56);
+          this.lblLoaiPhong.Name = "lblLoaiPhong";
+            this.lblLoaiPhong.Size = new System.Drawing.Size(68, 15);
+            this.lblLoaiPhong.TabIndex = 4;
+  this.lblLoaiPhong.Text = "Loại phòng:";
+      
+            this.cboLoaiPhong.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboLoaiPhong.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+  this.cboLoaiPhong.FormattingEnabled = true;
+            this.cboLoaiPhong.Location = new System.Drawing.Point(286, 53);
+            this.cboLoaiPhong.Name = "cboLoaiPhong";
+            this.cboLoaiPhong.Size = new System.Drawing.Size(107, 23);
+            this.cboLoaiPhong.TabIndex = 5;
+       
+  // Room Status
+            this.lblTinhTrangPhong.AutoSize = true;
+         this.lblTinhTrangPhong.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+    this.lblTinhTrangPhong.Location = new System.Drawing.Point(402, 56);
+        this.lblTinhTrangPhong.Name = "lblTinhTrangPhong";
+      this.lblTinhTrangPhong.Size = new System.Drawing.Size(101, 15);
+            this.lblTinhTrangPhong.TabIndex = 6;
+      this.lblTinhTrangPhong.Text = "Tình trạng phòng:";
+        
+            this.cboTinhTrangPhong.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboTinhTrangPhong.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+this.cboTinhTrangPhong.FormattingEnabled = true;
+            this.cboTinhTrangPhong.Location = new System.Drawing.Point(509, 53);
+            this.cboTinhTrangPhong.Name = "cboTinhTrangPhong";
+   this.cboTinhTrangPhong.Size = new System.Drawing.Size(121, 23);
+            this.cboTinhTrangPhong.TabIndex = 7;
+  
+            // Price
+     this.lblGiaPhong.AutoSize = true;
+ this.lblGiaPhong.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGiaPhong.Location = new System.Drawing.Point(636, 56);
+    this.lblGiaPhong.Name = "lblGiaPhong";
+    this.lblGiaPhong.Size = new System.Drawing.Size(65, 15);
+            this.lblGiaPhong.TabIndex = 8;
+  this.lblGiaPhong.Text = "Giá phòng:";
+            
+            this.cboGiaPhong.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboGiaPhong.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+       this.cboGiaPhong.FormattingEnabled = true;
+          this.cboGiaPhong.Location = new System.Drawing.Point(704, 53);
+     this.cboGiaPhong.Name = "cboGiaPhong";
+            this.cboGiaPhong.Size = new System.Drawing.Size(121, 23);
+            this.cboGiaPhong.TabIndex = 9;
+            
+          // Rental type
+   this.lblHienTrang.AutoSize = true;
+  this.lblHienTrang.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+  this.lblHienTrang.Location = new System.Drawing.Point(836, 56);
+            this.lblHienTrang.Name = "lblHienTrang";
+       this.lblHienTrang.Size = new System.Drawing.Size(67, 15);
+   this.lblHienTrang.TabIndex = 10;
+            this.lblHienTrang.Text = "Loại thuê:";
+            
+       this.cboHienTrang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cboHienTrang.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+ this.cboHienTrang.FormattingEnabled = true;
+            this.cboHienTrang.Location = new System.Drawing.Point(909, 53);
+   this.cboHienTrang.Name = "cboHienTrang";
+            this.cboHienTrang.Size = new System.Drawing.Size(65, 23);
+            this.cboHienTrang.TabIndex = 11;
+            
+         // Rental time group
+       this.gbTinhTrangThue.Controls.Add(this.rdoKhac);
+   this.gbTinhTrangThue.Controls.Add(this.rdoTheoGio);
+    this.gbTinhTrangThue.Controls.Add(this.rdoTheoNgay);
+   this.gbTinhTrangThue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+   this.gbTinhTrangThue.Location = new System.Drawing.Point(20, 88);
+this.gbTinhTrangThue.Name = "gbTinhTrangThue";
+            this.gbTinhTrangThue.Size = new System.Drawing.Size(238, 55);
+            this.gbTinhTrangThue.TabIndex = 12;
+            this.gbTinhTrangThue.TabStop = false;
+          this.gbTinhTrangThue.Text = "Loại thuê";
+         
+  this.rdoTheoNgay.AutoSize = true;
+    this.rdoTheoNgay.Location = new System.Drawing.Point(10, 22);
+        this.rdoTheoNgay.Name = "rdoTheoNgay";
+    this.rdoTheoNgay.Size = new System.Drawing.Size(82, 19);
+            this.rdoTheoNgay.TabIndex = 0;
+    this.rdoTheoNgay.TabStop = true;
+         this.rdoTheoNgay.Text = "Theo ngày";
+            this.rdoTheoNgay.UseVisualStyleBackColor = true;
+  
+        this.rdoTheoGio.AutoSize = true;
+            this.rdoTheoGio.Location = new System.Drawing.Point(98, 22);
+  this.rdoTheoGio.Name = "rdoTheoGio";
+    this.rdoTheoGio.Size = new System.Drawing.Size(72, 19);
+            this.rdoTheoGio.TabIndex = 1;
+ this.rdoTheoGio.TabStop = true;
+            this.rdoTheoGio.Text = "Theo giờ";
+         this.rdoTheoGio.UseVisualStyleBackColor = true;
+   
+   this.rdoKhac.AutoSize = true;
+      this.rdoKhac.Location = new System.Drawing.Point(176, 22);
+          this.rdoKhac.Name = "rdoKhac";
+            this.rdoKhac.Size = new System.Drawing.Size(51, 19);
+   this.rdoKhac.TabIndex = 2;
+            this.rdoKhac.TabStop = true;
+            this.rdoKhac.Text = "Khác";
+            this.rdoKhac.UseVisualStyleBackColor = true;
+            
+            // Time group
+    this.gbThoiGianThue.Controls.Add(this.dtpNgayTra);
+          this.gbThoiGianThue.Controls.Add(this.lblNgayTra);
+        this.gbThoiGianThue.Controls.Add(this.dtpNgayThue);
+     this.gbThoiGianThue.Controls.Add(this.lblNgayThue);
+         this.gbThoiGianThue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbThoiGianThue.Location = new System.Drawing.Point(264, 88);
+        this.gbThoiGianThue.Name = "gbThoiGianThue";
+this.gbThoiGianThue.Size = new System.Drawing.Size(518, 55);
+            this.gbThoiGianThue.TabIndex = 13;
+            this.gbThoiGianThue.TabStop = false;
+            this.gbThoiGianThue.Text = "Thời gian thuê";
+   
+            this.lblNgayThue.AutoSize = true;
+         this.lblNgayThue.Location = new System.Drawing.Point(11, 24);
+    this.lblNgayThue.Name = "lblNgayThue";
+            this.lblNgayThue.Size = new System.Drawing.Size(65, 15);
+            this.lblNgayThue.TabIndex = 0;
+     this.lblNgayThue.Text = "Ngày thuê:";
+      
+        this.dtpNgayThue.CustomFormat = "dd/MM/yyyy HH:mm:ss";
+          this.dtpNgayThue.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpNgayThue.Location = new System.Drawing.Point(82, 20);
+        this.dtpNgayThue.Name = "dtpNgayThue";
+this.dtpNgayThue.Size = new System.Drawing.Size(165, 23);
+            this.dtpNgayThue.TabIndex = 1;
+         
+   this.lblNgayTra.AutoSize = true;
+ this.lblNgayTra.Location = new System.Drawing.Point(275, 24);
+ this.lblNgayTra.Name = "lblNgayTra";
+         this.lblNgayTra.Size = new System.Drawing.Size(55, 15);
+   this.lblNgayTra.TabIndex = 2;
+            this.lblNgayTra.Text = "Ngày trả:";
+        
+     this.dtpNgayTra.CustomFormat = "dd/MM/yyyy HH:mm:ss";
+    this.dtpNgayTra.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+ this.dtpNgayTra.Location = new System.Drawing.Point(336, 20);
+     this.dtpNgayTra.Name = "dtpNgayTra";
+        this.dtpNgayTra.Size = new System.Drawing.Size(165, 23);
+            this.dtpNgayTra.TabIndex = 3;
+    
+      // Search buttons
+            this.btnTimKiem.BackColor = System.Drawing.Color.CornflowerBlue;
+     this.btnTimKiem.FlatAppearance.BorderSize = 0;
+         this.btnTimKiem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+     this.btnTimKiem.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+  this.btnTimKiem.ForeColor = System.Drawing.Color.White;
+       this.btnTimKiem.Location = new System.Drawing.Point(788, 101);
+     this.btnTimKiem.Name = "btnTimKiem";
+   this.btnTimKiem.Size = new System.Drawing.Size(90, 35);
+            this.btnTimKiem.TabIndex = 14;
+    this.btnTimKiem.Text = "Tìm kiếm";
+            this.btnTimKiem.UseVisualStyleBackColor = false;
+        
+  this.btnLamMoi.BackColor = System.Drawing.Color.DimGray;
+       this.btnLamMoi.FlatAppearance.BorderSize = 0;
+            this.btnLamMoi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+         this.btnLamMoi.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+    this.btnLamMoi.ForeColor = System.Drawing.Color.White;
+ this.btnLamMoi.Location = new System.Drawing.Point(884, 101);
+   this.btnLamMoi.Name = "btnLamMoi";
+            this.btnLamMoi.Size = new System.Drawing.Size(90, 35);
+            this.btnLamMoi.TabIndex = 15;
+      this.btnLamMoi.Text = "Làm mới";
+      this.btnLamMoi.UseVisualStyleBackColor = false;
+    
+            // pnlBottom
+     this.pnlBottom.BackColor = System.Drawing.Color.FromArgb(240, 241, 245);
+       this.pnlBottom.Controls.Add(this.flpRooms);
+            this.pnlBottom.Controls.Add(this.lblSoDoPhong);
+            this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlBottom.Location = new System.Drawing.Point(0, 160);
+       this.pnlBottom.Name = "pnlBottom";
+     this.pnlBottom.Padding = new System.Windows.Forms.Padding(10);
+      this.pnlBottom.Size = new System.Drawing.Size(1050, 440);
+    this.pnlBottom.TabIndex = 1;
+     
+  this.lblSoDoPhong.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblSoDoPhong.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+  this.lblSoDoPhong.Location = new System.Drawing.Point(10, 10);
+         this.lblSoDoPhong.Name = "lblSoDoPhong";
+  this.lblSoDoPhong.Size = new System.Drawing.Size(1030, 30);
+            this.lblSoDoPhong.TabIndex = 0;
+            this.lblSoDoPhong.Text = "SƠ ĐỒ PHÒNG (Nhấp chuột phải để xem chi tiết)";
+         this.lblSoDoPhong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+     
+            this.flpRooms.AutoScroll = true;
+    this.flpRooms.BackColor = System.Drawing.Color.FromArgb(240, 241, 245);
+         this.flpRooms.Dock = System.Windows.Forms.DockStyle.Fill;
+         this.flpRooms.Location = new System.Drawing.Point(10, 40);
+          this.flpRooms.Name = "flpRooms";
+            this.flpRooms.Size = new System.Drawing.Size(1030, 390);
+  this.flpRooms.TabIndex = 1;
+            
+      // UCBookingModern
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+ this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+ this.Controls.Add(this.pnlBottom);
+       this.Controls.Add(this.pnlTop);
+    this.Name = "UCBookingModern";
+     this.Size = new System.Drawing.Size(1050, 600);
+            
+ this.pnlTop.ResumeLayout(false);
+   this.pnlTop.PerformLayout();
+     this.gbThoiGianThue.ResumeLayout(false);
+       this.gbThoiGianThue.PerformLayout();
+            this.gbTinhTrangThue.ResumeLayout(false);
+ this.gbTinhTrangThue.PerformLayout();
+         this.pnlBottom.ResumeLayout(false);
+            this.ResumeLayout(false);
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Panel pnlTop;
+ private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblSubtitle;
+    private System.Windows.Forms.Label lblChiTietLoaiPhong;
+        private System.Windows.Forms.ComboBox cboChiTietLoaiPhong;
+     private System.Windows.Forms.Label lblLoaiPhong;
+        private System.Windows.Forms.ComboBox cboLoaiPhong;
+        private System.Windows.Forms.Label lblTinhTrangPhong;
+        private System.Windows.Forms.ComboBox cboTinhTrangPhong;
+   private System.Windows.Forms.Label lblGiaPhong;
+    private System.Windows.Forms.ComboBox cboGiaPhong;
+   private System.Windows.Forms.Label lblHienTrang;
+        private System.Windows.Forms.ComboBox cboHienTrang;
+   private System.Windows.Forms.GroupBox gbTinhTrangThue;
+     private System.Windows.Forms.RadioButton rdoTheoNgay;
+        private System.Windows.Forms.RadioButton rdoKhac;
+        private System.Windows.Forms.RadioButton rdoTheoGio;
+ private System.Windows.Forms.GroupBox gbThoiGianThue;
+        private System.Windows.Forms.Label lblNgayThue;
+        private System.Windows.Forms.DateTimePicker dtpNgayThue;
+        private System.Windows.Forms.Label lblNgayTra;
+        private System.Windows.Forms.DateTimePicker dtpNgayTra;
+        private System.Windows.Forms.Button btnTimKiem;
+     private System.Windows.Forms.Button btnLamMoi;
+        private System.Windows.Forms.Panel pnlBottom;
+        private System.Windows.Forms.Label lblSoDoPhong;
+    private System.Windows.Forms.FlowLayoutPanel flpRooms;
+    }
+}

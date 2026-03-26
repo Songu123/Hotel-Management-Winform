@@ -1,0 +1,197 @@
+﻿using System.Text.RegularExpressions;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Services.RequestHandlers.Dtos;
+using QuanLyKhachSan.Services.RequestHandlers.Interfaces;
+using QuanLyKhachSan.Services.RequestHandlers.Results;
+
+namespace QuanLyKhachSan.Services.RequestHandlers
+{
+    /// <summary>
+    /// Handler xử lý yêu cầu tạo khách hàng mới
+    /// Không phụ thuộc vào UI layer
+    /// </summary>
+    public class CustomerCreateRequestHandler : ICustomerCreateRequestHandler
+  {
+      private readonly ICustomerService _customerService;
+
+        public CustomerCreateRequestHandler(ICustomerService customerService)
+        {
+          _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+        }
+
+        /// <summary>
+        /// Xử lý yêu cầu tạo khách hàng
+        /// </summary>
+  public async Task<CustomerCreateResult> HandleAsync(CustomerCreateRequest request)
+        {
+            try
+        {
+// Validation
+ var validationResult = ValidateRequest(request);
+ if (!validationResult.Success)
+         return validationResult;
+
+          // Normalize data
+      var normalizedRequest = NormalizeRequest(request);
+
+        // Check duplicates
+var duplicateCheckResult = await CheckDuplicatesAsync(normalizedRequest);
+        if (!duplicateCheckResult.Success)
+         return duplicateCheckResult;
+
+         // Create customer
+         var customer = MapRequestToCustomer(normalizedRequest);
+       await _customerService.CreateCustomerAsync(customer);
+
+     return CustomerCreateResult.SuccessResult(
+    customer.CustomerId,
+  "Thêm khách hàng thành công"
+   );
+     }
+            catch (InvalidOperationException ex)
+            {
+          return CustomerCreateResult.FailureResult(
+      ex.Message,
+   "DUPLICATE_ERROR"
+    );
+   }
+       catch (ArgumentException ex)
+         {
+     return CustomerCreateResult.FailureResult(
+               ex.Message,
+     "ARGUMENT_ERROR"
+    );
+            }
+          catch (Exception ex)
+      {
+         return CustomerCreateResult.FailureResult(
+         $"Lỗi hệ thống: {ex.Message}",
+        "SYSTEM_ERROR"
+        );
+        }
+        }
+
+        /// <summary>
+        /// Validate dữ liệu từ request
+        /// </summary>
+        private CustomerCreateResult ValidateRequest(CustomerCreateRequest request)
+    {
+         var errors = new List<ValidationError>();
+
+    // Validate name
+            if (string.IsNullOrWhiteSpace(request.Name))
+            errors.Add(new ValidationError("Name", "Tên khách hàng không được để trống"));
+            else if (request.Name.Length > 50)
+      errors.Add(new ValidationError("Name", "Tên khách hàng không được vượt quá 50 ký tự"));
+
+     // Validate phone
+  if (string.IsNullOrWhiteSpace(request.PhoneNumber))
+     errors.Add(new ValidationError("PhoneNumber", "Số điện thoại không được để trống"));
+  else if (!IsValidPhoneNumber(request.PhoneNumber))
+  errors.Add(new ValidationError("PhoneNumber", "Số điện thoại không hợp lệ"));
+
+      // Validate ID number if provided
+            if (!string.IsNullOrWhiteSpace(request.IdNumber) && request.IdNumber.Length > 20)
+   errors.Add(new ValidationError("IdNumber", "CMND/CCCD không được vượt quá 20 ký tự"));
+
+ // Validate customer ID
+            if (string.IsNullOrWhiteSpace(request.CustomerId))
+          errors.Add(new ValidationError("CustomerId", "Mã khách hàng không được để trống"));
+   else if (request.CustomerId.Length > 20)
+     errors.Add(new ValidationError("CustomerId", "Mã khách hàng không được vượt quá 20 ký tự"));
+
+         // Validate date of birth
+   if (request.DateOfBirth > DateTime.Now)
+       errors.Add(new ValidationError("DateOfBirth", "Ngày sinh không được lớn hơn hôm nay"));
+
+            if (errors.Any())
+       return CustomerCreateResult.ValidationFailureResult(errors.ToArray());
+
+            return CustomerCreateResult.SuccessResult(string.Empty);
+        }
+
+     /// <summary>
+        /// Kiểm tra số điện thoại hợp lệ
+        /// </summary>
+        private bool IsValidPhoneNumber(string phoneNumber)
+        {
+       if (string.IsNullOrWhiteSpace(phoneNumber))
+        return false;
+
+    // Length check: 10-15 ký tự
+            if (phoneNumber.Length < 10 || phoneNumber.Length > 15)
+  return false;
+
+      // Format check: chỉ chứa chữ số, dấu cách, dấu trừ, dấu cộng, dấu ngoặc
+         return Regex.IsMatch(phoneNumber, @"^[\d\s\-\+\(\)]+$");
+        }
+
+        /// <summary>
+        /// Normalize dữ liệu (trim, lowercase email, etc.)
+        /// </summary>
+        private CustomerCreateRequest NormalizeRequest(CustomerCreateRequest request)
+        {
+  return new CustomerCreateRequest
+  {
+                CustomerId = request.CustomerId.Trim(),
+     Name = request.Name.Trim(),
+             IdNumber = request.IdNumber?.Trim() ?? string.Empty,
+                Gender = request.Gender,
+          PhoneNumber = request.PhoneNumber.Trim(),
+      Address = request.Address?.Trim() ?? string.Empty,
+           Nationality = request.Nationality?.Trim() ?? string.Empty,
+       DateOfBirth = request.DateOfBirth
+ };
+        }
+
+   /// <summary>
+ /// Kiểm tra trùng lặp (duplicate check)
+ /// </summary>
+        private async Task<CustomerCreateResult> CheckDuplicatesAsync(CustomerCreateRequest request)
+   {
+            var errors = new List<ValidationError>();
+
+            // Check customer ID exists
+         if (await _customerService.CustomerExistsAsync(request.CustomerId))
+ errors.Add(new ValidationError("CustomerId", $"Mã khách hàng {request.CustomerId} đã tồn tại"));
+
+            // Check phone number exists
+            var phoneExists = await _customerService.GetByPhoneNumberAsync(request.PhoneNumber);
+            if (phoneExists != null)
+ errors.Add(new ValidationError("PhoneNumber", $"Số điện thoại {request.PhoneNumber} đã được sử dụng"));
+
+  // Check ID number exists (if provided)
+     if (!string.IsNullOrWhiteSpace(request.IdNumber))
+    {
+             var idExists = await _customerService.GetByIdNumberAsync(request.IdNumber);
+  if (idExists != null)
+     errors.Add(new ValidationError("IdNumber", $"CMND/CCCD {request.IdNumber} đã được sử dụng"));
+       }
+
+            if (errors.Any())
+                return CustomerCreateResult.ValidationFailureResult(errors.ToArray());
+
+      return CustomerCreateResult.SuccessResult(string.Empty);
+        }
+
+   /// <summary>
+        /// Map request to customer entity
+        /// </summary>
+        private Customer MapRequestToCustomer(CustomerCreateRequest request)
+{
+         return new Customer
+      {
+   CustomerId = request.CustomerId,
+      Name = request.Name,
+             IdNumber = request.IdNumber,
+     Gender = request.Gender,
+   PhoneNumber = request.PhoneNumber,
+       Address = request.Address,
+           Nationality = request.Nationality,
+           DateOfBirth = request.DateOfBirth,
+              IsDeleted = 0
+         };
+        }
+    }
+}

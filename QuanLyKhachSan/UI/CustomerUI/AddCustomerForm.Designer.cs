@@ -1,509 +1,509 @@
 ﻿namespace QuanLyKhachSan.UI.CustomerUI
 {
     partial class AddCustomerForm
-  {
+    {
         private System.ComponentModel.IContainer components = null;
 
-    protected override void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-  components.Dispose();
-      base.Dispose(disposing);
+                components.Dispose();
+            base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
 
-      private void InitializeComponent()
-      {
-        pnlTitleBar = new Panel();
+        private void InitializeComponent()
+        {
+            pnlTitleBar = new Panel();
             lblTitle = new Label();
-   btnClose = new Button();
-      pnlContent = new Panel();
- sepLine6 = new Panel();
-  txtQuocTich = new TextBox();
-        lblQuocTich = new Label();
-          sepLine5 = new Panel();
-      grpDiaChi = new GroupBox();
-          txtTinhThanh = new TextBox();
-         lblTinhThanh = new Label();
-     txtQuanHuyen = new TextBox();
+            btnClose = new Button();
+            pnlContent = new Panel();
+            sepLine6 = new Panel();
+            txtQuocTich = new TextBox();
+            lblQuocTich = new Label();
+            sepLine5 = new Panel();
+            grpDiaChi = new GroupBox();
+            txtTinhThanh = new TextBox();
+            lblTinhThanh = new Label();
+            txtQuanHuyen = new TextBox();
             lblQuanHuyen = new Label();
             txtPhuongThon = new TextBox();
             lblPhuongThon = new Label();
             txtDuong = new TextBox();
             lblDuong = new Label();
-      sepLine4 = new Panel();
-    grpGioiTinh = new GroupBox();
-     rbNam = new RadioButton();
-    rbNu = new RadioButton();
+            sepLine4 = new Panel();
+            grpGioiTinh = new GroupBox();
+            rbNam = new RadioButton();
+            rbNu = new RadioButton();
             sepLine3 = new Panel();
             txtSDT = new TextBox();
             lblSDT = new Label();
             dtpNgaySinh = new DateTimePicker();
-      lblNgaySinh = new Label();
+            lblNgaySinh = new Label();
             sepLine2 = new Panel();
-     txtCMND = new TextBox();
-        txtHoTen = new TextBox();
+            txtCMND = new TextBox();
+            txtHoTen = new TextBox();
             lblCMND = new Label();
             lblHoTen = new Label();
             sepLine1 = new Panel();
-        txtMaKH = new TextBox();
+            txtMaKH = new TextBox();
             lblMaKH = new Label();
-          pnlBottom = new Panel();
-     btnHuy = new Button();
+            pnlBottom = new Panel();
+            btnHuy = new Button();
             btnLuu = new Button();
             pnlTitleBar.SuspendLayout();
             pnlContent.SuspendLayout();
-   grpDiaChi.SuspendLayout();
-       grpGioiTinh.SuspendLayout();
-pnlBottom.SuspendLayout();
-          SuspendLayout();
-     // 
-    // pnlTitleBar
+            grpDiaChi.SuspendLayout();
+            grpGioiTinh.SuspendLayout();
+            pnlBottom.SuspendLayout();
+            SuspendLayout();
+            // 
+            // pnlTitleBar
             // 
             pnlTitleBar.BackColor = Color.FromArgb(173, 216, 230);
-       pnlTitleBar.Controls.Add(lblTitle);
-pnlTitleBar.Controls.Add(btnClose);
-  pnlTitleBar.Dock = DockStyle.Top;
+            pnlTitleBar.Controls.Add(lblTitle);
+            pnlTitleBar.Controls.Add(btnClose);
+            pnlTitleBar.Dock = DockStyle.Top;
             pnlTitleBar.Location = new Point(0, 0);
-         pnlTitleBar.Name = "pnlTitleBar";
-          pnlTitleBar.Size = new Size(766, 40);
+            pnlTitleBar.Name = "pnlTitleBar";
+            pnlTitleBar.Size = new Size(766, 40);
             pnlTitleBar.TabIndex = 0;
-         // 
-        // lblTitle
-      // 
-      lblTitle.AutoSize = true;
-   lblTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            // 
+            // lblTitle
+            // 
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             lblTitle.ForeColor = Color.FromArgb(30, 30, 30);
-     lblTitle.Location = new Point(12, 9);
-  lblTitle.Name = "lblTitle";
-         lblTitle.Size = new Size(185, 20);
+            lblTitle.Location = new Point(12, 9);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(185, 20);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "THÊM KHÁCH HÀNG MỚI";
-       // 
-        // btnClose
-// 
+            // 
+            // btnClose
+            // 
             btnClose.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-    btnClose.BackColor = Color.Transparent;
+            btnClose.BackColor = Color.Transparent;
             btnClose.FlatAppearance.BorderSize = 0;
-       btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.FlatStyle = FlatStyle.Flat;
             btnClose.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-btnClose.ForeColor = Color.FromArgb(60, 60, 60);
-        btnClose.Location = new Point(726, 5);
- btnClose.Name = "btnClose";
-          btnClose.Size = new Size(32, 30);
-  btnClose.TabIndex = 1;
-    btnClose.Text = "X";
-          btnClose.UseVisualStyleBackColor = false;
- // 
-      // pnlContent
-      // 
-   pnlContent.AutoScroll = true;
-  pnlContent.BackColor = Color.White;
-     pnlContent.Controls.Add(sepLine6);
+            btnClose.ForeColor = Color.FromArgb(60, 60, 60);
+            btnClose.Location = new Point(726, 5);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(32, 30);
+            btnClose.TabIndex = 1;
+            btnClose.Text = "X";
+            btnClose.UseVisualStyleBackColor = false;
+            // 
+            // pnlContent
+            // 
+            pnlContent.AutoScroll = true;
+            pnlContent.BackColor = Color.White;
+            pnlContent.Controls.Add(sepLine6);
             pnlContent.Controls.Add(txtQuocTich);
-          pnlContent.Controls.Add(lblQuocTich);
-     pnlContent.Controls.Add(sepLine5);
+            pnlContent.Controls.Add(lblQuocTich);
+            pnlContent.Controls.Add(sepLine5);
             pnlContent.Controls.Add(grpDiaChi);
-      pnlContent.Controls.Add(sepLine4);
+            pnlContent.Controls.Add(sepLine4);
             pnlContent.Controls.Add(grpGioiTinh);
-       pnlContent.Controls.Add(sepLine3);
-   pnlContent.Controls.Add(txtSDT);
+            pnlContent.Controls.Add(sepLine3);
+            pnlContent.Controls.Add(txtSDT);
             pnlContent.Controls.Add(lblSDT);
-    pnlContent.Controls.Add(dtpNgaySinh);
-       pnlContent.Controls.Add(lblNgaySinh);
-       pnlContent.Controls.Add(sepLine2);
-    pnlContent.Controls.Add(txtCMND);
- pnlContent.Controls.Add(txtHoTen);
-    pnlContent.Controls.Add(lblCMND);
-      pnlContent.Controls.Add(lblHoTen);
-        pnlContent.Controls.Add(sepLine1);
-          pnlContent.Controls.Add(txtMaKH);
-  pnlContent.Controls.Add(lblMaKH);
-         pnlContent.Dock = DockStyle.Fill;
-  pnlContent.Location = new Point(0, 40);
-      pnlContent.Name = "pnlContent";
+            pnlContent.Controls.Add(dtpNgaySinh);
+            pnlContent.Controls.Add(lblNgaySinh);
+            pnlContent.Controls.Add(sepLine2);
+            pnlContent.Controls.Add(txtCMND);
+            pnlContent.Controls.Add(txtHoTen);
+            pnlContent.Controls.Add(lblCMND);
+            pnlContent.Controls.Add(lblHoTen);
+            pnlContent.Controls.Add(sepLine1);
+            pnlContent.Controls.Add(txtMaKH);
+            pnlContent.Controls.Add(lblMaKH);
+            pnlContent.Dock = DockStyle.Fill;
+            pnlContent.Location = new Point(0, 40);
+            pnlContent.Name = "pnlContent";
             pnlContent.Padding = new Padding(18, 10, 18, 0);
-       pnlContent.Size = new Size(766, 440);
-         pnlContent.TabIndex = 2;
-   // 
+            pnlContent.Size = new Size(766, 440);
+            pnlContent.TabIndex = 2;
+            // 
             // sepLine6
             // 
-          sepLine6.BackColor = Color.FromArgb(210, 210, 210);
-          sepLine6.Location = new Point(18, 420);
+            sepLine6.BackColor = Color.FromArgb(210, 210, 210);
+            sepLine6.Location = new Point(18, 420);
             sepLine6.Name = "sepLine6";
-  sepLine6.Size = new Size(700, 1);
-    sepLine6.TabIndex = 19;
-  // 
-    // txtQuocTich
-    // 
-   txtQuocTich.BorderStyle = BorderStyle.FixedSingle;
+            sepLine6.Size = new Size(700, 1);
+            sepLine6.TabIndex = 19;
+            // 
+            // txtQuocTich
+            // 
+            txtQuocTich.BorderStyle = BorderStyle.FixedSingle;
             txtQuocTich.Font = new Font("Segoe UI", 9.5F);
-  txtQuocTich.Location = new Point(18, 384);
+            txtQuocTich.Location = new Point(18, 384);
             txtQuocTich.Name = "txtQuocTich";
-  txtQuocTich.Size = new Size(260, 24);
-      txtQuocTich.TabIndex = 18;
-    // 
-      // lblQuocTich
-        // 
+            txtQuocTich.Size = new Size(260, 24);
+            txtQuocTich.TabIndex = 18;
+            // 
+            // lblQuocTich
+            // 
             lblQuocTich.AutoSize = true;
-     lblQuocTich.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblQuocTich.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblQuocTich.Location = new Point(18, 364);
             lblQuocTich.Name = "lblQuocTich";
-     lblQuocTich.Size = new Size(63, 15);
+            lblQuocTich.Size = new Size(63, 15);
             lblQuocTich.TabIndex = 17;
-  lblQuocTich.Text = "Quốc tịch:";
-      // 
-      // sepLine5
-   // 
+            lblQuocTich.Text = "Quốc tịch:";
+            // 
+            // sepLine5
+            // 
             sepLine5.BackColor = Color.FromArgb(210, 210, 210);
             sepLine5.Location = new Point(18, 352);
-     sepLine5.Name = "sepLine5";
-sepLine5.Size = new Size(700, 1);
- sepLine5.TabIndex = 16;
+            sepLine5.Name = "sepLine5";
+            sepLine5.Size = new Size(700, 1);
+            sepLine5.TabIndex = 16;
             // 
-      // grpDiaChi
-         // 
-  grpDiaChi.Controls.Add(txtTinhThanh);
+            // grpDiaChi
+            // 
+            grpDiaChi.Controls.Add(txtTinhThanh);
             grpDiaChi.Controls.Add(lblTinhThanh);
-          grpDiaChi.Controls.Add(txtQuanHuyen);
-      grpDiaChi.Controls.Add(lblQuanHuyen);
-  grpDiaChi.Controls.Add(txtPhuongThon);
-  grpDiaChi.Controls.Add(lblPhuongThon);
-          grpDiaChi.Controls.Add(txtDuong);
+            grpDiaChi.Controls.Add(txtQuanHuyen);
+            grpDiaChi.Controls.Add(lblQuanHuyen);
+            grpDiaChi.Controls.Add(txtPhuongThon);
+            grpDiaChi.Controls.Add(lblPhuongThon);
+            grpDiaChi.Controls.Add(txtDuong);
             grpDiaChi.Controls.Add(lblDuong);
-          grpDiaChi.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-          grpDiaChi.ForeColor = Color.FromArgb(40, 40, 40);
+            grpDiaChi.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            grpDiaChi.ForeColor = Color.FromArgb(40, 40, 40);
             grpDiaChi.Location = new Point(18, 278);
-     grpDiaChi.Name = "grpDiaChi";
-      grpDiaChi.Size = new Size(700, 64);
-     grpDiaChi.TabIndex = 15;
-   grpDiaChi.TabStop = false;
-          grpDiaChi.Text = "Địa chỉ";
+            grpDiaChi.Name = "grpDiaChi";
+            grpDiaChi.Size = new Size(700, 64);
+            grpDiaChi.TabIndex = 15;
+            grpDiaChi.TabStop = false;
+            grpDiaChi.Text = "Địa chỉ";
             // 
             // txtTinhThanh
             // 
-   txtTinhThanh.BorderStyle = BorderStyle.FixedSingle;
-        txtTinhThanh.Font = new Font("Segoe UI", 9.5F);
-    txtTinhThanh.Location = new Point(640, 22);
-     txtTinhThanh.Name = "txtTinhThanh";
-    txtTinhThanh.Size = new Size(52, 24);
-  txtTinhThanh.TabIndex = 7;
-       // 
-    // lblTinhThanh
+            txtTinhThanh.BorderStyle = BorderStyle.FixedSingle;
+            txtTinhThanh.Font = new Font("Segoe UI", 9.5F);
+            txtTinhThanh.Location = new Point(640, 22);
+            txtTinhThanh.Name = "txtTinhThanh";
+            txtTinhThanh.Size = new Size(52, 24);
+            txtTinhThanh.TabIndex = 7;
+            // 
+            // lblTinhThanh
             // 
             lblTinhThanh.AutoSize = true;
-       lblTinhThanh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-   lblTinhThanh.Location = new Point(562, 26);
-     lblTinhThanh.Name = "lblTinhThanh";
-     lblTinhThanh.Size = new Size(73, 15);
-        lblTinhThanh.TabIndex = 6;
+            lblTinhThanh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblTinhThanh.Location = new Point(562, 26);
+            lblTinhThanh.Name = "lblTinhThanh";
+            lblTinhThanh.Size = new Size(73, 15);
+            lblTinhThanh.TabIndex = 6;
             lblTinhThanh.Text = "Tỉnh/Thành:";
-       // 
-      // txtQuanHuyen
-         // 
-    txtQuanHuyen.BorderStyle = BorderStyle.FixedSingle;
-   txtQuanHuyen.Font = new Font("Segoe UI", 9.5F);
-            txtQuanHuyen.Location = new Point(452, 22);
-         txtQuanHuyen.Name = "txtQuanHuyen";
-     txtQuanHuyen.Size = new Size(100, 24);
-            txtQuanHuyen.TabIndex = 5;
-          // 
-  // lblQuanHuyen
             // 
-       lblQuanHuyen.AutoSize = true;
-  lblQuanHuyen.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            // txtQuanHuyen
+            // 
+            txtQuanHuyen.BorderStyle = BorderStyle.FixedSingle;
+            txtQuanHuyen.Font = new Font("Segoe UI", 9.5F);
+            txtQuanHuyen.Location = new Point(452, 22);
+            txtQuanHuyen.Name = "txtQuanHuyen";
+            txtQuanHuyen.Size = new Size(100, 24);
+            txtQuanHuyen.TabIndex = 5;
+            // 
+            // lblQuanHuyen
+            // 
+            lblQuanHuyen.AutoSize = true;
+            lblQuanHuyen.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblQuanHuyen.Location = new Point(368, 26);
             lblQuanHuyen.Name = "lblQuanHuyen";
             lblQuanHuyen.Size = new Size(80, 15);
-      lblQuanHuyen.TabIndex = 4;
+            lblQuanHuyen.TabIndex = 4;
             lblQuanHuyen.Text = "Quận/Huyện:";
-     // 
-  // txtPhuongThon
-       // 
-   txtPhuongThon.BorderStyle = BorderStyle.FixedSingle;
-        txtPhuongThon.Font = new Font("Segoe UI", 9.5F);
+            // 
+            // txtPhuongThon
+            // 
+            txtPhuongThon.BorderStyle = BorderStyle.FixedSingle;
+            txtPhuongThon.Font = new Font("Segoe UI", 9.5F);
             txtPhuongThon.Location = new Point(258, 22);
-    txtPhuongThon.Name = "txtPhuongThon";
-       txtPhuongThon.Size = new Size(100, 24);
-       txtPhuongThon.TabIndex = 3;
-// 
-      // lblPhuongThon
-   // 
-   lblPhuongThon.AutoSize = true;
-     lblPhuongThon.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-    lblPhuongThon.Location = new Point(168, 26);
+            txtPhuongThon.Name = "txtPhuongThon";
+            txtPhuongThon.Size = new Size(100, 24);
+            txtPhuongThon.TabIndex = 3;
+            // 
+            // lblPhuongThon
+            // 
+            lblPhuongThon.AutoSize = true;
+            lblPhuongThon.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblPhuongThon.Location = new Point(168, 26);
             lblPhuongThon.Name = "lblPhuongThon";
-          lblPhuongThon.Size = new Size(85, 15);
-        lblPhuongThon.TabIndex = 2;
-   lblPhuongThon.Text = "Phường/Thôn:";
+            lblPhuongThon.Size = new Size(85, 15);
+            lblPhuongThon.TabIndex = 2;
+            lblPhuongThon.Text = "Phường/Thôn:";
             // 
             // txtDuong
             // 
-     txtDuong.BorderStyle = BorderStyle.FixedSingle;
-       txtDuong.Font = new Font("Segoe UI", 9.5F);
+            txtDuong.BorderStyle = BorderStyle.FixedSingle;
+            txtDuong.Font = new Font("Segoe UI", 9.5F);
             txtDuong.Location = new Point(58, 22);
-         txtDuong.Name = "txtDuong";
-        txtDuong.Size = new Size(100, 24);
-       txtDuong.TabIndex = 1;
-   // 
+            txtDuong.Name = "txtDuong";
+            txtDuong.Size = new Size(100, 24);
+            txtDuong.TabIndex = 1;
+            // 
             // lblDuong
-    // 
+            // 
             lblDuong.AutoSize = true;
             lblDuong.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblDuong.Location = new Point(8, 26);
-    lblDuong.Name = "lblDuong";
-   lblDuong.Size = new Size(47, 15);
-         lblDuong.TabIndex = 0;
-     lblDuong.Text = "Đường:";
-        // 
-    // sepLine4
+            lblDuong.Name = "lblDuong";
+            lblDuong.Size = new Size(47, 15);
+            lblDuong.TabIndex = 0;
+            lblDuong.Text = "Đường:";
+            // 
+            // sepLine4
             // 
             sepLine4.BackColor = Color.FromArgb(210, 210, 210);
-sepLine4.Location = new Point(18, 266);
-   sepLine4.Name = "sepLine4";
-    sepLine4.Size = new Size(700, 1);
-    sepLine4.TabIndex = 14;
+            sepLine4.Location = new Point(18, 266);
+            sepLine4.Name = "sepLine4";
+            sepLine4.Size = new Size(700, 1);
+            sepLine4.TabIndex = 14;
             // 
             // grpGioiTinh
             // 
-         grpGioiTinh.Controls.Add(rbNam);
+            grpGioiTinh.Controls.Add(rbNam);
             grpGioiTinh.Controls.Add(rbNu);
             grpGioiTinh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             grpGioiTinh.ForeColor = Color.FromArgb(40, 40, 40);
-    grpGioiTinh.Location = new Point(18, 202);
-  grpGioiTinh.Name = "grpGioiTinh";
+            grpGioiTinh.Location = new Point(18, 202);
+            grpGioiTinh.Name = "grpGioiTinh";
             grpGioiTinh.Size = new Size(360, 54);
-       grpGioiTinh.TabIndex = 13;
+            grpGioiTinh.TabIndex = 13;
             grpGioiTinh.TabStop = false;
-          grpGioiTinh.Text = "Giới tính";
-       // 
- // rbNam
-       // 
+            grpGioiTinh.Text = "Giới tính";
+            // 
+            // rbNam
+            // 
             rbNam.AutoSize = true;
             rbNam.Checked = true;
-       rbNam.Font = new Font("Segoe UI", 9.5F);
+            rbNam.Font = new Font("Segoe UI", 9.5F);
             rbNam.Location = new Point(30, 22);
             rbNam.Name = "rbNam";
             rbNam.Size = new Size(54, 21);
-  rbNam.TabIndex = 0;
+            rbNam.TabIndex = 0;
             rbNam.TabStop = true;
-         rbNam.Text = "Nam";
+            rbNam.Text = "Nam";
             // 
-    // rbNu
-// 
-     rbNu.AutoSize = true;
-         rbNu.Font = new Font("Segoe UI", 9.5F);
+            // rbNu
+            // 
+            rbNu.AutoSize = true;
+            rbNu.Font = new Font("Segoe UI", 9.5F);
             rbNu.Location = new Point(160, 22);
- rbNu.Name = "rbNu";
-        rbNu.Size = new Size(43, 21);
-         rbNu.TabIndex = 1;
+            rbNu.Name = "rbNu";
+            rbNu.Size = new Size(43, 21);
+            rbNu.TabIndex = 1;
             rbNu.Text = "Nữ";
- // 
+            // 
             // sepLine3
             // 
             sepLine3.BackColor = Color.FromArgb(210, 210, 210);
-      sepLine3.Location = new Point(18, 190);
+            sepLine3.Location = new Point(18, 190);
             sepLine3.Name = "sepLine3";
             sepLine3.Size = new Size(700, 1);
-   sepLine3.TabIndex = 12;
-         // 
-        // txtSDT
-  // 
+            sepLine3.TabIndex = 12;
+            // 
+            // txtSDT
+            // 
             txtSDT.BorderStyle = BorderStyle.FixedSingle;
-    txtSDT.Font = new Font("Segoe UI", 9.5F);
+            txtSDT.Font = new Font("Segoe UI", 9.5F);
             txtSDT.Location = new Point(388, 154);
             txtSDT.Name = "txtSDT";
-        txtSDT.Size = new Size(330, 24);
-     txtSDT.TabIndex = 11;
+            txtSDT.Size = new Size(330, 24);
+            txtSDT.TabIndex = 11;
             // 
             // lblSDT
-    // 
-   lblSDT.AutoSize = true;
-          lblSDT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblSDT.Location = new Point(388, 134);
-  lblSDT.Name = "lblSDT";
+            // 
+            lblSDT.AutoSize = true;
+            lblSDT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblSDT.Location = new Point(388, 134);
+            lblSDT.Name = "lblSDT";
             lblSDT.Size = new Size(82, 15);
-       lblSDT.TabIndex = 9;
+            lblSDT.TabIndex = 9;
             lblSDT.Text = "Số điện thoại:";
-   // 
-       // dtpNgaySinh
- // 
-dtpNgaySinh.Font = new Font("Segoe UI", 9.5F);
-       dtpNgaySinh.Format = DateTimePickerFormat.Short;
-          dtpNgaySinh.Location = new Point(18, 154);
+            // 
+            // dtpNgaySinh
+            // 
+            dtpNgaySinh.Font = new Font("Segoe UI", 9.5F);
+            dtpNgaySinh.Format = DateTimePickerFormat.Short;
+            dtpNgaySinh.Location = new Point(18, 154);
             dtpNgaySinh.Name = "dtpNgaySinh";
-     dtpNgaySinh.Size = new Size(220, 24);
-    dtpNgaySinh.TabIndex = 10;
+            dtpNgaySinh.Size = new Size(220, 24);
+            dtpNgaySinh.TabIndex = 10;
             // 
             // lblNgaySinh
-  // 
-      lblNgaySinh.AutoSize = true;
+            // 
+            lblNgaySinh.AutoSize = true;
             lblNgaySinh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
- lblNgaySinh.Location = new Point(18, 134);
+            lblNgaySinh.Location = new Point(18, 134);
             lblNgaySinh.Name = "lblNgaySinh";
             lblNgaySinh.Size = new Size(63, 15);
             lblNgaySinh.TabIndex = 8;
-     lblNgaySinh.Text = "Ngày sinh:";
+            lblNgaySinh.Text = "Ngày sinh:";
             // 
-   // sepLine2
-        // 
-  sepLine2.BackColor = Color.FromArgb(210, 210, 210);
+            // sepLine2
+            // 
+            sepLine2.BackColor = Color.FromArgb(210, 210, 210);
             sepLine2.Location = new Point(18, 122);
-        sepLine2.Name = "sepLine2";
-   sepLine2.Size = new Size(700, 1);
-    sepLine2.TabIndex = 7;
- // 
+            sepLine2.Name = "sepLine2";
+            sepLine2.Size = new Size(700, 1);
+            sepLine2.TabIndex = 7;
+            // 
             // txtCMND
-        // 
+            // 
             txtCMND.BorderStyle = BorderStyle.FixedSingle;
             txtCMND.Font = new Font("Segoe UI", 9.5F);
-      txtCMND.Location = new Point(388, 86);
-      txtCMND.Name = "txtCMND";
-      txtCMND.Size = new Size(330, 24);
-        txtCMND.TabIndex = 6;
-    // 
+            txtCMND.Location = new Point(388, 86);
+            txtCMND.Name = "txtCMND";
+            txtCMND.Size = new Size(330, 24);
+            txtCMND.TabIndex = 6;
+            // 
             // txtHoTen
-// 
-      txtHoTen.BorderStyle = BorderStyle.FixedSingle;
-   txtHoTen.Font = new Font("Segoe UI", 9.5F);
+            // 
+            txtHoTen.BorderStyle = BorderStyle.FixedSingle;
+            txtHoTen.Font = new Font("Segoe UI", 9.5F);
             txtHoTen.Location = new Point(18, 86);
-         txtHoTen.Name = "txtHoTen";
+            txtHoTen.Name = "txtHoTen";
             txtHoTen.Size = new Size(340, 24);
             txtHoTen.TabIndex = 5;
-          // 
-        // lblCMND
-       // 
-    lblCMND.AutoSize = true;
+            // 
+            // lblCMND
+            // 
+            lblCMND.AutoSize = true;
             lblCMND.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblCMND.Location = new Point(388, 66);
-        lblCMND.Name = "lblCMND";
+            lblCMND.Name = "lblCMND";
             lblCMND.Size = new Size(81, 15);
             lblCMND.TabIndex = 4;
             lblCMND.Text = "CMND/CCCD:";
             // 
-        // lblHoTen
-   // 
-     lblHoTen.AutoSize = true;
+            // lblHoTen
+            // 
+            lblHoTen.AutoSize = true;
             lblHoTen.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-     lblHoTen.Location = new Point(18, 66);
-     lblHoTen.Name = "lblHoTen";
+            lblHoTen.Location = new Point(18, 66);
+            lblHoTen.Name = "lblHoTen";
             lblHoTen.Size = new Size(114, 15);
             lblHoTen.TabIndex = 3;
-       lblHoTen.Text = "Họ tên khách hàng:";
-    // 
-        // sepLine1
-        // 
-   sepLine1.BackColor = Color.FromArgb(210, 210, 210);
+            lblHoTen.Text = "Họ tên khách hàng:";
+            // 
+            // sepLine1
+            // 
+            sepLine1.BackColor = Color.FromArgb(210, 210, 210);
             sepLine1.Location = new Point(18, 54);
-   sepLine1.Name = "sepLine1";
-sepLine1.Size = new Size(700, 1);
+            sepLine1.Name = "sepLine1";
+            sepLine1.Size = new Size(700, 1);
             sepLine1.TabIndex = 2;
-  // 
-        // txtMaKH
-       // 
-      txtMaKH.BorderStyle = BorderStyle.FixedSingle;
+            // 
+            // txtMaKH
+            // 
+            txtMaKH.BorderStyle = BorderStyle.FixedSingle;
             txtMaKH.Font = new Font("Segoe UI", 9.5F);
-  txtMaKH.Location = new Point(18, 28);
-       txtMaKH.Name = "txtMaKH";
-        txtMaKH.Size = new Size(281, 24);
+            txtMaKH.Location = new Point(18, 28);
+            txtMaKH.Name = "txtMaKH";
+            txtMaKH.Size = new Size(281, 24);
             txtMaKH.TabIndex = 1;
             // 
             // lblMaKH
             // 
             lblMaKH.AutoSize = true;
-        lblMaKH.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-  lblMaKH.Location = new Point(18, 10);
-    lblMaKH.Name = "lblMaKH";
-        lblMaKH.Size = new Size(93, 15);
-       lblMaKH.TabIndex = 0;
+            lblMaKH.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblMaKH.Location = new Point(18, 10);
+            lblMaKH.Name = "lblMaKH";
+            lblMaKH.Size = new Size(93, 15);
+            lblMaKH.TabIndex = 0;
             lblMaKH.Text = "Mã khách hàng:";
-      // 
+            // 
             // pnlBottom
             // 
             pnlBottom.BackColor = Color.White;
-  pnlBottom.Controls.Add(btnHuy);
-  pnlBottom.Controls.Add(btnLuu);
-   pnlBottom.Dock = DockStyle.Bottom;
-    pnlBottom.Location = new Point(0, 480);
+            pnlBottom.Controls.Add(btnHuy);
+            pnlBottom.Controls.Add(btnLuu);
+            pnlBottom.Dock = DockStyle.Bottom;
+            pnlBottom.Location = new Point(0, 480);
             pnlBottom.Name = "pnlBottom";
             pnlBottom.Padding = new Padding(0, 8, 18, 8);
- pnlBottom.Size = new Size(766, 52);
-  pnlBottom.TabIndex = 1;
+            pnlBottom.Size = new Size(766, 52);
+            pnlBottom.TabIndex = 1;
             // 
-      // btnHuy
+            // btnHuy
             // 
- btnHuy.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnHuy.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnHuy.BackColor = Color.FromArgb(108, 117, 125);
             btnHuy.DialogResult = DialogResult.Cancel;
             btnHuy.FlatAppearance.BorderSize = 0;
             btnHuy.FlatStyle = FlatStyle.Flat;
-      btnHuy.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-    btnHuy.ForeColor = Color.White;
+            btnHuy.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnHuy.ForeColor = Color.White;
             btnHuy.Location = new Point(488, 8);
-btnHuy.Name = "btnHuy";
-       btnHuy.Size = new Size(130, 36);
+            btnHuy.Name = "btnHuy";
+            btnHuy.Size = new Size(130, 36);
             btnHuy.TabIndex = 1;
             btnHuy.Text = "Hủy";
-     btnHuy.UseVisualStyleBackColor = false;
-      // 
+            btnHuy.UseVisualStyleBackColor = false;
+            // 
             // btnLuu
             // 
-       btnLuu.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-  btnLuu.BackColor = Color.FromArgb(40, 167, 69);
-      btnLuu.FlatAppearance.BorderSize = 0;
+            btnLuu.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLuu.BackColor = Color.FromArgb(40, 167, 69);
+            btnLuu.FlatAppearance.BorderSize = 0;
             btnLuu.FlatStyle = FlatStyle.Flat;
-    btnLuu.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-  btnLuu.ForeColor = Color.White;
-     btnLuu.Location = new Point(626, 8);
- btnLuu.Name = "btnLuu";
+            btnLuu.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnLuu.ForeColor = Color.White;
+            btnLuu.Location = new Point(626, 8);
+            btnLuu.Name = "btnLuu";
             btnLuu.Size = new Size(130, 36);
             btnLuu.TabIndex = 0;
             btnLuu.Text = "Lưu";
-     btnLuu.UseVisualStyleBackColor = false;
+            btnLuu.UseVisualStyleBackColor = false;
             // 
             // AddCustomerForm
-     // 
+            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-       BackColor = Color.White;
-     CancelButton = btnHuy;
+            BackColor = Color.White;
+            CancelButton = btnHuy;
             ClientSize = new Size(766, 532);
-   Controls.Add(pnlContent);
-     Controls.Add(pnlBottom);
+            Controls.Add(pnlContent);
+            Controls.Add(pnlBottom);
             Controls.Add(pnlTitleBar);
             FormBorderStyle = FormBorderStyle.None;
-       Name = "AddCustomerForm";
-    StartPosition = FormStartPosition.CenterParent;
+            Name = "AddCustomerForm";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Thêm khách hàng mới";
-         Load += AddCustomerForm_Load;
+            Load += AddCustomerForm_Load;
             pnlTitleBar.ResumeLayout(false);
-pnlTitleBar.PerformLayout();
- pnlContent.ResumeLayout(false);
+            pnlTitleBar.PerformLayout();
+            pnlContent.ResumeLayout(false);
             pnlContent.PerformLayout();
- grpDiaChi.ResumeLayout(false);
-   grpDiaChi.PerformLayout();
-        grpGioiTinh.ResumeLayout(false);
+            grpDiaChi.ResumeLayout(false);
+            grpDiaChi.PerformLayout();
+            grpGioiTinh.ResumeLayout(false);
             grpGioiTinh.PerformLayout();
-       pnlBottom.ResumeLayout(false);
-    ResumeLayout(false);
+            pnlBottom.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion
 
         private System.Windows.Forms.Panel pnlTitleBar;
-     private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Button btnClose;
-     private System.Windows.Forms.Panel pnlContent;
-     private System.Windows.Forms.Label lblMaKH;
+        private System.Windows.Forms.Panel pnlContent;
+        private System.Windows.Forms.Label lblMaKH;
         private System.Windows.Forms.TextBox txtMaKH;
         private System.Windows.Forms.Panel sepLine1;
         private System.Windows.Forms.Label lblHoTen;
-  private System.Windows.Forms.TextBox txtHoTen;
+        private System.Windows.Forms.TextBox txtHoTen;
         private System.Windows.Forms.Label lblCMND;
         private System.Windows.Forms.TextBox txtCMND;
         private System.Windows.Forms.Panel sepLine2;
-    private System.Windows.Forms.Label lblNgaySinh;
+        private System.Windows.Forms.Label lblNgaySinh;
         private System.Windows.Forms.DateTimePicker dtpNgaySinh;
         private System.Windows.Forms.Label lblSDT;
         private System.Windows.Forms.TextBox txtSDT;
@@ -515,14 +515,14 @@ pnlTitleBar.PerformLayout();
         private System.Windows.Forms.GroupBox grpDiaChi;
         private System.Windows.Forms.Label lblDuong;
         private System.Windows.Forms.TextBox txtDuong;
-   private System.Windows.Forms.Label lblPhuongThon;
-    private System.Windows.Forms.TextBox txtPhuongThon;
+        private System.Windows.Forms.Label lblPhuongThon;
+        private System.Windows.Forms.TextBox txtPhuongThon;
         private System.Windows.Forms.Label lblQuanHuyen;
-    private System.Windows.Forms.TextBox txtQuanHuyen;
+        private System.Windows.Forms.TextBox txtQuanHuyen;
         private System.Windows.Forms.Label lblTinhThanh;
-      private System.Windows.Forms.TextBox txtTinhThanh;
+        private System.Windows.Forms.TextBox txtTinhThanh;
         private System.Windows.Forms.Panel sepLine5;
-    private System.Windows.Forms.Label lblQuocTich;
+        private System.Windows.Forms.Label lblQuocTich;
         private System.Windows.Forms.TextBox txtQuocTich;
         private System.Windows.Forms.Panel sepLine6;
         private System.Windows.Forms.Panel pnlBottom;

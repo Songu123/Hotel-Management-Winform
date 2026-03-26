@@ -15,17 +15,17 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle22 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle17 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle18 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle19 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle20 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle21 = new DataGridViewCellStyle();
             pnlMain = new Panel();
             pnlList = new Panel();
             dgvKhachHang = new DataGridView();
@@ -39,6 +39,8 @@
             colQueQuan = new DataGridViewTextBoxColumn();
             colQuocTich = new DataGridViewTextBoxColumn();
             pnlListHeader = new Panel();
+            button2 = new Button();
+            button1 = new Button();
             btnSuaKhachHang = new Button();
             lblDanhSach = new Label();
             pnlSearch = new Panel();
@@ -66,8 +68,7 @@
             btnTimKiemTheoMa = new Button();
             lblSubTitle = new Label();
             lblTitle = new Label();
-            button1 = new Button();
-            button2 = new Button();
+            button3 = new Button();
             pnlMain.SuspendLayout();
             pnlList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvKhachHang).BeginInit();
@@ -108,24 +109,24 @@
             dgvKhachHang.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvKhachHang.BackgroundColor = Color.White;
             dgvKhachHang.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(0, 123, 255);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvKhachHang.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = Color.FromArgb(0, 123, 255);
+            dataGridViewCellStyle12.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle12.ForeColor = Color.White;
+            dataGridViewCellStyle12.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.True;
+            dgvKhachHang.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle12;
             dgvKhachHang.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvKhachHang.Columns.AddRange(new DataGridViewColumn[] { colSTT, colMaKH, colTen, colCMND, colNgaySinh, colGioiTinh, colSDT, colQueQuan, colQuocTich });
-            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = SystemColors.Window;
-            dataGridViewCellStyle11.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle11.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle11.SelectionBackColor = Color.FromArgb(173, 216, 230);
-            dataGridViewCellStyle11.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.False;
-            dgvKhachHang.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle22.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle22.BackColor = SystemColors.Window;
+            dataGridViewCellStyle22.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle22.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle22.SelectionBackColor = Color.FromArgb(173, 216, 230);
+            dataGridViewCellStyle22.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle22.WrapMode = DataGridViewTriState.False;
+            dgvKhachHang.DefaultCellStyle = dataGridViewCellStyle22;
             dgvKhachHang.Dock = DockStyle.Fill;
             dgvKhachHang.EnableHeadersVisualStyles = false;
             dgvKhachHang.Font = new Font("Segoe UI", 9F);
@@ -142,8 +143,8 @@
             // colSTT
             // 
             colSTT.DataPropertyName = "STT";
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colSTT.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colSTT.DefaultCellStyle = dataGridViewCellStyle13;
             colSTT.FillWeight = 4F;
             colSTT.HeaderText = "STT";
             colSTT.Name = "colSTT";
@@ -152,8 +153,8 @@
             // colMaKH
             // 
             colMaKH.DataPropertyName = "MaKhachHang";
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colMaKH.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colMaKH.DefaultCellStyle = dataGridViewCellStyle14;
             colMaKH.FillWeight = 12F;
             colMaKH.HeaderText = "MÃ KHÁCH HÀNG";
             colMaKH.Name = "colMaKH";
@@ -162,8 +163,8 @@
             // colTen
             // 
             colTen.DataPropertyName = "TenKhachHang";
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            colTen.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            colTen.DefaultCellStyle = dataGridViewCellStyle15;
             colTen.FillWeight = 10F;
             colTen.HeaderText = "TÊN...";
             colTen.Name = "colTen";
@@ -172,8 +173,8 @@
             // colCMND
             // 
             colCMND.DataPropertyName = "CMND";
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colCMND.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colCMND.DefaultCellStyle = dataGridViewCellStyle16;
             colCMND.FillWeight = 10F;
             colCMND.HeaderText = "CMND/CCCD";
             colCMND.Name = "colCMND";
@@ -182,8 +183,8 @@
             // colNgaySinh
             // 
             colNgaySinh.DataPropertyName = "NgaySinh";
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colNgaySinh.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle17.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colNgaySinh.DefaultCellStyle = dataGridViewCellStyle17;
             colNgaySinh.FillWeight = 9F;
             colNgaySinh.HeaderText = "NGÀY SINH";
             colNgaySinh.Name = "colNgaySinh";
@@ -192,8 +193,8 @@
             // colGioiTinh
             // 
             colGioiTinh.DataPropertyName = "GioiTinh";
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colGioiTinh.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle18.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colGioiTinh.DefaultCellStyle = dataGridViewCellStyle18;
             colGioiTinh.FillWeight = 7F;
             colGioiTinh.HeaderText = "GIỚI TÍNH";
             colGioiTinh.Name = "colGioiTinh";
@@ -202,8 +203,8 @@
             // colSDT
             // 
             colSDT.DataPropertyName = "SoDienThoai";
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colSDT.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle19.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colSDT.DefaultCellStyle = dataGridViewCellStyle19;
             colSDT.FillWeight = 10F;
             colSDT.HeaderText = "SỐ ĐIỆN THOẠI";
             colSDT.Name = "colSDT";
@@ -212,8 +213,8 @@
             // colQueQuan
             // 
             colQueQuan.DataPropertyName = "QueQuan";
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            colQueQuan.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle20.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            colQueQuan.DefaultCellStyle = dataGridViewCellStyle20;
             colQueQuan.FillWeight = 13F;
             colQueQuan.HeaderText = "QUÊ QUÁN";
             colQueQuan.Name = "colQueQuan";
@@ -222,8 +223,8 @@
             // colQuocTich
             // 
             colQuocTich.DataPropertyName = "QuocTich";
-            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colQuocTich.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle21.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colQuocTich.DefaultCellStyle = dataGridViewCellStyle21;
             colQuocTich.FillWeight = 7F;
             colQuocTich.HeaderText = "QUỐC TỊCH";
             colQuocTich.Name = "colQuocTich";
@@ -242,6 +243,24 @@
             pnlListHeader.Padding = new Padding(8, 6, 8, 0);
             pnlListHeader.Size = new Size(1096, 42);
             pnlListHeader.TabIndex = 1;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(903, 10);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 3;
+            button2.Text = "Sửa khách hàng";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(727, 10);
+            button1.Name = "button1";
+            button1.Size = new Size(128, 23);
+            button1.TabIndex = 2;
+            button1.Text = "Thêm khách hàng";
+            button1.UseVisualStyleBackColor = true;
             // 
             // btnSuaKhachHang
             // 
@@ -273,6 +292,7 @@
             // pnlSearch
             // 
             pnlSearch.BackColor = Color.White;
+            pnlSearch.Controls.Add(button3);
             pnlSearch.Controls.Add(lblMaKhachHang);
             pnlSearch.Controls.Add(txtMaKhachHang);
             pnlSearch.Controls.Add(lblTenKhachHang);
@@ -438,7 +458,7 @@
             // 
             lblNgaySinhTu.AutoSize = true;
             lblNgaySinhTu.Font = new Font("Segoe UI", 9F);
-            lblNgaySinhTu.Location = new Point(480, 52);
+            lblNgaySinhTu.Location = new Point(397, 58);
             lblNgaySinhTu.Name = "lblNgaySinhTu";
             lblNgaySinhTu.Size = new Size(77, 15);
             lblNgaySinhTu.TabIndex = 14;
@@ -449,7 +469,7 @@
             dtpNgaySinhTu.Checked = false;
             dtpNgaySinhTu.Font = new Font("Segoe UI", 9F);
             dtpNgaySinhTu.Format = DateTimePickerFormat.Short;
-            dtpNgaySinhTu.Location = new Point(480, 52);
+            dtpNgaySinhTu.Location = new Point(480, 50);
             dtpNgaySinhTu.Name = "dtpNgaySinhTu";
             dtpNgaySinhTu.ShowCheckBox = true;
             dtpNgaySinhTu.Size = new Size(140, 23);
@@ -459,7 +479,7 @@
             // 
             lblDen.AutoSize = true;
             lblDen.Font = new Font("Segoe UI", 9F);
-            lblDen.Location = new Point(480, 52);
+            lblDen.Location = new Point(644, 52);
             lblDen.Name = "lblDen";
             lblDen.Size = new Size(30, 15);
             lblDen.TabIndex = 16;
@@ -470,11 +490,12 @@
             dtpNgaySinhDen.Checked = false;
             dtpNgaySinhDen.Font = new Font("Segoe UI", 9F);
             dtpNgaySinhDen.Format = DateTimePickerFormat.Short;
-            dtpNgaySinhDen.Location = new Point(480, 52);
+            dtpNgaySinhDen.Location = new Point(680, 48);
             dtpNgaySinhDen.Name = "dtpNgaySinhDen";
             dtpNgaySinhDen.ShowCheckBox = true;
             dtpNgaySinhDen.Size = new Size(140, 23);
             dtpNgaySinhDen.TabIndex = 17;
+            dtpNgaySinhDen.ValueChanged += dtpNgaySinhDen_ValueChanged;
             // 
             // btnTimKiem
             // 
@@ -557,23 +578,20 @@
             lblTitle.TabIndex = 2;
             lblTitle.Text = "QUẢN LÝ KHÁCH HÀNG";
             // 
-            // button1
+            // button3
             // 
-            button1.Location = new Point(727, 10);
-            button1.Name = "button1";
-            button1.Size = new Size(128, 23);
-            button1.TabIndex = 2;
-            button1.Text = "Thêm khách hàng";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(903, 10);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 3;
-            button2.Text = "Sửa khách hàng";
-            button2.UseVisualStyleBackColor = true;
+            button3.BackColor = Color.FromArgb(0, 123, 255);
+            button3.Cursor = Cursors.Hand;
+            button3.FlatAppearance.BorderSize = 0;
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            button3.ForeColor = Color.White;
+            button3.Location = new Point(981, 52);
+            button3.Name = "button3";
+            button3.Size = new Size(100, 28);
+            button3.TabIndex = 20;
+            button3.Text = "Làm Mới";
+            button3.UseVisualStyleBackColor = false;
             // 
             // UCCustomer
             // 
@@ -644,5 +662,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colQuocTich;
         private Button button2;
         private Button button1;
+        private Button button3;
     }
 }

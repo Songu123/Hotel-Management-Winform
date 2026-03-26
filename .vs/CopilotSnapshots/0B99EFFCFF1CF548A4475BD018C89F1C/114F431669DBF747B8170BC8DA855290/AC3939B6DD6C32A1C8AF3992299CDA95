@@ -1,0 +1,212 @@
+﻿using Moq;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Implementations;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Services.RequestHandlers;
+using QuanLyKhachSan.Services.RequestHandlers.Dtos;
+
+namespace QuanLyKhachSan.Tests.Services
+{
+    /// <summary>
+    /// Unit tests cho CustomerCreateRequestHandler
+    /// </summary>
+    [TestFixture]
+    public class CustomerCreateRequestHandlerTests
+    {
+   private CustomerCreateRequestHandler _handler;
+ private Mock<ICustomerService> _mockCustomerService;
+
+   [SetUp]
+     public void Setup()
+        {
+    _mockCustomerService = new Mock<ICustomerService>();
+     _handler = new CustomerCreateRequestHandler(_mockCustomerService.Object);
+     }
+
+       [Test]
+ public async Task HandleAsync_WithValidRequest_ReturnsSuccess()
+    {
+        // Arrange
+          var request = new CustomerCreateRequest
+            {
+  CustomerId = "KH001",
+        Name = "Nguyễn Văn A",
+      IdNumber = "0123456789",
+  Gender = 1,
+        PhoneNumber = "0987654321",
+     Address = "123 Đường ABC",
+         Nationality = "Việt Nam",
+          DateOfBirth = new DateTime(1990, 1, 1)
+   };
+
+      _mockCustomerService.Setup(s => s.CustomerExistsAsync(It.IsAny<string>()))
+            .ReturnsAsync(false);
+      _mockCustomerService.Setup(s => s.GetByPhoneNumberAsync(It.IsAny<string>()))
+ .ReturnsAsync((Customer)null);
+        _mockCustomerService.Setup(s => s.GetByIdNumberAsync(It.IsAny<string>()))
+        .ReturnsAsync((Customer)null);
+      _mockCustomerService.Setup(s => s.CreateCustomerAsync(It.IsAny<Customer>()))
+        .ReturnsAsync(new Customer());
+
+     // Act
+      var result = await _handler.HandleAsync(request);
+
+     // Assert
+      Assert.That(result.Success, Is.True);
+       Assert.That(result.CustomerId, Is.EqualTo("KH001"));
+     Assert.That(result.Message, Contains.Substring("thành công"));
+    }
+
+[Test]
+  public async Task HandleAsync_WithEmptyName_ReturnsValidationError()
+     {
+        // Arrange
+          var request = new CustomerCreateRequest
+        {
+      CustomerId = "KH001",
+     Name = "", // Empty name
+    PhoneNumber = "0987654321"
+             };
+
+          // Act
+   var result = await _handler.HandleAsync(request);
+
+ // Assert
+       Assert.That(result.Success, Is.False);
+     Assert.That(result.ErrorCode, Is.EqualTo("VALIDATION_FAILED"));
+   Assert.That(result.Errors, Has.Count.GreaterThan(0));
+         Assert.That(result.Errors.First().Field, Is.EqualTo("Name"));
+        }
+
+      [Test]
+       public async Task HandleAsync_WithEmptyPhone_ReturnsValidationError()
+   {
+       // Arrange
+         var request = new CustomerCreateRequest
+  {
+  CustomerId = "KH001",
+      Name = "Nguyễn Văn A",
+        PhoneNumber = "" // Empty phone
+ };
+
+    // Act
+ var result = await _handler.HandleAsync(request);
+
+   // Assert
+         Assert.That(result.Success, Is.False);
+   Assert.That(result.ErrorCode, Is.EqualTo("VALIDATION_FAILED"));
+       Assert.That(result.Errors, Has.Count.GreaterThan(0));
+        }
+
+     [Test]
+        public async Task HandleAsync_WithInvalidPhone_ReturnsValidationError()
+      {
+     // Arrange
+     var request = new CustomerCreateRequest
+       {
+ CustomerId = "KH001",
+Name = "Nguyễn Văn A",
+      PhoneNumber = "123" // Too short
+      };
+
+     // Act
+     var result = await _handler.HandleAsync(request);
+
+ // Assert
+    Assert.That(result.Success, Is.False);
+         Assert.That(result.ErrorCode, Is.EqualTo("VALIDATION_FAILED"));
+         Assert.That(result.Errors.Any(e => e.Field == "PhoneNumber"), Is.True);
+        }
+
+   [Test]
+    public async Task HandleAsync_WithDuplicateCustomerId_ReturnsError()
+    {
+         // Arrange
+         var request = new CustomerCreateRequest
+        {
+   CustomerId = "KH001",
+  Name = "Nguyễn Văn A",
+     PhoneNumber = "0987654321"
+         };
+
+        _mockCustomerService.Setup(s => s.CustomerExistsAsync("KH001"))
+ .ReturnsAsync(true); // Customer exists
+
+       // Act
+      var result = await _handler.HandleAsync(request);
+
+ // Assert
+        Assert.That(result.Success, Is.False);
+            Assert.That(result.ErrorCode, Is.EqualTo("VALIDATION_FAILED"));
+ Assert.That(result.Errors.Any(e => e.Field == "CustomerId"), Is.True);
+      }
+
+[Test]
+       public async Task HandleAsync_WithDuplicatePhone_ReturnsError()
+        {
+      // Arrange
+           var request = new CustomerCreateRequest
+     {
+    CustomerId = "KH001",
+  Name = "Nguyễn Văn A",
+     PhoneNumber = "0987654321"
+     };
+
+      var existingCustomer = new Customer { CustomerId = "KH999", PhoneNumber = "0987654321" };
+     _mockCustomerService.Setup(s => s.CustomerExistsAsync(It.IsAny<string>()))
+    .ReturnsAsync(false);
+       _mockCustomerService.Setup(s => s.GetByPhoneNumberAsync("0987654321"))
+     .ReturnsAsync(existingCustomer); // Phone exists
+
+  // Act
+  var result = await _handler.HandleAsync(request);
+
+  // Assert
+Assert.That(result.Success, Is.False);
+         Assert.That(result.ErrorCode, Is.EqualTo("VALIDATION_FAILED"));
+Assert.That(result.Errors.Any(e => e.Field == "PhoneNumber"), Is.True);
+        }
+
+    [Test]
+  public async Task HandleAsync_WithFutureDateOfBirth_ReturnsValidationError()
+       {
+     // Arrange
+ var request = new CustomerCreateRequest
+         {
+            CustomerId = "KH001",
+   Name = "Nguyễn Văn A",
+    PhoneNumber = "0987654321",
+  DateOfBirth = DateTime.Now.AddDays(1) // Future date
+        };
+
+  // Act
+          var result = await _handler.HandleAsync(request);
+
+  // Assert
+        Assert.That(result.Success, Is.False);
+     Assert.That(result.Errors.Any(e => e.Field == "DateOfBirth"), Is.True);
+       }
+
+       [Test]
+    public async Task HandleAsync_WithServiceException_ReturnsErrorResult()
+   {
+      // Arrange
+    var request = new CustomerCreateRequest
+        {
+           CustomerId = "KH001",
+   Name = "Nguyễn Văn A",
+        PhoneNumber = "0987654321"
+      };
+
+       _mockCustomerService.Setup(s => s.CustomerExistsAsync(It.IsAny<string>()))
+   .ThrowsAsync(new Exception("Database error"));
+
+ // Act
+   var result = await _handler.HandleAsync(request);
+
+ // Assert
+       Assert.That(result.Success, Is.False);
+   Assert.That(result.ErrorCode, Is.EqualTo("SYSTEM_ERROR"));
+      }
+  }
+}
