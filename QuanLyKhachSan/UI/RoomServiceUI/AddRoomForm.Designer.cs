@@ -15,20 +15,18 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle26 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle27 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle28 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle29 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle30 = new DataGridViewCellStyle();
             lblTitle = new Label();
             lblMaPhong = new Label();
             txtMaPhong = new TextBox();
             lblTenPhong = new Label();
             txtTenPhong = new TextBox();
-            lblLoaiPhong = new Label();
             rbPhongVip = new RadioButton();
             rbPhongThuong = new RadioButton();
-            lblChiTietLoai = new Label();
             rbPhongDon = new RadioButton();
             rbPhongDoi = new RadioButton();
             rbPhongGia = new RadioButton();
@@ -65,6 +63,8 @@
             pnlLeft = new Panel();
             pnlRight = new Panel();
             pnlBottom = new Panel();
+            groupBox1 = new GroupBox();
+            groupBox2 = new GroupBox();
             ((System.ComponentModel.ISupportInitialize)dgvTienIchKhachSan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudSoLuong1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvTienIchPhong).BeginInit();
@@ -73,6 +73,8 @@
             pnlLeft.SuspendLayout();
             pnlRight.SuspendLayout();
             pnlBottom.SuspendLayout();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitle
@@ -121,20 +123,11 @@
             txtTenPhong.Size = new Size(355, 23);
             txtTenPhong.TabIndex = 3;
             // 
-            // lblLoaiPhong
-            // 
-            lblLoaiPhong.AutoSize = true;
-            lblLoaiPhong.Location = new Point(15, 135);
-            lblLoaiPhong.Name = "lblLoaiPhong";
-            lblLoaiPhong.Size = new Size(70, 15);
-            lblLoaiPhong.TabIndex = 4;
-            lblLoaiPhong.Text = "Loại phòng:";
-            // 
             // rbPhongVip
             // 
             rbPhongVip.AutoSize = true;
             rbPhongVip.Checked = true;
-            rbPhongVip.Location = new Point(15, 158);
+            rbPhongVip.Location = new Point(25, 22);
             rbPhongVip.Name = "rbPhongVip";
             rbPhongVip.Size = new Size(80, 19);
             rbPhongVip.TabIndex = 5;
@@ -144,27 +137,17 @@
             // rbPhongThuong
             // 
             rbPhongThuong.AutoSize = true;
-            rbPhongThuong.Location = new Point(145, 158);
+            rbPhongThuong.Location = new Point(187, 22);
             rbPhongThuong.Name = "rbPhongThuong";
             rbPhongThuong.Size = new Size(102, 19);
             rbPhongThuong.TabIndex = 6;
             rbPhongThuong.Text = "Phòng thường";
             // 
-            // lblChiTietLoai
-            // 
-            lblChiTietLoai.AutoSize = true;
-            lblChiTietLoai.Font = new Font("Segoe UI", 9F);
-            lblChiTietLoai.Location = new Point(15, 190);
-            lblChiTietLoai.Name = "lblChiTietLoai";
-            lblChiTietLoai.Size = new Size(105, 15);
-            lblChiTietLoai.TabIndex = 7;
-            lblChiTietLoai.Text = "Chi tiết loại phòng";
-            // 
             // rbPhongDon
             // 
             rbPhongDon.AutoSize = true;
             rbPhongDon.Checked = true;
-            rbPhongDon.Location = new Point(15, 210);
+            rbPhongDon.Location = new Point(10, 23);
             rbPhongDon.Name = "rbPhongDon";
             rbPhongDon.Size = new Size(84, 19);
             rbPhongDon.TabIndex = 8;
@@ -174,7 +157,7 @@
             // rbPhongDoi
             // 
             rbPhongDoi.AutoSize = true;
-            rbPhongDoi.Location = new Point(120, 210);
+            rbPhongDoi.Location = new Point(115, 23);
             rbPhongDoi.Name = "rbPhongDoi";
             rbPhongDoi.Size = new Size(80, 19);
             rbPhongDoi.TabIndex = 9;
@@ -183,16 +166,16 @@
             // rbPhongGia
             // 
             rbPhongGia.AutoSize = true;
-            rbPhongGia.Location = new Point(225, 210);
+            rbPhongGia.Location = new Point(220, 23);
             rbPhongGia.Name = "rbPhongGia";
-            rbPhongGia.Size = new Size(79, 19);
+            rbPhongGia.Size = new Size(106, 19);
             rbPhongGia.TabIndex = 10;
-            rbPhongGia.Text = "Phòng gia";
+            rbPhongGia.Text = "Phòng gia đình";
             // 
             // lblGiaPhong
             // 
             lblGiaPhong.AutoSize = true;
-            lblGiaPhong.Location = new Point(15, 245);
+            lblGiaPhong.Location = new Point(15, 262);
             lblGiaPhong.Name = "lblGiaPhong";
             lblGiaPhong.Size = new Size(65, 15);
             lblGiaPhong.TabIndex = 11;
@@ -201,7 +184,7 @@
             // txtGiaPhong
             // 
             txtGiaPhong.BorderStyle = BorderStyle.FixedSingle;
-            txtGiaPhong.Location = new Point(15, 265);
+            txtGiaPhong.Location = new Point(15, 282);
             txtGiaPhong.Name = "txtGiaPhong";
             txtGiaPhong.Size = new Size(355, 23);
             txtGiaPhong.TabIndex = 12;
@@ -209,7 +192,7 @@
             // lblTinhTrang
             // 
             lblTinhTrang.AutoSize = true;
-            lblTinhTrang.Location = new Point(15, 305);
+            lblTinhTrang.Location = new Point(15, 322);
             lblTinhTrang.Name = "lblTinhTrang";
             lblTinhTrang.Size = new Size(64, 15);
             lblTinhTrang.TabIndex = 13;
@@ -219,7 +202,7 @@
             // 
             txtTinhTrang.BackColor = Color.White;
             txtTinhTrang.BorderStyle = BorderStyle.FixedSingle;
-            txtTinhTrang.Location = new Point(15, 325);
+            txtTinhTrang.Location = new Point(15, 342);
             txtTinhTrang.Name = "txtTinhTrang";
             txtTinhTrang.ReadOnly = true;
             txtTinhTrang.Size = new Size(355, 23);
@@ -229,7 +212,7 @@
             // lblHienTrang
             // 
             lblHienTrang.AutoSize = true;
-            lblHienTrang.Location = new Point(15, 365);
+            lblHienTrang.Location = new Point(15, 382);
             lblHienTrang.Name = "lblHienTrang";
             lblHienTrang.Size = new Size(66, 15);
             lblHienTrang.TabIndex = 15;
@@ -240,7 +223,7 @@
             cboHienTrang.DropDownStyle = ComboBoxStyle.DropDownList;
             cboHienTrang.FlatStyle = FlatStyle.Flat;
             cboHienTrang.Items.AddRange(new object[] { "Mới", "Đã sử dụng", "Cần bảo trì" });
-            cboHienTrang.Location = new Point(15, 385);
+            cboHienTrang.Location = new Point(15, 402);
             cboHienTrang.Name = "cboHienTrang";
             cboHienTrang.Size = new Size(355, 23);
             cboHienTrang.TabIndex = 16;
@@ -284,14 +267,14 @@
             dgvTienIchKhachSan.AllowUserToDeleteRows = false;
             dgvTienIchKhachSan.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTienIchKhachSan.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(100, 149, 237);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvTienIchKhachSan.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle26.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle26.BackColor = Color.FromArgb(100, 149, 237);
+            dataGridViewCellStyle26.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle26.ForeColor = Color.White;
+            dataGridViewCellStyle26.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle26.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle26.WrapMode = DataGridViewTriState.True;
+            dgvTienIchKhachSan.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
             dgvTienIchKhachSan.ColumnHeadersHeight = 30;
             dgvTienIchKhachSan.Columns.AddRange(new DataGridViewColumn[] { colSTT1, colMaTienIch1, colTenTienIch1 });
             dgvTienIchKhachSan.EnableHeadersVisualStyles = false;
@@ -305,8 +288,8 @@
             // 
             // colSTT1
             // 
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colSTT1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle27.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colSTT1.DefaultCellStyle = dataGridViewCellStyle27;
             colSTT1.FillWeight = 10F;
             colSTT1.HeaderText = "STT";
             colSTT1.Name = "colSTT1";
@@ -382,14 +365,14 @@
             dgvTienIchPhong.AllowUserToDeleteRows = false;
             dgvTienIchPhong.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvTienIchPhong.BackgroundColor = Color.White;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(100, 149, 237);
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvTienIchPhong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle28.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle28.BackColor = Color.FromArgb(100, 149, 237);
+            dataGridViewCellStyle28.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle28.ForeColor = Color.White;
+            dataGridViewCellStyle28.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle28.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle28.WrapMode = DataGridViewTriState.True;
+            dgvTienIchPhong.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle28;
             dgvTienIchPhong.ColumnHeadersHeight = 30;
             dgvTienIchPhong.Columns.AddRange(new DataGridViewColumn[] { colSTT2, colMaTienIch2, colTenTienIch2, colSoLuong2 });
             dgvTienIchPhong.EnableHeadersVisualStyles = false;
@@ -403,8 +386,8 @@
             // 
             // colSTT2
             // 
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colSTT2.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle29.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colSTT2.DefaultCellStyle = dataGridViewCellStyle29;
             colSTT2.FillWeight = 10F;
             colSTT2.HeaderText = "STT";
             colSTT2.Name = "colSTT2";
@@ -426,8 +409,8 @@
             // 
             // colSoLuong2
             // 
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colSoLuong2.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle30.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colSoLuong2.DefaultCellStyle = dataGridViewCellStyle30;
             colSoLuong2.FillWeight = 20F;
             colSoLuong2.HeaderText = "SỐ LƯỢNG";
             colSoLuong2.Name = "colSoLuong2";
@@ -523,17 +506,12 @@
             // pnlLeft
             // 
             pnlLeft.BackColor = Color.White;
+            pnlLeft.Controls.Add(groupBox2);
+            pnlLeft.Controls.Add(groupBox1);
             pnlLeft.Controls.Add(lblMaPhong);
             pnlLeft.Controls.Add(txtMaPhong);
             pnlLeft.Controls.Add(lblTenPhong);
             pnlLeft.Controls.Add(txtTenPhong);
-            pnlLeft.Controls.Add(lblLoaiPhong);
-            pnlLeft.Controls.Add(rbPhongVip);
-            pnlLeft.Controls.Add(rbPhongThuong);
-            pnlLeft.Controls.Add(lblChiTietLoai);
-            pnlLeft.Controls.Add(rbPhongDon);
-            pnlLeft.Controls.Add(rbPhongDoi);
-            pnlLeft.Controls.Add(rbPhongGia);
             pnlLeft.Controls.Add(lblGiaPhong);
             pnlLeft.Controls.Add(txtGiaPhong);
             pnlLeft.Controls.Add(lblTinhTrang);
@@ -578,6 +556,29 @@
             pnlBottom.Size = new Size(968, 50);
             pnlBottom.TabIndex = 3;
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(rbPhongVip);
+            groupBox1.Controls.Add(rbPhongThuong);
+            groupBox1.Location = new Point(15, 124);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(327, 63);
+            groupBox1.TabIndex = 18;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Loại phòng:";
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(rbPhongGia);
+            groupBox2.Controls.Add(rbPhongDoi);
+            groupBox2.Controls.Add(rbPhongDon);
+            groupBox2.Location = new Point(15, 193);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(327, 58);
+            groupBox2.TabIndex = 19;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Chi tiết loại phòng";
+            // 
             // AddRoomForm
             // 
             BackColor = Color.White;
@@ -604,6 +605,10 @@
             pnlRight.ResumeLayout(false);
             pnlRight.PerformLayout();
             pnlBottom.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -619,10 +624,8 @@
         private System.Windows.Forms.TextBox txtMaPhong;
         private System.Windows.Forms.Label lblTenPhong;
         private System.Windows.Forms.TextBox txtTenPhong;
-        private System.Windows.Forms.Label lblLoaiPhong;
         private System.Windows.Forms.RadioButton rbPhongVip;
         private System.Windows.Forms.RadioButton rbPhongThuong;
-        private System.Windows.Forms.Label lblChiTietLoai;
         private System.Windows.Forms.RadioButton rbPhongDon;
         private System.Windows.Forms.RadioButton rbPhongDoi;
         private System.Windows.Forms.RadioButton rbPhongGia;
@@ -661,5 +664,7 @@
         private System.Windows.Forms.Panel pnlBottom;
         private System.Windows.Forms.Button btnThemPhong;
         private System.Windows.Forms.Button btnDong;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
     }
 }

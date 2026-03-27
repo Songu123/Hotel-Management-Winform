@@ -200,7 +200,7 @@ namespace QuanLyKhachSan.UI.Room_Service
                     RoomType = rbPhongVip.Checked ? 2 : 1,
                     RoomTypeDetails = GetRoomTypeDetails(),
                     Price = int.Parse(txtGiaPhong.Text.Trim()),
-                    Status = 1, // Trống
+                    Status = 0, // Trống
                     CurrentCondition = cboHienTrang.SelectedIndex,
                     IsDeleted = 0
                 };
@@ -282,6 +282,11 @@ namespace QuanLyKhachSan.UI.Room_Service
             nudSoLuong2.Value = 1;
             BindAmenityData(_allAmenities);
             dgvTienIchPhong.Rows.Clear();
+        }
+
+        private void rbPhongDoi_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

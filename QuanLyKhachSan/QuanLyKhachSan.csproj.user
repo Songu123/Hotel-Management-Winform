@@ -4,6 +4,9 @@
     <Compile Update="UI\BookingUI\BookingForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="UI\BookingUI\RoomCleaningForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="UI\BookingUI\UCBooking.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -15,460 +15,656 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-
-            this.pnTop = new System.Windows.Forms.Panel();
-            this.lblHeader = new System.Windows.Forms.Label();
-            this.btnCloseTop = new System.Windows.Forms.Button();
-            this.mainLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlLeft = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.lblRoomCode = new System.Windows.Forms.Label();
-            this.txtRoomCode = new System.Windows.Forms.TextBox();
-            this.lblRoomName = new System.Windows.Forms.Label();
-            this.txtRoomName = new System.Windows.Forms.TextBox();
-            this.lblRoomType = new System.Windows.Forms.Label();
-            this.rbVip = new System.Windows.Forms.RadioButton();
-            this.rbNormal = new System.Windows.Forms.RadioButton();
-            this.lblRoomDetail = new System.Windows.Forms.Label();
-            this.rbSingle = new System.Windows.Forms.RadioButton();
-            this.rbDouble = new System.Windows.Forms.RadioButton();
-            this.rbFamily = new System.Windows.Forms.RadioButton();
-            this.lblPrice = new System.Windows.Forms.Label();
-            this.txtPrice = new System.Windows.Forms.TextBox();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.txtStatus = new System.Windows.Forms.TextBox();
-            this.lblCurrentState = new System.Windows.Forms.Label();
-            this.cbCurrentState = new System.Windows.Forms.ComboBox();
-            this.btnNew = new System.Windows.Forms.Button();
-            this.pnlRight = new System.Windows.Forms.Panel();
-            this.rightLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlAmenityTop = new System.Windows.Forms.Panel();
-            this.lblAmenitiesTitle = new System.Windows.Forms.Label();
-            this.txtSearchAmenity = new System.Windows.Forms.TextBox();
-            this.dgvAllAmenities = new System.Windows.Forms.DataGridView();
-            this.colAllStt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAllAmenityId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAllAmenityName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lblQuantity = new System.Windows.Forms.Label();
-            this.numQuantity = new System.Windows.Forms.NumericUpDown();
-            this.btnAddAmenity = new System.Windows.Forms.Button();
-            this.pnlAmenityBottom = new System.Windows.Forms.Panel();
-            this.lblRoomAmenities = new System.Windows.Forms.Label();
-            this.txtSearchRoomAmenity = new System.Windows.Forms.TextBox();
-            this.dgvRoomAmenities = new System.Windows.Forms.DataGridView();
-            this.colRoomStt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRoomAmenityId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRoomAmenityName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRoomAmenityQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lblRoomAmenityQuantity = new System.Windows.Forms.Label();
-            this.numRoomAmenityQuantity = new System.Windows.Forms.NumericUpDown();
-            this.btnEditAmenity = new System.Windows.Forms.Button();
-            this.btnDeleteAmenity = new System.Windows.Forms.Button();
-            this.pnlButtons = new System.Windows.Forms.Panel();
-            this.btnSaveRoom = new System.Windows.Forms.Button();
-            this.btnDeleteRoom = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-
-            this.pnTop.SuspendLayout();
-            this.mainLayout.SuspendLayout();
-            this.pnlLeft.SuspendLayout();
-            this.pnlRight.SuspendLayout();
-            this.rightLayout.SuspendLayout();
-            this.pnlAmenityTop.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAllAmenities)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numQuantity)).BeginInit();
-            this.pnlAmenityBottom.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvRoomAmenities)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRoomAmenityQuantity)).BeginInit();
-            this.pnlButtons.SuspendLayout();
-            this.SuspendLayout();
-
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            pnTop = new Panel();
+            lblHeader = new Label();
+            btnCloseTop = new Button();
+            mainLayout = new TableLayoutPanel();
+            pnlLeft = new Panel();
+            btnNew = new Button();
+            cbCurrentState = new ComboBox();
+            lblCurrentState = new Label();
+            txtStatus = new TextBox();
+            lblStatus = new Label();
+            txtPrice = new TextBox();
+            lblPrice = new Label();
+            rbFamily = new RadioButton();
+            rbDouble = new RadioButton();
+            rbSingle = new RadioButton();
+            rbNormal = new RadioButton();
+            rbVip = new RadioButton();
+            txtRoomName = new TextBox();
+            lblRoomName = new Label();
+            txtRoomCode = new TextBox();
+            lblRoomCode = new Label();
+            lblTitle = new Label();
+            pnlRight = new Panel();
+            rightLayout = new TableLayoutPanel();
+            pnlAmenityTop = new Panel();
+            btnAddAmenity = new Button();
+            numQuantity = new NumericUpDown();
+            lblQuantity = new Label();
+            dgvAllAmenities = new DataGridView();
+            colAllStt = new DataGridViewTextBoxColumn();
+            colAllAmenityId = new DataGridViewTextBoxColumn();
+            colAllAmenityName = new DataGridViewTextBoxColumn();
+            txtSearchAmenity = new TextBox();
+            lblAmenitiesTitle = new Label();
+            pnlAmenityBottom = new Panel();
+            btnDeleteAmenity = new Button();
+            btnEditAmenity = new Button();
+            numRoomAmenityQuantity = new NumericUpDown();
+            lblRoomAmenityQuantity = new Label();
+            dgvRoomAmenities = new DataGridView();
+            colRoomStt = new DataGridViewTextBoxColumn();
+            colRoomAmenityId = new DataGridViewTextBoxColumn();
+            colRoomAmenityName = new DataGridViewTextBoxColumn();
+            colRoomAmenityQty = new DataGridViewTextBoxColumn();
+            txtSearchRoomAmenity = new TextBox();
+            lblRoomAmenities = new Label();
+            pnlButtons = new Panel();
+            btnClose = new Button();
+            btnDeleteRoom = new Button();
+            btnSaveRoom = new Button();
+            groupBox1 = new GroupBox();
+            groupBox2 = new GroupBox();
+            pnTop.SuspendLayout();
+            mainLayout.SuspendLayout();
+            pnlLeft.SuspendLayout();
+            pnlRight.SuspendLayout();
+            rightLayout.SuspendLayout();
+            pnlAmenityTop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numQuantity).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvAllAmenities).BeginInit();
+            pnlAmenityBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numRoomAmenityQuantity).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvRoomAmenities).BeginInit();
+            pnlButtons.SuspendLayout();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            SuspendLayout();
+            // 
             // pnTop
-            this.pnTop.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.pnTop.Controls.Add(this.lblHeader);
-            this.pnTop.Controls.Add(this.btnCloseTop);
-            this.pnTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnTop.Location = new System.Drawing.Point(0, 0);
-            this.pnTop.Name = "pnTop";
-            this.pnTop.Size = new System.Drawing.Size(1000, 35);
-
+            // 
+            pnTop.BackColor = Color.CornflowerBlue;
+            pnTop.Controls.Add(lblHeader);
+            pnTop.Controls.Add(btnCloseTop);
+            pnTop.Dock = DockStyle.Top;
+            pnTop.Location = new Point(0, 0);
+            pnTop.Name = "pnTop";
+            pnTop.Size = new Size(1000, 35);
+            pnTop.TabIndex = 2;
+            // 
             // lblHeader
-            this.lblHeader.AutoSize = true;
-            this.lblHeader.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
-            this.lblHeader.ForeColor = System.Drawing.Color.White;
-            this.lblHeader.Location = new System.Drawing.Point(10, 8);
-            this.lblHeader.Text = "Thông tin phòng khách sạn";
-
+            // 
+            lblHeader.AutoSize = true;
+            lblHeader.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            lblHeader.ForeColor = Color.White;
+            lblHeader.Location = new Point(10, 8);
+            lblHeader.Name = "lblHeader";
+            lblHeader.Size = new Size(196, 20);
+            lblHeader.TabIndex = 0;
+            lblHeader.Text = "Thông tin phòng khách sạn";
+            // 
             // btnCloseTop
-            this.btnCloseTop.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.btnCloseTop.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnCloseTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCloseTop.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            this.btnCloseTop.ForeColor = System.Drawing.Color.White;
-            this.btnCloseTop.Size = new System.Drawing.Size(30, 35);
-            this.btnCloseTop.Text = "✕";
-            this.btnCloseTop.UseVisualStyleBackColor = false;
-            this.btnCloseTop.Click += new System.EventHandler(this.btnClose_Click);
-
+            // 
+            btnCloseTop.BackColor = Color.CornflowerBlue;
+            btnCloseTop.Dock = DockStyle.Right;
+            btnCloseTop.FlatStyle = FlatStyle.Flat;
+            btnCloseTop.Font = new Font("Arial", 12F, FontStyle.Bold);
+            btnCloseTop.ForeColor = Color.White;
+            btnCloseTop.Location = new Point(970, 0);
+            btnCloseTop.Name = "btnCloseTop";
+            btnCloseTop.Size = new Size(30, 35);
+            btnCloseTop.TabIndex = 1;
+            btnCloseTop.Text = "✕";
+            btnCloseTop.UseVisualStyleBackColor = false;
+            btnCloseTop.Click += btnClose_Click;
+            // 
             // mainLayout
-            this.mainLayout.ColumnCount = 2;
-            this.mainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38F));
-            this.mainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 62F));
-            this.mainLayout.Controls.Add(this.pnlLeft, 0, 0);
-            this.mainLayout.Controls.Add(this.pnlRight, 1, 0);
-            this.mainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainLayout.Location = new System.Drawing.Point(0, 35);
-            this.mainLayout.Name = "mainLayout";
-            this.mainLayout.Padding = new System.Windows.Forms.Padding(5);
-            this.mainLayout.RowCount = 1;
-            this.mainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.mainLayout.Size = new System.Drawing.Size(1000, 565);
-
+            // 
+            mainLayout.ColumnCount = 2;
+            mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 38F));
+            mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 62F));
+            mainLayout.Controls.Add(pnlLeft, 0, 0);
+            mainLayout.Controls.Add(pnlRight, 1, 0);
+            mainLayout.Dock = DockStyle.Fill;
+            mainLayout.Location = new Point(0, 35);
+            mainLayout.Name = "mainLayout";
+            mainLayout.Padding = new Padding(5);
+            mainLayout.RowCount = 1;
+            mainLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            mainLayout.Size = new Size(1000, 565);
+            mainLayout.TabIndex = 0;
+            // 
             // pnlLeft
-            this.pnlLeft.AutoScroll = true;
-            this.pnlLeft.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlLeft.Controls.Add(this.btnNew);
-            this.pnlLeft.Controls.Add(this.cbCurrentState);
-            this.pnlLeft.Controls.Add(this.lblCurrentState);
-            this.pnlLeft.Controls.Add(this.txtStatus);
-            this.pnlLeft.Controls.Add(this.lblStatus);
-            this.pnlLeft.Controls.Add(this.txtPrice);
-            this.pnlLeft.Controls.Add(this.lblPrice);
-            this.pnlLeft.Controls.Add(this.rbFamily);
-            this.pnlLeft.Controls.Add(this.rbDouble);
-            this.pnlLeft.Controls.Add(this.rbSingle);
-            this.pnlLeft.Controls.Add(this.lblRoomDetail);
-            this.pnlLeft.Controls.Add(this.rbNormal);
-            this.pnlLeft.Controls.Add(this.rbVip);
-            this.pnlLeft.Controls.Add(this.lblRoomType);
-            this.pnlLeft.Controls.Add(this.txtRoomName);
-            this.pnlLeft.Controls.Add(this.lblRoomName);
-            this.pnlLeft.Controls.Add(this.txtRoomCode);
-            this.pnlLeft.Controls.Add(this.lblRoomCode);
-            this.pnlLeft.Controls.Add(this.lblTitle);
-            this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlLeft.Location = new System.Drawing.Point(8, 8);
-            this.pnlLeft.Margin = new System.Windows.Forms.Padding(3);
-            this.pnlLeft.Name = "pnlLeft";
-            this.pnlLeft.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlLeft.Size = new System.Drawing.Size(364, 549);
-
-            // lblTitle
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(13, 13);
-            this.lblTitle.Text = "Thông tin chi tiết phòng";
-
-            // lblRoomCode
-            this.lblRoomCode.AutoSize = true;
-            this.lblRoomCode.Location = new System.Drawing.Point(13, 45);
-            this.lblRoomCode.Text = "Mã phòng:";
-
-            // txtRoomCode
-            this.txtRoomCode.Location = new System.Drawing.Point(13, 65);
-            this.txtRoomCode.ReadOnly = true;
-            this.txtRoomCode.Size = new System.Drawing.Size(330, 23);
-            this.txtRoomCode.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
-
-            // lblRoomName
-            this.lblRoomName.AutoSize = true;
-            this.lblRoomName.Location = new System.Drawing.Point(13, 100);
-            this.lblRoomName.Text = "Tên phòng:";
-
-            // txtRoomName
-            this.txtRoomName.Location = new System.Drawing.Point(13, 120);
-            this.txtRoomName.Size = new System.Drawing.Size(330, 23);
-
-            // lblRoomType
-            this.lblRoomType.AutoSize = true;
-            this.lblRoomType.Location = new System.Drawing.Point(13, 155);
-            this.lblRoomType.Text = "Loại phòng:";
-
-            // rbVip
-            this.rbVip.AutoSize = true;
-            this.rbVip.Location = new System.Drawing.Point(13, 175);
-            this.rbVip.Text = "Phòng Vip";
-
-            // rbNormal
-            this.rbNormal.AutoSize = true;
-            this.rbNormal.Location = new System.Drawing.Point(150, 175);
-            this.rbNormal.Text = "Phòng thường";
-            this.rbNormal.Checked = true;
-
-            // lblRoomDetail
-            this.lblRoomDetail.AutoSize = true;
-            this.lblRoomDetail.Location = new System.Drawing.Point(13, 205);
-            this.lblRoomDetail.Text = "Chi tiết loại phòng";
-
-            // rbSingle
-            this.rbSingle.AutoSize = true;
-            this.rbSingle.Location = new System.Drawing.Point(13, 225);
-            this.rbSingle.Text = "Phòng đơn";
-            this.rbSingle.Checked = true;
-
-            // rbDouble
-            this.rbDouble.AutoSize = true;
-            this.rbDouble.Location = new System.Drawing.Point(120, 225);
-            this.rbDouble.Text = "Phòng đôi";
-
-            // rbFamily
-            this.rbFamily.AutoSize = true;
-            this.rbFamily.Location = new System.Drawing.Point(230, 225);
-            this.rbFamily.Text = "Phòng gia";
-
-            // lblPrice
-            this.lblPrice.AutoSize = true;
-            this.lblPrice.Location = new System.Drawing.Point(13, 260);
-            this.lblPrice.Text = "Giá phòng:";
-
-            // txtPrice
-            this.txtPrice.Location = new System.Drawing.Point(13, 280);
-            this.txtPrice.Size = new System.Drawing.Size(330, 23);
-
-            // lblStatus
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(13, 315);
-            this.lblStatus.Text = "Tình trạng:";
-
-            // txtStatus
-            this.txtStatus.Location = new System.Drawing.Point(13, 335);
-            this.txtStatus.ReadOnly = true;
-            this.txtStatus.Size = new System.Drawing.Size(330, 23);
-            this.txtStatus.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
-
-            // lblCurrentState
-            this.lblCurrentState.AutoSize = true;
-            this.lblCurrentState.Location = new System.Drawing.Point(13, 370);
-            this.lblCurrentState.Text = "Hiện trạng:";
-
-            // cbCurrentState
-            this.cbCurrentState.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCurrentState.Location = new System.Drawing.Point(13, 390);
-            this.cbCurrentState.Size = new System.Drawing.Size(330, 23);
-            this.cbCurrentState.Items.AddRange(new object[] { "Mới", "Đang sử dụng", "Đang dọn", "Bảo trì" });
-
+            // 
+            pnlLeft.AutoScroll = true;
+            pnlLeft.BorderStyle = BorderStyle.FixedSingle;
+            pnlLeft.Controls.Add(groupBox2);
+            pnlLeft.Controls.Add(groupBox1);
+            pnlLeft.Controls.Add(btnNew);
+            pnlLeft.Controls.Add(cbCurrentState);
+            pnlLeft.Controls.Add(lblCurrentState);
+            pnlLeft.Controls.Add(txtStatus);
+            pnlLeft.Controls.Add(lblStatus);
+            pnlLeft.Controls.Add(txtPrice);
+            pnlLeft.Controls.Add(lblPrice);
+            pnlLeft.Controls.Add(txtRoomName);
+            pnlLeft.Controls.Add(lblRoomName);
+            pnlLeft.Controls.Add(txtRoomCode);
+            pnlLeft.Controls.Add(lblRoomCode);
+            pnlLeft.Controls.Add(lblTitle);
+            pnlLeft.Dock = DockStyle.Fill;
+            pnlLeft.Location = new Point(8, 8);
+            pnlLeft.Name = "pnlLeft";
+            pnlLeft.Padding = new Padding(10);
+            pnlLeft.Size = new Size(370, 549);
+            pnlLeft.TabIndex = 0;
+            // 
             // btnNew
-            this.btnNew.BackColor = System.Drawing.Color.MediumPurple;
-            this.btnNew.ForeColor = System.Drawing.Color.White;
-            this.btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNew.Location = new System.Drawing.Point(243, 425);
-            this.btnNew.Size = new System.Drawing.Size(100, 35);
-            this.btnNew.Text = "Làm mới";
-
+            // 
+            btnNew.BackColor = Color.MediumPurple;
+            btnNew.FlatStyle = FlatStyle.Flat;
+            btnNew.ForeColor = Color.White;
+            btnNew.Location = new Point(244, 452);
+            btnNew.Name = "btnNew";
+            btnNew.Size = new Size(100, 35);
+            btnNew.TabIndex = 0;
+            btnNew.Text = "Làm mới";
+            btnNew.UseVisualStyleBackColor = false;
+            // 
+            // cbCurrentState
+            // 
+            cbCurrentState.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbCurrentState.Items.AddRange(new object[] { "Mới", "Đang sử dụng", "Đang dọn", "Bảo trì" });
+            cbCurrentState.Location = new Point(14, 417);
+            cbCurrentState.Name = "cbCurrentState";
+            cbCurrentState.Size = new Size(330, 23);
+            cbCurrentState.TabIndex = 1;
+            // 
+            // lblCurrentState
+            // 
+            lblCurrentState.AutoSize = true;
+            lblCurrentState.Location = new Point(14, 397);
+            lblCurrentState.Name = "lblCurrentState";
+            lblCurrentState.Size = new Size(66, 15);
+            lblCurrentState.TabIndex = 2;
+            lblCurrentState.Text = "Hiện trạng:";
+            // 
+            // txtStatus
+            // 
+            txtStatus.BackColor = Color.FromArgb(240, 240, 240);
+            txtStatus.Location = new Point(14, 362);
+            txtStatus.Name = "txtStatus";
+            txtStatus.ReadOnly = true;
+            txtStatus.Size = new Size(330, 23);
+            txtStatus.TabIndex = 3;
+            // 
+            // lblStatus
+            // 
+            lblStatus.AutoSize = true;
+            lblStatus.Location = new Point(14, 342);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(64, 15);
+            lblStatus.TabIndex = 4;
+            lblStatus.Text = "Tình trạng:";
+            // 
+            // txtPrice
+            // 
+            txtPrice.Location = new Point(14, 307);
+            txtPrice.Name = "txtPrice";
+            txtPrice.Size = new Size(330, 23);
+            txtPrice.TabIndex = 5;
+            // 
+            // lblPrice
+            // 
+            lblPrice.AutoSize = true;
+            lblPrice.Location = new Point(14, 287);
+            lblPrice.Name = "lblPrice";
+            lblPrice.Size = new Size(65, 15);
+            lblPrice.TabIndex = 6;
+            lblPrice.Text = "Giá phòng:";
+            // 
+            // rbFamily
+            // 
+            rbFamily.AutoSize = true;
+            rbFamily.Location = new Point(232, 22);
+            rbFamily.Name = "rbFamily";
+            rbFamily.Size = new Size(79, 19);
+            rbFamily.TabIndex = 7;
+            rbFamily.Text = "Phòng gia";
+            // 
+            // rbDouble
+            // 
+            rbDouble.AutoSize = true;
+            rbDouble.Location = new Point(122, 22);
+            rbDouble.Name = "rbDouble";
+            rbDouble.Size = new Size(80, 19);
+            rbDouble.TabIndex = 8;
+            rbDouble.Text = "Phòng đôi";
+            // 
+            // rbSingle
+            // 
+            rbSingle.AutoSize = true;
+            rbSingle.Checked = true;
+            rbSingle.Location = new Point(15, 22);
+            rbSingle.Name = "rbSingle";
+            rbSingle.Size = new Size(84, 19);
+            rbSingle.TabIndex = 9;
+            rbSingle.TabStop = true;
+            rbSingle.Text = "Phòng đơn";
+            // 
+            // rbNormal
+            // 
+            rbNormal.AutoSize = true;
+            rbNormal.Checked = true;
+            rbNormal.Location = new Point(162, 22);
+            rbNormal.Name = "rbNormal";
+            rbNormal.Size = new Size(102, 19);
+            rbNormal.TabIndex = 11;
+            rbNormal.TabStop = true;
+            rbNormal.Text = "Phòng thường";
+            // 
+            // rbVip
+            // 
+            rbVip.AutoSize = true;
+            rbVip.Location = new Point(25, 22);
+            rbVip.Name = "rbVip";
+            rbVip.Size = new Size(80, 19);
+            rbVip.TabIndex = 12;
+            rbVip.Text = "Phòng Vip";
+            // 
+            // txtRoomName
+            // 
+            txtRoomName.Location = new Point(13, 120);
+            txtRoomName.Name = "txtRoomName";
+            txtRoomName.Size = new Size(330, 23);
+            txtRoomName.TabIndex = 14;
+            // 
+            // lblRoomName
+            // 
+            lblRoomName.AutoSize = true;
+            lblRoomName.Location = new Point(13, 100);
+            lblRoomName.Name = "lblRoomName";
+            lblRoomName.Size = new Size(66, 15);
+            lblRoomName.TabIndex = 15;
+            lblRoomName.Text = "Tên phòng:";
+            // 
+            // txtRoomCode
+            // 
+            txtRoomCode.BackColor = Color.FromArgb(240, 240, 240);
+            txtRoomCode.Location = new Point(13, 65);
+            txtRoomCode.Name = "txtRoomCode";
+            txtRoomCode.ReadOnly = true;
+            txtRoomCode.Size = new Size(330, 23);
+            txtRoomCode.TabIndex = 16;
+            // 
+            // lblRoomCode
+            // 
+            lblRoomCode.AutoSize = true;
+            lblRoomCode.Location = new Point(13, 45);
+            lblRoomCode.Name = "lblRoomCode";
+            lblRoomCode.Size = new Size(65, 15);
+            lblRoomCode.TabIndex = 17;
+            lblRoomCode.Text = "Mã phòng:";
+            // 
+            // lblTitle
+            // 
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            lblTitle.Location = new Point(13, 13);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(186, 21);
+            lblTitle.TabIndex = 18;
+            lblTitle.Text = "Thông tin chi tiết phòng";
+            // 
             // pnlRight
-            this.pnlRight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlRight.Controls.Add(this.rightLayout);
-            this.pnlRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlRight.Location = new System.Drawing.Point(379, 8);
-            this.pnlRight.Margin = new System.Windows.Forms.Padding(3);
-            this.pnlRight.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlRight.Size = new System.Drawing.Size(614, 549);
-
+            // 
+            pnlRight.BorderStyle = BorderStyle.FixedSingle;
+            pnlRight.Controls.Add(rightLayout);
+            pnlRight.Dock = DockStyle.Fill;
+            pnlRight.Location = new Point(384, 8);
+            pnlRight.Name = "pnlRight";
+            pnlRight.Padding = new Padding(5);
+            pnlRight.Size = new Size(608, 549);
+            pnlRight.TabIndex = 1;
+            // 
             // rightLayout
-            this.rightLayout.ColumnCount = 1;
-            this.rightLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.rightLayout.Controls.Add(this.pnlAmenityTop, 0, 0);
-            this.rightLayout.Controls.Add(this.pnlAmenityBottom, 0, 1);
-            this.rightLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rightLayout.RowCount = 2;
-            this.rightLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.rightLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-
+            // 
+            rightLayout.ColumnCount = 1;
+            rightLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            rightLayout.Controls.Add(pnlAmenityTop, 0, 0);
+            rightLayout.Controls.Add(pnlAmenityBottom, 0, 1);
+            rightLayout.Dock = DockStyle.Fill;
+            rightLayout.Location = new Point(5, 5);
+            rightLayout.Name = "rightLayout";
+            rightLayout.RowCount = 2;
+            rightLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            rightLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            rightLayout.Size = new Size(596, 537);
+            rightLayout.TabIndex = 0;
+            // 
             // pnlAmenityTop
-            this.pnlAmenityTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlAmenityTop.Controls.Add(this.btnAddAmenity);
-            this.pnlAmenityTop.Controls.Add(this.numQuantity);
-            this.pnlAmenityTop.Controls.Add(this.lblQuantity);
-            this.pnlAmenityTop.Controls.Add(this.dgvAllAmenities);
-            this.pnlAmenityTop.Controls.Add(this.txtSearchAmenity);
-            this.pnlAmenityTop.Controls.Add(this.lblAmenitiesTitle);
-            this.pnlAmenityTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlAmenityTop.Padding = new System.Windows.Forms.Padding(5);
-
-            // lblAmenitiesTitle
-            this.lblAmenitiesTitle.AutoSize = true;
-            this.lblAmenitiesTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.lblAmenitiesTitle.Location = new System.Drawing.Point(5, 5);
-            this.lblAmenitiesTitle.Text = "Danh sách tiện ích khách sạn hiện có";
-
-            // txtSearchAmenity
-            this.txtSearchAmenity.Location = new System.Drawing.Point(5, 25);
-            this.txtSearchAmenity.Size = new System.Drawing.Size(580, 23);
-            this.txtSearchAmenity.PlaceholderText = "Nhập mã/tên tiện ích cần tìm...";
-
-            // dgvAllAmenities
-            this.dgvAllAmenities.AllowUserToAddRows = false;
-            this.dgvAllAmenities.AllowUserToDeleteRows = false;
-            this.dgvAllAmenities.BackgroundColor = System.Drawing.Color.White;
-            this.dgvAllAmenities.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvAllAmenities.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAllAmenities.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.colAllStt, this.colAllAmenityId, this.colAllAmenityName });
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.CornflowerBlue;
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            this.dgvAllAmenities.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvAllAmenities.Location = new System.Drawing.Point(5, 55);
-            this.dgvAllAmenities.Size = new System.Drawing.Size(580, 120);
-
-            this.colAllStt.HeaderText = "STT";
-            this.colAllStt.Width = 50;
-            this.colAllAmenityId.HeaderText = "MÃ TIỆN ÍCH";
-            this.colAllAmenityId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colAllAmenityName.HeaderText = "TÊN TIỆN ÍCH";
-            this.colAllAmenityName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-
-            // lblQuantity
-            this.lblQuantity.AutoSize = true;
-            this.lblQuantity.Location = new System.Drawing.Point(5, 185);
-            this.lblQuantity.Text = "Số lượng:";
-
-            // numQuantity
-            this.numQuantity.Location = new System.Drawing.Point(70, 183);
-            this.numQuantity.Size = new System.Drawing.Size(60, 23);
-
+            // 
+            pnlAmenityTop.BorderStyle = BorderStyle.FixedSingle;
+            pnlAmenityTop.Controls.Add(btnAddAmenity);
+            pnlAmenityTop.Controls.Add(numQuantity);
+            pnlAmenityTop.Controls.Add(lblQuantity);
+            pnlAmenityTop.Controls.Add(dgvAllAmenities);
+            pnlAmenityTop.Controls.Add(txtSearchAmenity);
+            pnlAmenityTop.Controls.Add(lblAmenitiesTitle);
+            pnlAmenityTop.Dock = DockStyle.Fill;
+            pnlAmenityTop.Location = new Point(3, 3);
+            pnlAmenityTop.Name = "pnlAmenityTop";
+            pnlAmenityTop.Padding = new Padding(5);
+            pnlAmenityTop.Size = new Size(590, 262);
+            pnlAmenityTop.TabIndex = 0;
+            // 
             // btnAddAmenity
-            this.btnAddAmenity.BackColor = System.Drawing.Color.ForestGreen;
-            this.btnAddAmenity.ForeColor = System.Drawing.Color.White;
-            this.btnAddAmenity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddAmenity.Location = new System.Drawing.Point(465, 180);
-            this.btnAddAmenity.Size = new System.Drawing.Size(120, 30);
-            this.btnAddAmenity.Text = "Thêm tiện ích";
-
+            // 
+            btnAddAmenity.BackColor = Color.ForestGreen;
+            btnAddAmenity.FlatStyle = FlatStyle.Flat;
+            btnAddAmenity.ForeColor = Color.White;
+            btnAddAmenity.Location = new Point(465, 180);
+            btnAddAmenity.Name = "btnAddAmenity";
+            btnAddAmenity.Size = new Size(120, 30);
+            btnAddAmenity.TabIndex = 0;
+            btnAddAmenity.Text = "Thêm tiện ích";
+            btnAddAmenity.UseVisualStyleBackColor = false;
+            // 
+            // numQuantity
+            // 
+            numQuantity.Location = new Point(70, 183);
+            numQuantity.Name = "numQuantity";
+            numQuantity.Size = new Size(60, 23);
+            numQuantity.TabIndex = 1;
+            // 
+            // lblQuantity
+            // 
+            lblQuantity.AutoSize = true;
+            lblQuantity.Location = new Point(5, 185);
+            lblQuantity.Name = "lblQuantity";
+            lblQuantity.Size = new Size(57, 15);
+            lblQuantity.TabIndex = 2;
+            lblQuantity.Text = "Số lượng:";
+            // 
+            // dgvAllAmenities
+            // 
+            dgvAllAmenities.AllowUserToAddRows = false;
+            dgvAllAmenities.AllowUserToDeleteRows = false;
+            dgvAllAmenities.BackgroundColor = Color.White;
+            dgvAllAmenities.BorderStyle = BorderStyle.None;
+            dataGridViewCellStyle3.BackColor = Color.CornflowerBlue;
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dgvAllAmenities.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dgvAllAmenities.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvAllAmenities.Columns.AddRange(new DataGridViewColumn[] { colAllStt, colAllAmenityId, colAllAmenityName });
+            dgvAllAmenities.Location = new Point(5, 55);
+            dgvAllAmenities.Name = "dgvAllAmenities";
+            dgvAllAmenities.Size = new Size(580, 120);
+            dgvAllAmenities.TabIndex = 3;
+            // 
+            // colAllStt
+            // 
+            colAllStt.HeaderText = "STT";
+            colAllStt.Name = "colAllStt";
+            colAllStt.Width = 50;
+            // 
+            // colAllAmenityId
+            // 
+            colAllAmenityId.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colAllAmenityId.HeaderText = "MÃ TIỆN ÍCH";
+            colAllAmenityId.Name = "colAllAmenityId";
+            // 
+            // colAllAmenityName
+            // 
+            colAllAmenityName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colAllAmenityName.HeaderText = "TÊN TIỆN ÍCH";
+            colAllAmenityName.Name = "colAllAmenityName";
+            // 
+            // txtSearchAmenity
+            // 
+            txtSearchAmenity.Location = new Point(5, 25);
+            txtSearchAmenity.Name = "txtSearchAmenity";
+            txtSearchAmenity.PlaceholderText = "Nhập mã/tên tiện ích cần tìm...";
+            txtSearchAmenity.Size = new Size(580, 23);
+            txtSearchAmenity.TabIndex = 4;
+            // 
+            // lblAmenitiesTitle
+            // 
+            lblAmenitiesTitle.AutoSize = true;
+            lblAmenitiesTitle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblAmenitiesTitle.Location = new Point(5, 5);
+            lblAmenitiesTitle.Name = "lblAmenitiesTitle";
+            lblAmenitiesTitle.Size = new Size(241, 19);
+            lblAmenitiesTitle.TabIndex = 5;
+            lblAmenitiesTitle.Text = "Danh sách tiện ích khách sạn hiện có";
+            // 
             // pnlAmenityBottom
-            this.pnlAmenityBottom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlAmenityBottom.Controls.Add(this.btnDeleteAmenity);
-            this.pnlAmenityBottom.Controls.Add(this.btnEditAmenity);
-            this.pnlAmenityBottom.Controls.Add(this.numRoomAmenityQuantity);
-            this.pnlAmenityBottom.Controls.Add(this.lblRoomAmenityQuantity);
-            this.pnlAmenityBottom.Controls.Add(this.dgvRoomAmenities);
-            this.pnlAmenityBottom.Controls.Add(this.txtSearchRoomAmenity);
-            this.pnlAmenityBottom.Controls.Add(this.lblRoomAmenities);
-            this.pnlAmenityBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlAmenityBottom.Padding = new System.Windows.Forms.Padding(5);
-
-            // lblRoomAmenities
-            this.lblRoomAmenities.AutoSize = true;
-            this.lblRoomAmenities.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.lblRoomAmenities.Location = new System.Drawing.Point(5, 5);
-            this.lblRoomAmenities.Text = "Danh sách tiện ích phòng";
-
-            // txtSearchRoomAmenity
-            this.txtSearchRoomAmenity.Location = new System.Drawing.Point(5, 25);
-            this.txtSearchRoomAmenity.Size = new System.Drawing.Size(580, 23);
-            this.txtSearchRoomAmenity.PlaceholderText = "Nhập mã/tên tiện ích cần tìm...";
-
-            // dgvRoomAmenities
-            this.dgvRoomAmenities.AllowUserToAddRows = false;
-            this.dgvRoomAmenities.AllowUserToDeleteRows = false;
-            this.dgvRoomAmenities.BackgroundColor = System.Drawing.Color.White;
-            this.dgvRoomAmenities.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvRoomAmenities.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRoomAmenities.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.colRoomStt, this.colRoomAmenityId, this.colRoomAmenityName, this.colRoomAmenityQty });
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.CornflowerBlue;
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            this.dgvRoomAmenities.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvRoomAmenities.Location = new System.Drawing.Point(5, 55);
-            this.dgvRoomAmenities.Size = new System.Drawing.Size(580, 110);
-
-            this.colRoomStt.HeaderText = "STT";
-            this.colRoomStt.Width = 50;
-            this.colRoomAmenityId.HeaderText = "MÃ TIỆN ÍCH";
-            this.colRoomAmenityId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colRoomAmenityName.HeaderText = "TÊN TIỆN ÍCH";
-            this.colRoomAmenityName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colRoomAmenityQty.HeaderText = "SỐ LƯỢNG";
-            this.colRoomAmenityQty.Width = 80;
-
-            // lblRoomAmenityQuantity
-            this.lblRoomAmenityQuantity.AutoSize = true;
-            this.lblRoomAmenityQuantity.Location = new System.Drawing.Point(5, 175);
-            this.lblRoomAmenityQuantity.Text = "Số lượng:";
-
-            // numRoomAmenityQuantity
-            this.numRoomAmenityQuantity.Location = new System.Drawing.Point(70, 173);
-            this.numRoomAmenityQuantity.Size = new System.Drawing.Size(60, 23);
-
-            // btnEditAmenity
-            this.btnEditAmenity.BackColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnEditAmenity.ForeColor = System.Drawing.Color.White;
-            this.btnEditAmenity.Location = new System.Drawing.Point(380, 170);
-            this.btnEditAmenity.Size = new System.Drawing.Size(90, 30);
-            this.btnEditAmenity.Text = "Sửa tiện ích";
-
+            // 
+            pnlAmenityBottom.BorderStyle = BorderStyle.FixedSingle;
+            pnlAmenityBottom.Controls.Add(btnDeleteAmenity);
+            pnlAmenityBottom.Controls.Add(btnEditAmenity);
+            pnlAmenityBottom.Controls.Add(numRoomAmenityQuantity);
+            pnlAmenityBottom.Controls.Add(lblRoomAmenityQuantity);
+            pnlAmenityBottom.Controls.Add(dgvRoomAmenities);
+            pnlAmenityBottom.Controls.Add(txtSearchRoomAmenity);
+            pnlAmenityBottom.Controls.Add(lblRoomAmenities);
+            pnlAmenityBottom.Dock = DockStyle.Fill;
+            pnlAmenityBottom.Location = new Point(3, 271);
+            pnlAmenityBottom.Name = "pnlAmenityBottom";
+            pnlAmenityBottom.Padding = new Padding(5);
+            pnlAmenityBottom.Size = new Size(590, 263);
+            pnlAmenityBottom.TabIndex = 1;
+            // 
             // btnDeleteAmenity
-            this.btnDeleteAmenity.BackColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnDeleteAmenity.ForeColor = System.Drawing.Color.White;
-            this.btnDeleteAmenity.Location = new System.Drawing.Point(480, 170);
-            this.btnDeleteAmenity.Size = new System.Drawing.Size(90, 30);
-            this.btnDeleteAmenity.Text = "Xóa tiện ích";
-
+            // 
+            btnDeleteAmenity.BackColor = Color.MediumSlateBlue;
+            btnDeleteAmenity.ForeColor = Color.White;
+            btnDeleteAmenity.Location = new Point(480, 170);
+            btnDeleteAmenity.Name = "btnDeleteAmenity";
+            btnDeleteAmenity.Size = new Size(90, 30);
+            btnDeleteAmenity.TabIndex = 0;
+            btnDeleteAmenity.Text = "Xóa tiện ích";
+            btnDeleteAmenity.UseVisualStyleBackColor = false;
+            // 
+            // btnEditAmenity
+            // 
+            btnEditAmenity.BackColor = Color.MediumSlateBlue;
+            btnEditAmenity.ForeColor = Color.White;
+            btnEditAmenity.Location = new Point(380, 170);
+            btnEditAmenity.Name = "btnEditAmenity";
+            btnEditAmenity.Size = new Size(90, 30);
+            btnEditAmenity.TabIndex = 1;
+            btnEditAmenity.Text = "Sửa tiện ích";
+            btnEditAmenity.UseVisualStyleBackColor = false;
+            // 
+            // numRoomAmenityQuantity
+            // 
+            numRoomAmenityQuantity.Location = new Point(70, 173);
+            numRoomAmenityQuantity.Name = "numRoomAmenityQuantity";
+            numRoomAmenityQuantity.Size = new Size(60, 23);
+            numRoomAmenityQuantity.TabIndex = 2;
+            // 
+            // lblRoomAmenityQuantity
+            // 
+            lblRoomAmenityQuantity.AutoSize = true;
+            lblRoomAmenityQuantity.Location = new Point(5, 175);
+            lblRoomAmenityQuantity.Name = "lblRoomAmenityQuantity";
+            lblRoomAmenityQuantity.Size = new Size(57, 15);
+            lblRoomAmenityQuantity.TabIndex = 3;
+            lblRoomAmenityQuantity.Text = "Số lượng:";
+            // 
+            // dgvRoomAmenities
+            // 
+            dgvRoomAmenities.AllowUserToAddRows = false;
+            dgvRoomAmenities.AllowUserToDeleteRows = false;
+            dgvRoomAmenities.BackgroundColor = Color.White;
+            dgvRoomAmenities.BorderStyle = BorderStyle.None;
+            dataGridViewCellStyle4.BackColor = Color.CornflowerBlue;
+            dataGridViewCellStyle4.ForeColor = Color.White;
+            dgvRoomAmenities.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dgvRoomAmenities.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRoomAmenities.Columns.AddRange(new DataGridViewColumn[] { colRoomStt, colRoomAmenityId, colRoomAmenityName, colRoomAmenityQty });
+            dgvRoomAmenities.Location = new Point(5, 55);
+            dgvRoomAmenities.Name = "dgvRoomAmenities";
+            dgvRoomAmenities.Size = new Size(580, 110);
+            dgvRoomAmenities.TabIndex = 4;
+            // 
+            // colRoomStt
+            // 
+            colRoomStt.HeaderText = "STT";
+            colRoomStt.Name = "colRoomStt";
+            colRoomStt.Width = 50;
+            // 
+            // colRoomAmenityId
+            // 
+            colRoomAmenityId.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colRoomAmenityId.HeaderText = "MÃ TIỆN ÍCH";
+            colRoomAmenityId.Name = "colRoomAmenityId";
+            // 
+            // colRoomAmenityName
+            // 
+            colRoomAmenityName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colRoomAmenityName.HeaderText = "TÊN TIỆN ÍCH";
+            colRoomAmenityName.Name = "colRoomAmenityName";
+            // 
+            // colRoomAmenityQty
+            // 
+            colRoomAmenityQty.HeaderText = "SỐ LƯỢNG";
+            colRoomAmenityQty.Name = "colRoomAmenityQty";
+            colRoomAmenityQty.Width = 80;
+            // 
+            // txtSearchRoomAmenity
+            // 
+            txtSearchRoomAmenity.Location = new Point(5, 25);
+            txtSearchRoomAmenity.Name = "txtSearchRoomAmenity";
+            txtSearchRoomAmenity.PlaceholderText = "Nhập mã/tên tiện ích cần tìm...";
+            txtSearchRoomAmenity.Size = new Size(580, 23);
+            txtSearchRoomAmenity.TabIndex = 5;
+            // 
+            // lblRoomAmenities
+            // 
+            lblRoomAmenities.AutoSize = true;
+            lblRoomAmenities.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblRoomAmenities.Location = new Point(5, 5);
+            lblRoomAmenities.Name = "lblRoomAmenities";
+            lblRoomAmenities.Size = new Size(169, 19);
+            lblRoomAmenities.TabIndex = 6;
+            lblRoomAmenities.Text = "Danh sách tiện ích phòng";
+            // 
             // pnlButtons
-            this.pnlButtons.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.pnlButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlButtons.Controls.Add(this.btnClose);
-            this.pnlButtons.Controls.Add(this.btnDeleteRoom);
-            this.pnlButtons.Controls.Add(this.btnSaveRoom);
-            this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlButtons.Location = new System.Drawing.Point(0, 600);
-            this.pnlButtons.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlButtons.Size = new System.Drawing.Size(1000, 60);
-
-            // btnSaveRoom
-            this.btnSaveRoom.BackColor = System.Drawing.Color.Orange;
-            this.btnSaveRoom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSaveRoom.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            this.btnSaveRoom.ForeColor = System.Drawing.Color.White;
-            this.btnSaveRoom.Location = new System.Drawing.Point(650, 10);
-            this.btnSaveRoom.Size = new System.Drawing.Size(110, 40);
-            this.btnSaveRoom.Text = "Sửa phòng";
-
-            // btnDeleteRoom
-            this.btnDeleteRoom.BackColor = System.Drawing.Color.OrangeRed;
-            this.btnDeleteRoom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDeleteRoom.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            this.btnDeleteRoom.ForeColor = System.Drawing.Color.White;
-            this.btnDeleteRoom.Location = new System.Drawing.Point(770, 10);
-            this.btnDeleteRoom.Size = new System.Drawing.Size(110, 40);
-            this.btnDeleteRoom.Text = "Xóa phòng";
-
+            // 
+            pnlButtons.BackColor = Color.WhiteSmoke;
+            pnlButtons.BorderStyle = BorderStyle.FixedSingle;
+            pnlButtons.Controls.Add(btnClose);
+            pnlButtons.Controls.Add(btnDeleteRoom);
+            pnlButtons.Controls.Add(btnSaveRoom);
+            pnlButtons.Dock = DockStyle.Bottom;
+            pnlButtons.Location = new Point(0, 600);
+            pnlButtons.Name = "pnlButtons";
+            pnlButtons.Padding = new Padding(10);
+            pnlButtons.Size = new Size(1000, 60);
+            pnlButtons.TabIndex = 1;
+            // 
             // btnClose
-            this.btnClose.BackColor = System.Drawing.Color.Gray;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(890, 10);
-            this.btnClose.Size = new System.Drawing.Size(90, 40);
-            this.btnClose.Text = "Đóng";
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-
-            // Form settings
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 660);
-            this.Controls.Add(this.mainLayout);
-            this.Controls.Add(this.pnlButtons);
-            this.Controls.Add(this.pnTop);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Thông tin phòng khách sạn";
-
-            this.pnTop.ResumeLayout(false);
-            this.pnTop.PerformLayout();
-            this.mainLayout.ResumeLayout(false);
-            this.pnlLeft.ResumeLayout(false);
-            this.pnlLeft.PerformLayout();
-            this.pnlRight.ResumeLayout(false);
-            this.rightLayout.ResumeLayout(false);
-            this.pnlAmenityTop.ResumeLayout(false);
-            this.pnlAmenityTop.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAllAmenities)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numQuantity)).EndInit();
-            this.pnlAmenityBottom.ResumeLayout(false);
-            this.pnlAmenityBottom.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvRoomAmenities)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRoomAmenityQuantity)).EndInit();
-            this.pnlButtons.ResumeLayout(false);
-            this.ResumeLayout(false);
+            // 
+            btnClose.BackColor = Color.Gray;
+            btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.Font = new Font("Segoe UI Semibold", 10F);
+            btnClose.ForeColor = Color.White;
+            btnClose.Location = new Point(890, 10);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(90, 40);
+            btnClose.TabIndex = 0;
+            btnClose.Text = "Đóng";
+            btnClose.UseVisualStyleBackColor = false;
+            btnClose.Click += btnClose_Click;
+            // 
+            // btnDeleteRoom
+            // 
+            btnDeleteRoom.BackColor = Color.OrangeRed;
+            btnDeleteRoom.FlatStyle = FlatStyle.Flat;
+            btnDeleteRoom.Font = new Font("Segoe UI Semibold", 10F);
+            btnDeleteRoom.ForeColor = Color.White;
+            btnDeleteRoom.Location = new Point(770, 10);
+            btnDeleteRoom.Name = "btnDeleteRoom";
+            btnDeleteRoom.Size = new Size(110, 40);
+            btnDeleteRoom.TabIndex = 1;
+            btnDeleteRoom.Text = "Xóa phòng";
+            btnDeleteRoom.UseVisualStyleBackColor = false;
+            // 
+            // btnSaveRoom
+            // 
+            btnSaveRoom.BackColor = Color.Orange;
+            btnSaveRoom.FlatStyle = FlatStyle.Flat;
+            btnSaveRoom.Font = new Font("Segoe UI Semibold", 10F);
+            btnSaveRoom.ForeColor = Color.White;
+            btnSaveRoom.Location = new Point(650, 10);
+            btnSaveRoom.Name = "btnSaveRoom";
+            btnSaveRoom.Size = new Size(110, 40);
+            btnSaveRoom.TabIndex = 2;
+            btnSaveRoom.Text = "Sửa phòng";
+            btnSaveRoom.UseVisualStyleBackColor = false;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(rbNormal);
+            groupBox1.Controls.Add(rbVip);
+            groupBox1.Location = new Point(13, 157);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(331, 45);
+            groupBox1.TabIndex = 19;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Loại phòng:";
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(rbFamily);
+            groupBox2.Controls.Add(rbSingle);
+            groupBox2.Controls.Add(rbDouble);
+            groupBox2.Location = new Point(13, 212);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(327, 58);
+            groupBox2.TabIndex = 20;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Chi tiết loại phòng";
+            // 
+            // RoomDetailForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1000, 660);
+            Controls.Add(mainLayout);
+            Controls.Add(pnlButtons);
+            Controls.Add(pnTop);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Name = "RoomDetailForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Thông tin phòng khách sạn";
+            pnTop.ResumeLayout(false);
+            pnTop.PerformLayout();
+            mainLayout.ResumeLayout(false);
+            pnlLeft.ResumeLayout(false);
+            pnlLeft.PerformLayout();
+            pnlRight.ResumeLayout(false);
+            rightLayout.ResumeLayout(false);
+            pnlAmenityTop.ResumeLayout(false);
+            pnlAmenityTop.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numQuantity).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvAllAmenities).EndInit();
+            pnlAmenityBottom.ResumeLayout(false);
+            pnlAmenityBottom.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numRoomAmenityQuantity).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvRoomAmenities).EndInit();
+            pnlButtons.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ResumeLayout(false);
         }
 
         private System.Windows.Forms.Panel pnTop;
@@ -523,5 +719,7 @@
         private System.Windows.Forms.Button btnSaveRoom;
         private System.Windows.Forms.Button btnDeleteRoom;
         private System.Windows.Forms.Button btnClose;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
     }
 }
