@@ -266,176 +266,190 @@ namespace QuanLyKhachSan.UI.BookingUI
         private void OnViewRoomDetails(object sender, Room room)
         {
             _selectedRoom = room;
-   try
-{
-       var detailsForm = new Form
-   {
-       Text = $"Chi tiết phòng {room.Name}",
-       Width = 500,
-        Height = 400,
-        StartPosition = FormStartPosition.CenterParent,
-      FormBorderStyle = FormBorderStyle.FixedDialog,
- MaximizeBox = false,
-  MinimizeBox = false
-  };
-
-        var lblTitle = new Label
-    {
-                Text = $"Phòng: {room.Name}",
-        Font = new Font("Segoe UI", 14, FontStyle.Bold),
-   ForeColor = Color.SteelBlue,
-          Location = new Point(20, 20),
-    AutoSize = true
-   };
-
-  var pnlDetails = new Panel
-     {
-         Location = new Point(20, 60),
-           Width = detailsForm.Width - 60,
-   Height = 250,
-          BorderStyle = BorderStyle.FixedSingle
+            try
+            {
+                var detailsForm = new Form
+                {
+                    Text = $"Chi tiết phòng {room.Name}",
+                    Width = 500,
+                    Height = 400,
+                    StartPosition = FormStartPosition.CenterParent,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    MaximizeBox = false,
+                    MinimizeBox = false
                 };
 
-       var roomDetails = new Label
-         {
-    Text = $"Loại phòng: {GetRoomTypeName(room.RoomType)}\n\n" +
-     $"Giá: {room.Price:N0} VNĐ/đêm\n\n" +
-  $"Trạng thái: {GetRoomStatusName(room.Status)}\n\n" +
-        $"Mã phòng: {room.RoomId}",
-  Font = new Font("Segoe UI", 10),
-          Location = new Point(15, 15),
-     AutoSize = true,
-        Dock = DockStyle.Fill
-           };
+                var lblTitle = new Label
+                {
+                    Text = $"Phòng: {room.Name}",
+                    Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                    ForeColor = Color.SteelBlue,
+                    Location = new Point(20, 20),
+                    AutoSize = true
+                };
+
+                var pnlDetails = new Panel
+                {
+                    Location = new Point(20, 60),
+                    Width = detailsForm.Width - 60,
+                    Height = 250,
+                    BorderStyle = BorderStyle.FixedSingle
+                };
+
+                var roomDetails = new Label
+                {
+                    Text = $"Loại phòng: {GetRoomTypeName(room.RoomType)}\n\n" +
+              $"Giá: {room.Price:N0} VNĐ/đêm\n\n" +
+           $"Trạng thái: {GetRoomStatusName(room.Status)}\n\n" +
+                 $"Mã phòng: {room.RoomId}",
+                    Font = new Font("Segoe UI", 10),
+                    Location = new Point(15, 15),
+                    AutoSize = true,
+                    Dock = DockStyle.Fill
+                };
 
                 pnlDetails.Controls.Add(roomDetails);
 
-          var btnClose = new Button
-   {
-    Text = "Đóng",
-            Width = 100,
-                 Height = 35,
-      Location = new Point(detailsForm.Width - 140, detailsForm.Height - 80),
-             BackColor = Color.Gray,
-   ForeColor = Color.White,
-   DialogResult = DialogResult.OK
-       };
+                var btnClose = new Button
+                {
+                    Text = "Đóng",
+                    Width = 100,
+                    Height = 35,
+                    Location = new Point(detailsForm.Width - 140, detailsForm.Height - 80),
+                    BackColor = Color.Gray,
+                    ForeColor = Color.White,
+                    DialogResult = DialogResult.OK
+                };
 
-      detailsForm.Controls.Add(lblTitle);
-     detailsForm.Controls.Add(pnlDetails);
- detailsForm.Controls.Add(btnClose);
-      detailsForm.ShowDialog();
-    }
-  catch (Exception ex)
-  {
-     MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    }
+                detailsForm.Controls.Add(lblTitle);
+                detailsForm.Controls.Add(pnlDetails);
+                detailsForm.Controls.Add(btnClose);
+                detailsForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
         /// Book room event handler - Hiển thị phiếu đặt phòng
         /// </summary>
-    private async void OnBookRoom(object sender, Room room)
+        private async void OnBookRoom(object sender, Room room)
         {
-          _selectedRoom = room;
-        try
-   {
-// Check if room is available
-        if (room.Status != 0)
-  {
- MessageBox.Show($"Phòng {room.Name} không sẵn sàng để đặt", "Thông báo",
-   MessageBoxButtons.OK, MessageBoxIcon.Warning);
-    return;
-       }
+            _selectedRoom = room;
+            try
+            {
+                // Check if room is available
+                if (room.Status != 0)
+                {
+                    MessageBox.Show($"Phòng {room.Name} không sẵn sàng để đặt", "Thông báo",
+                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-     // Validate booking dates
-             if (dtpNgayThue.Value >= dtpNgayTra.Value)
- {
-         MessageBox.Show("Ngày trả phải sau ngày thuê", "Cảnh báo",
-MessageBoxButtons.OK, MessageBoxIcon.Warning);
-    return;
-      }
+                // Validate booking dates
+                if (dtpNgayThue.Value >= dtpNgayTra.Value)
+                {
+                    MessageBox.Show("Ngày trả phải sau ngày thuê", "Cảnh báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-     // Load customers
-       List<Customer> customers = new List<Customer>();
-       try
-   {
-   if (_roomService != null)
- {
-  // Lấy danh sách khách hàng từ database (cần có ICustomerService)
-             // Tạm thời sử dụng danh sách trống
-         }
-     }
-     catch (Exception ex)
-    {
-   System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
+                // Load customers from database
+                List<Customer> customers = new List<Customer>();
+                try
+                {
+                    if (_roomService != null)
+                    {
+                        // Get service provider to access ICustomerService
+                        var serviceProvider = (IServiceProvider)Program.Services;
+                        var customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
+
+                        if (customerService != null)
+                        {
+                            var allCustomers = await customerService.GetAllCustomersAsync();
+                            if (allCustomers != null)
+                            {
+                                customers = allCustomers.Where(c => c.IsDeleted == 0).ToList();
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
+                    // Continue even if customer loading fails
+                }
+
+                // Show booking form
+                var bookingForm = new BookingForm(room, dtpNgayThue.Value, dtpNgayTra.Value, customers);
+                var result = bookingForm.ShowDialog();
+
+                if (result == DialogResult.OK && bookingForm.IsConfirmed)
+                {
+                    // Calculate pricing
+                    var nights = (int)(dtpNgayTra.Value - dtpNgayThue.Value).TotalDays;
+                    decimal totalPrice = room.Price * nights;
+
+                    // Update room status in database
+                    room.Status = 1; // Occupied
+                    await _roomService.UpdateRoomAsync(room);
+
+                    // Update room status in UI
+                    _roomCardContainer.UpdateRoomStatus(room.RoomId, RoomStatusType.Occupied);
+
+                    // Refresh room list
+                    await Task.Delay(500);
+                    LoadRoomsAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
-     // Show booking form
-       var bookingForm = new BookingForm(room, dtpNgayThue.Value, dtpNgayTra.Value, customers);
-   var result = bookingForm.ShowDialog();
-
-        if (result == DialogResult.OK && bookingForm.IsConfirmed)
-{
- // Calculate pricing
- var nights = (int)(dtpNgayTra.Value - dtpNgayThue.Value).TotalDays;
-         decimal totalPrice = room.Price * nights;
-
-   // Update room status in database
-           room.Status = 1; // Occupied
-         await _roomService.UpdateRoomAsync(room);
-
-        // Update room status in UI
-             _roomCardContainer.UpdateRoomStatus(room.RoomId, RoomStatusType.Occupied);
-
-          // Refresh room list
-          await Task.Delay(500);
-    LoadRoomsAsync();
- }
-  }
-      catch (Exception ex)
-         {
-    MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-      }
-   }
 
         /// <summary>
         /// Clean room event handler - Đánh dấu phòng đang dọn dẹp
         /// </summary>
         private async void OnCleanRoom(object sender, Room room)
- {
+        {
             _selectedRoom = room;
-         try
-          {
-          // Show cleaning confirmation
-                var result = MessageBox.Show(
-                $"Bạn muốn đánh dấu phòng {room.Name} đang được dọn dẹp?\n\n" +
-             $"Phòng sẽ không thể được đặt cho đến khi dọc xong.",
-              "Xác nhận dọn phòng",
-     MessageBoxButtons.YesNo,
-      MessageBoxIcon.Question);
+            try
+            {
+                // Get cleaning service from service provider
+                var serviceProvider = (IServiceProvider)Program.Services;
+                var cleaningService = serviceProvider.GetService(typeof(IRoomCleaningService)) as IRoomCleaningService;
 
-     if (result == DialogResult.Yes)
+                if (cleaningService == null)
                 {
-   // Update room status in database
-      room.Status = 2; // Cleaning
-   await _roomService.UpdateRoomAsync(room);
+                    MessageBox.Show("Lỗi: Không thể khởi tạo IRoomCleaningService", "Lỗi",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-   // Update room status in UI
-    _roomCardContainer.UpdateRoomStatus(room.RoomId, RoomStatusType.Cleaning);
-   
-         MessageBox.Show("Phòng đã được đánh dấu là đang dọn dẹp", "Thành công",
-      MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Show room cleaning form
+                var cleaningForm = new RoomCleaningForm(room, cleaningService, _roomService);
+                var result = cleaningForm.ShowDialog();
 
-      // Refresh room list
-         await Task.Delay(500);
-       LoadRoomsAsync();
-         }
-  }
+                if (result == DialogResult.OK)
+                {
+                    // Update room status in UI
+                    _roomCardContainer.UpdateRoomStatus(room.RoomId, RoomStatusType.Available);
+
+                    MessageBox.Show("✓ Dọn phòng thành công", "Thành công",
+                  MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Refresh room list
+                    await Task.Delay(500);
+                    LoadRoomsAsync();
+                }
+            }
             catch (Exception ex)
-          {
-              MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    }
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>

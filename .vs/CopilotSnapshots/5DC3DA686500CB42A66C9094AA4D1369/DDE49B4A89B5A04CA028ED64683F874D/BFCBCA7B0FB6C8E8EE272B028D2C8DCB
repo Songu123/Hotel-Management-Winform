@@ -1,0 +1,529 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    /// <summary>
+    /// Form dọn dẹp phòng - quản lý quy trình dọn phòng
+    /// </summary>
+    public partial class RoomCleaningForm : Form
+    {
+  private readonly IRoomCleaningService _cleaningService;
+        private readonly IRoomService _roomService;
+        private Room _room;
+        private RoomCleaning _currentCleaning;
+
+        public RoomCleaningForm()
+        {
+            InitializeComponent();
+      }
+
+    public RoomCleaningForm(Room room, IRoomCleaningService cleaningService, IRoomService roomService) : this()
+  {
+    _room = room ?? throw new ArgumentNullException(nameof(room));
+            _cleaningService = cleaningService ?? throw new ArgumentNullException(nameof(cleaningService));
+         _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
+
+      InitializeUI();
+        }
+
+      private void InitializeUI()
+        {
+    // Form setup
+  this.Text = $"🧹 Dọn Dẹp Phòng {_room.Name}";
+         this.Width = 600;
+     this.Height = 700;
+ this.StartPosition = FormStartPosition.CenterParent;
+         this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.BackColor = Color.FromArgb(245, 245, 245);
+
+         CreateHeader();
+       CreateRoomInfoSection();
+        CreateCleaningProgressSection();
+ CreateCleaningDetailsSection();
+            CreateButtonsSection();
+        }
+
+        private void CreateHeader()
+   {
+            var pnlHeader = new Panel
+            {
+                Location = new Point(0, 0),
+                Width = this.Width,
+       Height = 60,
+          BackColor = Color.FromArgb(33, 150, 243),
+      Dock = DockStyle.Top
+      };
+
+      var lblTitle = new Label
+            {
+  Text = "🧹 QUẢN LÝ DỌN DẸP PHÒNG",
+  Font = new Font("Segoe UI", 16, FontStyle.Bold),
+      ForeColor = Color.White,
+     Location = new Point(20, 12),
+      AutoSize = true,
+      Parent = pnlHeader
+            };
+
+          this.Controls.Add(pnlHeader);
+        }
+
+    private void CreateRoomInfoSection()
+        {
+            var pnlRoomInfo = new Panel
+            {
+        Location = new Point(20, 70),
+      Width = this.Width - 40,
+       Height = 100,
+                BackColor = Color.White,
+  BorderStyle = BorderStyle.FixedSingle
+            };
+this.Controls.Add(pnlRoomInfo);
+
+    var lblRoomLabel = new Label
+ {
+        Text = "Mã Phòng:",
+     Font = new Font("Segoe UI", 10, FontStyle.Bold),
+           Location = new Point(15, 15),
+      AutoSize = true,
+ Parent = pnlRoomInfo
+          };
+
+     var lblRoomValue = new Label
+            {
+      Text = $"{_room.RoomId} - {_room.Name}",
+                Font = new Font("Segoe UI", 10),
+           Location = new Point(150, 15),
+        AutoSize = true,
+ ForeColor = Color.FromArgb(33, 150, 243),
+      Parent = pnlRoomInfo
+          };
+
+var lblTypeLabel = new Label
+       {
+   Text = "Loại Phòng:",
+          Font = new Font("Segoe UI", 10, FontStyle.Bold),
+        Location = new Point(15, 45),
+        AutoSize = true,
+        Parent = pnlRoomInfo
+            };
+
+            var lblTypeValue = new Label
+     {
+Text = GetRoomTypeName(_room.RoomType),
+        Font = new Font("Segoe UI", 10),
+      Location = new Point(150, 45),
+    AutoSize = true,
+        ForeColor = Color.FromArgb(33, 150, 243),
+         Parent = pnlRoomInfo
+            };
+
+            var lblStatusLabel = new Label
+      {
+          Text = "Trạng Thái:",
+        Font = new Font("Segoe UI", 10, FontStyle.Bold),
+   Location = new Point(15, 75),
+         AutoSize = true,
+     Parent = pnlRoomInfo
+            };
+
+            var lblStatusValue = new Label
+       {
+                Text = GetRoomStatusName(_room.Status),
+                Font = new Font("Segoe UI", 10),
+   Location = new Point(150, 75),
+    AutoSize = true,
+       ForeColor = Color.FromArgb(76, 175, 80),
+    Parent = pnlRoomInfo
+          };
+        }
+
+        private void CreateCleaningProgressSection()
+    {
+      var pnlProgress = new Panel
+    {
+     Location = new Point(20, 180),
+                Width = this.Width - 40,
+                Height = 120,
+        BackColor = Color.FromArgb(240, 248, 255),
+     BorderStyle = BorderStyle.FixedSingle
+            };
+ this.Controls.Add(pnlProgress);
+
+   var lblProgressTitle = new Label
+            {
+                Text = "📊 TIẾN TRÌNH DỌN DẸP",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+        ForeColor = Color.FromArgb(33, 150, 243),
+ Location = new Point(15, 10),
+        AutoSize = true,
+                Parent = pnlProgress
+       };
+
+      var lblStartTimeLabel = new Label
+            {
+       Text = "Giờ Bắt Đầu:",
+   Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                Location = new Point(15, 40),
+     AutoSize = true,
+           Parent = pnlProgress
+ };
+
+          var lblStartTimeValue = new Label
+    {
+      Text = "Chưa bắt đầu",
+                Font = new Font("Segoe UI", 9),
+              Location = new Point(150, 40),
+      AutoSize = true,
+     ForeColor = Color.FromArgb(100, 100, 100),
+     Parent = pnlProgress,
+             Name = "lblStartTime"
+          };
+
+        var lblDurationLabel = new Label
+  {
+                Text = "Thời Gian Dọn:",
+       Font = new Font("Segoe UI", 9, FontStyle.Bold),
+     Location = new Point(15, 70),
+          AutoSize = true,
+        Parent = pnlProgress
+       };
+
+ var lblDurationValue = new Label
+        {
+  Text = "0 phút",
+      Font = new Font("Segoe UI", 9),
+            Location = new Point(150, 70),
+       AutoSize = true,
+                ForeColor = Color.FromArgb(100, 100, 100),
+ Parent = pnlProgress,
+           Name = "lblDuration"
+    };
+
+            var timer = new Timer { Interval = 1000 };
+       timer.Tick += (s, e) =>
+  {
+         if (_currentCleaning != null && _currentCleaning.Status == 0)
+   {
+       var duration = DateTime.Now - _currentCleaning.StartTime;
+          var minutes = (int)duration.TotalMinutes;
+         lblDurationValue.Text = $"{minutes} phút";
+    }
+            };
+            timer.Start();
+}
+
+    private void CreateCleaningDetailsSection()
+        {
+         var pnlDetails = new Panel
+      {
+      Location = new Point(20, 310),
+       Width = this.Width - 40,
+             Height = 220,
+     BackColor = Color.White,
+          BorderStyle = BorderStyle.FixedSingle
+         };
+   this.Controls.Add(pnlDetails);
+
+   var lblDetailsTitle = new Label
+            {
+      Text = "📝 CHI TIẾT DỌN DẸP",
+          Font = new Font("Segoe UI", 11, FontStyle.Bold),
+   ForeColor = Color.FromArgb(33, 150, 243),
+                Location = new Point(15, 10),
+           AutoSize = true,
+    Parent = pnlDetails
+ };
+
+    // Room condition before
+       var lblConditionBeforeLabel = new Label
+   {
+         Text = "Tình Trạng Trước Dọn:",
+     Font = new Font("Segoe UI", 9, FontStyle.Bold),
+ Location = new Point(15, 45),
+  AutoSize = true,
+       Parent = pnlDetails
+            };
+
+ var cboConditionBefore = new ComboBox
+         {
+  Location = new Point(180, 40),
+ Width = 200,
+ Height = 28,
+        DropDownStyle = ComboBoxStyle.DropDownList,
+           Font = new Font("Segoe UI", 9),
+         Parent = pnlDetails,
+                Name = "cboConditionBefore"
+       };
+            cboConditionBefore.Items.AddRange(new[] { "Tốt", "Cần sửa chữa", "Cần vệ sinh" });
+      cboConditionBefore.SelectedIndex = 2; // Default: Cần vệ sinh
+
+            // Room condition after
+        var lblConditionAfterLabel = new Label
+     {
+ Text = "Tình Trạng Sau Dọn:",
+  Font = new Font("Segoe UI", 9, FontStyle.Bold),
+    Location = new Point(15, 85),
+           AutoSize = true,
+           Parent = pnlDetails
+     };
+
+var cboConditionAfter = new ComboBox
+  {
+            Location = new Point(180, 80),
+      Width = 200,
+            Height = 28,
+     DropDownStyle = ComboBoxStyle.DropDownList,
+          Font = new Font("Segoe UI", 9),
+      Parent = pnlDetails,
+        Name = "cboConditionAfter"
+            };
+            cboConditionAfter.Items.AddRange(new[] { "Tốt", "Cần sửa chữa", "Cần vệ sinh" });
+     cboConditionAfter.SelectedIndex = 0; // Default: Tốt
+
+        // Notes
+            var lblNotesLabel = new Label
+       {
+       Text = "Ghi Chú:",
+     Font = new Font("Segoe UI", 9, FontStyle.Bold),
+      Location = new Point(15, 125),
+   AutoSize = true,
+         Parent = pnlDetails
+            };
+
+            var txtNotes = new TextBox
+            {
+        Location = new Point(15, 145),
+   Width = this.Width - 50,
+     Height = 60,
+            Font = new Font("Segoe UI", 9),
+       Multiline = true,
+         PlaceholderText = "Nhập ghi chú về tình trạng phòng...",
+  BorderStyle = BorderStyle.FixedSingle,
+         Parent = pnlDetails,
+           Name = "txtNotes"
+        };
+    }
+
+        private void CreateButtonsSection()
+        {
+            var pnlButtons = new Panel
+  {
+  Location = new Point(20, 540),
+    Width = this.Width - 40,
+      Height = 80,
+             BackColor = Color.White,
+       BorderStyle = BorderStyle.FixedSingle
+            };
+  this.Controls.Add(pnlButtons);
+
+        var btnStartCleaning = new Button
+          {
+     Text = "▶ Bắt Đầu Dọn",
+                Width = 120,
+          Height = 40,
+           Location = new Point(15, 15),
+    BackColor = Color.FromArgb(76, 175, 80),
+     ForeColor = Color.White,
+            Font = new Font("Segoe UI", 10, FontStyle.Bold),
+FlatStyle = FlatStyle.Flat,
+             Cursor = Cursors.Hand,
+Parent = pnlButtons,
+             Name = "btnStartCleaning"
+       };
+ btnStartCleaning.FlatAppearance.BorderSize = 0;
+    btnStartCleaning.Click += BtnStartCleaning_Click;
+
+         var btnCompleteCleaning = new Button
+       {
+    Text = "✓ Hoàn Thành",
+  Width = 120,
+         Height = 40,
+     Location = new Point(145, 15),
+                BackColor = Color.FromArgb(33, 150, 243),
+            ForeColor = Color.White,
+   Font = new Font("Segoe UI", 10, FontStyle.Bold),
+        FlatStyle = FlatStyle.Flat,
+    Cursor = Cursors.Hand,
+         Parent = pnlButtons,
+        Name = "btnCompleteCleaning",
+  Enabled = false
+ };
+            btnCompleteCleaning.FlatAppearance.BorderSize = 0;
+   btnCompleteCleaning.Click += BtnCompleteCleaning_Click;
+
+       var btnCancelCleaning = new Button
+      {
+  Text = "✕ Hủy",
+         Width = 120,
+             Height = 40,
+  Location = new Point(275, 15),
+   BackColor = Color.FromArgb(244, 67, 54),
+    ForeColor = Color.White,
+        Font = new Font("Segoe UI", 10, FontStyle.Bold),
+     FlatStyle = FlatStyle.Flat,
+    Cursor = Cursors.Hand,
+          Parent = pnlButtons,
+         Name = "btnCancelCleaning",
+      Enabled = false
+       };
+          btnCancelCleaning.FlatAppearance.BorderSize = 0;
+            btnCancelCleaning.Click += BtnCancelCleaning_Click;
+
+            var btnClose = new Button
+            {
+  Text = "Đóng",
+ Width = 100,
+       Height = 40,
+             Location = new Point(this.Width - 155, 15),
+      BackColor = Color.FromArgb(158, 158, 158),
+    ForeColor = Color.White,
+     Font = new Font("Segoe UI", 10, FontStyle.Bold),
+     FlatStyle = FlatStyle.Flat,
+             Cursor = Cursors.Hand,
+         Parent = pnlButtons,
+        DialogResult = DialogResult.Cancel
+    };
+      btnClose.FlatAppearance.BorderSize = 0;
+        }
+
+        private async void BtnStartCleaning_Click(object sender, EventArgs e)
+        {
+            try
+   {
+          // Get logged-in employee (you need to implement this)
+    var employeeId = "NV002"; // TODO: Get from current user
+
+        _currentCleaning = await _cleaningService.StartCleaningAsync(_room.RoomId, employeeId);
+
+     // Update UI
+             UpdateCleaningStartedUI();
+
+      MessageBox.Show("✓ Bắt đầu dọn phòng thành công!", "Thành công",
+       MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+    {
+  MessageBox.Show($"❌ Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+}
+        }
+
+        private async void BtnCompleteCleaning_Click(object sender, EventArgs e)
+  {
+            try
+            {
+     if (_currentCleaning == null)
+        {
+     MessageBox.Show("Vui lòng bắt đầu dọn phòng trước!", "Thông báo",
+        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+            }
+
+                var cboConditionAfter = this.Controls.Find("cboConditionAfter", true).FirstOrDefault() as ComboBox;
+   var txtNotes = this.Controls.Find("txtNotes", true).FirstOrDefault() as TextBox;
+
+        if (cboConditionAfter == null)
+     {
+         MessageBox.Show("Vui lòng chọn tình trạng phòng sau dọn!", "Thông báo",
+     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+      return;
+      }
+
+                var result = await _cleaningService.CompleteCleaningAsync(
+    _currentCleaning.CleaningId,
+           cboConditionAfter.SelectedIndex,
+               txtNotes?.Text ?? ""
+         );
+
+       if (result)
+    {
+         MessageBox.Show("✓ Hoàn thành dọn phòng thành công!", "Thành công",
+      MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+this.DialogResult = DialogResult.OK;
+  this.Close();
+            }
+      }
+            catch (Exception ex)
+            {
+       MessageBox.Show($"❌ Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+     }
+        }
+
+        private async void BtnCancelCleaning_Click(object sender, EventArgs e)
+        {
+            try
+            {
+      if (_currentCleaning == null)
+          {
+          MessageBox.Show("Không có dọn phòng đang thực hiện!", "Thông báo",
+        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+          return;
+        }
+
+       var result = MessageBox.Show("Bạn có chắc muốn hủy dọn phòng này?", "Xác nhận",
+       MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+    if (result != DialogResult.Yes) return;
+
+     await _cleaningService.CancelCleaningAsync(_currentCleaning.CleaningId);
+
+           MessageBox.Show("✓ Hủy dọn phòng thành công!", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+    this.DialogResult = DialogResult.Cancel;
+    this.Close();
+            }
+      catch (Exception ex)
+            {
+         MessageBox.Show($"❌ Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+     }
+        }
+
+        private void UpdateCleaningStartedUI()
+        {
+            var btnStartCleaning = this.Controls.Find("btnStartCleaning", true).FirstOrDefault() as Button;
+   var btnCompleteCleaning = this.Controls.Find("btnCompleteCleaning", true).FirstOrDefault() as Button;
+            var btnCancelCleaning = this.Controls.Find("btnCancelCleaning", true).FirstOrDefault() as Button;
+            var lblStartTime = this.Controls.Find("lblStartTime", true).FirstOrDefault() as Label;
+
+            if (btnStartCleaning != null) btnStartCleaning.Enabled = false;
+     if (btnCompleteCleaning != null) btnCompleteCleaning.Enabled = true;
+     if (btnCancelCleaning != null) btnCancelCleaning.Enabled = true;
+        if (lblStartTime != null) lblStartTime.Text = _currentCleaning.StartTime.ToString("HH:mm:ss");
+        }
+
+        private string GetRoomTypeName(int roomType)
+        {
+      return roomType switch
+            {
+           1 => "Phòng Đơn",
+      2 => "Phòng Đôi",
+      3 => "Phòng Gia đình",
+   4 => "Phòng VIP",
+     5 => "Phòng Suite",
+      _ => "Không xác định"
+   };
+        }
+
+   private string GetRoomStatusName(int status)
+        {
+       return status switch
+   {
+       0 => "Sẵn sàng",
+    1 => "Đang sử dụng",
+   2 => "Đang dọn",
+  3 => "Bảo trì",
+ _ => "Không xác định"
+   };
+        }
+    }
+}

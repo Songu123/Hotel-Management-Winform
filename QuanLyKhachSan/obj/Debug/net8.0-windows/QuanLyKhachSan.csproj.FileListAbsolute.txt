@@ -138,3 +138,4 @@ D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan
 D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.ModernRoomCardContainer.resources
 D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.BookingUI.UCBookingModern.resources
 D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.ModernRoomCardDemo.resources
+D:\LearnC#\QuanLyKhachSan\QuanLyKhachSan\obj\Debug\net8.0-windows\QuanLyKhachSan.UI.BookingUI.BookingForm.resources

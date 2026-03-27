@@ -1,0 +1,657 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    public partial class BookingForm : Form
+    {
+        private Room _room;
+        private DateTime _checkInDate;
+        private DateTime _checkOutDate;
+        private Customer _selectedCustomer;
+        private List<Customer> _allCustomers;
+        public bool IsConfirmed { get; set; } = false;
+        public Customer SelectedCustomer { get; set; }
+        public decimal TotalPrice { get; set; }
+
+        private string _rentalDetailId;
+        private ComboBox cboCustomer;
+        private TextBox txtSearchCustomer;
+        private Label lblSelectedCustomer;
+        private Label lblRentalDetailId;
+        private Label lblCreatedDate;
+        private Label lblStaffName;
+        private Label lblProcessStatus;
+        private Label lblDepositAmount;
+        private TextBox txtDepositAmount;
+
+        public BookingForm(Room room, DateTime checkInDate, DateTime checkOutDate, List<Customer> customers = null)
+        {
+            InitializeComponent();
+            _room = room;
+            _checkInDate = checkInDate;
+            _checkOutDate = checkOutDate;
+            _allCustomers = customers ?? new List<Customer>();
+            _rentalDetailId = $"CT{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}";
+            SetupForm();
+        }
+
+        private void SetupForm()
+        {
+            this.Text = "📋 Phiếu Đặt Phòng";
+            this.Width = 1000;
+            this.Height = 850;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.FormBorderStyle = FormBorderStyle.Sizable;
+            this.MaximizeBox = true;
+            this.MinimizeBox = true;
+            this.BackColor = Color.FromArgb(245, 245, 245);
+            this.Font = new Font("Segoe UI", 9);
+
+            CreateFormContent();
+        }
+
+        private void CreateFormContent()
+        {
+            // Title section
+            var pnlHeader = new Panel
+            {
+                Location = new Point(0, 0),
+                Width = this.Width,
+                Height = 60,
+                BackColor = Color.FromArgb(33, 150, 243),
+                Dock = DockStyle.Top
+            };
+
+            var lblTitle = new Label
+            {
+                Text = "📋 PHIẾU ĐẶT PHÒNG KHÁCH SẠN",
+                Font = new Font("Segoe UI", 16, FontStyle.Bold),
+                ForeColor = Color.White,
+                Location = new Point(20, 12),
+                AutoSize = true,
+                Parent = pnlHeader
+            };
+
+            // Scroll container
+            var pnlScroll = new Panel
+            {
+                Location = new Point(0, 60),
+                Width = this.Width,
+                Height = this.Height - 130,
+                AutoScroll = true,
+                BackColor = Color.FromArgb(245, 245, 245)
+            };
+
+            // SECTION 1: THÔNG TIN PHIẾU THUÊ
+            CreateInfoSection(pnlScroll);
+
+            // SECTION 2: THÔNG TIN KHÁCH HÀNG
+            CreateCustomerSection(pnlScroll);
+
+            // SECTION 3: CHI TIẾT PHÒNG ĐẶT
+            CreateRoomDetailsSection(pnlScroll);
+
+            // SECTION 4: TÍNH TOÁN GIÁ
+            CreatePricingSection(pnlScroll);
+
+            // Buttons
+            var pnlButtons = new Panel
+            {
+                Location = new Point(0, this.Height - 70),
+                Width = this.Width,
+                Height = 70,
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Dock = DockStyle.Bottom
+            };
+
+            var btnSave = new Button
+            {
+                Text = "✓ Lưu Phiếu",
+                Width = 120,
+                Height = 40,
+                Location = new Point(this.Width - 380, 15),
+                BackColor = Color.FromArgb(76, 175, 80),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand,
+                Enabled = false
+            };
+            btnSave.FlatAppearance.BorderSize = 0;
+
+            var btnPrint = new Button
+            {
+                Text = "🖨 In Phiếu",
+                Width = 120,
+                Height = 40,
+                Location = new Point(this.Width - 250, 15),
+                BackColor = Color.FromArgb(33, 150, 243),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnPrint.FlatAppearance.BorderSize = 0;
+
+            var btnCancel = new Button
+            {
+                Text = "✕ Hủy",
+                Width = 120,
+                Height = 40,
+                Location = new Point(this.Width - 120, 15),
+                BackColor = Color.FromArgb(244, 67, 54),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                DialogResult = DialogResult.Cancel,
+                Cursor = Cursors.Hand
+            };
+            btnCancel.FlatAppearance.BorderSize = 0;
+
+            btnSave.Click += (s, e) => OnSaveBooking(btnSave);
+            btnPrint.Click += (s, e) => OnPrintBooking();
+
+            pnlButtons.Controls.Add(btnSave);
+            pnlButtons.Controls.Add(btnPrint);
+            pnlButtons.Controls.Add(btnCancel);
+
+            this.Controls.Add(pnlScroll);
+            this.Controls.Add(pnlHeader);
+            this.Controls.Add(pnlButtons);
+        }
+
+        private void CreateInfoSection(Panel parent)
+        {
+            var lblSection = CreateSectionHeader("THÔNG TIN PHIẾU THUÊ", 20);
+            parent.Controls.Add(lblSection);
+
+            var pnlInfo = new Panel
+            {
+                Location = new Point(20, 60),
+                Width = parent.Width - 60,
+                Height = 150,
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            parent.Controls.Add(pnlInfo);
+
+            int infoY = 15;
+            AddInfoRow(pnlInfo, "Mã chi tiết thuê:", _rentalDetailId, 10, infoY); infoY += 25;
+            AddInfoRow(pnlInfo, "Nhân viên lập phiếu:", "Admin", 10, infoY); infoY += 25;
+
+            lblCreatedDate = new Label { Location = new Point(10, infoY), AutoSize = true };
+            AddInfoRow(pnlInfo, "Ngày lập phiếu:", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), 10, infoY); infoY += 25;
+
+            lblProcessStatus = new Label { Location = new Point(10, infoY), AutoSize = true };
+            AddInfoRow(pnlInfo, "Tính trạng xử lý:", "Đang xử lý", 10, infoY); infoY += 25;
+
+            // Add editable deposit amount
+            var lblDepositLabel = new Label
+            {
+                Text = "Tiền đặt cọc:",
+            Font = new Font("Segoe UI", 9, FontStyle.Bold),
+    Location = new Point(10, infoY),
+ AutoSize = true,
+           ForeColor = Color.FromArgb(64, 64, 64),
+                Parent = pnlInfo
+      };
+
+            txtDepositAmount = new TextBox
+            {
+     Location = new Point(160, infoY - 2),
+      Width = 150,
+              Height = 28,
+ Font = new Font("Segoe UI", 10),
+                BorderStyle = BorderStyle.FixedSingle,
+       Text = "0",
+       Parent = pnlInfo
+       };
+     txtDepositAmount.KeyPress += TxtDepositAmount_KeyPress;
+     }
+
+        private void TxtDepositAmount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+          // Only allow digits and backspace
+       if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            {
+ e.Handled = true;
+            }
+        }
+
+        private void CreateCustomerSection(Panel parent)
+        {
+            var lblSection = CreateSectionHeader("THÔNG TIN KHÁCH HÀNG", 200);
+            parent.Controls.Add(lblSection);
+
+            var pnlCustomer = new Panel
+            {
+                Location = new Point(20, 240),
+                Width = parent.Width - 60,
+                Height = 140,
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            parent.Controls.Add(pnlCustomer);
+
+            var lblSearch = new Label
+            {
+                Text = "🔍 Tìm khách hàng:",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Location = new Point(10, 10),
+                AutoSize = true,
+                Parent = pnlCustomer
+            };
+
+            txtSearchCustomer = new TextBox
+            {
+                Location = new Point(150, 8),
+                Width = 300,
+                Height = 28,
+                Font = new Font("Segoe UI", 10),
+                PlaceholderText = "Nhập tên hoặc mã khách...",
+                BorderStyle = BorderStyle.FixedSingle,
+                Parent = pnlCustomer
+            };
+            txtSearchCustomer.TextChanged += TxtSearchCustomer_TextChanged;
+
+            var btnNewCustomer = new Button
+            {
+                Text = "+ Khách mới",
+                Width = 110,
+                Height = 28,
+                Location = new Point(460, 8),
+                BackColor = Color.FromArgb(255, 152, 0),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand,
+                Parent = pnlCustomer
+            };
+            btnNewCustomer.FlatAppearance.BorderSize = 0;
+            btnNewCustomer.Click += BtnNewCustomer_Click;
+
+            var lblChoose = new Label
+            {
+                Text = "👤 Chọn khách:",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Location = new Point(10, 45),
+                AutoSize = true,
+                Parent = pnlCustomer
+            };
+
+            cboCustomer = new ComboBox
+            {
+                Location = new Point(150, 42),
+                Width = 420,
+                Height = 28,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Font = new Font("Segoe UI", 10),
+                Parent = pnlCustomer
+            };
+            PopulateCustomerCombo(_allCustomers);
+            cboCustomer.SelectedIndexChanged += CboCustomer_SelectedIndexChanged;
+
+            lblSelectedCustomer = new Label
+            {
+                Text = "",
+                Font = new Font("Segoe UI", 9),
+                Location = new Point(10, 78),
+                Width = 600,
+                Height = 50,
+                AutoSize = true,
+                ForeColor = Color.FromArgb(76, 175, 80),
+                Parent = pnlCustomer
+            };
+        }
+
+        private void CreateRoomDetailsSection(Panel parent)
+        {
+            var lblSection = CreateSectionHeader("CHI TIẾT PHÒNG ĐẶT", 400);
+            parent.Controls.Add(lblSection);
+
+            var pnlRoom = new Panel
+            {
+                Location = new Point(20, 440),
+                Width = parent.Width - 60,
+                Height = 140,
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            parent.Controls.Add(pnlRoom);
+
+            int roomY = 15;
+            AddInfoRow(pnlRoom, "Mã phòng:", _room.RoomId, 10, roomY); roomY += 30;
+            AddInfoRow(pnlRoom, "Tên phòng:", _room.Name, 10, roomY); roomY += 30;
+            AddInfoRow(pnlRoom, "Ngày nhận phòng:", _checkInDate.ToString("dd/MM/yyyy HH:mm"), 10, roomY); roomY += 30;
+            AddInfoRow(pnlRoom, "Ngày trả phòng:", _checkOutDate.ToString("dd/MM/yyyy HH:mm"), 10, roomY); roomY += 30;
+
+            int nights = (int)(_checkOutDate - _checkInDate).TotalDays;
+            AddInfoRow(pnlRoom, "Số đêm:", $"{nights} đêm", 10, roomY);
+        }
+
+        private void CreatePricingSection(Panel parent)
+        {
+            int nights = (int)(_checkOutDate - _checkInDate).TotalDays;
+            TotalPrice = _room.Price * nights;
+
+            var pnlPrice = new Panel
+            {
+                Location = new Point(20, 600),
+                Width = parent.Width - 60,
+                Height = 100,
+                BackColor = Color.FromArgb(240, 248, 255),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            parent.Controls.Add(pnlPrice);
+
+            var lblPriceTitle = new Label
+            {
+                Text = "💰 TÍNH TOÁN GIÁ",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = Color.FromArgb(33, 150, 243),
+                Location = new Point(10, 10),
+                AutoSize = true,
+                Parent = pnlPrice
+            };
+
+            AddInfoRow(pnlPrice, "Giá phòng/đêm:", $"{_room.Price:N0} VNĐ", 10, 40);
+            AddInfoRow(pnlPrice, "Số đêm:", $"{nights} đêm", 400, 40);
+
+            var lblTotal = new Label
+            {
+                Text = $"TỔNG CỘNG: {TotalPrice:N0} VNĐ",
+                Font = new Font("Segoe UI", 13, FontStyle.Bold),
+                ForeColor = Color.FromArgb(244, 67, 54),
+                Location = new Point(10, 65),
+                AutoSize = true,
+                Parent = pnlPrice
+            };
+        }
+
+        private Label CreateSectionHeader(string text, int topLocation)
+        {
+            return new Label
+            {
+                Text = text,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(63, 81, 181),
+                Location = new Point(20, topLocation),
+                Width = 900,
+                Height = 30,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(10, 0, 0, 0)
+            };
+        }
+
+        private void AddInfoRow(Panel parent, string label, string value, int x, int y)
+        {
+            var lblLabel = new Label
+            {
+                Text = label,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                Location = new Point(x, y),
+                AutoSize = true,
+                ForeColor = Color.FromArgb(64, 64, 64),
+                Parent = parent
+            };
+
+            var lblValue = new Label
+            {
+                Text = value,
+                Font = new Font("Segoe UI", 10),
+                Location = new Point(x + 150, y),
+                AutoSize = true,
+                ForeColor = Color.FromArgb(33, 150, 243),
+                Parent = parent
+            };
+        }
+
+        private void PopulateCustomerCombo(List<Customer> customers)
+        {
+            cboCustomer.Items.Clear();
+            cboCustomer.Items.Add("-- Chọn khách hàng --");
+
+            if (customers != null && customers.Count > 0)
+            {
+                foreach (var customer in customers)
+                {
+                    cboCustomer.Items.Add($"{customer.CustomerId} - {customer.Name}");
+                }
+            }
+
+            cboCustomer.SelectedIndex = 0;
+        }
+
+        private void TxtSearchCustomer_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtSearchCustomer.Text.ToLower();
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                PopulateCustomerCombo(_allCustomers);
+                return;
+            }
+
+            var filtered = _allCustomers.Where(c =>
+              c.CustomerId.ToLower().Contains(searchText) ||
+                 c.Name.ToLower().Contains(searchText)
+                    ).ToList();
+
+            PopulateCustomerCombo(filtered);
+        }
+
+        private void CboCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var btnSave = this.Controls["btnSave"] as Button;
+            if (btnSave == null)
+            {
+                // Get button from parent controls
+                var buttons = this.Controls.OfType<Panel>().LastOrDefault();
+                if (buttons != null)
+                {
+                    btnSave = buttons.Controls.OfType<Button>().FirstOrDefault();
+                }
+            }
+
+            if (cboCustomer.SelectedIndex > 0)
+            {
+                var selectedText = cboCustomer.SelectedItem.ToString();
+                var parts = selectedText.Split(new string[] { " - " }, StringSplitOptions.None);
+
+                if (parts.Length > 0)
+                {
+                    _selectedCustomer = new Customer
+                    {
+                        CustomerId = parts[0].Trim(),
+                        Name = parts.Length > 1 ? parts[1].Trim() : ""
+                    };
+
+                    lblSelectedCustomer.Text = $"✓ Đã chọn: {_selectedCustomer.Name} ({_selectedCustomer.CustomerId})";
+                    SelectedCustomer = _selectedCustomer;
+
+                    if (btnSave != null)
+                        btnSave.Enabled = true;
+                }
+            }
+            else
+            {
+                _selectedCustomer = null;
+                lblSelectedCustomer.Text = "";
+                SelectedCustomer = null;
+
+                if (btnSave != null)
+                    btnSave.Enabled = false;
+            }
+        }
+
+        private void BtnNewCustomer_Click(object sender, EventArgs e)
+        {
+            ShowNewCustomerDialog();
+        }
+
+        private void ShowNewCustomerDialog()
+        {
+            var form = new Form
+            {
+                Text = "📝 Tạo Khách Hàng Mới",
+                Width = 450,
+                Height = 400,
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                BackColor = Color.FromArgb(245, 245, 245)
+            };
+
+            var pnlContent = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(20),
+                BackColor = Color.FromArgb(245, 245, 245)
+            };
+
+            var lblTitle = new Label
+            {
+                Text = "Nhập Thông Tin Khách Hàng",
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                ForeColor = Color.FromArgb(33, 150, 243),
+                AutoSize = true,
+                Parent = pnlContent,
+                Location = new Point(20, 10)
+            };
+
+            int yPos = 50;
+
+            AddFormField(pnlContent, "👤 Tên khách hàng *", out var txtName, yPos); yPos += 60;
+            AddFormField(pnlContent, "🆔 CMND/CCCD", out var txtIDCard, yPos); yPos += 60;
+            AddFormField(pnlContent, "📞 Số điện thoại", out var txtPhone, yPos); yPos += 60;
+
+            var btnSave = new Button
+            {
+                Text = "✓ Lưu",
+                Width = 100,
+                Height = 40,
+                Location = new Point(200, yPos),
+                BackColor = Color.FromArgb(76, 175, 80),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                Parent = pnlContent
+            };
+            btnSave.FlatAppearance.BorderSize = 0;
+
+            var btnCancel = new Button
+            {
+                Text = "✕ Hủy",
+                Width = 100,
+                Height = 40,
+                Location = new Point(310, yPos),
+                BackColor = Color.FromArgb(244, 67, 54),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                DialogResult = DialogResult.Cancel,
+                Parent = pnlContent
+            };
+            btnCancel.FlatAppearance.BorderSize = 0;
+
+            btnSave.Click += (s, e) =>
+   {
+       if (string.IsNullOrWhiteSpace(txtName.Text))
+       {
+           MessageBox.Show("Vui lòng nhập tên khách hàng!", "⚠ Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+           return;
+       }
+
+       var newCustomer = new Customer
+       {
+           CustomerId = $"KH{DateTime.Now.Ticks % 10000}",
+           Name = txtName.Text.Trim(),
+           IdNumber = txtIDCard.Text.Trim(),
+           PhoneNumber = txtPhone.Text.Trim(),
+           Gender = 1,
+           DateOfBirth = DateTime.Now
+       };
+
+       _allCustomers.Add(newCustomer);
+       PopulateCustomerCombo(_allCustomers);
+
+       MessageBox.Show($"✓ Khách hàng '{newCustomer.Name}' đã được thêm thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+       form.Close();
+   };
+
+            form.Controls.Add(pnlContent);
+            form.ShowDialog();
+        }
+
+        private void AddFormField(Panel parent, string label, out TextBox textBox, int yPos)
+        {
+            var lbl = new Label
+            {
+                Text = label,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Location = new Point(0, yPos),
+                AutoSize = true,
+                ForeColor = Color.FromArgb(64, 64, 64),
+                Parent = parent
+            };
+
+            textBox = new TextBox
+            {
+                Location = new Point(0, yPos + 25),
+                Width = 380,
+                Height = 28,
+                Font = new Font("Segoe UI", 10),
+                BorderStyle = BorderStyle.FixedSingle,
+                Parent = parent
+            };
+        }
+
+        private void OnSaveBooking(Button btnSave)
+        {
+            if (_selectedCustomer == null)
+            {
+                MessageBox.Show("Vui lòng chọn khách hàng!", "⚠ Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            IsConfirmed = true;
+            SelectedCustomer = _selectedCustomer;
+
+            var message = $"✓ PHIẾU ĐẶT PHÒNG ĐÃ ĐƯỢC LƯU\n\n" +
+        $"📋 THÔNG TIN:\n" +
+  $"• Mã chi tiết: {_rentalDetailId}\n" +
+    $"• Khách hàng: {_selectedCustomer.Name}\n" +
+      $"• Phòng: {_room.Name} ({_room.RoomId})\n" +
+        $"• Ngày nhận: {_checkInDate:dd/MM/yyyy HH:mm}\n" +
+                $"• Ngày trả: {_checkOutDate:dd/MM/yyyy HH:mm}\n" +
+       $"• Tổng tiền: {TotalPrice:N0} VNĐ";
+
+            MessageBox.Show(message, "✓ Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void OnPrintBooking()
+        {
+            MessageBox.Show("Chức năng in sẽ được cập nhật sớm!", "ℹ Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1000, 850);
+            this.Name = "BookingForm";
+            this.ResumeLayout(false);
+        }
+    }
+}
