@@ -1,0 +1,598 @@
+﻿namespace QuanLyKhachSan.UI.BookingUI
+{
+    partial class BookingForm
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+
+            InitializeHeaderControls();
+            InitializeBookingInfoControls();
+            InitializeCustomerInfoControls();
+            InitializeRoomListControls();
+            InitializeFooterControls();
+
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1200, 750);
+            this.Text = "📋 PHIẾU ĐẶT PHÒNG KHÁCH SẠN";
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.BackColor = System.Drawing.Color.FromArgb(245, 245, 250);
+            this.Icon = SystemIcons.Information;
+
+            this.ResumeLayout(false);
+            this.PerformLayout();
+        }
+
+        #endregion
+
+        #region Controls Declaration
+
+        // Header
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblSubTitle;
+
+        // Booking Info Panel
+        private System.Windows.Forms.Panel pnlBookingInfo;
+        private System.Windows.Forms.Label lblBookingInfoTitle;
+        private System.Windows.Forms.Label lblMaChiTietThue;
+        private System.Windows.Forms.TextBox txtMaChiTietThue;
+        private System.Windows.Forms.Label lblNhanVienLapPhieu;
+        private System.Windows.Forms.TextBox txtNhanVienLapPhieu;
+        private System.Windows.Forms.Label lblNgayLapPhieu;
+        private System.Windows.Forms.DateTimePicker dtpNgayLapPhieu;
+        private System.Windows.Forms.Label lblTinhTrangXuLy;
+        private System.Windows.Forms.ComboBox cboTinhTrangXuLy;
+        private System.Windows.Forms.Label lblTienDatCoc;
+        private System.Windows.Forms.TextBox txtTienDatCoc;
+
+        // Customer Info Panel
+        private System.Windows.Forms.Panel pnlCustomerInfo;
+        private System.Windows.Forms.Label lblCustomerInfoTitle;
+        private System.Windows.Forms.Label lblMaKhachHang;
+        private System.Windows.Forms.TextBox txtMaKhachHang;
+        private System.Windows.Forms.Label lblHoTenKhachHang;
+        private System.Windows.Forms.TextBox txtHoTenKhachHang;
+        private System.Windows.Forms.Label lblCMND;
+        private System.Windows.Forms.TextBox txtCMND;
+        private System.Windows.Forms.Label lblSoDienThoai;
+        private System.Windows.Forms.TextBox txtSoDienThoai;
+        private System.Windows.Forms.Label lblNgaySinh;
+        private System.Windows.Forms.DateTimePicker dtpNgaySinh;
+        private System.Windows.Forms.Label lblGioiTinh;
+        private System.Windows.Forms.RadioButton rdoNam;
+        private System.Windows.Forms.RadioButton rdoNu;
+        private System.Windows.Forms.Label lblDiaChi;
+        private System.Windows.Forms.Label lblDuong;
+        private System.Windows.Forms.TextBox txtDuong;
+        private System.Windows.Forms.Label lblPhuongThon;
+        private System.Windows.Forms.TextBox txtPhuongThon;
+        private System.Windows.Forms.Label lblQuanHuyen;
+        private System.Windows.Forms.TextBox txtQuanHuyen;
+        private System.Windows.Forms.Label lblTinhThanh;
+        private System.Windows.Forms.TextBox txtTinhThanh;
+        private System.Windows.Forms.Label lblQuocTich;
+        private System.Windows.Forms.TextBox txtQuocTich;
+        // ✅ NEW: Customer Search & Selection
+        private System.Windows.Forms.Label lblSearchCustomer;
+        private System.Windows.Forms.TextBox txtSearchCustomer;
+        private System.Windows.Forms.Button btnSearchCustomer;
+        private System.Windows.Forms.Button btnNewCustomer;
+        private System.Windows.Forms.DataGridView dgvCustomers;
+        private System.Windows.Forms.Label lblDivider;
+
+        // Room List Panel
+        private System.Windows.Forms.Panel pnlRoomList;
+        private System.Windows.Forms.Label lblRoomListTitle;
+        private System.Windows.Forms.DataGridView dgvRooms;
+
+        // Footer
+        private System.Windows.Forms.Label lblTongCong;
+        private System.Windows.Forms.Label lblTongCongValue;
+        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Button btnThemPhong;
+        private System.Windows.Forms.Button btnTaoPhieu;
+        private System.Windows.Forms.Button btnLuuPhieuThue;
+
+        #endregion
+
+        #region Initialize Methods
+
+        private void InitializeHeaderControls()
+        {
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.lblTitle.Text = "📋 PHIẾU ĐẶT PHÒNG KHÁCH SẠN";
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(25, 118, 210);
+            this.lblTitle.Location = new System.Drawing.Point(20, 12);
+            this.lblTitle.Size = new System.Drawing.Size(600, 40);
+            this.lblTitle.AutoSize = false;
+            this.Controls.Add(this.lblTitle);
+
+            this.lblSubTitle = new System.Windows.Forms.Label();
+            this.lblSubTitle.Text = "Tạo phiếu thuê phòng cho khách hàng mới hoặc có sẵn";
+            this.lblSubTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic);
+            this.lblSubTitle.ForeColor = System.Drawing.Color.FromArgb(120, 120, 120);
+            this.lblSubTitle.Location = new System.Drawing.Point(20, 50);
+            this.lblSubTitle.Size = new System.Drawing.Size(600, 22);
+            this.Controls.Add(this.lblSubTitle);
+        }
+
+        private void InitializeBookingInfoControls()
+        {
+            this.pnlBookingInfo = new System.Windows.Forms.Panel();
+            this.pnlBookingInfo.BackColor = System.Drawing.Color.White;
+            this.pnlBookingInfo.Location = new System.Drawing.Point(20, 75);
+            this.pnlBookingInfo.Size = new System.Drawing.Size(1110, 80);
+            this.pnlBookingInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.pnlBookingInfo);
+
+            this.lblBookingInfoTitle = new System.Windows.Forms.Label();
+            this.lblBookingInfoTitle.Text = "THÔNG TIN PHIẾU THUÊ";
+            this.lblBookingInfoTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBookingInfoTitle.ForeColor = System.Drawing.Color.FromArgb(33, 150, 243);
+            this.lblBookingInfoTitle.Location = new System.Drawing.Point(10, 5);
+            this.lblBookingInfoTitle.Size = new System.Drawing.Size(250, 25);
+            this.pnlBookingInfo.Controls.Add(this.lblBookingInfoTitle);
+
+            this.lblMaChiTietThue = new System.Windows.Forms.Label();
+            this.lblMaChiTietThue.Text = "Mã chi tiết thuê";
+            this.lblMaChiTietThue.Location = new System.Drawing.Point(10, 35);
+            this.lblMaChiTietThue.Size = new System.Drawing.Size(120, 20);
+            this.pnlBookingInfo.Controls.Add(this.lblMaChiTietThue);
+
+            this.txtMaChiTietThue = new System.Windows.Forms.TextBox();
+            this.txtMaChiTietThue.Location = new System.Drawing.Point(10, 55);
+            this.txtMaChiTietThue.Size = new System.Drawing.Size(200, 23);
+            this.txtMaChiTietThue.ReadOnly = true;
+            this.txtMaChiTietThue.BackColor = System.Drawing.Color.FromArgb(245, 245, 245);
+            this.pnlBookingInfo.Controls.Add(this.txtMaChiTietThue);
+
+            this.lblNhanVienLapPhieu = new System.Windows.Forms.Label();
+            this.lblNhanVienLapPhieu.Text = "Nhân viên lập phiếu";
+            this.lblNhanVienLapPhieu.Location = new System.Drawing.Point(230, 35);
+            this.lblNhanVienLapPhieu.Size = new System.Drawing.Size(150, 20);
+            this.pnlBookingInfo.Controls.Add(this.lblNhanVienLapPhieu);
+
+            this.txtNhanVienLapPhieu = new System.Windows.Forms.TextBox();
+            this.txtNhanVienLapPhieu.Location = new System.Drawing.Point(230, 55);
+            this.txtNhanVienLapPhieu.Size = new System.Drawing.Size(200, 23);
+            this.txtNhanVienLapPhieu.Text = "Admin";
+            this.txtNhanVienLapPhieu.ReadOnly = true;
+            this.txtNhanVienLapPhieu.BackColor = System.Drawing.Color.FromArgb(245, 245, 245);
+            this.pnlBookingInfo.Controls.Add(this.txtNhanVienLapPhieu);
+
+            this.lblNgayLapPhieu = new System.Windows.Forms.Label();
+            this.lblNgayLapPhieu.Text = "Ngày lập phiếu";
+            this.lblNgayLapPhieu.Location = new System.Drawing.Point(450, 35);
+            this.lblNgayLapPhieu.Size = new System.Drawing.Size(120, 20);
+            this.pnlBookingInfo.Controls.Add(this.lblNgayLapPhieu);
+
+            this.dtpNgayLapPhieu = new System.Windows.Forms.DateTimePicker();
+            this.dtpNgayLapPhieu.Location = new System.Drawing.Point(450, 55);
+            this.dtpNgayLapPhieu.Size = new System.Drawing.Size(200, 23);
+            this.dtpNgayLapPhieu.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpNgayLapPhieu.CustomFormat = "dd/MM/yyyy HH:mm:ss";
+            this.pnlBookingInfo.Controls.Add(this.dtpNgayLapPhieu);
+
+            this.lblTinhTrangXuLy = new System.Windows.Forms.Label();
+            this.lblTinhTrangXuLy.Text = "Tình trạng xử lý";
+            this.lblTinhTrangXuLy.Location = new System.Drawing.Point(670, 35);
+            this.lblTinhTrangXuLy.Size = new System.Drawing.Size(120, 20);
+            this.pnlBookingInfo.Controls.Add(this.lblTinhTrangXuLy);
+
+            this.cboTinhTrangXuLy = new System.Windows.Forms.ComboBox();
+            this.cboTinhTrangXuLy.Location = new System.Drawing.Point(670, 55);
+            this.cboTinhTrangXuLy.Size = new System.Drawing.Size(200, 23);
+            this.cboTinhTrangXuLy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboTinhTrangXuLy.Items.AddRange(new object[] { "Đang xử lý", "Đã xác nhận", "Đã hủy" });
+            this.cboTinhTrangXuLy.SelectedIndex = 0;
+            this.pnlBookingInfo.Controls.Add(this.cboTinhTrangXuLy);
+
+            this.lblTienDatCoc = new System.Windows.Forms.Label();
+            this.lblTienDatCoc.Text = "Tiền đặt cọc";
+            this.lblTienDatCoc.Location = new System.Drawing.Point(890, 35);
+            this.lblTienDatCoc.Size = new System.Drawing.Size(100, 20);
+            this.pnlBookingInfo.Controls.Add(this.lblTienDatCoc);
+
+            this.txtTienDatCoc = new System.Windows.Forms.TextBox();
+            this.txtTienDatCoc.Location = new System.Drawing.Point(890, 55);
+            this.txtTienDatCoc.Size = new System.Drawing.Size(200, 23);
+            this.pnlBookingInfo.Controls.Add(this.txtTienDatCoc);
+        }
+
+        private void InitializeCustomerInfoControls()
+        {
+            this.pnlCustomerInfo = new System.Windows.Forms.Panel();
+            this.pnlCustomerInfo.BackColor = System.Drawing.Color.White;
+            this.pnlCustomerInfo.Location = new System.Drawing.Point(20, 165);
+            this.pnlCustomerInfo.Size = new System.Drawing.Size(1110, 300);
+            this.pnlCustomerInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.pnlCustomerInfo);
+
+            this.lblCustomerInfoTitle = new System.Windows.Forms.Label();
+            this.lblCustomerInfoTitle.Text = "THÔNG TIN KHÁCH HÀNG";
+            this.lblCustomerInfoTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCustomerInfoTitle.ForeColor = System.Drawing.Color.FromArgb(33, 150, 243);
+            this.lblCustomerInfoTitle.Location = new System.Drawing.Point(10, 5);
+            this.lblCustomerInfoTitle.Size = new System.Drawing.Size(250, 25);
+            this.pnlCustomerInfo.Controls.Add(this.lblCustomerInfoTitle);
+
+            // ✅ NEW: Search Section
+            this.lblSearchCustomer = new System.Windows.Forms.Label();
+            this.lblSearchCustomer.Text = "🔍 Tìm kiếm khách hàng";
+            this.lblSearchCustomer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblSearchCustomer.Location = new System.Drawing.Point(10, 35);
+            this.lblSearchCustomer.Size = new System.Drawing.Size(150, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblSearchCustomer);
+
+            this.txtSearchCustomer = new System.Windows.Forms.TextBox();
+            this.txtSearchCustomer.Location = new System.Drawing.Point(10, 55);
+            this.txtSearchCustomer.Size = new System.Drawing.Size(300, 23);
+            this.txtSearchCustomer.PlaceholderText = "Nhập CMND, SĐT hoặc Tên...";
+            this.pnlCustomerInfo.Controls.Add(this.txtSearchCustomer);
+
+            this.btnSearchCustomer = new System.Windows.Forms.Button();
+            this.btnSearchCustomer.Text = "Tìm Kiếm";
+            this.btnSearchCustomer.Location = new System.Drawing.Point(320, 55);
+            this.btnSearchCustomer.Size = new System.Drawing.Size(100, 23);
+            this.btnSearchCustomer.BackColor = System.Drawing.Color.FromArgb(33, 150, 243);
+            this.btnSearchCustomer.ForeColor = System.Drawing.Color.White;
+            this.btnSearchCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pnlCustomerInfo.Controls.Add(this.btnSearchCustomer);
+
+            this.btnNewCustomer = new System.Windows.Forms.Button();
+            this.btnNewCustomer.Text = "➕ Khách Mới";
+            this.btnNewCustomer.Location = new System.Drawing.Point(430, 55);
+            this.btnNewCustomer.Size = new System.Drawing.Size(100, 23);
+            this.btnNewCustomer.BackColor = System.Drawing.Color.FromArgb(76, 175, 80);
+            this.btnNewCustomer.ForeColor = System.Drawing.Color.White;
+            this.btnNewCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.pnlCustomerInfo.Controls.Add(this.btnNewCustomer);
+
+            // ✅ NEW: Customer List Table
+            this.dgvCustomers = new System.Windows.Forms.DataGridView();
+            this.dgvCustomers.Location = new System.Drawing.Point(10, 85);
+            this.dgvCustomers.Size = new System.Drawing.Size(1088, 120);
+            this.dgvCustomers.AllowUserToAddRows = false;
+            this.dgvCustomers.AllowUserToDeleteRows = false;
+            this.dgvCustomers.BackgroundColor = System.Drawing.Color.White;
+            this.dgvCustomers.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvCustomers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCustomers.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(100, 181, 246);
+            this.dgvCustomers.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            this.dgvCustomers.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.dgvCustomers.EnableHeadersVisualStyles = false;
+            this.dgvCustomers.ReadOnly = true;
+            this.dgvCustomers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+
+            this.dgvCustomers.Columns.Add("MaKH", "MÃ KH");
+            this.dgvCustomers.Columns.Add("TenKH", "TÊN KHÁCH HÀNG");
+            this.dgvCustomers.Columns.Add("CMND", "CMND/CCCD");
+            this.dgvCustomers.Columns.Add("SDT", "SĐT");
+            this.dgvCustomers.Columns.Add("NgaySinh", "NGÀY SINH");
+            this.dgvCustomers.Columns.Add("DiaChi", "ĐỊA CHỈ");
+
+            this.dgvCustomers.Columns["MaKH"].Width = 80;
+            this.dgvCustomers.Columns["TenKH"].Width = 150;
+            this.dgvCustomers.Columns["CMND"].Width = 120;
+            this.dgvCustomers.Columns["SDT"].Width = 120;
+            this.dgvCustomers.Columns["NgaySinh"].Width = 100;
+            this.dgvCustomers.Columns["DiaChi"].Width = 300;
+
+            this.pnlCustomerInfo.Controls.Add(this.dgvCustomers);
+
+            // ✅ DIVIDER: Separator line
+            this.lblDivider = new System.Windows.Forms.Label();
+            this.lblDivider.BackColor = System.Drawing.Color.FromArgb(200, 200, 200);
+            this.lblDivider.Location = new System.Drawing.Point(10, 210);
+            this.lblDivider.Size = new System.Drawing.Size(1088, 1);
+            this.pnlCustomerInfo.Controls.Add(this.lblDivider);
+
+            // ✅ Customer Detail Info
+            this.lblMaKhachHang = new System.Windows.Forms.Label();
+            this.lblMaKhachHang.Text = "Mã khách hàng";
+            this.lblMaKhachHang.Location = new System.Drawing.Point(10, 220);
+            this.lblMaKhachHang.Size = new System.Drawing.Size(100, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblMaKhachHang);
+
+            this.txtMaKhachHang = new System.Windows.Forms.TextBox();
+            this.txtMaKhachHang.Location = new System.Drawing.Point(10, 240);
+            this.txtMaKhachHang.Size = new System.Drawing.Size(200, 23);
+            this.pnlCustomerInfo.Controls.Add(this.txtMaKhachHang);
+
+            this.lblHoTenKhachHang = new System.Windows.Forms.Label();
+            this.lblHoTenKhachHang.Text = "Họ tên khách hàng";
+            this.lblHoTenKhachHang.Location = new System.Drawing.Point(230, 220);
+            this.lblHoTenKhachHang.Size = new System.Drawing.Size(120, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblHoTenKhachHang);
+
+            this.txtHoTenKhachHang = new System.Windows.Forms.TextBox();
+            this.txtHoTenKhachHang.Location = new System.Drawing.Point(230, 240);
+            this.txtHoTenKhachHang.Size = new System.Drawing.Size(200, 23);
+            this.pnlCustomerInfo.Controls.Add(this.txtHoTenKhachHang);
+
+            this.lblCMND = new System.Windows.Forms.Label();
+            this.lblCMND.Text = "CMND/CCCD";
+            this.lblCMND.Location = new System.Drawing.Point(450, 220);
+            this.lblCMND.Size = new System.Drawing.Size(100, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblCMND);
+
+            this.txtCMND = new System.Windows.Forms.TextBox();
+            this.txtCMND.Location = new System.Drawing.Point(450, 240);
+            this.txtCMND.Size = new System.Drawing.Size(200, 23);
+            this.pnlCustomerInfo.Controls.Add(this.txtCMND);
+
+            this.lblSoDienThoai = new System.Windows.Forms.Label();
+            this.lblSoDienThoai.Text = "Số điện thoại";
+            this.lblSoDienThoai.Location = new System.Drawing.Point(670, 220);
+            this.lblSoDienThoai.Size = new System.Drawing.Size(100, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblSoDienThoai);
+
+            this.txtSoDienThoai = new System.Windows.Forms.TextBox();
+            this.txtSoDienThoai.Location = new System.Drawing.Point(670, 240);
+            this.txtSoDienThoai.Size = new System.Drawing.Size(200, 23);
+            this.pnlCustomerInfo.Controls.Add(this.txtSoDienThoai);
+
+            this.lblNgaySinh = new System.Windows.Forms.Label();
+            this.lblNgaySinh.Text = "Ngày sinh";
+            this.lblNgaySinh.Location = new System.Drawing.Point(890, 220);
+            this.lblNgaySinh.Size = new System.Drawing.Size(100, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblNgaySinh);
+
+            this.dtpNgaySinh = new System.Windows.Forms.DateTimePicker();
+            this.dtpNgaySinh.Location = new System.Drawing.Point(890, 240);
+            this.dtpNgaySinh.Size = new System.Drawing.Size(200, 23);
+            this.dtpNgaySinh.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.pnlCustomerInfo.Controls.Add(this.dtpNgaySinh);
+
+            this.lblGioiTinh = new System.Windows.Forms.Label();
+            this.lblGioiTinh.Text = "Giới tính";
+            this.lblGioiTinh.Location = new System.Drawing.Point(10, 270);
+            this.lblGioiTinh.Size = new System.Drawing.Size(100, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblGioiTinh);
+
+            this.rdoNam = new System.Windows.Forms.RadioButton();
+            this.rdoNam.Text = "Nam";
+            this.rdoNam.Location = new System.Drawing.Point(10, 290);
+            this.rdoNam.Size = new System.Drawing.Size(80, 25);
+            this.rdoNam.Checked = true;
+            this.pnlCustomerInfo.Controls.Add(this.rdoNam);
+
+            this.rdoNu = new System.Windows.Forms.RadioButton();
+            this.rdoNu.Text = "Nữ";
+            this.rdoNu.Location = new System.Drawing.Point(100, 290);
+            this.rdoNu.Size = new System.Drawing.Size(80, 25);
+            this.pnlCustomerInfo.Controls.Add(this.rdoNu);
+
+            this.lblDiaChi = new System.Windows.Forms.Label();
+            this.lblDiaChi.Text = "Địa chỉ";
+            this.lblDiaChi.Location = new System.Drawing.Point(230, 270);
+            this.lblDiaChi.Size = new System.Drawing.Size(100, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblDiaChi);
+
+            this.lblDuong = new System.Windows.Forms.Label();
+            this.lblDuong.Text = "Đường:";
+            this.lblDuong.Location = new System.Drawing.Point(230, 292);
+            this.lblDuong.Size = new System.Drawing.Size(50, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblDuong);
+
+            this.txtDuong = new System.Windows.Forms.TextBox();
+            this.txtDuong.Location = new System.Drawing.Point(285, 290);
+            this.txtDuong.Size = new System.Drawing.Size(145, 23);
+            this.pnlCustomerInfo.Controls.Add(this.txtDuong);
+
+            this.lblPhuongThon = new System.Windows.Forms.Label();
+            this.lblPhuongThon.Text = "Phường/Thôn:";
+            this.lblPhuongThon.Location = new System.Drawing.Point(450, 292);
+            this.lblPhuongThon.Size = new System.Drawing.Size(90, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblPhuongThon);
+
+            this.txtPhuongThon = new System.Windows.Forms.TextBox();
+            this.txtPhuongThon.Location = new System.Drawing.Point(545, 290);
+            this.txtPhuongThon.Size = new System.Drawing.Size(105, 23);
+            this.pnlCustomerInfo.Controls.Add(this.txtPhuongThon);
+
+            this.lblQuanHuyen = new System.Windows.Forms.Label();
+            this.lblQuanHuyen.Text = "Quận/Huyện:";
+            this.lblQuanHuyen.Location = new System.Drawing.Point(670, 292);
+            this.lblQuanHuyen.Size = new System.Drawing.Size(85, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblQuanHuyen);
+
+            this.txtQuanHuyen = new System.Windows.Forms.TextBox();
+            this.txtQuanHuyen.Location = new System.Drawing.Point(760, 290);
+            this.txtQuanHuyen.Size = new System.Drawing.Size(110, 23);
+            this.pnlCustomerInfo.Controls.Add(this.txtQuanHuyen);
+
+            this.lblTinhThanh = new System.Windows.Forms.Label();
+            this.lblTinhThanh.Text = "Tỉnh/Thành:";
+            this.lblTinhThanh.Location = new System.Drawing.Point(890, 292);
+            this.lblTinhThanh.Size = new System.Drawing.Size(75, 20);
+            this.pnlCustomerInfo.Controls.Add(this.lblTinhThanh);
+
+            this.txtTinhThanh = new System.Windows.Forms.TextBox();
+            this.txtTinhThanh.Location = new System.Drawing.Point(970, 290);
+            this.txtTinhThanh.Size = new System.Drawing.Size(120, 23);
+            this.pnlCustomerInfo.Controls.Add(this.txtTinhThanh);
+
+            this.lblQuocTich = new System.Windows.Forms.Label();
+            this.lblQuocTich.Text = "Quốc tịch";
+            this.lblQuocTich.Location = new System.Drawing.Point(890, 270);
+            this.lblQuocTich.Size = new System.Drawing.Size(100, 20);
+            this.lblQuocTich.Visible = false;
+            this.pnlCustomerInfo.Controls.Add(this.lblQuocTich);
+
+            this.txtQuocTich = new System.Windows.Forms.TextBox();
+            this.txtQuocTich.Location = new System.Drawing.Point(890, 290);
+            this.txtQuocTich.Size = new System.Drawing.Size(200, 23);
+            this.txtQuocTich.Visible = false;
+            this.pnlCustomerInfo.Controls.Add(this.txtQuocTich);
+        }
+
+        private void InitializeRoomListControls()
+        {
+            this.pnlRoomList = new System.Windows.Forms.Panel();
+            this.pnlRoomList.BackColor = System.Drawing.Color.White;
+            this.pnlRoomList.Location = new System.Drawing.Point(20, 475);
+            this.pnlRoomList.Size = new System.Drawing.Size(1110, 230);
+            this.pnlRoomList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.pnlRoomList);
+
+            this.lblRoomListTitle = new System.Windows.Forms.Label();
+            this.lblRoomListTitle.Text = "DANH SÁCH PHÒNG ĐANG XỬ LÝ";
+            this.lblRoomListTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblRoomListTitle.ForeColor = System.Drawing.Color.White;
+            this.lblRoomListTitle.BackColor = System.Drawing.Color.FromArgb(33, 150, 243);
+            this.lblRoomListTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblRoomListTitle.Size = new System.Drawing.Size(1108, 30);
+            this.lblRoomListTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblRoomListTitle.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.pnlRoomList.Controls.Add(this.lblRoomListTitle);
+
+            this.dgvRooms = new System.Windows.Forms.DataGridView();
+            this.dgvRooms.Location = new System.Drawing.Point(10, 35);
+            this.dgvRooms.Size = new System.Drawing.Size(1088, 185);
+            this.dgvRooms.AllowUserToAddRows = false;
+            this.dgvRooms.AllowUserToDeleteRows = false;
+            this.dgvRooms.BackgroundColor = System.Drawing.Color.White;
+            this.dgvRooms.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvRooms.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvRooms.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(100, 181, 246);
+            this.dgvRooms.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            this.dgvRooms.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.dgvRooms.EnableHeadersVisualStyles = false;
+            this.dgvRooms.ReadOnly = true;
+            this.dgvRooms.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+
+            this.dgvRooms.Columns.Add("STT", "STT");
+            this.dgvRooms.Columns.Add("MaPhong", "MÃ PHÒNG");
+            this.dgvRooms.Columns.Add("TenPhong", "TÊN PHÒNG");
+            this.dgvRooms.Columns.Add("TinhTrang", "TÌNH TRẠNG");
+            this.dgvRooms.Columns.Add("LoaiHinhThue", "LOẠI HÌNH THUÊ");
+            this.dgvRooms.Columns.Add("NgayThue", "NGÀY THUÊ");
+            this.dgvRooms.Columns.Add("NgayTra", "NGÀY TRẢ");
+            this.dgvRooms.Columns.Add("NgayCheckout", "NGÀY CHECKOUT");
+            this.dgvRooms.Columns.Add("GiaPhong", "GIÁ PHÒNG");
+
+            System.Windows.Forms.DataGridViewButtonColumn btnDelete = new System.Windows.Forms.DataGridViewButtonColumn();
+            btnDelete.Name = "Xoa";
+            btnDelete.HeaderText = "XÓA";
+            btnDelete.Text = "X";
+            btnDelete.UseColumnTextForButtonValue = true;
+            btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnDelete.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(244, 67, 54);
+            btnDelete.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            this.dgvRooms.Columns.Add(btnDelete);
+
+            this.dgvRooms.Columns["STT"].Width = 50;
+            this.dgvRooms.Columns["MaPhong"].Width = 100;
+            this.dgvRooms.Columns["TenPhong"].Width = 120;
+            this.dgvRooms.Columns["TinhTrang"].Width = 120;
+            this.dgvRooms.Columns["LoaiHinhThue"].Width = 120;
+            this.dgvRooms.Columns["NgayThue"].Width = 150;
+            this.dgvRooms.Columns["NgayTra"].Width = 150;
+            this.dgvRooms.Columns["NgayCheckout"].Width = 150;
+            this.dgvRooms.Columns["GiaPhong"].Width = 120;
+            this.dgvRooms.Columns["Xoa"].Width = 60;
+
+            this.dgvRooms.Rows.Add("1", "P23032604", "Hello", "Đang xử lý", "Theo ngày", "30/03/2026 07:00:00", "31/03/2026 07:00:00", "", "80,000 VNĐ");
+
+            this.pnlRoomList.Controls.Add(this.dgvRooms);
+        }
+
+        private void InitializeFooterControls()
+        {
+            this.lblTongCong = new System.Windows.Forms.Label();
+            this.lblTongCong.Text = "💰 Tổng cộng:";
+            this.lblTongCong.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTongCong.ForeColor = System.Drawing.Color.FromArgb(33, 150, 243);
+            this.lblTongCong.Location = new System.Drawing.Point(20, 715);
+            this.lblTongCong.Size = new System.Drawing.Size(120, 25);
+            this.lblTongCong.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Controls.Add(this.lblTongCong);
+
+            this.lblTongCongValue = new System.Windows.Forms.Label();
+            this.lblTongCongValue.Text = "0 VNĐ";
+            this.lblTongCongValue.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblTongCongValue.ForeColor = System.Drawing.Color.FromArgb(244, 67, 54);
+            this.lblTongCongValue.Location = new System.Drawing.Point(145, 715);
+            this.lblTongCongValue.Size = new System.Drawing.Size(200, 25);
+            this.lblTongCongValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Controls.Add(this.lblTongCongValue);
+
+            // ✅ NEW: Reset Button
+            this.btnReset = new System.Windows.Forms.Button();
+            this.btnReset.Text = "🔄 Làm Mới";
+            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnReset.BackColor = System.Drawing.Color.FromArgb(158, 158, 158);
+            this.btnReset.ForeColor = System.Drawing.Color.White;
+            this.btnReset.Location = new System.Drawing.Point(600, 710);
+            this.btnReset.Size = new System.Drawing.Size(120, 35);
+            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReset.FlatAppearance.BorderSize = 0;
+            this.btnReset.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(130, 130, 130);
+            this.btnReset.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnReset.Click += BtnReset_Click;
+            this.Controls.Add(this.btnReset);
+
+            this.btnThemPhong = new System.Windows.Forms.Button();
+            this.btnThemPhong.Text = "➕ Thêm Phòng";
+            this.btnThemPhong.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnThemPhong.BackColor = System.Drawing.Color.FromArgb(156, 39, 176);
+            this.btnThemPhong.ForeColor = System.Drawing.Color.White;
+            this.btnThemPhong.Location = new System.Drawing.Point(730, 710);
+            this.btnThemPhong.Size = new System.Drawing.Size(140, 35);
+            this.btnThemPhong.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnThemPhong.FlatAppearance.BorderSize = 0;
+            this.btnThemPhong.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(123, 31, 162);
+            this.btnThemPhong.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnThemPhong.Click += BtnThemPhong_Click;
+            this.Controls.Add(this.btnThemPhong);
+
+            // ✅ NEW: Create Rental Button (Main action)
+            this.btnTaoPhieu = new System.Windows.Forms.Button();
+            this.btnTaoPhieu.Text = "✅ TẠO PHIẾU";
+            this.btnTaoPhieu.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnTaoPhieu.BackColor = System.Drawing.Color.FromArgb(76, 175, 80);
+            this.btnTaoPhieu.ForeColor = System.Drawing.Color.White;
+            this.btnTaoPhieu.Location = new System.Drawing.Point(880, 710);
+            this.btnTaoPhieu.Size = new System.Drawing.Size(160, 35);
+            this.btnTaoPhieu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTaoPhieu.FlatAppearance.BorderSize = 0;
+            this.btnTaoPhieu.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(56, 142, 60);
+            this.btnTaoPhieu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTaoPhieu.Click += BtnTaoPhieu_Click;
+            this.Controls.Add(this.btnTaoPhieu);
+
+            // ✅ OLD: Lưu phiếu thuê button (Hidden, kept for compatibility)
+            this.btnLuuPhieuThue = new System.Windows.Forms.Button();
+            this.btnLuuPhieuThue.Text = "Lưu phiếu thuê";
+            this.btnLuuPhieuThue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLuuPhieuThue.BackColor = System.Drawing.Color.FromArgb(156, 39, 176);
+            this.btnLuuPhieuThue.ForeColor = System.Drawing.Color.White;
+            this.btnLuuPhieuThue.Location = new System.Drawing.Point(1050, 710);
+            this.btnLuuPhieuThue.Size = new System.Drawing.Size(130, 35);
+            this.btnLuuPhieuThue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLuuPhieuThue.FlatAppearance.BorderSize = 0;
+            this.btnLuuPhieuThue.Visible = false;
+            this.btnLuuPhieuThue.Click += BtnLuuPhieuThue_Click;
+            this.Controls.Add(this.btnLuuPhieuThue);
+        }
+
+        #endregion
+    }
+}

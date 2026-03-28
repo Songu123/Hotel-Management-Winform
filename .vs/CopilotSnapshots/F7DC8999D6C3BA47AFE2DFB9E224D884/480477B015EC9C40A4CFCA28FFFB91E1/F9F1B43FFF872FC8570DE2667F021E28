@@ -1,0 +1,676 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    public partial class BookingForm : Form
+    {
+        private Room _selectedRoom;
+        private DateTime _checkInDate;
+        private DateTime _checkOutDate;
+        private List<Customer> _customers;
+        private IRoomService _roomService;
+        private IBookingService _bookingService;
+        private ICustomerService _customerService;
+        private IRentalDetailService _rentalDetailService;
+        private IRoomRentalDetailService _roomRentalDetailService;
+        private IPrintService _printService;
+        private List<RoomRentalDetail> _selectedRooms = new List<RoomRentalDetail>();
+        private bool _isNewCustomer = false;
+        public bool IsConfirmed { get; private set; } = false;
+
+        public BookingForm()
+        {
+            InitializeComponent();
+        }
+
+        public BookingForm(Room room, DateTime checkInDate, DateTime checkOutDate, List<Customer> customers) : this()
+        {
+            _selectedRoom = room ?? throw new ArgumentNullException(nameof(room));
+            _checkInDate = checkInDate;
+            _checkOutDate = checkOutDate;
+            _customers = customers ?? new List<Customer>();
+
+            try
+            {
+                var serviceProvider = (IServiceProvider)Program.Services;
+                _roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+                _bookingService = serviceProvider.GetService(typeof(IBookingService)) as IBookingService;
+                _customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
+                _rentalDetailService = serviceProvider.GetService(typeof(IRentalDetailService)) as IRentalDetailService;
+                _roomRentalDetailService = serviceProvider.GetService(typeof(IRoomRentalDetailService)) as IRoomRentalDetailService;
+                _printService = serviceProvider.GetService(typeof(IPrintService)) as IPrintService;
+
+                // ✅ FIX: Thêm phòng ngay khi khởi tạo form
+                AddInitialRoom();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting services: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// ✅ FIX: Method mới để thêm phòng ban đầu vào _selectedRooms
+        /// </summary>
+        private void AddInitialRoom()
+        {
+            try
+            {
+                if (_selectedRoom == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("Warning: _selectedRoom is null in AddInitialRoom");
+                    return;
+                }
+
+                var rentalDetail = new RoomRentalDetail
+                {
+                    RoomId = _selectedRoom.RoomId,
+                    RentalDate = _checkInDate,
+                    ReturnDate = _checkOutDate,
+                    RentalPrice = _selectedRoom.Price,
+                    RentalType = 0,
+                    Status = 0
+                };
+
+                _selectedRooms.Add(rentalDetail);
+                System.Diagnostics.Debug.WriteLine($"Initial room added: {_selectedRoom.RoomId}");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error adding initial room: {ex.Message}");
+            }
+        }
+
+        private void BookingForm_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                InitializeForm();
+                SetupEventHandlers();
+                LoadCustomerComboBox();
+
+                // ✅ FIX: DisplayRentalDetails chỉ hiển thị, không thêm phòng nữa
+                DisplayRentalDetails();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khởi tạo form: {ex.Message}", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void InitializeForm()
+        {
+            txtMaChiTietThue.Text = _rentalDetailService?.GenerateRentalDetailId() ?? $"CTT{DateTime.Now:yyyyMMddHHmmss}";
+            dtpNgayLapPhieu.Value = DateTime.Now;
+            txtNhanVienLapPhieu.Text = "Admin";
+            cboTinhTrangXuLy.SelectedIndex = 0;
+            txtTienDatCoc.Text = "0";
+            GenerateCustomerId();
+            lblQuocTich.Visible = false;
+            txtQuocTich.Visible = false;
+        }
+
+        private void GenerateCustomerId()
+        {
+            try
+            {
+                string newCustomerId = $"KH{DateTime.Now:yyMMddHHmmss}";
+                txtMaKhachHang.Text = newCustomerId;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error generating customer ID: {ex.Message}");
+                txtMaKhachHang.Text = $"KH{Guid.NewGuid().ToString().Substring(0, 12).ToUpper()}";
+            }
+        }
+
+        private void SetupEventHandlers()
+        {
+            btnThemPhong.Click += BtnThemPhong_Click;
+            btnLuuPhieuThue.Click += BtnLuuPhieuThue_Click;
+            dgvRooms.CellClick += DgvRooms_CellClick;
+            txtCMND.TextChanged += TxtCMND_TextChanged;
+            txtCMND.KeyPress += TxtCMND_KeyPress;
+            txtSoDienThoai.KeyPress += TxtSoDienThoai_KeyPress;
+            txtTienDatCoc.KeyPress += TxtTienDatCoc_KeyPress;
+            dtpNgaySinh.ValueChanged += DtpNgaySinh_ValueChanged;
+        }
+
+        private void TxtCMND_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("CMND/CCCD chỉ được nhập số", "Cảnh báo",
+         MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void TxtSoDienThoai_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void TxtTienDatCoc_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void DtpNgaySinh_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int age = DateTime.Now.Year - dtpNgaySinh.Value.Year;
+                if (dtpNgaySinh.Value.Date > DateTime.Now.AddYears(-age))
+                    age--;
+
+                if (age < 18)
+                {
+                    MessageBox.Show("Khách hàng phải trên 18 tuổi", "Cảnh báo",
+                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtpNgaySinh.Value = DateTime.Now.AddYears(-18);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error checking age: {ex.Message}");
+            }
+        }
+
+        private void TxtCMND_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string cmnd = txtCMND.Text.Trim();
+                if (string.IsNullOrEmpty(cmnd))
+                {
+                    ClearCustomerInfo();
+                    return;
+                }
+
+                var customer = _customers.FirstOrDefault(c => c.IdNumber == cmnd);
+
+                if (customer != null)
+                {
+                    _isNewCustomer = false;
+                    PopulateCustomerInfo(customer);
+                    txtMaKhachHang.Text = customer.CustomerId;
+                }
+                else
+                {
+                    _isNewCustomer = true;
+                    ClearCustomerInfo();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error loading customer info: {ex.Message}");
+            }
+        }
+
+        private void PopulateCustomerInfo(Customer customer)
+        {
+            try
+            {
+                txtMaKhachHang.Text = customer.CustomerId;
+                txtHoTenKhachHang.Text = customer.Name;
+                txtCMND.Text = customer.IdNumber;
+                txtSoDienThoai.Text = customer.PhoneNumber;
+                dtpNgaySinh.Value = customer.DateOfBirth;
+
+                if (!string.IsNullOrEmpty(customer.Address))
+                {
+                    var addressParts = customer.Address.Split(',');
+                    if (addressParts.Length > 0) txtDuong.Text = addressParts[0].Trim();
+                    if (addressParts.Length > 1) txtPhuongThon.Text = addressParts[1].Trim();
+                    if (addressParts.Length > 2) txtQuanHuyen.Text = addressParts[2].Trim();
+                    if (addressParts.Length > 3) txtTinhThanh.Text = addressParts[3].Trim();
+                }
+
+                txtQuocTich.Text = customer.Nationality;
+
+                if (customer.Gender == 0)
+                    rdoNam.Checked = true;
+                else
+                    rdoNu.Checked = true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error populating customer info: {ex.Message}");
+            }
+        }
+
+        private void ClearCustomerInfo()
+        {
+            try
+            {
+                txtHoTenKhachHang.Text = "";
+                txtSoDienThoai.Text = "";
+                txtDuong.Text = "";
+                txtPhuongThon.Text = "";
+                txtQuanHuyen.Text = "";
+                txtTinhThanh.Text = "";
+                txtQuocTich.Text = "";
+                dtpNgaySinh.Value = DateTime.Now.AddYears(-18);
+                rdoNam.Checked = true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error clearing customer info: {ex.Message}");
+            }
+        }
+
+        private async void LoadCustomerComboBox()
+        {
+            try
+            {
+                var customerNames = _customers.Select(c => $"{c.CustomerId} - {c.Name}").ToList();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// ✅ FIX: Chỉ hiển thị phòng đã có trong _selectedRooms, không thêm nữa
+        /// </summary>
+        private void DisplayRentalDetails()
+        {
+            try
+            {
+                dgvRooms.Rows.Clear();
+
+                // ✅ Kiểm tra nếu không có phòng nào trong danh sách
+                if (_selectedRooms.Count == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("Warning: No rooms in _selectedRooms to display");
+                    return;
+                }
+
+                // ✅ Hiển thị tất cả phòng trong _selectedRooms
+                int rowIndex = 1;
+                foreach (var roomDetail in _selectedRooms)
+                {
+                    var nights = (int)(roomDetail.ReturnDate - roomDetail.RentalDate).TotalDays;
+                    var totalPrice = roomDetail.RentalPrice * nights;
+
+                    // Lấy thông tin phòng từ _selectedRoom hoặc service
+                    string roomName = _selectedRoom?.RoomId == roomDetail.RoomId ?
+                                     _selectedRoom.Name : roomDetail.RoomId;
+
+                    int roomStatus = _selectedRoom?.RoomId == roomDetail.RoomId ?
+                                    _selectedRoom.Status : 0;
+
+                    dgvRooms.Rows.Add(
+                        rowIndex++,
+                        roomDetail.RoomId,
+                        roomName,
+                        GetRoomStatus(roomStatus),
+                        "Theo ngày",
+                        roomDetail.RentalDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                        roomDetail.ReturnDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                        "",
+                        $"{totalPrice:N0} VNĐ"
+                    );
+                }
+
+                UpdateTotalPrice();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi hiển thị chi tiết thuê: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string GetRoomStatus(int status)
+        {
+            return status switch
+            {
+                0 => "Trống",
+                1 => "Đã có khách",
+                2 => "Đang dọn dẹp",
+                3 => "Đang bảo trì",
+                _ => "Không xác định"
+            };
+        }
+
+        private void BtnThemPhong_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MessageBox.Show("Chức năng thêm phòng đang được phát triển", "Thông báo",
+                       MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi",
+          MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void BtnLuuPhieuThue_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // ==================== VALIDATION ====================
+
+                // ✅ BƯỚC 1: Kiểm tra phòng TRƯỚC (đã được fix)
+                if (_selectedRooms == null || _selectedRooms.Count == 0)
+                {
+                    MessageBox.Show("Vui lòng chọn ít nhất một phòng", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // ✅ Debug log
+                System.Diagnostics.Debug.WriteLine($"Total rooms in _selectedRooms: {_selectedRooms.Count}");
+
+                // ✅ BƯỚC 2: Validate CMND
+                string cmnd = txtCMND.Text.Trim();
+                if (string.IsNullOrEmpty(cmnd))
+                {
+                    MessageBox.Show("Vui lòng nhập CMND/CCCD", "Cảnh báo",
+                       MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCMND.Focus();
+                    return;
+                }
+
+                // ✅ Kiểm tra CMND chỉ là số
+                if (!long.TryParse(cmnd, out _))
+                {
+                    MessageBox.Show("CMND/CCCD phải là số", "Cảnh báo",
+                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtCMND.Focus();
+                    return;
+                }
+
+                // ✅ BƯỚC 3: Validate customer name
+                string customerName = txtHoTenKhachHang.Text.Trim();
+                if (string.IsNullOrEmpty(customerName) && _isNewCustomer)
+                {
+                    MessageBox.Show("Vui lòng nhập tên khách hàng", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtHoTenKhachHang.Focus();
+                    return;
+                }
+
+                // ✅ BƯỚC 4: Validate phone number
+                string phoneNumber = txtSoDienThoai.Text.Trim();
+                if (string.IsNullOrEmpty(phoneNumber))
+                {
+                    MessageBox.Show("Vui lòng nhập số điện thoại", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtSoDienThoai.Focus();
+                    return;
+                }
+
+                if (!long.TryParse(phoneNumber, out _))
+                {
+                    MessageBox.Show("Số điện thoại phải là số", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtSoDienThoai.Focus();
+                    return;
+                }
+
+                // ✅ BƯỚC 5: Validate age
+                int age = DateTime.Now.Year - dtpNgaySinh.Value.Year;
+                if (dtpNgaySinh.Value.Date > DateTime.Now.AddYears(-age))
+                    age--;
+
+                if (age < 18)
+                {
+                    MessageBox.Show("Khách hàng phải trên 18 tuổi", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtpNgaySinh.Focus();
+                    return;
+                }
+
+                // ✅ BƯỚC 6: Validate deposit amount
+                if (!int.TryParse(txtTienDatCoc.Text, out int depositAmount) || depositAmount < 0)
+                {
+                    MessageBox.Show("Tiền đặt cọc không hợp lệ (chỉ nhập số)", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtTienDatCoc.Focus();
+                    return;
+                }
+
+                // ✅ BƯỚC 7: Validate processing status
+                if (cboTinhTrangXuLy.SelectedIndex < 0)
+                {
+                    MessageBox.Show("Vui lòng chọn tình trạng xử lý", "Cảnh báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    cboTinhTrangXuLy.Focus();
+                    return;
+                }
+
+                // ==================== CREATE/UPDATE CUSTOMER ====================
+
+                string customerId = txtMaKhachHang.Text.Trim();
+                Customer currentCustomer = null;
+
+                if (_isNewCustomer)
+                {
+                    // Tạo khách hàng mới
+                    currentCustomer = new Customer
+                    {
+                        CustomerId = customerId,
+                        Name = customerName,
+                        IdNumber = cmnd,
+                        PhoneNumber = phoneNumber,
+                        DateOfBirth = dtpNgaySinh.Value,
+                        Gender = rdoNam.Checked ? 0 : 1,
+                        Address = $"{txtDuong.Text}, {txtPhuongThon.Text}, {txtQuanHuyen.Text}, {txtTinhThanh.Text}",
+                        Nationality = txtQuocTich.Text,
+                        IsDeleted = 0
+                    };
+
+                    // Lưu khách hàng mới vào database
+                    try
+                    {
+                        await _customerService.CreateCustomerAsync(currentCustomer);
+                        System.Diagnostics.Debug.WriteLine($"Customer created: {customerId}");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error creating customer: {ex.Message}");
+                        MessageBox.Show($"Lỗi tạo khách hàng: {ex.Message}", "Lỗi",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else
+                {
+                    // Khách hàng đã tồn tại
+                    currentCustomer = _customers.FirstOrDefault(c => c.CustomerId == customerId);
+                    if (currentCustomer == null)
+                    {
+                        MessageBox.Show("Khách hàng không tồn tại", "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+
+                // ==================== SAVE RENTAL DETAIL ====================
+
+                var rentalDetailId = txtMaChiTietThue.Text.Trim();
+
+                var rentalDetail = new RentalDetail
+                {
+                    RentalDetailId = rentalDetailId,
+                    CustomerId = customerId,
+                    EmployeeId = txtNhanVienLapPhieu.Text.Trim(),
+                    CreatedDate = dtpNgayLapPhieu.Value,
+                    DepositAmount = depositAmount,
+                    ProcessingStatus = cboTinhTrangXuLy.SelectedIndex,
+                    IsDeleted = 0
+                };
+
+                if (_rentalDetailService == null)
+                {
+                    MessageBox.Show("Lỗi: Service không khả dụng", "Lỗi",
+                           MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var savedRentalDetail = await _rentalDetailService.CreateRentalDetailAsync(rentalDetail);
+                if (savedRentalDetail == null)
+                {
+                    MessageBox.Show("Không thể lưu phiếu thuê vào database", "Lỗi",
+                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Add RentalDetailId to room details
+                foreach (var room in _selectedRooms)
+                {
+                    room.RentalDetailId = rentalDetailId;
+                }
+
+                // Save RoomRentalDetails
+                var roomsSaved = await _roomRentalDetailService.AddRoomRentalDetailsAsync(_selectedRooms);
+                if (!roomsSaved)
+                {
+                    MessageBox.Show("Không thể lưu chi tiết phòng vào database", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // ==================== PRINT RECEIPT ====================
+
+                if (_printService != null)
+                {
+                    try
+                    {
+                        await _printService.PrintRentalDetailAsync(savedRentalDetail, _selectedRooms);
+
+                        MessageBox.Show($"✓ Phiếu thuê được tạo thành công\n" +
+                              $"Mã phiếu: {rentalDetailId}\n" +
+                         $"Khách hàng: {customerId}\n" +
+                                   $"Tổng tiền: {lblTongCongValue.Text}\n\n" +
+                                 $"Phiếu thuê đã được in",
+                             "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception printEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Print error: {printEx.Message}");
+                        MessageBox.Show("Phiếu thuê được lưu nhưng không thể in. Vui lòng kiểm tra.", "Cảnh báo",
+                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"✓ Phiếu thuê được tạo thành công\n" +
+                       $"Mã phiếu: {rentalDetailId}\n" +
+                     $"Khách hàng: {customerId}\n" +
+                      $"Tổng tiền: {lblTongCongValue.Text}",
+                    "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                IsConfirmed = true;
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi lưu phiếu thuê: {ex.Message}\n\nStack: {ex.StackTrace}", "Lỗi",
+                          MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DgvRooms_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.ColumnIndex == dgvRooms.Columns["Xoa"].Index && e.RowIndex >= 0)
+                {
+                    var result = MessageBox.Show("Bạn có chắc chắn muốn xóa phòng này khỏi danh sách?", "Xác nhận",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        var roomId = dgvRooms.Rows[e.RowIndex].Cells["MaPhong"].Value.ToString();
+                        _selectedRooms.RemoveAll(r => r.RoomId == roomId);
+                        dgvRooms.Rows.RemoveAt(e.RowIndex);
+
+                        for (int i = 0; i < dgvRooms.Rows.Count; i++)
+                        {
+                            dgvRooms.Rows[i].Cells["STT"].Value = i + 1;
+                        }
+
+                        UpdateTotalPrice();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi",
+          MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateTotalPrice()
+        {
+            try
+            {
+                decimal totalPrice = 0;
+
+                foreach (DataGridViewRow row in dgvRooms.Rows)
+                {
+                    var priceStr = row.Cells["GiaPhong"].Value?.ToString();
+                    if (priceStr != null)
+                    {
+                        var cleanPrice = System.Text.RegularExpressions.Regex.Replace(priceStr, @"[^\d]", "");
+                        if (int.TryParse(cleanPrice, out int price))
+                        {
+                            totalPrice += price;
+                        }
+                    }
+                }
+
+                lblTongCongValue.Text = $"{totalPrice:N0} VNĐ";
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error updating total price: {ex.Message}");
+            }
+        }
+
+        public List<RoomRentalDetail> GetSelectedRooms()
+        {
+            return _selectedRooms;
+        }
+
+        public RentalDetail GetRentalDetail()
+        {
+            return new RentalDetail
+            {
+                RentalDetailId = txtMaChiTietThue.Text.Trim(),
+                CustomerId = txtMaKhachHang.Text.Trim(),
+                EmployeeId = txtNhanVienLapPhieu.Text.Trim(),
+                CreatedDate = dtpNgayLapPhieu.Value,
+                DepositAmount = int.TryParse(txtTienDatCoc.Text, out int deposit) ? deposit : 0,
+                ProcessingStatus = cboTinhTrangXuLy.SelectedIndex,
+                IsDeleted = 0
+            };
+        }
+    }
+}

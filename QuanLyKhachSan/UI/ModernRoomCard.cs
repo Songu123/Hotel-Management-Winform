@@ -7,13 +7,13 @@ namespace QuanLyKhachSan.UI
 {
     /// <summary>
     /// Modern room card component with context menu support
-  /// Displays room information in a modern card design
+    /// Displays room information in a modern card design
     /// </summary>
     public partial class ModernRoomCard : UserControl
     {
         private Room _room;
         private RoomStatusType _roomStatus = RoomStatusType.Available;
-      private ContextMenuStrip _contextMenu;
+        private ContextMenuStrip _contextMenu;
 
         // Events
         public event EventHandler<RoomEventArgs> ViewDetailsClicked;
@@ -23,58 +23,58 @@ namespace QuanLyKhachSan.UI
         public ModernRoomCard()
         {
             InitializeComponent();
-  InitializeContextMenu();
-        SetupStyles();
-  }
+            InitializeContextMenu();
+            SetupStyles();
+        }
 
-      /// <summary>
+        /// <summary>
         /// Initialize context menu with options
         /// </summary>
         private void InitializeContextMenu()
         {
-   _contextMenu = new ContextMenuStrip();
+            _contextMenu = new ContextMenuStrip();
             _contextMenu.ShowImageMargin = true;
             _contextMenu.AutoSize = true;
 
-        // View Details option
+            // View Details option
             var viewDetailsItem = new ToolStripMenuItem("📋 Xem chi tiết phòng", null, ViewDetails_Click);
-        viewDetailsItem.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+            viewDetailsItem.Font = new Font("Segoe UI", 9, FontStyle.Regular);
 
             // Booking option
-   var bookingItem = new ToolStripMenuItem("🔑 Đặt phòng", null, Booking_Click);
-      bookingItem.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+            var bookingItem = new ToolStripMenuItem("🔑 Đặt phòng", null, Booking_Click);
+            bookingItem.Font = new Font("Segoe UI", 9, FontStyle.Regular);
 
             // Cleaning option
-          var cleaningItem = new ToolStripMenuItem("🧹 Dọn dẹp phòng", null, Cleaning_Click);
-        cleaningItem.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+            var cleaningItem = new ToolStripMenuItem("🧹 Dọn dẹp phòng", null, Cleaning_Click);
+            cleaningItem.Font = new Font("Segoe UI", 9, FontStyle.Regular);
 
             _contextMenu.Items.Add(viewDetailsItem);
-       _contextMenu.Items.Add(new ToolStripSeparator());
-   _contextMenu.Items.Add(bookingItem);
-   _contextMenu.Items.Add(new ToolStripSeparator());
-  _contextMenu.Items.Add(cleaningItem);
+            _contextMenu.Items.Add(new ToolStripSeparator());
+            _contextMenu.Items.Add(bookingItem);
+            _contextMenu.Items.Add(new ToolStripSeparator());
+            _contextMenu.Items.Add(cleaningItem);
 
             this.ContextMenuStrip = _contextMenu;
-     }
-
-        /// <summary>
-  /// Setup modern visual styles
-     /// </summary>
-     private void SetupStyles()
-  {
-        this.DoubleBuffered = true;
-    this.AutoScaleMode = AutoScaleMode.Font;
- this.ForeColor = Color.FromArgb(33, 33, 33);
         }
 
-      /// <summary>
+        /// <summary>
+        /// Setup modern visual styles
+        /// </summary>
+        private void SetupStyles()
+        {
+            this.DoubleBuffered = true;
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ForeColor = Color.FromArgb(33, 33, 33);
+        }
+
+        /// <summary>
         /// Set room data to display
         /// </summary>
- public void SetRoomData(Room room, RoomStatusType status = RoomStatusType.Available)
+        public void SetRoomData(Room room, RoomStatusType status = RoomStatusType.Available)
         {
-       _room = room ?? throw new ArgumentNullException(nameof(room));
+            _room = room ?? throw new ArgumentNullException(nameof(room));
             _roomStatus = status;
-    RefreshDisplay();
+            RefreshDisplay();
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace QuanLyKhachSan.UI
         private void RefreshDisplay()
         {
             if (_room == null) return;
-        this.Invalidate();
+            this.Invalidate();
         }
 
         /// <summary>
@@ -91,222 +91,222 @@ namespace QuanLyKhachSan.UI
         /// </summary>
         public Room GetRoomData() => _room;
 
-     /// <summary>
+        /// <summary>
         /// Get room status
-/// </summary>
+        /// </summary>
         public RoomStatusType GetRoomStatus() => _roomStatus;
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
 
-    if (_room == null) return;
+            if (_room == null) return;
 
-  e.Graphics.Clear(Color.White);
-      e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            e.Graphics.Clear(Color.White);
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             // Draw modern card with shadow and border
             DrawModernCard(e.Graphics);
-          DrawRoomContent(e.Graphics);
-         DrawStatusIndicator(e.Graphics);
-   }
+            DrawRoomContent(e.Graphics);
+            DrawStatusIndicator(e.Graphics);
+        }
 
         /// <summary>
         /// Draw modern card background with shadow
-  /// </summary>
-     private void DrawModernCard(Graphics g)
+        /// </summary>
+        private void DrawModernCard(Graphics g)
         {
-   // Shadow effect - sử dụng LinearGradientBrush thay vì PathGradientBrush
-      var shadowRect = new Rectangle(2, 2, this.Width - 4, this.Height - 4);
-    using (var shadowBrush = new System.Drawing.Drawing2D.LinearGradientBrush(
-            new Point(0, 0), 
-             new Point(this.Width, this.Height),
-      Color.FromArgb(20, 0, 0, 0), 
- Color.FromArgb(0, 0, 0, 0)))
+            // Shadow effect - sử dụng LinearGradientBrush thay vì PathGradientBrush
+            var shadowRect = new Rectangle(2, 2, this.Width - 4, this.Height - 4);
+            using (var shadowBrush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                    new Point(0, 0),
+                     new Point(this.Width, this.Height),
+              Color.FromArgb(20, 0, 0, 0),
+         Color.FromArgb(0, 0, 0, 0)))
             {
-  g.FillRectangle(shadowBrush, shadowRect);
-        }
+                g.FillRectangle(shadowBrush, shadowRect);
+            }
 
-        // Main card background
+            // Main card background
             var cardRect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
-   using (var brush = new SolidBrush(Color.White))
-   {
-     g.FillRectangle(brush, cardRect);
-   }
-
-     // Card border
-        using (var pen = new Pen(Color.FromArgb(200, 200, 200), 1))
+            using (var brush = new SolidBrush(Color.White))
             {
-      g.DrawRectangle(pen, cardRect);
+                g.FillRectangle(brush, cardRect);
+            }
+
+            // Card border
+            using (var pen = new Pen(Color.FromArgb(200, 200, 200), 1))
+            {
+                g.DrawRectangle(pen, cardRect);
             }
 
             // Top accent bar
             var accentColor = GetStatusColor(_roomStatus);
-     using (var accentBrush = new SolidBrush(accentColor))
-     {
-          g.FillRectangle(accentBrush, new Rectangle(0, 0, this.Width, 4));
+            using (var accentBrush = new SolidBrush(accentColor))
+            {
+                g.FillRectangle(accentBrush, new Rectangle(0, 0, this.Width, 4));
             }
         }
 
-  /// <summary>
+        /// <summary>
         /// Draw room content
-      /// </summary>
-      private void DrawRoomContent(Graphics g)
+        /// </summary>
+        private void DrawRoomContent(Graphics g)
         {
             int padding = 12;
             int x = padding;
-    int y = padding + 4;
+            int y = padding + 4;
 
             // Room name (Large title)
-        using (var font = new Font("Segoe UI", 14, FontStyle.Bold))
-      using (var brush = new SolidBrush(Color.FromArgb(33, 33, 33)))
+            using (var font = new Font("Segoe UI", 14, FontStyle.Bold))
+            using (var brush = new SolidBrush(Color.FromArgb(33, 33, 33)))
             {
-     g.DrawString(_room.Name ?? "Phòng", font, brush, x, y);
-  }
+                g.DrawString(_room.Name ?? "Phòng", font, brush, x, y);
+            }
 
-  y += 28;
+            y += 28;
 
-     // Room type
+            // Room type
             using (var font = new Font("Segoe UI", 9, FontStyle.Regular))
             using (var brush = new SolidBrush(Color.FromArgb(100, 100, 100)))
             {
-      g.DrawString("Loại phòng:", font, brush, x, y);
-           y += 18;
-     using (var boldFont = new Font("Segoe UI", 9, FontStyle.Bold))
-   using (var boldBrush = new SolidBrush(Color.FromArgb(33, 33, 33)))
-{
- string roomType = GetRoomType(_room.RoomType);
-       g.DrawString(roomType, boldFont, boldBrush, x + 10, y);
-        }
-        }
+                g.DrawString("Loại phòng:", font, brush, x, y);
+                y += 18;
+                using (var boldFont = new Font("Segoe UI", 9, FontStyle.Bold))
+                using (var boldBrush = new SolidBrush(Color.FromArgb(33, 33, 33)))
+                {
+                    string roomType = GetRoomType(_room.RoomType);
+                    g.DrawString(roomType, boldFont, boldBrush, x + 10, y);
+                }
+            }
 
-          y += 25;
+            y += 25;
 
-    // Price
-     using (var font = new Font("Segoe UI", 9, FontStyle.Regular))
-   using (var brush = new SolidBrush(Color.FromArgb(100, 100, 100)))
+            // Price
+            using (var font = new Font("Segoe UI", 9, FontStyle.Regular))
+            using (var brush = new SolidBrush(Color.FromArgb(100, 100, 100)))
             {
-          g.DrawString("Giá phòng:", font, brush, x, y);
-    y += 18;
-      using (var boldFont = new Font("Segoe UI", 11, FontStyle.Bold))
+                g.DrawString("Giá phòng:", font, brush, x, y);
+                y += 18;
+                using (var boldFont = new Font("Segoe UI", 11, FontStyle.Bold))
                 using (var priceBrush = new SolidBrush(Color.FromArgb(0, 150, 90)))
-             {
-         string priceText = $"{_room.Price:N0} VNĐ";
-    g.DrawString(priceText, boldFont, priceBrush, x + 10, y);
-    }
-        }
+                {
+                    string priceText = $"{_room.Price:N0} VNĐ";
+                    g.DrawString(priceText, boldFont, priceBrush, x + 10, y);
+                }
+            }
 
-       y += 28;
+            y += 28;
 
-        // Status info
+            // Status info
             using (var font = new Font("Segoe UI", 8, FontStyle.Regular))
-      using (var brush = new SolidBrush(Color.FromArgb(120, 120, 120)))
-   {
-      string statusInfo = $"Trạng thái: {GetStatusText(_roomStatus)}";
-        g.DrawString(statusInfo, font, brush, x, y);
+            using (var brush = new SolidBrush(Color.FromArgb(120, 120, 120)))
+            {
+                string statusInfo = $"Trạng thái: {GetStatusText(_roomStatus)}";
+                g.DrawString(statusInfo, font, brush, x, y);
             }
         }
 
-  /// <summary>
- /// Draw status indicator
-     /// </summary>
+        /// <summary>
+        /// Draw status indicator
+        /// </summary>
         private void DrawStatusIndicator(Graphics g)
         {
-    int rightPadding = 12;
+            int rightPadding = 12;
             int topPadding = 12;
 
             var statusColor = GetStatusColor(_roomStatus);
-  var statusText = GetStatusText(_roomStatus);
+            var statusText = GetStatusText(_roomStatus);
 
             // Status circle
-     int circleSize = 12;
-          int circleX = this.Width - rightPadding - circleSize;
-          int circleY = topPadding;
+            int circleSize = 12;
+            int circleX = this.Width - rightPadding - circleSize;
+            int circleY = topPadding;
 
-       using (var brush = new SolidBrush(statusColor))
+            using (var brush = new SolidBrush(statusColor))
             {
                 g.FillEllipse(brush, circleX, circleY, circleSize, circleSize);
-     }
+            }
 
-     // Status text
+            // Status text
             using (var font = new Font("Segoe UI", 8, FontStyle.Regular))
             using (var brush = new SolidBrush(statusColor))
-      {
-       var textSize = g.MeasureString(statusText, font);
-         float textX = this.Width - rightPadding - textSize.Width;
+            {
+                var textSize = g.MeasureString(statusText, font);
+                float textX = this.Width - rightPadding - textSize.Width;
                 float textY = topPadding + circleSize + 4;
                 g.DrawString(statusText, font, brush, textX, textY);
-    }
+            }
         }
 
-    /// <summary>
+        /// <summary>
         /// Get color based on room status
         /// </summary>
-   private Color GetStatusColor(RoomStatusType status)
-     {
-    return status switch
+        private Color GetStatusColor(RoomStatusType status)
+        {
+            return status switch
             {
-             RoomStatusType.Available => Color.FromArgb(34, 197, 94),      // Green
-          RoomStatusType.Occupied => Color.FromArgb(239, 68, 68),        // Red
-     RoomStatusType.Cleaning => Color.FromArgb(59, 130, 246),       // Blue
-       RoomStatusType.Maintenance => Color.FromArgb(249, 115, 22),    // Orange
-  _ => Color.FromArgb(156, 163, 175)        // Gray
-};
-  }
+                RoomStatusType.Available => Color.FromArgb(34, 197, 94),      // Green
+                RoomStatusType.Occupied => Color.FromArgb(239, 68, 68),        // Red
+                RoomStatusType.Cleaning => Color.FromArgb(59, 130, 246),       // Blue
+                RoomStatusType.Maintenance => Color.FromArgb(249, 115, 22),    // Orange
+                _ => Color.FromArgb(156, 163, 175)        // Gray
+            };
+        }
 
-      /// <summary>
+        /// <summary>
         /// Get status text
         /// </summary>
         private string GetStatusText(RoomStatusType status)
         {
-       return status switch
+            return status switch
             {
-        RoomStatusType.Available => "Sẵn sàng",
-   RoomStatusType.Occupied => "Đang sử dụng",
-         RoomStatusType.Cleaning => "Đang dọn",
-      RoomStatusType.Maintenance => "Bảo trì",
-  _ => "Không xác định"
-         };
-  }
+                RoomStatusType.Available => "Sẵn sàng",
+                RoomStatusType.Occupied => "Đã có khách",
+                RoomStatusType.Cleaning => "Đang dọn dẹp",
+                RoomStatusType.Maintenance => "Đang bảo trì",
+                _ => "Không xác định"
+            };
+        }
 
         /// <summary>
         /// Get room type text
         /// </summary>
-   private string GetRoomType(int roomType)
-   {
+        private string GetRoomType(int roomType)
+        {
             return roomType switch
-  {
-  1 => "Phòng Đơn",
-        2 => "Phòng Đôi",
-      3 => "Phòng Gia đình",
+            {
+                1 => "Phòng Đơn",
+                2 => "Phòng Đôi",
+                3 => "Phòng Gia đình",
                 4 => "Phòng VIP",
-             5 => "Phòng Suite",
-            _ => "Không xác định"
+                5 => "Phòng Suite",
+                _ => "Không xác định"
             };
-    }
+        }
 
         // Context menu event handlers
         private void ViewDetails_Click(object sender, EventArgs e)
         {
-     ViewDetailsClicked?.Invoke(this, new RoomEventArgs(_room));
-  }
+            ViewDetailsClicked?.Invoke(this, new RoomEventArgs(_room));
+        }
 
         private void Booking_Click(object sender, EventArgs e)
         {
-      BookingClicked?.Invoke(this, new RoomEventArgs(_room));
-      }
+            BookingClicked?.Invoke(this, new RoomEventArgs(_room));
+        }
 
- private void Cleaning_Click(object sender, EventArgs e)
+        private void Cleaning_Click(object sender, EventArgs e)
         {
-  CleaningClicked?.Invoke(this, new RoomEventArgs(_room));
+            CleaningClicked?.Invoke(this, new RoomEventArgs(_room));
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
-       if (e.Button == MouseButtons.Right)
-          {
-      this.ContextMenuStrip?.Show(this, e.Location);
+            if (e.Button == MouseButtons.Right)
+            {
+                this.ContextMenuStrip?.Show(this, e.Location);
             }
         }
     }
@@ -316,20 +316,20 @@ namespace QuanLyKhachSan.UI
     /// </summary>
     public enum RoomStatusType
     {
-Available = 0,
+        Available = 0,
         Occupied = 1,
         Cleaning = 2,
-    Maintenance = 3
+        Maintenance = 3
     }
 
     /// <summary>
-  /// Event arguments for room events
+    /// Event arguments for room events
     /// </summary>
- public class RoomEventArgs : EventArgs
+    public class RoomEventArgs : EventArgs
     {
         public Room Room { get; }
 
-      public RoomEventArgs(Room room)
+        public RoomEventArgs(Room room)
         {
             Room = room;
         }

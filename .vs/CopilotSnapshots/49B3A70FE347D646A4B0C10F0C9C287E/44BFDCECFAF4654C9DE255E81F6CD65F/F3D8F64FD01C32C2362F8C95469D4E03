@@ -1,0 +1,128 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Services.RequestHandlers;
+using QuanLyKhachSan.Services.RequestHandlers.Interfaces;
+using QuanLyKhachSan.UI.Service;
+using QuanLyKhachSan.UI.Room_Service;
+using QuanLyKhachSan.UI.CustomerUI;
+using QuanLyKhachSan.UI.BookingUI;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void ShowPanel(UserControl uc)
+        {
+            panelMain.Controls.Clear();
+            uc.Dock = DockStyle.Fill;
+            panelMain.Controls.Add(uc);
+            uc.BringToFront();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnDashboard_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCDashboard());
+
+        }
+
+        private void btnRooms_Click(object sender, EventArgs e)
+        {
+            var serviceProvider = (IServiceProvider)Program.Services;
+            var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+            var dbContext = serviceProvider.GetService(typeof(HotelDbContext)) as HotelDbContext;
+
+            ShowPanel(new UCRoom(roomService, dbContext));
+        }
+
+        private void btnBooking_Click(object sender, EventArgs e)
+        {
+         var serviceProvider = (IServiceProvider)Program.Services;
+        var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+     var bookingService = serviceProvider.GetService(typeof(IBookingService)) as IBookingService;
+
+            if (roomService == null || bookingService == null)
+{
+         MessageBox.Show("Lỗi: Không thể khởi tạo services", "Lỗi", 
+ MessageBoxButtons.OK, MessageBoxIcon.Error);
+    return;
+}
+
+      var booking = new BookingUI.UCBooking();
+ // Initialize with services via new method
+  booking.InitializeWithServices(roomService, bookingService);
+            ShowPanel(booking);
+        }
+
+        private void btnCustomers_Click(object sender, EventArgs e)
+        {
+            var serviceProvider = (IServiceProvider)Program.Services;
+            var customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
+            var refreshHandler = serviceProvider.GetService(typeof(IRefreshCustomerListRequestHandler)) as IRefreshCustomerListRequestHandler;
+            var resetHandler = serviceProvider.GetService(typeof(ResetSearchCriteriaRequestHandler)) as ResetSearchCriteriaRequestHandler;
+
+            if (customerService == null)
+            {
+                MessageBox.Show("Lỗi: Không thể khởi tạo ICustomerService", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (refreshHandler == null || resetHandler == null)
+            {
+                MessageBox.Show("Lỗi: Không thể khởi tạo request handlers", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            ShowPanel(new UCCustomer(customerService, refreshHandler, resetHandler));
+        }
+
+        private void btnInvoice_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCInvoices());
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCServices());
+
+        }
+
+        private void btnFloorView_Click(object sender, EventArgs e)
+        {
+            var serviceProvider = (IServiceProvider)Program.Services;
+            var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+            var bookingService = serviceProvider.GetService(typeof(IBookingService)) as IBookingService;
+
+            ShowPanel(new UCRoomFloorView(roomService, bookingService));
+        }
+
+        private void panelMain_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
