@@ -6,12 +6,12 @@
 
         protected override void Dispose(bool disposing)
         {
-         if (disposing && (components != null))
-         {
-       components.Dispose();
-          }
-     base.Dispose(disposing);
-     }
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
         #region Windows Form Designer generated code
 
@@ -27,9 +27,12 @@
             btnDashboard = new Button();
             panel2 = new Panel();
             label1 = new Label();
+            lblRole = new Label();
             panelMain = new Panel();
-            label2 = new Label();
             panel3 = new Panel();
+            btnLogout = new Button();
+            lblUsername = new Label();
+            label2 = new Label();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -37,7 +40,7 @@
             // 
             // panel1
             // 
-            panel1.BackColor = SystemColors.ControlDarkDark;
+            panel1.BackColor = Color.FromArgb(31, 41, 55);
             panel1.Controls.Add(button6);
             panel1.Controls.Add(btnInvoice);
             panel1.Controls.Add(btnCustomers);
@@ -49,137 +52,249 @@
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(274, 833);
+            panel1.Size = new Size(280, 833);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
             // button6
             // 
-            button6.Location = new Point(0, 289);
+            button6.BackColor = Color.FromArgb(31, 41, 55);
+            button6.FlatAppearance.BorderSize = 0;
+            button6.FlatAppearance.MouseOverBackColor = Color.FromArgb(55, 65, 81);
+            button6.FlatStyle = FlatStyle.Flat;
+            button6.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            button6.ForeColor = Color.FromArgb(229, 231, 235);
+            button6.ImageAlign = ContentAlignment.MiddleLeft;
+            button6.Location = new Point(0, 360);
             button6.Name = "button6";
-            button6.Size = new Size(274, 65);
+            button6.Padding = new Padding(25, 0, 0, 0);
+            button6.Size = new Size(280, 60);
             button6.TabIndex = 6;
-            button6.Text = "SERVICE";
-            button6.UseVisualStyleBackColor = true;
+            button6.Text = "📋  Dịch Vụ";
+            button6.TextAlign = ContentAlignment.MiddleLeft;
+            button6.UseVisualStyleBackColor = false;
             button6.Click += button6_Click;
             // 
             // btnInvoice
             // 
-            btnInvoice.Location = new Point(2, 606);
+            btnInvoice.BackColor = Color.FromArgb(31, 41, 55);
+            btnInvoice.FlatAppearance.BorderSize = 0;
+            btnInvoice.FlatAppearance.MouseOverBackColor = Color.FromArgb(55, 65, 81);
+            btnInvoice.FlatStyle = FlatStyle.Flat;
+            btnInvoice.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnInvoice.ForeColor = Color.FromArgb(229, 231, 235);
+            btnInvoice.ImageAlign = ContentAlignment.MiddleLeft;
+            btnInvoice.Location = new Point(0, 540);
             btnInvoice.Name = "btnInvoice";
-            btnInvoice.Size = new Size(274, 65);
+            btnInvoice.Padding = new Padding(25, 0, 0, 0);
+            btnInvoice.Size = new Size(280, 60);
             btnInvoice.TabIndex = 5;
-            btnInvoice.Text = "INVOICES";
-            btnInvoice.UseVisualStyleBackColor = true;
+            btnInvoice.Text = "💰  Hóa Đơn";
+            btnInvoice.TextAlign = ContentAlignment.MiddleLeft;
+            btnInvoice.UseVisualStyleBackColor = false;
             btnInvoice.Click += btnInvoice_Click;
             // 
             // btnCustomers
             // 
-            btnCustomers.Location = new Point(2, 525);
+            btnCustomers.BackColor = Color.FromArgb(31, 41, 55);
+            btnCustomers.FlatAppearance.BorderSize = 0;
+            btnCustomers.FlatAppearance.MouseOverBackColor = Color.FromArgb(55, 65, 81);
+            btnCustomers.FlatStyle = FlatStyle.Flat;
+            btnCustomers.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnCustomers.ForeColor = Color.FromArgb(229, 231, 235);
+            btnCustomers.ImageAlign = ContentAlignment.MiddleLeft;
+            btnCustomers.Location = new Point(0, 480);
             btnCustomers.Name = "btnCustomers";
-            btnCustomers.Size = new Size(274, 65);
+            btnCustomers.Padding = new Padding(25, 0, 0, 0);
+            btnCustomers.Size = new Size(280, 60);
             btnCustomers.TabIndex = 4;
-            btnCustomers.Text = "CUSTOMER MANAGEMENT";
-            btnCustomers.UseVisualStyleBackColor = true;
+            btnCustomers.Text = "👥  Quản Lý Khách Hàng";
+            btnCustomers.TextAlign = ContentAlignment.MiddleLeft;
+            btnCustomers.UseVisualStyleBackColor = false;
             btnCustomers.Click += btnCustomers_Click;
             // 
             // btnBooking
             // 
-            btnBooking.Location = new Point(0, 444);
+            btnBooking.BackColor = Color.FromArgb(31, 41, 55);
+            btnBooking.FlatAppearance.BorderSize = 0;
+            btnBooking.FlatAppearance.MouseOverBackColor = Color.FromArgb(55, 65, 81);
+            btnBooking.FlatStyle = FlatStyle.Flat;
+            btnBooking.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnBooking.ForeColor = Color.FromArgb(229, 231, 235);
+            btnBooking.ImageAlign = ContentAlignment.MiddleLeft;
+            btnBooking.Location = new Point(0, 420);
             btnBooking.Name = "btnBooking";
-            btnBooking.Size = new Size(274, 65);
+            btnBooking.Padding = new Padding(25, 0, 0, 0);
+            btnBooking.Size = new Size(280, 60);
             btnBooking.TabIndex = 3;
-            btnBooking.Text = "BOOKING MANAGEMENT";
-            btnBooking.UseVisualStyleBackColor = true;
+            btnBooking.Text = "📅  Quản Lý Đặt Phòng";
+            btnBooking.TextAlign = ContentAlignment.MiddleLeft;
+            btnBooking.UseVisualStyleBackColor = false;
             btnBooking.Click += btnBooking_Click;
             // 
             // btnFloorView
             // 
-            btnFloorView.Location = new Point(2, 372);
+            btnFloorView.BackColor = Color.FromArgb(31, 41, 55);
+            btnFloorView.FlatAppearance.BorderSize = 0;
+            btnFloorView.FlatAppearance.MouseOverBackColor = Color.FromArgb(55, 65, 81);
+            btnFloorView.FlatStyle = FlatStyle.Flat;
+            btnFloorView.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnFloorView.ForeColor = Color.FromArgb(229, 231, 235);
+            btnFloorView.ImageAlign = ContentAlignment.MiddleLeft;
+            btnFloorView.Location = new Point(0, 300);
             btnFloorView.Name = "btnFloorView";
-            btnFloorView.Size = new Size(274, 65);
+            btnFloorView.Padding = new Padding(25, 0, 0, 0);
+            btnFloorView.Size = new Size(280, 60);
             btnFloorView.TabIndex = 7;
-            btnFloorView.Text = "ROOM FLOOR VIEW";
-            btnFloorView.UseVisualStyleBackColor = true;
+            btnFloorView.Text = "🏢  Sơ Đồ Tầng";
+            btnFloorView.TextAlign = ContentAlignment.MiddleLeft;
+            btnFloorView.UseVisualStyleBackColor = false;
             btnFloorView.Click += btnFloorView_Click;
             // 
             // btnRooms
             // 
-            btnRooms.Location = new Point(0, 208);
+            btnRooms.BackColor = Color.FromArgb(31, 41, 55);
+            btnRooms.FlatAppearance.BorderSize = 0;
+            btnRooms.FlatAppearance.MouseOverBackColor = Color.FromArgb(55, 65, 81);
+            btnRooms.FlatStyle = FlatStyle.Flat;
+            btnRooms.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnRooms.ForeColor = Color.FromArgb(229, 231, 235);
+            btnRooms.ImageAlign = ContentAlignment.MiddleLeft;
+            btnRooms.Location = new Point(0, 240);
             btnRooms.Name = "btnRooms";
-            btnRooms.Size = new Size(274, 65);
+            btnRooms.Padding = new Padding(25, 0, 0, 0);
+            btnRooms.Size = new Size(280, 60);
             btnRooms.TabIndex = 2;
-            btnRooms.Text = "ROOM MANAGEMENT";
-            btnRooms.UseVisualStyleBackColor = true;
+            btnRooms.Text = "🚪  Quản Lý Phòng";
+            btnRooms.TextAlign = ContentAlignment.MiddleLeft;
+            btnRooms.UseVisualStyleBackColor = false;
             btnRooms.Click += btnRooms_Click;
             // 
             // btnDashboard
             // 
-            btnDashboard.Location = new Point(-2, 128);
+            btnDashboard.BackColor = Color.FromArgb(59, 130, 246);
+            btnDashboard.FlatAppearance.BorderSize = 0;
+            btnDashboard.FlatAppearance.MouseOverBackColor = Color.FromArgb(37, 99, 235);
+            btnDashboard.FlatStyle = FlatStyle.Flat;
+            btnDashboard.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnDashboard.ForeColor = Color.White;
+            btnDashboard.ImageAlign = ContentAlignment.MiddleLeft;
+            btnDashboard.Location = new Point(0, 180);
             btnDashboard.Name = "btnDashboard";
-            btnDashboard.Size = new Size(274, 65);
+            btnDashboard.Padding = new Padding(25, 0, 0, 0);
+            btnDashboard.Size = new Size(280, 60);
             btnDashboard.TabIndex = 1;
-            btnDashboard.Text = "DASHBOARD";
-            btnDashboard.UseVisualStyleBackColor = true;
+            btnDashboard.Text = "📊  Tổng Quan";
+            btnDashboard.TextAlign = ContentAlignment.MiddleLeft;
+            btnDashboard.UseVisualStyleBackColor = false;
             btnDashboard.Click += btnDashboard_Click;
             // 
             // panel2
             // 
-            panel2.BackColor = SystemColors.ControlDark;
+            panel2.BackColor = Color.FromArgb(17, 24, 39);
+            panel2.Controls.Add(lblRole);
             panel2.Controls.Add(label1);
+            panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(272, 107);
+            panel2.Size = new Size(280, 140);
             panel2.TabIndex = 0;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(100, 42);
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(55, 40);
             label1.Name = "label1";
-            label1.Size = new Size(46, 15);
+            label1.Size = new Size(172, 32);
             label1.TabIndex = 0;
-            label1.Text = "ADMIN";
+            label1.Text = "KHÁCH SẠN";
+            // 
+            // lblRole
+            // 
+            lblRole.AutoSize = true;
+            lblRole.Font = new Font("Segoe UI", 9F);
+            lblRole.ForeColor = Color.FromArgb(156, 163, 175);
+            lblRole.Location = new Point(85, 85);
+            lblRole.Name = "lblRole";
+            lblRole.Size = new Size(110, 15);
+            lblRole.TabIndex = 1;
+            lblRole.Text = "Quản Trị Viên";
             // 
             // panelMain
             // 
-            panelMain.BackColor = SystemColors.ActiveCaption;
+            panelMain.BackColor = Color.FromArgb(243, 244, 246);
             panelMain.Dock = DockStyle.Fill;
-            panelMain.Location = new Point(274, 57);
+            panelMain.Location = new Point(280, 70);
             panelMain.Name = "panelMain";
-            panelMain.Size = new Size(1054, 776);
+            panelMain.Size = new Size(1048, 763);
             panelMain.TabIndex = 2;
             panelMain.MouseClick += panelMain_MouseClick;
+            // 
+            // panel3
+            // 
+            panel3.BackColor = Color.White;
+            panel3.Controls.Add(btnLogout);
+            panel3.Controls.Add(lblUsername);
+            panel3.Controls.Add(label2);
+            panel3.Dock = DockStyle.Top;
+            panel3.Location = new Point(280, 0);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1048, 70);
+            panel3.TabIndex = 1;
+            // 
+            // btnLogout
+            // 
+            btnLogout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnLogout.BackColor = Color.FromArgb(239, 68, 68);
+            btnLogout.FlatAppearance.BorderSize = 0;
+            btnLogout.FlatStyle = FlatStyle.Flat;
+            btnLogout.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnLogout.ForeColor = Color.White;
+            btnLogout.Location = new Point(920, 20);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(100, 35);
+            btnLogout.TabIndex = 3;
+            btnLogout.Text = "Đăng Xuất";
+            btnLogout.UseVisualStyleBackColor = false;
+            // 
+            // lblUsername
+            // 
+            lblUsername.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblUsername.AutoSize = true;
+            lblUsername.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblUsername.ForeColor = Color.FromArgb(31, 41, 55);
+            lblUsername.Location = new Point(800, 28);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new Size(100, 19);
+            lblUsername.TabIndex = 2;
+            lblUsername.Text = "Admin User";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(214, 33);
+            label2.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            label2.ForeColor = Color.FromArgb(31, 41, 55);
+            label2.Location = new Point(30, 22);
             label2.Name = "label2";
-            label2.Size = new Size(105, 15);
+            label2.Size = new Size(224, 30);
             label2.TabIndex = 2;
-            label2.Text = "XIN CHÀO ADMIN";
+            label2.Text = "Xin Chào, Admin!";
             label2.Click += label2_Click;
-            // 
-            // panel3
-            // 
-            panel3.Controls.Add(label2);
-            panel3.Dock = DockStyle.Top;
-            panel3.Location = new Point(274, 0);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(1054, 57);
-            panel3.TabIndex = 1;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
             ClientSize = new Size(1328, 833);
             Controls.Add(panelMain);
             Controls.Add(panel3);
             Controls.Add(panel1);
             Name = "MainForm";
-            Text = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Hệ Thống Quản Lý Khách Sạn";
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
@@ -191,22 +306,20 @@
         #endregion
 
         private Panel panel1;
-        private Button button1;
         private Panel panel2;
-   private Label label1;
-     private Button button6;
-        private Button button5;
-        private Button button4;
-  private Button button3;
-      private Button button2;
- private Panel panel3;
-        private Label label2;
-        private Panel panelMain;
+        private Label label1;
+        private Label lblRole;
+        private Button button6;
         private Button btnInvoice;
         private Button btnCustomers;
-    private Button btnBooking;
+        private Button btnBooking;
         private Button btnFloorView;
         private Button btnRooms;
-      private Button btnDashboard;
+        private Button btnDashboard;
+        private Panel panel3;
+        private Label label2;
+        private Label lblUsername;
+        private Button btnLogout;
+        private Panel panelMain;
     }
 }

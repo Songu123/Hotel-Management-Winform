@@ -1,0 +1,230 @@
+﻿using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Interfaces;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.Services.Implementations
+{
+    /// <summary>
+    /// Service implementation cho RoomRentalDetail
+    /// </summary>
+    public class RoomRentalDetailService : IRoomRentalDetailService
+    {
+      private readonly IRepository<RoomRentalDetail> _roomRentalDetailRepository;
+   private readonly IRepository<Room> _roomRepository;
+
+    public RoomRentalDetailService(
+ IRepository<RoomRentalDetail> roomRentalDetailRepository,
+   IRepository<Room> roomRepository)
+   {
+      _roomRentalDetailRepository = roomRentalDetailRepository ?? throw new ArgumentNullException(nameof(roomRentalDetailRepository));
+            _roomRepository = roomRepository ?? throw new ArgumentNullException(nameof(roomRepository));
+      }
+
+    /// <summary>
+        /// Thêm chi tiết phòng thuê mới
+  /// </summary>
+      public async Task<bool> AddRoomRentalDetailAsync(RoomRentalDetail roomRentalDetail)
+  {
+      try
+        {
+      if (roomRentalDetail == null)
+   throw new ArgumentNullException(nameof(roomRentalDetail));
+
+     // Validate required fields
+   if (string.IsNullOrWhiteSpace(roomRentalDetail.RentalDetailId))
+  throw new ArgumentException("Mã chi tiết thuê không được để trống");
+
+  if (string.IsNullOrWhiteSpace(roomRentalDetail.RoomId))
+      throw new ArgumentException("Mã phòng không được để trống");
+
+       // Check if room exists
+           var room = await _roomRepository.GetByIdAsync(roomRentalDetail.RoomId);
+     if (room == null)
+       throw new InvalidOperationException($"Phòng {roomRentalDetail.RoomId} không tồn tại");
+
+     await _roomRentalDetailRepository.AddAsync(roomRentalDetail);
+  await _roomRentalDetailRepository.SaveChangesAsync();
+
+  return true;
+       }
+      catch (Exception ex)
+      {
+    throw new Exception("Lỗi khi thêm chi tiết phòng thuê", ex);
+  }
+    }
+
+  /// <summary>
+        /// Thêm nhiều chi tiết phòng thuê
+ /// </summary>
+      public async Task<bool> AddRoomRentalDetailsAsync(IEnumerable<RoomRentalDetail> roomRentalDetails)
+{
+       try
+     {
+         if (roomRentalDetails == null || !roomRentalDetails.Any())
+         throw new ArgumentException("Danh sách chi tiết phòng không được để trống");
+
+      foreach (var detail in roomRentalDetails)
+    {
+     await AddRoomRentalDetailAsync(detail);
+  }
+
+          return true;
+       }
+      catch (Exception ex)
+   {
+        throw new Exception("Lỗi khi thêm nhiều chi tiết phòng thuê", ex);
+            }
+      }
+
+    /// <summary>
+       /// Lấy chi tiết phòng thuê theo ID chi tiết thuê
+  /// </summary>
+ public async Task<IEnumerable<RoomRentalDetail>> GetRoomRentalDetailsByRentalDetailIdAsync(string rentalDetailId)
+   {
+            try
+        {
+          if (string.IsNullOrWhiteSpace(rentalDetailId))
+              return new List<RoomRentalDetail>();
+
+        var allDetails = await _roomRentalDetailRepository.GetAllAsync();
+      return allDetails.Where(r => r.RentalDetailId == rentalDetailId).ToList();
+          }
+       catch (Exception ex)
+  {
+throw new Exception($"Lỗi khi lấy chi tiết phòng thuê", ex);
+     }
+        }
+
+       /// <summary>
+       /// Lấy chi tiết phòng thuê theo ID phòng
+      /// </summary>
+      public async Task<IEnumerable<RoomRentalDetail>> GetRoomRentalDetailsByRoomIdAsync(string roomId)
+     {
+          try
+ {
+ if (string.IsNullOrWhiteSpace(roomId))
+      return new List<RoomRentalDetail>();
+
+      var allDetails = await _roomRentalDetailRepository.GetAllAsync();
+         return allDetails.Where(r => r.RoomId == roomId).ToList();
+   }
+      catch (Exception ex)
+            {
+        throw new Exception($"Lỗi khi lấy chi tiết phòng {roomId}", ex);
+  }
+        }
+
+      /// <summary>
+      /// Cập nhật chi tiết phòng thuê
+       /// </summary>
+       public async Task<bool> UpdateRoomRentalDetailAsync(RoomRentalDetail roomRentalDetail)
+    {
+            try
+  {
+          if (roomRentalDetail == null)
+  throw new ArgumentNullException(nameof(roomRentalDetail));
+
+  await _roomRentalDetailRepository.UpdateAsync(roomRentalDetail);
+          await _roomRentalDetailRepository.SaveChangesAsync();
+
+            return true;
+           }
+           catch (Exception ex)
+      {
+           throw new Exception("Lỗi khi cập nhật chi tiết phòng thuê", ex);
+   }
+   }
+
+      /// <summary>
+         /// Xóa chi tiết phòng thuê
+  /// </summary>
+      public async Task<bool> DeleteRoomRentalDetailAsync(string rentalDetailId, string roomId, DateTime rentalDate)
+       {
+          try
+     {
+             if (string.IsNullOrWhiteSpace(rentalDetailId) || string.IsNullOrWhiteSpace(roomId))
+        throw new ArgumentException("Mã chi tiết thuê và mã phòng không được để trống");
+
+var allDetails = await _roomRentalDetailRepository.GetAllAsync();
+          var detail = allDetails.FirstOrDefault(r =>
+   r.RentalDetailId == rentalDetailId &&
+       r.RoomId == roomId &&
+          r.RentalDate == rentalDate);
+
+      if (detail == null)
+        throw new InvalidOperationException("Chi tiết phòng thuê không tồn tại");
+
+        await _roomRentalDetailRepository.DeleteAsync(detail);
+ await _roomRentalDetailRepository.SaveChangesAsync();
+
+      return true;
+           }
+           catch (Exception ex)
+  {
+     throw new Exception("Lỗi khi xóa chi tiết phòng thuê", ex);
+ }
+      }
+
+        /// <summary>
+       /// Xóa tất cả chi tiết phòng của một chi tiết thuê
+      /// </summary>
+     public async Task<bool> DeleteAllRoomRentalDetailsByRentalDetailIdAsync(string rentalDetailId)
+    {
+      try
+         {
+   if (string.IsNullOrWhiteSpace(rentalDetailId))
+    throw new ArgumentException("Mã chi tiết thuê không được để trống");
+
+        var allDetails = await _roomRentalDetailRepository.GetAllAsync();
+      var detailsToDelete = allDetails.Where(r => r.RentalDetailId == rentalDetailId).ToList();
+
+         foreach (var detail in detailsToDelete)
+ {
+        await _roomRentalDetailRepository.DeleteAsync(detail);
+       }
+
+      await _roomRentalDetailRepository.SaveChangesAsync();
+
+         return true;
+             }
+            catch (Exception ex)
+ {
+            throw new Exception("Lỗi khi xóa chi tiết phòng thuê", ex);
+           }
+       }
+
+     /// <summary>
+        /// Lấy chi tiết phòng thuê cùng với thông tin phòng
+    /// </summary>
+      public async Task<IEnumerable<RoomRentalDetail>> GetRoomRentalDetailsWithRoomAsync(string rentalDetailId)
+ {
+          try
+     {
+        if (string.IsNullOrWhiteSpace(rentalDetailId))
+        return new List<RoomRentalDetail>();
+
+    return await GetRoomRentalDetailsByRentalDetailIdAsync(rentalDetailId);
+      }
+      catch (Exception ex)
+      {
+        throw new Exception($"Lỗi khi lấy chi tiết phòng cùng thông tin", ex);
+    }
+      }
+
+       /// <summary>
+       /// Tính tổng tiền cho chi tiết thuê
+  /// </summary>
+        public async Task<int> CalculateTotalPriceAsync(string rentalDetailId)
+     {
+      try
+  {
+       var roomDetails = await GetRoomRentalDetailsByRentalDetailIdAsync(rentalDetailId);
+  return roomDetails.Sum(r => r.RentalPrice);
+      }
+     catch (Exception ex)
+       {
+           throw new Exception("Lỗi khi tính tổng tiền", ex);
+      }
+       }
+ }
+}

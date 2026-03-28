@@ -1,0 +1,55 @@
+﻿using QuanLyKhachSan.Models;
+
+namespace QuanLyKhachSan.Services.Interfaces
+{
+    /// <summary>
+    /// Service interface cho RentalDetail (Chi tiết thuê phòng)
+    /// </summary>
+    public interface IRentalDetailService
+    {
+      /// <summary>
+        /// Tạo chi tiết thuê phòng mới
+ /// </summary>
+        Task<RentalDetail?> CreateRentalDetailAsync(RentalDetail rentalDetail);
+
+        /// <summary>
+        /// Lấy chi tiết thuê phòng theo ID
+   /// </summary>
+        Task<RentalDetail?> GetRentalDetailAsync(string rentalDetailId);
+
+ /// <summary>
+        /// Cập nhật chi tiết thuê phòng
+        /// </summary>
+     Task<bool> UpdateRentalDetailAsync(RentalDetail rentalDetail);
+
+        /// <summary>
+        /// Xóa chi tiết thuê phòng
+  /// </summary>
+        Task<bool> DeleteRentalDetailAsync(string rentalDetailId);
+
+        /// <summary>
+        /// Lấy tất cả chi tiết thuê phòng
+        /// </summary>
+        Task<IEnumerable<RentalDetail>> GetAllRentalDetailsAsync();
+
+        /// <summary>
+        /// Lấy chi tiết thuê phòng của khách hàng
+        /// </summary>
+        Task<IEnumerable<RentalDetail>> GetRentalDetailsByCustomerAsync(string customerId);
+
+   /// <summary>
+        /// Lấy chi tiết thuê phòng cùng với thông tin liên quan (Customer, Employee, Rooms, Services)
+  /// </summary>
+        Task<RentalDetail?> GetRentalDetailWithDetailsAsync(string rentalDetailId);
+
+        /// <summary>
+        /// Tạo số chi tiết thuê phòng mới (CTT + timestamp)
+        /// </summary>
+      string GenerateRentalDetailId();
+
+        /// <summary>
+        /// Lấy chi tiết thuê phòng trong khoảng ngày
+     /// </summary>
+        Task<IEnumerable<RentalDetail>> GetRentalDetailsByDateRangeAsync(DateTime startDate, DateTime endDate);
+    }
+}

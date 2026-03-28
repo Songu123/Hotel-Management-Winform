@@ -29,8 +29,8 @@ namespace QuanLyKhachSan.UI.BookingUI
         {
             _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
             _bookingService = bookingService ?? throw new ArgumentNullException(nameof(bookingService));
-
             InitializeModernUI();
+
         }
 
         /// <summary>
@@ -411,35 +411,47 @@ namespace QuanLyKhachSan.UI.BookingUI
         }
 
         /// <summary>
-        /// Clean room event handler - Đánh dấu phòng đang dọn dẹp
+        /// Clean room event handler - Hiển thị form dọn dẹp phòng đơn giản
         /// </summary>
         private async void OnCleanRoom(object sender, Room room)
         {
             _selectedRoom = room;
             try
             {
-                // Get cleaning service from service provider
-                var serviceProvider = (IServiceProvider)Program.Services;
-                var cleaningService = serviceProvider.GetService(typeof(IRoomCleaningService)) as IRoomCleaningService;
 
-                if (cleaningService == null)
+                // Check if room is occupied or cleaning
+                if (room.Status == 2)
                 {
-                    MessageBox.Show("Lỗi: Không thể khởi tạo IRoomCleaningService", "Lỗi",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Phòng {room.Name} đang được dọn dẹp!", "Thông báo",
+    MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                // Show room cleaning form
-                var cleaningForm = new RoomCleaningForm(room, cleaningService, _roomService);
+                if (room.Status == 3)
+                {
+                    MessageBox.Show($"Phòng {room.Name} đang bảo trì, không thể dọn dẹp!", "Thông báo",
+          MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Show simple cleaning form
+                var cleaningForm = new SimpleRoomCleaningForm(room);
                 var result = cleaningForm.ShowDialog();
 
                 if (result == DialogResult.OK)
                 {
+                    // Update room status to Available (0)
+                    room.Status = 0;
+                    room.CurrentCondition = GetConditionValue(cleaningForm.GetCondition());
+
+                    // Update room in database
+                    await _roomService.UpdateRoomAsync(room);
+
                     // Update room status in UI
                     _roomCardContainer.UpdateRoomStatus(room.RoomId, RoomStatusType.Available);
 
                     MessageBox.Show("✓ Dọn phòng thành công", "Thành công",
-                  MessageBoxButtons.OK, MessageBoxIcon.Information);
+         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     // Refresh room list
                     await Task.Delay(500);
@@ -450,6 +462,20 @@ namespace QuanLyKhachSan.UI.BookingUI
             {
                 MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// Convert condition text to value
+        /// </summary>
+        private int GetConditionValue(string condition)
+        {
+            return condition switch
+            {
+                "Tốt" => 0,
+                "Cần sửa chữa" => 1,
+                "Cần vệ sinh" => 2,
+                _ => 0
+            };
         }
 
         /// <summary>
@@ -475,10 +501,10 @@ namespace QuanLyKhachSan.UI.BookingUI
         {
             return status switch
             {
-                0 => "Sẵn sàng",
-                1 => "Đang sử dụng",
-                2 => "Đang dọn",
-                3 => "Bảo trì",
+                0 => "Trống",
+                1 => "Đã có khách",
+                2 => "Đang dọn dẹp",
+                3 => "Đang bảo trì",
                 _ => "Không xác định"
             };
         }

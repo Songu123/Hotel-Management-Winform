@@ -1,0 +1,488 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    public partial class UCBooking : UserControl
+    {
+        private ModernRoomCardContainer _roomCardContainer;
+        private IRoomService _roomService;
+        private IBookingService _bookingService;
+        private IRoomCleaningService _roomCleaningService;
+        private List<Room> _allRooms = new();
+        private Room _selectedRoom = null;
+
+        public UCBooking()
+        {
+            InitializeComponent();
+        }
+
+        public UCBooking(IRoomService roomService, IBookingService bookingService, IRoomCleaningService roomCleaningService) : this()
+        {
+            _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
+            _bookingService = bookingService ?? throw new ArgumentNullException(nameof(bookingService));
+            _roomCleaningService = roomCleaningService ?? throw new ArgumentNullException(nameof(roomCleaningService));
+
+            InitializeModernUI();
+
+        }
+
+        /// <summary>
+        /// Initialize with services (for parameterless constructor)
+        /// </summary>
+        public void InitializeWithServices(IRoomService roomService, IBookingService bookingService, IRoomCleaningService roomCleaningService)
+        {
+            _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
+            _bookingService = bookingService ?? throw new ArgumentNullException(nameof(bookingService));
+            _roomCleaningService = roomCleaningService ?? throw new ArgumentNullException(nameof(roomCleaningService));
+
+            // Ensure InitializeComponent is called first
+            if (pnlBottom == null)
+            {
+                MessageBox.Show("Lỗi: Design components chưa được khởi tạo", "Lỗi",
+             MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            InitializeModernUI();
+        }
+
+        /// <summary>
+        /// Initialize modern UI with room cards instead of flow layout
+        /// </summary>
+        private void InitializeModernUI()
+        {
+            // Setup modern room card container
+            _roomCardContainer = new ModernRoomCardContainer();
+            _roomCardContainer.Dock = DockStyle.Fill;
+            _roomCardContainer.SetColumnCount(3);
+            _roomCardContainer.BackColor = Color.FromArgb(240, 241, 245);
+
+            // Subscribe to card events
+            _roomCardContainer.ViewDetailsClicked += OnViewRoomDetails;
+            _roomCardContainer.BookingClicked += OnBookRoom;
+            _roomCardContainer.CleaningClicked += OnCleanRoom;
+
+            // Add ModernRoomCardContainer to pnlBottom (không xóa flpRooms, chỉ thay thế)
+            pnlBottom.Controls.Remove(flpRooms);
+            pnlBottom.Controls.Add(_roomCardContainer);
+            _roomCardContainer.BringToFront();
+
+            // Setup event handlers
+            btnTimKiem.Click += BtnTimKiem_Click;
+            btnLamMoi.Click += BtnLamMoi_Click;
+
+            // Load rooms
+            LoadRoomsAsync();
+        }
+
+        /// <summary>
+        /// Load all rooms from database
+        /// </summary>
+        private async void LoadRoomsAsync()
+        {
+            try
+            {
+                if (_roomService == null)
+                {
+                    MessageBox.Show("Lỗi: IRoomService chưa được khởi tạo", "Lỗi",
+                      MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Load rooms from service
+                var rooms = await _roomService.GetAllRoomsAsync();
+
+                if (rooms == null)
+                {
+                    MessageBox.Show("Lỗi: GetAllRoomsAsync trả về null", "Lỗi",
+           MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                _allRooms = rooms.ToList();
+
+                // Debug: Kiểm tra xem có phòng nào không
+                if (_allRooms.Count == 0)
+                {
+                    MessageBox.Show("Không có phòng nào trong database", "Thông báo",
+                               MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // Display all rooms
+                DisplayRooms(_allRooms);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải phòng: {ex.Message}\n\nStack: {ex.StackTrace}", "Lỗi",
+                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Display rooms in card container
+        /// </summary>
+        private void DisplayRooms(List<Room> rooms)
+        {
+            if (_roomCardContainer == null)
+            {
+                MessageBox.Show("Lỗi: ModernRoomCardContainer chưa được khởi tạo", "Lỗi",
+                          MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            _roomCardContainer.ClearRooms();
+
+            foreach (var room in rooms)
+            {
+                if (room == null) continue;
+
+                var status = GetRoomStatus(room);
+                _roomCardContainer.AddRoom(room, status);
+            }
+
+            // Force layout update
+            _roomCardContainer.Refresh();
+        }
+
+        /// <summary>
+        /// Get room status based on Room.Status value
+        /// </summary>
+        private RoomStatusType GetRoomStatus(Room room)
+        {
+            return room.Status switch
+            {
+                0 => RoomStatusType.Available,
+                1 => RoomStatusType.Occupied,
+                2 => RoomStatusType.Cleaning,
+                3 => RoomStatusType.Maintenance,
+                _ => RoomStatusType.Available
+            };
+        }
+
+        /// <summary>
+        /// Search button handler
+        /// </summary>
+        private void BtnTimKiem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var filtered = ApplyFilters(_allRooms);
+
+                if (!filtered.Any())
+                {
+                    MessageBox.Show("Không có phòng phù hợp với tiêu chí tìm kiếm", "Thông báo",
+                      MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                DisplayRooms(filtered);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tìm kiếm: {ex.Message}", "Lỗi",
+            MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Refresh button handler
+        /// </summary>
+        private void BtnLamMoi_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Reset filters
+                cboLoaiPhong.SelectedIndex = 0;
+                cboTinhTrangPhong.SelectedIndex = 0;
+                cboGiaPhong.SelectedIndex = 0;
+                cboHienTrang.SelectedIndex = 0;
+                dtpNgayThue.Value = DateTime.Now;
+                dtpNgayTra.Value = DateTime.Now.AddDays(1);
+                rdoTheoNgay.Checked = true;
+
+                // Reset selected room
+                _selectedRoom = null;
+
+                // Load all rooms again
+                LoadRoomsAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi",
+              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Apply filters to room list
+        /// </summary>
+        private List<Room> ApplyFilters(List<Room> rooms)
+        {
+            var filtered = rooms.AsEnumerable();
+
+            // Filter by room type
+            if (cboLoaiPhong.SelectedIndex > 0)
+            {
+                var selected = cboLoaiPhong.SelectedItem.ToString();
+                if (int.TryParse(selected.Substring(0, 1), out int roomType))
+                {
+                    filtered = filtered.Where(r => r.RoomType == roomType);
+                }
+            }
+
+            // Filter by room status
+            if (cboTinhTrangPhong.SelectedIndex > 0)
+            {
+                var selected = cboTinhTrangPhong.SelectedItem.ToString();
+                if (int.TryParse(selected.Substring(0, 1), out int status))
+                {
+                    filtered = filtered.Where(r => r.Status == status);
+                }
+            }
+
+            // Filter by price
+            if (cboGiaPhong.SelectedIndex > 0)
+            {
+                var selected = cboGiaPhong.SelectedItem.ToString();
+                var priceStr = System.Text.RegularExpressions.Regex.Replace(selected, @"[^\d]", "");
+                if (int.TryParse(priceStr, out int price))
+                {
+                    filtered = filtered.Where(r => r.Price == price);
+                }
+            }
+
+            return filtered.ToList();
+        }
+
+        /// <summary>
+        /// View room details event handler - Hiển thị form chi tiết phòng
+        /// </summary>
+        private void OnViewRoomDetails(object sender, Room room)
+        {
+            _selectedRoom = room;
+            try
+            {
+                var detailsForm = new Form
+                {
+                    Text = $"Chi tiết phòng {room.Name}",
+                    Width = 500,
+                    Height = 400,
+                    StartPosition = FormStartPosition.CenterParent,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    MaximizeBox = false,
+                    MinimizeBox = false
+                };
+
+                var lblTitle = new Label
+                {
+                    Text = $"Phòng: {room.Name}",
+                    Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                    ForeColor = Color.SteelBlue,
+                    Location = new Point(20, 20),
+                    AutoSize = true
+                };
+
+                var pnlDetails = new Panel
+                {
+                    Location = new Point(20, 60),
+                    Width = detailsForm.Width - 60,
+                    Height = 250,
+                    BorderStyle = BorderStyle.FixedSingle
+                };
+
+                var roomDetails = new Label
+                {
+                    Text = $"Loại phòng: {GetRoomTypeName(room.RoomType)}\n\n" +
+              $"Giá: {room.Price:N0} VNĐ/đêm\n\n" +
+           $"Trạng thái: {GetRoomStatusName(room.Status)}\n\n" +
+                 $"Mã phòng: {room.RoomId}",
+                    Font = new Font("Segoe UI", 10),
+                    Location = new Point(15, 15),
+                    AutoSize = true,
+                    Dock = DockStyle.Fill
+                };
+
+                pnlDetails.Controls.Add(roomDetails);
+
+                var btnClose = new Button
+                {
+                    Text = "Đóng",
+                    Width = 100,
+                    Height = 35,
+                    Location = new Point(detailsForm.Width - 140, detailsForm.Height - 80),
+                    BackColor = Color.Gray,
+                    ForeColor = Color.White,
+                    DialogResult = DialogResult.OK
+                };
+
+                detailsForm.Controls.Add(lblTitle);
+                detailsForm.Controls.Add(pnlDetails);
+                detailsForm.Controls.Add(btnClose);
+                detailsForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Book room event handler - Hiển thị phiếu đặt phòng
+        /// </summary>
+        private async void OnBookRoom(object sender, Room room)
+        {
+            _selectedRoom = room;
+            try
+            {
+                // Check if room is available
+                if (room.Status != 0)
+                {
+                    MessageBox.Show($"Phòng {room.Name} không sẵn sàng để đặt", "Thông báo",
+                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Validate booking dates
+                if (dtpNgayThue.Value >= dtpNgayTra.Value)
+                {
+                    MessageBox.Show("Ngày trả phải sau ngày thuê", "Cảnh báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Load customers from database
+                List<Customer> customers = new List<Customer>();
+                try
+                {
+                    if (_roomService != null)
+                    {
+                        // Get service provider to access ICustomerService
+                        var serviceProvider = (IServiceProvider)Program.Services;
+                        var customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
+
+                        if (customerService != null)
+                        {
+                            var allCustomers = await customerService.GetAllCustomersAsync();
+                            if (allCustomers != null)
+                            {
+                                customers = allCustomers.Where(c => c.IsDeleted == 0).ToList();
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
+                    // Continue even if customer loading fails
+                }
+
+                // Show booking form
+                var bookingForm = new BookingForm(room, dtpNgayThue.Value, dtpNgayTra.Value, customers);
+                var result = bookingForm.ShowDialog();
+
+                if (result == DialogResult.OK && bookingForm.IsConfirmed)
+                {
+                    // Calculate pricing
+                    var nights = (int)(dtpNgayTra.Value - dtpNgayThue.Value).TotalDays;
+                    decimal totalPrice = room.Price * nights;
+
+                    // Update room status in database
+                    room.Status = 1; // Occupied
+                    await _roomService.UpdateRoomAsync(room);
+
+                    // Update room status in UI
+                    _roomCardContainer.UpdateRoomStatus(room.RoomId, RoomStatusType.Occupied);
+
+                    // Refresh room list
+                    await Task.Delay(500);
+                    LoadRoomsAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Clean room event handler - Đánh dấu phòng đang dọn dẹp
+        /// </summary>
+        private async void OnCleanRoom(object sender, Room room)
+        {
+            _selectedRoom = room;
+    try
+    {
+       if (_roomCleaningService == null)
+                {
+             MessageBox.Show("Lỗi: IRoomCleaningService chưa được khởi tạo", "Lỗi",
+      MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+  }
+
+      // Show room cleaning form
+  var cleaningForm = new RoomCleaningForm(room, _roomCleaningService, _roomService);
+          var result = cleaningForm.ShowDialog();
+
+if (result == DialogResult.OK)
+       {
+            // Update room status in UI
+        _roomCardContainer.UpdateRoomStatus(room.RoomId, RoomStatusType.Available);
+
+             MessageBox.Show("✓ Dọn phòng thành công", "Thành công",
+     MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Refresh room list
+  await Task.Delay(500);
+   LoadRoomsAsync();
+        }
+     }
+catch (Exception ex)
+     {
+       MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+}
+      }
+
+        /// <summary>
+        /// Helper: Get room type name
+        /// </summary>
+        private string GetRoomTypeName(int roomType)
+        {
+            return roomType switch
+            {
+                1 => "Phòng Đơn",
+                2 => "Phòng Đôi",
+                3 => "Phòng Gia đình",
+                4 => "Phòng VIP",
+                5 => "Phòng Suite",
+                _ => "Không xác định"
+            };
+        }
+
+        /// <summary>
+        /// Helper: Get room status name
+        /// </summary>
+        private string GetRoomStatusName(int status)
+        {
+            return status switch
+            {
+                0 => "Sẵn sàng",
+                1 => "Đang sử dụng",
+                2 => "Đang dọn",
+                3 => "Bảo trì",
+                _ => "Không xác định"
+            };
+        }
+
+        public Room GetSelectedRoom() => _selectedRoom;
+    }
+}
