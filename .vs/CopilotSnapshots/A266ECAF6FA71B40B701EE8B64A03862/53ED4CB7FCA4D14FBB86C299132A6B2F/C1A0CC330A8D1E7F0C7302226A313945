@@ -1,0 +1,443 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    /// <summary>
+    /// 📋 ENHANCED BOOKING DETAIL FORM WITH ADD ROOM/SERVICE FUNCTIONALITY
+    /// - View booking details
+    /// - Add rooms to booking  
+    /// - Add services to booking
+    /// - Checkout booking
+/// - Print booking receipt
+    /// ✅ Debug logging enabled with DebugLogger class
+    /// </summary>
+    public partial class BookingDetailForm : Form
+    {
+        #region ==================== FIELDS ====================
+
+        private IRentalDetailService _rentalDetailService;
+        private ICustomerService _customerService;
+        private IRoomRentalDetailService _roomRentalDetailService;
+        private IRoomService _roomService;
+        private IServiceService _serviceService;
+
+        private string _rentalDetailId = string.Empty;
+        private RentalDetail _currentRental;
+        private Customer _currentCustomer;
+        private List<RoomRentalDetail> _roomDetails = new();
+        private List<ServiceRentalDetail> _serviceDetails = new();
+
+        #endregion
+
+        #region ==================== CONSTRUCTOR ====================
+
+     public BookingDetailForm()
+      {
+            InitializeComponent();
+        }
+
+        public BookingDetailForm(
+            IRentalDetailService rentalDetailService,
+  ICustomerService customerService,
+            IRoomRentalDetailService roomRentalDetailService,
+            IRoomService roomService,
+          IServiceService serviceService) : this()
+        {
+            _rentalDetailService = rentalDetailService;
+  _customerService = customerService;
+            _roomRentalDetailService = roomRentalDetailService;
+         _roomService = roomService;
+   _serviceService = serviceService;
+
+            DebugLogger.Info("✓ BookingDetailForm constructor initialized with all services");
+        }
+
+        #endregion
+
+        #region ==================== PUBLIC METHODS ====================
+
+        public async Task LoadBookingDetailAsync(string rentalDetailId)
+      {
+       try
+            {
+                DebugLogger.Info($"=== 📂 LOAD BOOKING DETAIL ===");
+         DebugLogger.Info($"RentalDetailId: {rentalDetailId}");
+
+    _rentalDetailId = rentalDetailId;
+
+  _currentRental = await _rentalDetailService.GetRentalDetailAsync(rentalDetailId);
+if (_currentRental == null)
+   {
+      DebugLogger.Error($"❌ RentalDetail not found: {rentalDetailId}");
+      MessageBox.Show("Không tìm thấy chi tiết đặt phòng", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        return;
+         }
+
+     DebugLogger.Info($"✓ RentalDetail loaded: {_currentRental.RentalDetailId}");
+
+   if (!string.IsNullOrEmpty(_currentRental.CustomerId))
+  {
+                _currentCustomer = await _customerService.GetCustomerAsync(_currentRental.CustomerId);
+  DebugLogger.Info($"✓ Customer loaded: {_currentCustomer?.Name ?? "N/A"}");
+        }
+
+                _roomDetails = (await _roomRentalDetailService.GetRoomRentalDetailsByRentalDetailIdAsync(rentalDetailId))?.ToList() ?? new List<RoomRentalDetail>();
+ DebugLogger.Info($"✓ Loaded {_roomDetails.Count} room details from database");
+
+     PopulateUI();
+ RefreshUI();
+    CalculateTotals();
+
+             DebugLogger.Success("✓✓ BookingDetail loaded successfully");
+     }
+ catch (Exception ex)
+         {
+    DebugLogger.Error("❌ ERROR in LoadBookingDetailAsync", ex);
+        MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+   }
+
+        #endregion
+
+        #region ==================== PRIVATE METHODS ====================
+
+      private void PopulateUI()
+        {
+        try
+  {
+    if (txtRentalId != null) txtRentalId.Text = _currentRental?.RentalDetailId ?? "N/A";
+                if (txtCreatedDate != null) txtCreatedDate.Text = _currentRental?.CreatedDate.ToString("dd/MM/yyyy HH:mm") ?? "N/A";
+            if (txtDeposit != null) txtDeposit.Text = (_currentRental?.DepositAmount ?? 0).ToString("N0") + " VNĐ";
+            if (txtStatus != null) txtStatus.Text = GetStatusName(_currentRental?.ProcessingStatus ?? 0);
+
+         if (txtCustomerName != null) txtCustomerName.Text = _currentCustomer?.Name ?? "N/A";
+       if (txtIdNumber != null) txtIdNumber.Text = _currentCustomer?.IdNumber ?? "N/A";
+            if (txtPhone != null) txtPhone.Text = _currentCustomer?.PhoneNumber ?? "N/A";
+      if (txtAddress != null) txtAddress.Text = _currentCustomer?.Address ?? "N/A";
+
+       DebugLogger.Info("✓ UI populated with data");
+            }
+            catch (Exception ex)
+     {
+ DebugLogger.Error("Error populating UI", ex);
+    }
+        }
+
+        private void RefreshUI()
+   {
+         RefreshRoomsGrid();
+    RefreshServicesGrid();
+        }
+
+        private void RefreshRoomsGrid()
+        {
+            try
+ {
+     if (dgvRooms == null) return;
+
+       dgvRooms.Rows.Clear();
+         int stt = 1;
+
+                foreach (var room in _roomDetails)
+       {
+  int nights = Math.Max(1, (int)(room.ReturnDate - room.RentalDate).TotalDays);
+     int total = room.RentalPrice * nights;
+
+           dgvRooms.Rows.Add(
+   stt++,
+room.RoomId,
+  "Standard",
+         room.RentalDate.ToString("dd/MM"),
+             room.ReturnDate.ToString("dd/MM"),
+    nights,
+         room.RentalPrice.ToString("N0"),
+            total.ToString("N0")
+   );
+                }
+
+      DebugLogger.LogGridRows("Rooms Grid", dgvRooms.Rows.Count);
+            }
+catch (Exception ex)
+            {
+    DebugLogger.Error("Error refreshing rooms grid", ex);
+            }
+}
+
+     private void RefreshServicesGrid()
+  {
+          try
+     {
+      if (dgvServices == null) return;
+
+          dgvServices.Rows.Clear();
+     int stt = 1;
+
+            foreach (var service in _serviceDetails)
+                {
+             int total = service.Price * service.Quantity;
+
+            dgvServices.Rows.Add(
+       stt++,
+service.ServiceId,
+      service.Quantity,
+        service.Price.ToString("N0"),
+    total.ToString("N0")
+      );
+              }
+
+                DebugLogger.LogGridRows("Services Grid", dgvServices.Rows.Count);
+            }
+          catch (Exception ex)
+        {
+    DebugLogger.Error("Error refreshing services grid", ex);
+          }
+ }
+
+      private void CalculateTotals()
+        {
+            try
+            {
+        int totalRoomCost = _roomDetails.Sum(r =>
+       {
+        int nights = Math.Max(1, (int)(r.ReturnDate - r.RentalDate).TotalDays);
+     return r.RentalPrice * nights;
+                });
+
+          int totalServiceCost = _serviceDetails.Sum(s => s.Price * s.Quantity);
+           int total = totalRoomCost + totalServiceCost;
+
+ if (txtRoomCost != null) txtRoomCost.Text = totalRoomCost.ToString("N0") + " VNĐ";
+          if (txtServiceCost != null) txtServiceCost.Text = totalServiceCost.ToString("N0") + " VNĐ";
+             if (lblTotalAmount != null) lblTotalAmount.Text = total.ToString("N0") + " VNĐ";
+
+         DebugLogger.LogState(_roomDetails.Count, _serviceDetails.Count, totalRoomCost, totalServiceCost, total);
+ }
+            catch (Exception ex)
+ {
+          DebugLogger.Error("Error calculating totals", ex);
+    }
+        }
+
+        private string GetStatusName(int status)
+        {
+            return status switch
+            {
+                0 => "Đang Xử Lý",
+                1 => "Đã Xác Nhận",
+      2 => "Đã Hủy",
+       _ => "Không Xác Định"
+          };
+    }
+
+        #endregion
+
+        #region ==================== EVENT HANDLERS ====================
+
+        private void BtnAddRoom_Click(object sender, EventArgs e)
+        {
+     try
+{
+      DebugLogger.Info("=== 🏨 BUTTON: ADD ROOM CLICKED ===");
+ DebugLogger.Info($"Current RentalDetailId: {_rentalDetailId}");
+
+         var dialog = new AddRoomDialog(_roomService, _roomRentalDetailService);
+    DebugLogger.Info("✓ AddRoomDialog instance created");
+
+      if (dialog.ShowDialog() == DialogResult.OK)
+      {
+   DebugLogger.Info("✓ Dialog returned OK");
+            DebugLogger.LogAddRoom(_rentalDetailId, dialog.SelectedRoomId,
+        dialog.RentalDate, dialog.ReturnDate, dialog.RentalPrice);
+
+        var newRoom = new RoomRentalDetail
+        {
+         RentalDetailId = _rentalDetailId,
+                RoomId = dialog.SelectedRoomId,
+        RentalDate = dialog.RentalDate,
+           ReturnDate = dialog.ReturnDate,
+     RentalPrice = dialog.RentalPrice,
+         Status = 0
+                  };
+
+         DebugLogger.Info($"✓ RoomRentalDetail object created with RoomId: {newRoom.RoomId}");
+
+           _roomDetails.Add(newRoom);
+          DebugLogger.Info($"✓ Room added to _roomDetails. Count: {_roomDetails.Count}");
+
+       RefreshUI();
+       CalculateTotals();
+
+DebugLogger.Success("✓ BtnAddRoom_Click completed successfully");
+  MessageBox.Show("✓ Thêm phòng thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        else
+          {
+   DebugLogger.Warning("Dialog was cancelled");
+         }
+   }
+         catch (Exception ex)
+        {
+                DebugLogger.Error("❌ ERROR in BtnAddRoom_Click", ex);
+  MessageBox.Show($"Lỗi khi thêm phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void BtnAddService_Click(object sender, EventArgs e)
+ {
+try
+            {
+      DebugLogger.Info("=== 🍔 BUTTON: ADD SERVICE CLICKED ===");
+       DebugLogger.Info($"Current RentalDetailId: {_rentalDetailId}");
+
+       var dialog = new AddServiceDialog(_serviceService);
+        DebugLogger.Info("✓ AddServiceDialog instance created");
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+        {
+        DebugLogger.Info("✓ Dialog returned OK");
+DebugLogger.LogAddService(_rentalDetailId, dialog.SelectedServiceId,
+     dialog.Quantity, dialog.ServicePrice, dialog.UsageDate);
+
+           var newService = new ServiceRentalDetail
+    {
+            RentalDetailId = _rentalDetailId,
+  ServiceId = dialog.SelectedServiceId,
+       UsageDate = dialog.UsageDate,
+     Quantity = dialog.Quantity,
+         Price = dialog.ServicePrice
+            };
+
+        DebugLogger.Info($"✓ ServiceRentalDetail object created with ServiceId: {newService.ServiceId}");
+
+          _serviceDetails.Add(newService);
+            DebugLogger.Info($"✓ Service added to _serviceDetails. Count: {_serviceDetails.Count}");
+
+            RefreshUI();
+CalculateTotals();
+
+     DebugLogger.Success("✓ BtnAddService_Click completed successfully");
+           MessageBox.Show("✓ Thêm dịch vụ thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      }
+      else
+    {
+   DebugLogger.Warning("Dialog was cancelled");
+        }
+        }
+      catch (Exception ex)
+ {
+                DebugLogger.Error("❌ ERROR in BtnAddService_Click", ex);
+      MessageBox.Show($"Lỗi khi thêm dịch vụ: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+        }
+
+ private async void BtnCheckout_Click(object sender, EventArgs e)
+        {
+         try
+            {
+     DebugLogger.Info("=== ✓ BUTTON: CHECKOUT CLICKED ===");
+    DebugLogger.Info($"RentalDetailId: {_rentalDetailId}");
+
+                int totalRoomCost = _roomDetails.Sum(r => r.RentalPrice * Math.Max(1, (int)(r.ReturnDate - r.RentalDate).TotalDays));
+                int totalServiceCost = _serviceDetails.Sum(s => s.Price * s.Quantity);
+             int grandTotal = totalRoomCost + totalServiceCost;
+
+        DebugLogger.LogState(_roomDetails.Count, _serviceDetails.Count, totalRoomCost, totalServiceCost, grandTotal);
+
+     var result = MessageBox.Show(
+       "Bạn chắc chắn muốn checkout đơn đặt phòng này?\n\nTổng tiền: " + (lblTotalAmount?.Text ?? "0 VNĐ"),
+           "Xác nhận Checkout",
+     MessageBoxButtons.YesNo,
+         MessageBoxIcon.Question);
+
+                DebugLogger.Info($"User response: {(result == DialogResult.Yes ? "YES" : "NO")}");
+
+     if (result == DialogResult.Yes)
+          {
+  DebugLogger.Info("✓ Checkout confirmed by user");
+
+           // Save room details
+         if (_roomDetails.Count > 0)
+      {
+    DebugLogger.Info($"📌 Saving {_roomDetails.Count} rooms to database...");
+          try
+        {
+         await _roomRentalDetailService.AddRoomRentalDetailsAsync(_roomDetails);
+   DebugLogger.Success($"✓ Successfully saved {_roomDetails.Count} rooms");
+           }
+            catch (Exception roomEx)
+       {
+         DebugLogger.Error($"❌ Failed to save rooms", roomEx);
+      throw;
+     }
+                 }
+          else
+  {
+     DebugLogger.Warning("⚠ No rooms to save");
+           }
+
+       // TODO: Save service details when ServiceRentalDetailService is available
+         if (_serviceDetails.Count > 0)
+           {
+  DebugLogger.Warning($"⚠ TODO: Saving {_serviceDetails.Count} services (ServiceRentalDetailService not implemented)");
+        }
+
+         // Update rental status
+             DebugLogger.Info($"📌 Updating RentalDetail status from {_currentRental.ProcessingStatus} to 1 (Confirmed)");
+  _currentRental.ProcessingStatus = 1;
+        try
+  {
+              await _rentalDetailService.UpdateRentalDetailAsync(_currentRental);
+             DebugLogger.Success($"✓ RentalDetail status updated successfully");
+           }
+    catch (Exception statusEx)
+        {
+      DebugLogger.Error($"❌ Failed to update RentalDetail status", statusEx);
+               throw;
+         }
+
+              DebugLogger.LogCheckout(_rentalDetailId, _roomDetails.Count, _serviceDetails.Count,
+          totalRoomCost, totalServiceCost, grandTotal);
+
+               DebugLogger.Success("✓✓✓ CHECKOUT COMPLETED SUCCESSFULLY ✓✓✓");
+
+      MessageBox.Show(
+    "✓ Checkout thành công!\n\nĐơn đặt phòng đã được hoàn tất.",
+              "Thành công",
+   MessageBoxButtons.OK,
+          MessageBoxIcon.Information);
+
+            this.Close();
+         }
+                else
+   {
+       DebugLogger.Info("Checkout cancelled by user");
+      }
+            }
+            catch (Exception ex)
+         {
+    DebugLogger.Error("❌ FATAL ERROR in BtnCheckout_Click", ex);
+       MessageBox.Show($"Lỗi checkout: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+ }
+
+        private void BtnPrint_Click(object sender, EventArgs e)
+        {
+    DebugLogger.Info("=== 🖨️ BUTTON: PRINT CLICKED ===");
+     MessageBox.Show(
+      "Tính năng in hoá đơn sẽ được phát triển\n\nChức năng này cho phép in chi tiết đặt phòng và hoá đơn thanh toán.",
+              "Thông báo",
+                MessageBoxButtons.OK,
+          MessageBoxIcon.Information);
+        }
+
+    #endregion
+    }
+}

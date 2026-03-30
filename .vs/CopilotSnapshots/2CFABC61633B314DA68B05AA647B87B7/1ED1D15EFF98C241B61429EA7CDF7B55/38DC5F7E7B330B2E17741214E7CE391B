@@ -1,0 +1,414 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    /// <summary>
+    /// 🎯 ROOM ALLOCATION DETAIL PANEL - Modern UI
+    /// Displays room rental details with real-time price calculation
+    /// Supports: Add/Remove rooms, Filter by availability, Price preview
+    /// </summary>
+    public partial class RoomAllocationDetailPanel : UserControl
+{
+  private List<RoomRentalDetail> _selectedRooms = new();
+      private List<Room> _allRooms = new();
+        private DateTime _checkInDate = DateTime.Now;
+        private DateTime _checkOutDate = DateTime.Now.AddDays(1);
+        
+        private IRoomService _roomService;
+
+        public event EventHandler<RoomSelectionChangedEventArgs> RoomsChanged;
+     public event EventHandler<EventArgs> PriceUpdated;
+
+        public RoomAllocationDetailPanel()
+  {
+            InitializeComponent();
+     ApplyTheme();
+        }
+
+        public void Initialize(IRoomService roomService, DateTime checkIn, DateTime checkOut)
+   {
+ _roomService = roomService;
+       _checkInDate = checkIn;
+    _checkOutDate = checkOut;
+            
+      LoadAvailableRooms();
+   }
+
+        #region ==================== THEME & UI ====================
+
+      private void ApplyTheme()
+ {
+            // Main colors
+         BackColor = Color.White;
+         ForeColor = Color.FromArgb(51, 51, 51);
+
+         // Configure controls
+            if (dgvAvailableRooms != null)
+            {
+          dgvAvailableRooms.BackgroundColor = Color.White;
+       dgvAvailableRooms.BorderStyle = BorderStyle.None;
+     dgvAvailableRooms.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+         dgvAvailableRooms.RowTemplate.Height = 45;
+            }
+
+            if (dgvSelectedRooms != null)
+          {
+        dgvSelectedRooms.BackgroundColor = Color.White;
+         dgvSelectedRooms.BorderStyle = BorderStyle.None;
+        dgvSelectedRooms.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+       dgvSelectedRooms.RowTemplate.Height = 40;
+      }
+        }
+
+        #endregion
+
+        #region ==================== LOAD DATA ====================
+
+        private async void LoadAvailableRooms()
+        {
+ try
+            {
+                if (_roomService == null)
+    {
+     MessageBox.Show("Dịch vụ phòng không khả dụng", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          return;
+                }
+
+        // Load all rooms
+                var allRooms = await _roomService.GetAllRoomsAsync();
+      _allRooms = allRooms?.ToList() ?? new();
+
+     // Display available rooms
+                DisplayAvailableRooms(_allRooms);
+
+       System.Diagnostics.Debug.WriteLine($"✅ Loaded {_allRooms.Count} rooms");
+            }
+            catch (Exception ex)
+       {
+              System.Diagnostics.Debug.WriteLine($"❌ Error loading rooms: {ex.Message}");
+     MessageBox.Show($"Lỗi tải phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
+   }
+
+        private void DisplayAvailableRooms(List<Room> rooms)
+  {
+     try
+            {
+       dgvAvailableRooms.Rows.Clear();
+
+ foreach (var room in rooms.Where(r => r.IsDeleted == 0))
+      {
+          // Check if room is already selected
+     bool isSelected = _selectedRooms.Any(sr => sr.RoomId == room.RoomId);
+              
+ // Check availability
+  string availability = GetAvailabilityStatus(room);
+         Color statusColor = availability == "✅ Trống" ? Color.Green : Color.Red;
+
+             int rowIndex = dgvAvailableRooms.Rows.Add();
+  DataGridViewRow row = dgvAvailableRooms.Rows[rowIndex];
+
+           row.Cells["RoomId"].Value = room.RoomId;
+row.Cells["RoomName"].Value = room.Name;
+        row.Cells["RoomType"].Value = GetRoomTypeName(room.RoomType);
+       row.Cells["Price"].Value = room.Price.ToString("N0");
+   row.Cells["Availability"].Value = availability;
+        row.Cells["Status"].Value = isSelected ? "✅ Đã chọn" : "❌ Chưa chọn";
+
+        // Set colors
+         row.Cells["Availability"].Style.ForeColor = statusColor;
+      row.Cells["Status"].Style.ForeColor = isSelected ? Color.Green : Color.Gray;
+
+      // Disable unavailable rooms
+          if (availability != "✅ Trống")
+   {
+     row.DefaultCellStyle.BackColor = Color.FromArgb(255, 240, 240);
+        row.DefaultCellStyle.ForeColor = Color.Gray;
+}
+                }
+
+     System.Diagnostics.Debug.WriteLine($"✅ Displayed {dgvAvailableRooms.Rows.Count} rooms");
+      }
+    catch (Exception ex)
+          {
+      System.Diagnostics.Debug.WriteLine($"❌ Error displaying rooms: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region ==================== ROOM SELECTION ====================
+
+    private void DgvAvailableRooms_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+           if (e.RowIndex < 0) return;
+
+         var row = dgvAvailableRooms.Rows[e.RowIndex];
+           string roomId = row.Cells["RoomId"].Value?.ToString();
+
+        if (string.IsNullOrEmpty(roomId)) return;
+
+      var room = _allRooms.FirstOrDefault(r => r.RoomId == roomId);
+    if (room == null) return;
+
+       // Check if already selected
+     if (_selectedRooms.Any(sr => sr.RoomId == roomId))
+     {
+          MessageBox.Show("Phòng này đã được chọn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           return;
+       }
+
+                // Check availability
+ if (GetAvailabilityStatus(room) != "✅ Trống")
+      {
+     MessageBox.Show("Phòng này không còn trống", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+   return;
+      }
+
+    // Add room
+      AddRoomToSelection(room);
+        }
+            catch (Exception ex)
+        {
+        System.Diagnostics.Debug.WriteLine($"❌ Error selecting room: {ex.Message}");
+         MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+    private void AddRoomToSelection(Room room)
+        {
+    try
+            {
+                var nights = (int)(_checkOutDate - _checkInDate).TotalDays;
+      if (nights <= 0) nights = 1;
+
+     var rentalDetail = new RoomRentalDetail
+       {
+          RoomId = room.RoomId,
+   RentalDate = _checkInDate,
+      ReturnDate = _checkOutDate,
+          RentalPrice = room.Price,
+RentalType = 0,
+Status = 0
+       };
+
+           _selectedRooms.Add(rentalDetail);
+     DisplayAvailableRooms(_allRooms);
+      DisplaySelectedRooms();
+        UpdateTotalPrice();
+
+      RoomsChanged?.Invoke(this, new RoomSelectionChangedEventArgs(_selectedRooms));
+
+              System.Diagnostics.Debug.WriteLine($"✅ Added room: {room.RoomId}");
+                MessageBox.Show($"✅ Thêm phòng {room.RoomId} thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error adding room: {ex.Message}");
+              MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+   }
+        }
+
+      #endregion
+
+        #region ==================== DISPLAY SELECTED ====================
+
+        private void DisplaySelectedRooms()
+        {
+   try
+    {
+     dgvSelectedRooms.Rows.Clear();
+
+       int rowIndex = 1;
+            foreach (var rental in _selectedRooms)
+          {
+              var room = _allRooms.FirstOrDefault(r => r.RoomId == rental.RoomId);
+       if (room == null) continue;
+
+  int nights = (int)(rental.ReturnDate - rental.RentalDate).TotalDays;
+ if (nights <= 0) nights = 1;
+     int totalPrice = rental.RentalPrice * nights;
+
+         int dgvRowIndex = dgvSelectedRooms.Rows.Add();
+              DataGridViewRow row = dgvSelectedRooms.Rows[dgvRowIndex];
+
+       row.Cells["STT"].Value = rowIndex++;
+         row.Cells["SelectedRoomId"].Value = room.RoomId;
+        row.Cells["SelectedRoomName"].Value = room.Name;
+       row.Cells["SelectedRoomType"].Value = GetRoomTypeName(room.RoomType);
+           row.Cells["PricePerNight"].Value = rental.RentalPrice.ToString("N0");
+        row.Cells["Nights"].Value = nights;
+  row.Cells["TotalPrice"].Value = totalPrice.ToString("N0");
+     row.Cells["CheckIn"].Value = rental.RentalDate.ToString("dd/MM/yyyy");
+     row.Cells["CheckOut"].Value = rental.ReturnDate.ToString("dd/MM/yyyy");
+     }
+
+     System.Diagnostics.Debug.WriteLine($"✅ Displayed {dgvSelectedRooms.Rows.Count} selected rooms");
+       }
+            catch (Exception ex)
+      {
+        System.Diagnostics.Debug.WriteLine($"❌ Error displaying selected rooms: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region ==================== PRICE CALCULATION ====================
+
+        private void UpdateTotalPrice()
+        {
+        try
+  {
+        decimal totalPrice = 0;
+         int totalNights = 0;
+     int totalRooms = _selectedRooms.Count;
+
+      foreach (var rental in _selectedRooms)
+         {
+int nights = (int)(rental.ReturnDate - rental.RentalDate).TotalDays;
+    if (nights <= 0) nights = 1;
+  totalNights += nights;
+        totalPrice += rental.RentalPrice * nights;
+      }
+
+   // Update labels
+      if (lblTotalRooms != null)
+          lblTotalRooms.Text = $"{totalRooms} phòng";
+
+           if (lblTotalNights != null)
+           lblTotalNights.Text = $"{totalNights} đêm";
+
+    if (lblTotalPrice != null)
+  lblTotalPrice.Text = $"{totalPrice:N0} VNĐ";
+
+          PriceUpdated?.Invoke(this, EventArgs.Empty);
+
+    System.Diagnostics.Debug.WriteLine($"✅ Price updated: {totalPrice:N0} VNĐ ({totalRooms} rooms, {totalNights} nights)");
+    }
+ catch (Exception ex)
+{
+            System.Diagnostics.Debug.WriteLine($"❌ Error updating price: {ex.Message}");
+    }
+        }
+
+        #endregion
+
+        #region ==================== REMOVE ROOM ====================
+
+        private void DgvSelectedRooms_CellClick(object sender, DataGridViewCellEventArgs e)
+      {
+            try
+        {
+        if (e.ColumnIndex == dgvSelectedRooms.Columns["Remove"].Index && e.RowIndex >= 0)
+     {
+       var result = MessageBox.Show("Xóa phòng này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+         if (result == DialogResult.Yes)
+    {
+             string roomId = dgvSelectedRooms.Rows[e.RowIndex].Cells["SelectedRoomId"].Value?.ToString();
+              RemoveRoomFromSelection(roomId);
+          }
+   }
+      }
+   catch (Exception ex)
+            {
+        System.Diagnostics.Debug.WriteLine($"❌ Error removing room: {ex.Message}");
+     MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+   }
+
+        private void RemoveRoomFromSelection(string roomId)
+        {
+            try
+   {
+          _selectedRooms.RemoveAll(r => r.RoomId == roomId);
+             DisplayAvailableRooms(_allRooms);
+     DisplaySelectedRooms();
+                UpdateTotalPrice();
+
+    RoomsChanged?.Invoke(this, new RoomSelectionChangedEventArgs(_selectedRooms));
+
+       System.Diagnostics.Debug.WriteLine($"✅ Removed room: {roomId}");
+     MessageBox.Show("✅ Xóa phòng thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+       catch (Exception ex)
+      {
+       System.Diagnostics.Debug.WriteLine($"❌ Error removing room from selection: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+      #region ==================== HELPERS ====================
+
+    private string GetAvailabilityStatus(Room room)
+        {
+            // Status: 0 = Trống, 1 = Có khách, 2 = Đang dọn dẹp, 3 = Đang bảo trì
+            return room.Status switch
+      {
+     0 => "✅ Trống",
+       1 => "❌ Có khách",
+        2 => "🔧 Đang dọn dẹp",
+      3 => "⚠️ Đang bảo trì",
+      _ => "❓ Không xác định"
+            };
+        }
+
+        private string GetRoomTypeName(int type)
+     {
+         return type switch
+         {
+              1 => "Phòng đơn",
+         2 => "Phòng đôi",
+       3 => "Phòng gia đình",
+ 4 => "Phòng VIP",
+         _ => "Không xác định"
+         };
+        }
+
+        #endregion
+
+        #region ==================== PUBLIC METHODS ====================
+
+        public List<RoomRentalDetail> GetSelectedRooms() => new(_selectedRooms);
+
+        public void ClearSelection()
+        {
+            _selectedRooms.Clear();
+            DisplayAvailableRooms(_allRooms);
+        DisplaySelectedRooms();
+          UpdateTotalPrice();
+ RoomsChanged?.Invoke(this, new RoomSelectionChangedEventArgs(_selectedRooms));
+        }
+
+  public int GetTotalPrice()
+        {
+    return _selectedRooms.Sum(r => r.RentalPrice * (int)(_checkOutDate - _checkInDate).TotalDays);
+        }
+
+      #endregion
+    }
+
+    /// <summary>
+    /// Event args for room selection changes
+    /// </summary>
+    public class RoomSelectionChangedEventArgs : EventArgs
+    {
+        public List<RoomRentalDetail> SelectedRooms { get; }
+
+   public RoomSelectionChangedEventArgs(List<RoomRentalDetail> rooms)
+        {
+            SelectedRooms = new(rooms);
+        }
+    }
+}

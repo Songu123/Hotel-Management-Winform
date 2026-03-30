@@ -1,0 +1,319 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+  /// <summary>
+    /// 📋 BOOKING DETAILS CONTAINER FORM
+    /// Split view: Booking list (left) + Booking details (right)
+    /// When user clicks "Xem" button → Display UCBookingDetail on right panel
+    /// </summary>
+ public partial class BookingDetailsContainerForm : Form
+    {
+ #region ==================== FIELDS ====================
+
+        private IRentalDetailService _rentalDetailService;
+        private ICustomerService _customerService;
+        private IEmployeeService _employeeService;
+        private IRoomRentalDetailService _roomRentalDetailService;
+        private IRoomService _roomService;
+        private IServiceService _serviceService;
+
+        private UCListBooking _listBookingUC;
+    private UCBookingDetail _detailBookingUC;
+    private SplitContainer _splitContainer;
+        private Panel _detailPanel;
+  private Label _lblNoSelection;
+
+        #endregion
+
+        #region ==================== CONSTRUCTOR ====================
+
+      public BookingDetailsContainerForm()
+        {
+       InitializeComponent();
+        }
+
+        public BookingDetailsContainerForm(
+            IRentalDetailService rentalDetailService,
+         ICustomerService customerService,
+            IEmployeeService employeeService,
+         IRoomRentalDetailService roomRentalDetailService,
+       IRoomService roomService,
+     IServiceService serviceService) : this()
+        {
+            _rentalDetailService = rentalDetailService ?? throw new ArgumentNullException(nameof(rentalDetailService));
+         _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+       _employeeService = employeeService ?? throw new ArgumentNullException(nameof(employeeService));
+     _roomRentalDetailService = roomRentalDetailService ?? throw new ArgumentNullException(nameof(roomRentalDetailService));
+        _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
+       _serviceService = serviceService ?? throw new ArgumentNullException(nameof(serviceService));
+        }
+
+        #endregion
+
+   #region ==================== FORM LOAD ====================
+
+        private void BookingDetailsContainerForm_Load(object sender, EventArgs e)
+        {
+ try
+            {
+          SetupFormLayout();
+        InitializeWithServices();
+     }
+  catch (Exception ex)
+    {
+                MessageBox.Show($"Lỗi khởi tạo: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+     #endregion
+
+        #region ==================== SETUP ====================
+
+        private void SetupFormLayout()
+    {
+        // Create main split container
+            _splitContainer = new SplitContainer
+          {
+    Dock = DockStyle.Fill,
+                Orientation = Orientation.Vertical,
+  SplitterDistance = 500,
+  SplitterWidth = 5,
+           BackColor = Color.FromArgb(229, 231, 235)
+   };
+
+        // Left Panel: Booking List
+    var leftPanel = new Panel
+         {
+                Dock = DockStyle.Fill,
+     BackColor = Color.White,
+        Padding = new Padding(0)
+   };
+
+            _listBookingUC = new UCListBooking();
+_listBookingUC.Dock = DockStyle.Fill;
+            leftPanel.Controls.Add(_listBookingUC);
+
+            _splitContainer.Panel1.Controls.Add(leftPanel);
+
+            // Right Panel: Booking Detail
+            _detailPanel = new Panel
+            {
+      Dock = DockStyle.Fill,
+ BackColor = Color.FromArgb(249, 250, 251),
+ Padding = new Padding(0)
+};
+
+          // Placeholder label
+            _lblNoSelection = new Label
+    {
+       Text = "👈 Chọn một chi tiết đặt phòng từ danh sách để xem thông tin chi tiết",
+          Font = new Font("Segoe UI", 12, FontStyle.Italic),
+      ForeColor = Color.FromArgb(107, 114, 128),
+        Dock = DockStyle.Fill,
+         TextAlign = ContentAlignment.MiddleCenter,
+                BackColor = Color.FromArgb(249, 250, 251)
+         };
+     _detailPanel.Controls.Add(_lblNoSelection);
+
+     // Detail UC (hidden initially)
+      _detailBookingUC = new UCBookingDetail();
+          _detailBookingUC.Dock = DockStyle.Fill;
+     _detailBookingUC.Visible = false;
+        _detailPanel.Controls.Add(_detailBookingUC);
+
+   _splitContainer.Panel2.Controls.Add(_detailPanel);
+
+ this.Controls.Add(_splitContainer);
+        }
+
+        private void InitializeWithServices()
+   {
+            try
+ {
+      if (_rentalDetailService == null)
+   {
+         MessageBox.Show("Dịch vụ không được khởi tạo", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          return;
+                }
+
+      // Initialize list booking UC with services
+          _listBookingUC.InitializeWithServices(
+        _rentalDetailService,
+     _customerService,
+            _employeeService,
+     _roomRentalDetailService
+      );
+
+           // Initialize detail booking UC with services
+        _detailBookingUC.Initialize(
+              _rentalDetailService,
+  _customerService,
+          _roomRentalDetailService
+   );
+
+ // Setup event handler for list selection
+       HookListBookingViewEvent();
+    }
+            catch (Exception ex)
+     {
+ MessageBox.Show($"Lỗi khởi tạo dịch vụ: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+         }
+        }
+
+#endregion
+
+        #region ==================== EVENT HANDLING ====================
+
+        private void HookListBookingViewEvent()
+        {
+         try
+    {
+                // Get the DataGridView from _listBookingUC by finding it in controls
+  var dgv = FindDataGridViewInControl(_listBookingUC);
+          if (dgv != null)
+        {
+ dgv.CellClick += (s, e) =>
+            {
+        if (e.RowIndex < 0) return;
+
+        var columnName = dgv.Columns[e.ColumnIndex].Name;
+      if (columnName == "btnView")
+        {
+     var rentalDetailId = dgv.Rows[e.RowIndex].Cells["RentalDetailId"].Value?.ToString();
+   if (!string.IsNullOrEmpty(rentalDetailId))
+           {
+      ViewBookingDetailsAsync(rentalDetailId);
+           }
+         }
+    };
+             }
+    }
+    catch (Exception ex)
+         {
+                System.Diagnostics.Debug.WriteLine($"❌ Error hooking event: {ex.Message}");
+     }
+        }
+
+     private DataGridView FindDataGridViewInControl(Control parent)
+        {
+       foreach (Control ctrl in parent.Controls)
+       {
+  if (ctrl is DataGridView dgv)
+         {
+            return dgv;
+           }
+
+   var found = FindDataGridViewInControl(ctrl);
+      if (found != null) return found;
+            }
+            return null;
+   }
+
+   #endregion
+
+        #region ==================== PRIVATE METHODS ====================
+
+        private async void ViewBookingDetailsAsync(string rentalDetailId)
+        {
+            try
+          {
+        // Hide placeholder
+                _lblNoSelection.Visible = false;
+
+         // Show detail UC
+   _detailBookingUC.Visible = true;
+
+         // Load and display details
+      await _detailBookingUC.LoadBookingDetailAsync(rentalDetailId);
+
+      System.Diagnostics.Debug.WriteLine($"✅ Loaded detail for: {rentalDetailId}");
+    }
+       catch (Exception ex)
+            {
+      MessageBox.Show($"Lỗi tải chi tiết: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+             _lblNoSelection.Visible = true;
+       _detailBookingUC.Visible = false;
+      }
+        }
+
+   #endregion
+
+    #region ==================== DESIGNER ====================
+
+   private void InitializeComponent()
+        {
+       this.SuspendLayout();
+      // 
+    // BookingDetailsContainerForm
+      // 
+    this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+   this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+   this.BackColor = System.Drawing.Color.White;
+    this.ClientSize = new System.Drawing.Size(1400, 800);
+  this.Font = new System.Drawing.Font("Segoe UI", 10F);
+  this.Name = "BookingDetailsContainerForm";
+    this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+ this.Text = "📋 QUẢN LÝ CHI TIẾT ĐẶT PHÒNG";
+            this.Load += new System.EventHandler(this.BookingDetailsContainerForm_Load);
+this.ResumeLayout(false);
+        }
+
+        #endregion
+
+   #region ==================== PUBLIC METHODS ====================
+
+ public void InitializeAndLoad()
+  {
+       if (_rentalDetailService == null)
+    {
+        MessageBox.Show("Dịch vụ không được khởi tạo", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    return;
+   }
+
+      InitializeWithServices();
+        }
+
+   /// <summary>
+        /// Public method to load detail from UCListBooking
+    /// Called when user clicks [Xem] button
+        /// </summary>
+ public async Task LoadDetailAsync(string rentalDetailId)
+        {
+try
+      {
+      if (string.IsNullOrEmpty(rentalDetailId))
+          return;
+
+  // Hide placeholder
+      _lblNoSelection.Visible = false;
+
+   // Show detail UC
+    _detailBookingUC.Visible = true;
+
+       // Load details
+       await _detailBookingUC.LoadBookingDetailAsync(rentalDetailId);
+
+  System.Diagnostics.Debug.WriteLine($"✅ Loaded detail for: {rentalDetailId}");
+  }
+      catch (Exception ex)
+       {
+      MessageBox.Show($"Lỗi tải chi tiết: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+       _lblNoSelection.Visible = true;
+    _detailBookingUC.Visible = false;
+     }
+    }
+
+  #endregion
+    }
+}

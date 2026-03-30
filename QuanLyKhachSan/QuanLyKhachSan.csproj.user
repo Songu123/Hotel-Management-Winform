@@ -1,7 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Compile Update="UI\BookingUI\AddRoomDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\AddServiceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\BookingDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\BookingDetailsContainerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="UI\BookingUI\BookingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\BookingNewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\CreateCustomerInBookingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\PaymentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\QuickRoomAllocationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\RoomAllocationDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\RoomAllocationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\SelectRentalForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UI\BookingUI\SimpleRoomCleaningForm.cs">
@@ -10,7 +43,13 @@
     <Compile Update="UI\BookingUI\UCBooking.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="UI\BookingUI\UCBookingDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="UI\BookingUI\UCBookingModern.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UI\BookingUI\UCListBooking.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="UI\CustomerUI\AddCustomerForm.cs">
@@ -21,6 +60,9 @@
     </Compile>
     <Compile Update="UI\CustomerUI\UpdateCustomerForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\InvoiceUI\UCInvoiceManagement.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="UI\MainForm.cs">
       <SubType>Form</SubType>

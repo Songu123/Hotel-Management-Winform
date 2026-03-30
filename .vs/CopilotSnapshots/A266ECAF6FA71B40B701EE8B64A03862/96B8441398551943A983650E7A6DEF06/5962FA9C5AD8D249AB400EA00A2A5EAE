@@ -1,0 +1,656 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    /// <summary>
+    /// 🏨 MODERN BOOKING FORM - Enhanced UI with Full Functionality
+    /// Replaces legacy BookingForm with improved design and features
+    /// Workflow: Customer Selection → Room Selection → Payment → Confirmation → Save
+    /// </summary>
+    public partial class BookingNewForm : Form
+    {
+        #region ==================== FIELDS ====================
+
+        // Models
+        private Room _selectedRoom;
+        private DateTime _checkInDate;
+        private DateTime _checkOutDate;
+        private List<Customer> _allCustomers = new();
+        private Customer _selectedCustomer;
+        private List<RoomRentalDetail> _selectedRooms = new();
+
+        // Services
+        private IRoomService _roomService;
+        private ICustomerService _customerService;
+        private IRentalDetailService _rentalDetailService;
+        private IRoomRentalDetailService _roomRentalDetailService;
+
+        // UI state
+        private decimal _currentTotalPrice;
+        private int _nights;
+
+        // UI Controls (maintained for reference)
+        private Label _lblSelectedCustomer;
+        private DataGridView _dgvCustomers;
+        private Label _lblTotalPrice;
+        private Label _lblRemaining;
+        private NumericUpDown _nudDeposit;
+        private DataGridView _dgvRooms;
+        private TextBox _txtSearch;
+        private Label _lblCheckinDate;
+        private Label _lblCheckoutDate;
+        private Label _lblNights;
+
+        public bool IsConfirmed { get; private set; } = false;
+
+        #endregion
+
+        #region ==================== CONSTRUCTOR ====================
+
+        public BookingNewForm()
+        {
+            InitializeComponent();
+        }
+
+        public BookingNewForm(Room room, DateTime checkIn, DateTime checkOut, List<Customer> customers) : this()
+        {
+            _selectedRoom = room ?? throw new ArgumentNullException(nameof(room));
+            _checkInDate = checkIn;
+            _checkOutDate = checkOut;
+            _allCustomers = customers ?? new List<Customer>();
+
+            // Auto-add selected room
+            _selectedRooms.Add(new RoomRentalDetail
+            {
+                RoomId = room.RoomId,
+                RentalDate = checkIn,
+                ReturnDate = checkOut,
+                RentalPrice = room.Price,
+                Status = 0
+            });
+        }
+
+        public void Initialize(IRoomService roomService, ICustomerService customerService,
+            IRentalDetailService rentalDetailService, IRoomRentalDetailService roomRentalDetailService)
+        {
+            _roomService = roomService;
+            _customerService = customerService;
+            _rentalDetailService = rentalDetailService;
+            _roomRentalDetailService = roomRentalDetailService;
+        }
+
+        #endregion
+
+        #region ==================== FORM LOAD & SETUP ====================
+
+        private void BookingNewForm_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                SetupFormAppearance();
+                LoadCustomers();
+                UpdateDateLabels();
+                CalculatePricing();
+                InitializeDataGridViews();
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi khởi tạo form", ex);
+            }
+        }
+
+        private void SetupFormAppearance()
+        {
+            this.Text = "🏨 TẠO PHIẾU ĐẶT PHÒNG - Quản Lý Khách Sạn";
+            this.Width = 1050;
+            this.Height = 650;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.BackColor = Color.White;
+
+            // Setup panel1 (Header)
+            panel1.BackColor = Color.FromArgb(0, 102, 204);
+            label1.Text = "🏨 TẠO PHIẾU ĐẶT PHÒNG MỚI";
+            label1.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+            label1.ForeColor = Color.White;
+            label1.TextAlign = ContentAlignment.MiddleLeft;
+
+            // Setup panel2 (Customer)
+            panel2.BackColor = Color.White;
+            label2.Font = new Font("Segoe UI", 9);
+            label2.ForeColor = Color.FromArgb(60, 60, 60);
+
+            // Setup search controls
+            SetupSearchPanel();
+
+            // Setup panel3 (Booking info)
+            SetupBookingInfoPanel();
+
+            // Setup panel4 (Room details)
+            SetupRoomDetailsPanel();
+
+            // Setup buttons
+            SetupButtons();
+        }
+
+        private void SetupSearchPanel()
+        {
+            // Find and setup textBox1
+            if (Controls.Find("textBox1", true).FirstOrDefault() is TextBox txt)
+            {
+                _txtSearch = txt;
+                _txtSearch.PlaceholderText = "Nhập tên, SĐT hoặc CMND...";
+                _txtSearch.Font = new Font("Segoe UI", 9);
+            }
+
+            // Setup buttons
+            if (Controls.Find("btnTimKiem", true).FirstOrDefault() is Button btnSearch)
+            {
+                btnSearch.BackColor = Color.FromArgb(0, 102, 204);
+                btnSearch.ForeColor = Color.White;
+                btnSearch.FlatStyle = FlatStyle.Flat;
+                btnSearch.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                btnSearch.Click += BtnSearch_Click;
+            }
+
+            if (Controls.Find("btnTaoMoiKhach", true).FirstOrDefault() is Button btnNew)
+            {
+                btnNew.BackColor = Color.FromArgb(34, 177, 76);
+                btnNew.ForeColor = Color.White;
+                btnNew.FlatStyle = FlatStyle.Flat;
+                btnNew.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                btnNew.Text = "➕ Tạo Khách Hàng Mới";
+                btnNew.Click += BtnNewCustomer_Click;
+            }
+        }
+
+        private void SetupBookingInfoPanel()
+        {
+            // Style labels and controls in panel3
+            foreach (Control ctrl in panel3.Controls)
+            {
+                if (ctrl is Label lbl)
+                {
+                    lbl.Font = new Font("Segoe UI", 9);
+                    lbl.ForeColor = Color.FromArgb(60, 60, 60);
+                }
+            }
+
+            // Find specific labels
+            if (Controls.Find("labelCheckin", true).FirstOrDefault() is Label lblCI)
+            {
+                _lblCheckinDate = lblCI;
+            }
+            if (Controls.Find("labelCheckout", true).FirstOrDefault() is Label lblCO)
+            {
+                _lblCheckoutDate = lblCO;
+            }
+            if (Controls.Find("label6", true).FirstOrDefault() is Label lblNights)
+            {
+                _lblNights = lblNights;
+            }
+            if (Controls.Find("labelTongTien", true).FirstOrDefault() is Label lblTotal)
+            {
+                _lblTotalPrice = lblTotal;
+                _lblTotalPrice.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+                _lblTotalPrice.ForeColor = Color.FromArgb(220, 20, 60);
+            }
+            if (Controls.Find("labelTienThoi", true).FirstOrDefault() is Label lblRemain)
+            {
+                _lblRemaining = lblRemain;
+                _lblRemaining.Font = new Font("Segoe UI", 9);
+            }
+            if (Controls.Find("txtTienDatCoc", true).FirstOrDefault() is TextBox txtDeposit)
+            {
+                _nudDeposit = new NumericUpDown
+                {
+                    Parent = panel3,
+                    Location = txtDeposit.Location,
+                    Width = txtDeposit.Width,
+                    Height = 28,
+                    Maximum = 1000000000,
+                    DecimalPlaces = 0,
+                    ThousandsSeparator = true,
+                    Increment = 50000
+                };
+                _nudDeposit.ValueChanged += (s, e) => UpdatePaymentSummary();
+                panel3.Controls.Remove(txtDeposit);
+                panel3.Controls.Add(_nudDeposit);
+            }
+        }
+
+        private void SetupRoomDetailsPanel()
+        {
+            // Setup dataGridView1 for room list
+            if (Controls.Find("dataGridView1", true).FirstOrDefault() is DataGridView dgv)
+            {
+                _dgvRooms = dgv;
+                _dgvRooms.AllowUserToAddRows = false;
+                _dgvRooms.ReadOnly = true;
+                _dgvRooms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                _dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                _dgvRooms.RowTemplate.Height = 28;
+                _dgvRooms.BackgroundColor = Color.White;
+                _dgvRooms.BorderStyle = BorderStyle.FixedSingle;
+
+                LoadRoomDetails();
+            }
+        }
+
+        private void SetupButtons()
+        {
+            if (Controls.Find("btnTaoPhieu", true).FirstOrDefault() is Button btnConfirm)
+            {
+                btnConfirm.BackColor = Color.FromArgb(34, 177, 76);
+                btnConfirm.ForeColor = Color.White;
+                btnConfirm.FlatStyle = FlatStyle.Flat;
+                btnConfirm.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                btnConfirm.Text = "✅ XÁC NHẬN TẠO PHIẾU";
+                btnConfirm.Click += BtnConfirm_Click;
+            }
+
+            if (Controls.Find("btnHuy", true).FirstOrDefault() is Button btnCancel)
+            {
+                btnCancel.BackColor = Color.FromArgb(220, 53, 69);
+                btnCancel.ForeColor = Color.White;
+                btnCancel.FlatStyle = FlatStyle.Flat;
+                btnCancel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                btnCancel.Text = "❌ HỦY";
+                btnCancel.Click += (s, e) =>
+               {
+                   this.DialogResult = DialogResult.Cancel;
+                   this.Close();
+               };
+            }
+        }
+
+        #endregion
+
+        #region ==================== DATA INITIALIZATION ====================
+
+        private void InitializeDataGridViews()
+        {
+            // Setup customer DataGridView
+            if (Controls.Find("dataGridViewKH", true).FirstOrDefault() is DataGridView dgvKH)
+            {
+                _dgvCustomers = dgvKH;
+                _dgvCustomers.AllowUserToAddRows = false;
+                _dgvCustomers.ReadOnly = true;
+                _dgvCustomers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                _dgvCustomers.MultiSelect = false;
+                _dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                _dgvCustomers.BackgroundColor = Color.White;
+                _dgvCustomers.BorderStyle = BorderStyle.FixedSingle;
+                _dgvCustomers.RowTemplate.Height = 28;
+                _dgvCustomers.CellDoubleClick += DgvCustomers_CellDoubleClick;
+            }
+
+            // Setup selected customer display
+            var selectedCustomerLabel = Controls.Find("labelCheckin", true).FirstOrDefault()?.Parent?
+       .Controls.OfType<Label>().FirstOrDefault(l => l.Name.Contains("Selected")) as Label;
+            if (selectedCustomerLabel == null)
+            {
+                // Create new label if not found
+                _lblSelectedCustomer = new Label
+                {
+                    Text = "👆 Chưa chọn khách hàng (double-click trong danh sách)",
+                    ForeColor = Color.FromArgb(100, 100, 100),
+                    Font = new Font("Segoe UI", 9),
+                    Location = new Point(10, 45),
+                    Size = new Size(420, 20),
+                    Parent = panel2
+                };
+            }
+            else
+            {
+                _lblSelectedCustomer = selectedCustomerLabel;
+            }
+        }
+
+        private void LoadCustomers()
+        {
+            try
+            {
+                if (_dgvCustomers == null) return;
+
+                _dgvCustomers.Rows.Clear();
+                foreach (var customer in _allCustomers)
+                {
+                    _dgvCustomers.Rows.Add(
+                                customer.CustomerId,
+                        customer.Name,
+                    customer.PhoneNumber,
+                       customer.IdNumber
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi tải khách hàng", ex);
+            }
+        }
+
+        private void LoadRoomDetails()
+        {
+            try
+            {
+                if (_dgvRooms == null) return;
+
+                _dgvRooms.Rows.Clear();
+
+                int stt = 1;
+                foreach (var room in _selectedRooms)
+                {
+                    int roomNights = (int)(room.ReturnDate - room.RentalDate).TotalDays;
+                    if (roomNights <= 0) roomNights = 1;
+                    int roomTotal = room.RentalPrice * roomNights;
+
+                    _dgvRooms.Rows.Add(
+                  stt++,
+                   room.RoomId,
+                      _selectedRoom?.Name ?? room.RoomId,
+                  room.RentalPrice.ToString("N0"),
+                     roomTotal.ToString("N0")
+                     );
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi tải thông tin phòng", ex);
+            }
+        }
+
+        #endregion
+
+        #region ==================== CUSTOMER SELECTION ====================
+
+        private void BtnSearch_Click(object sender, EventArgs e)
+        {
+            SearchCustomers(_txtSearch?.Text ?? string.Empty);
+        }
+
+        private void BtnNewCustomer_Click(object sender, EventArgs e)
+        {
+            ShowMessage("Tính năng tạo khách hàng mới sẽ được phát triển", "Thông báo");
+        }
+
+        private void SearchCustomers(string searchTerm)
+        {
+            try
+            {
+                if (_dgvCustomers == null) return;
+
+                _dgvCustomers.Rows.Clear();
+
+                if (string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    LoadCustomers();
+                    return;
+                }
+
+                string term = searchTerm.ToLower();
+                var filtered = _allCustomers.Where(c =>
+           c.Name.ToLower().Contains(term) ||
+                 c.PhoneNumber.Contains(term) ||
+                  c.IdNumber.Contains(term)
+             ).ToList();
+
+                foreach (var customer in filtered)
+                {
+                    _dgvCustomers.Rows.Add(
+                                customer.CustomerId,
+                          customer.Name,
+                       customer.PhoneNumber,
+                           customer.IdNumber
+                            );
+                }
+
+                if (filtered.Count == 0)
+                    ShowMessage($"Không tìm thấy khách hàng phù hợp với '{searchTerm}'", "Thông báo");
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi tìm kiếm khách hàng", ex);
+            }
+        }
+
+        private void DgvCustomers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex < 0) return;
+
+                string customerId = _dgvCustomers.Rows[e.RowIndex].Cells[0].Value?.ToString();
+                _selectedCustomer = _allCustomers.FirstOrDefault(c => c.CustomerId == customerId);
+
+                if (_selectedCustomer != null)
+                {
+                    _lblSelectedCustomer.Text = $"✅ Đã chọn: {_selectedCustomer.Name} | SĐT: {_selectedCustomer.PhoneNumber}";
+                    _lblSelectedCustomer.ForeColor = Color.FromArgb(34, 177, 76);
+                    ShowMessage($"✅ Khách hàng: {_selectedCustomer.Name}", "Chọn thành công");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError("Lỗi chọn khách hàng", ex);
+            }
+        }
+
+        #endregion
+
+        #region ==================== PRICING & SUMMARY ====================
+
+        private void UpdateDateLabels()
+        {
+            _nights = (int)(_checkOutDate - _checkInDate).TotalDays;
+            if (_nights <= 0) _nights = 1;
+
+            if (_lblCheckinDate != null)
+                _lblCheckinDate.Text = _checkInDate.ToString("dd/MM/yyyy HH:mm");
+            if (_lblCheckoutDate != null)
+                _lblCheckoutDate.Text = _checkOutDate.ToString("dd/MM/yyyy HH:mm");
+            if (_lblNights != null)
+                _lblNights.Text = $"{_nights} đêm";
+        }
+
+        private void CalculatePricing()
+        {
+            _currentTotalPrice = CalculateTotalPrice();
+            if (_lblTotalPrice != null)
+                _lblTotalPrice.Text = $"💰 {_currentTotalPrice:N0} VNĐ";
+            UpdatePaymentSummary();
+        }
+
+        private decimal CalculateTotalPrice()
+        {
+            return _selectedRooms.Sum(r => r.RentalPrice * _nights);
+        }
+
+        private void UpdatePaymentSummary()
+        {
+            if (_lblTotalPrice == null || _lblRemaining == null || _nudDeposit == null)
+                return;
+
+            if (_nudDeposit.Value > (decimal)_currentTotalPrice)
+                _nudDeposit.Value = (decimal)_currentTotalPrice;
+
+            var remaining = _currentTotalPrice - (decimal)_nudDeposit.Value;
+            _lblTotalPrice.Text = $"💰 Tổng tiền: {_currentTotalPrice:N0} VNĐ";
+            _lblRemaining.Text = $"🧾 Còn lại: {remaining:N0} VNĐ";
+        }
+
+        #endregion
+
+        #region ==================== CONFIRMATION & SAVE ====================
+
+        private async void BtnConfirm_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // ===== STEP 1: VALIDATION =====
+                if (_selectedCustomer == null)
+                {
+                    ShowWarning("Vui lòng chọn khách hàng");
+                    return;
+                }
+
+                if (_selectedRooms.Count == 0)
+                {
+                    ShowWarning("Chưa có phòng để đặt");
+                    return;
+                }
+
+                if (_rentalDetailService == null || _roomRentalDetailService == null)
+                {
+                    ShowError("Dịch vụ không khả dụng");
+                    return;
+                }
+
+                // ===== STEP 2: CREATE RENTAL DETAIL =====
+                string rentalDetailId = _rentalDetailService.GenerateRentalDetailId();
+                var employeeId = await ResolveEmployeeIdAsync();
+
+                System.Diagnostics.Debug.WriteLine($"[BOOKING] Generated ID: {rentalDetailId}");
+                System.Diagnostics.Debug.WriteLine($"[BOOKING] Customer: {_selectedCustomer.Name}");
+                System.Diagnostics.Debug.WriteLine($"[BOOKING] Employee ID: {employeeId}");
+
+                var rentalDetail = new RentalDetail
+                {
+                    RentalDetailId = rentalDetailId,
+                    CustomerId = _selectedCustomer.CustomerId,
+                    EmployeeId = employeeId,
+                    CreatedDate = DateTime.Now,
+                    DepositAmount = (int)(_nudDeposit?.Value ?? 0),
+                    ProcessingStatus = 0,
+                    IsDeleted = 0
+                };
+
+                var savedRental = await _rentalDetailService.CreateRentalDetailAsync(rentalDetail);
+
+                if (savedRental == null)
+                {
+                    ShowError("Không thể lưu phiếu thuê");
+                    return;
+                }
+
+                System.Diagnostics.Debug.WriteLine($"[BOOKING] RentalDetail saved: {rentalDetailId}");
+
+                // ===== STEP 3: SAVE ROOM DETAILS =====
+                foreach (var room in _selectedRooms)
+                {
+                    room.RentalDetailId = rentalDetail.RentalDetailId;
+                }
+
+                var roomsSaved = await _roomRentalDetailService.AddRoomRentalDetailsAsync(_selectedRooms);
+
+                if (!roomsSaved)
+                {
+                    ShowError("Không thể lưu chi tiết phòng");
+                    return;
+                }
+
+                System.Diagnostics.Debug.WriteLine($"[BOOKING] Rooms saved successfully");
+
+                // ===== STEP 4: SUCCESS MESSAGE =====
+                decimal total = _currentTotalPrice;
+                decimal deposit = _nudDeposit?.Value ?? 0;
+                decimal remaining = total - deposit;
+
+                string successMessage = $@"✅ ĐẶT PHÒNG THÀNH CÔNG
+
+📋 Mã phiếu: {rentalDetail.RentalDetailId}
+👤 Khách hàng: {_selectedCustomer.Name}
+📱 SĐT: {_selectedCustomer.PhoneNumber}
+
+🏨 Phòng đã đặt:
+{string.Join("\n", _selectedRooms.Select(r => $"  • {r.RoomId} - {r.RentalPrice:N0} VNĐ/đêm"))}
+
+📅 Check-in: {_checkInDate:dd/MM/yyyy HH:mm}
+📅 Check-out: {_checkOutDate:dd/MM/yyyy HH:mm}
+🌙 Thời gian: {_nights} đêm
+
+💰 TỔNG TIỀN: {total:N0} VNĐ
+💳 ĐẶT CỌC: {deposit:N0} VNĐ
+🧾 CÒN LẠI: {remaining:N0} VNĐ";
+
+                ShowSuccess(successMessage);
+
+                // ===== STEP 5: CLOSE FORM =====
+                IsConfirmed = true;
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[BOOKING] ERROR: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[BOOKING] Stack: {ex.StackTrace}");
+
+                string errorMsg = $"Lỗi: {ex.Message}";
+                if (ex.InnerException != null)
+                    errorMsg += $"\n\nChi tiết: {ex.InnerException.Message}";
+
+                ShowError(errorMsg, null);
+            }
+        }
+
+        private async Task<string> ResolveEmployeeIdAsync()
+        {
+            try
+            {
+                var serviceProvider = Program.Services;
+                var employeeService = serviceProvider?.GetService(typeof(IEmployeeService)) as IEmployeeService;
+                if (employeeService != null)
+                {
+                    var employees = await employeeService.GetAllEmployeesAsync();
+                    var activeEmployee = employees?.FirstOrDefault(e => e.IsDeleted == 0);
+                    if (activeEmployee != null && !string.IsNullOrWhiteSpace(activeEmployee.EmployeeId))
+                        return activeEmployee.EmployeeId;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[BOOKING] ResolveEmployeeId fallback: {ex.Message}");
+            }
+
+            return "NV001";
+        }
+
+        #endregion
+
+        #region ==================== UI HELPERS ====================
+
+        private void ShowMessage(string message, string title)
+        {
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ShowWarning(string message)
+        {
+            MessageBox.Show(message, "⚠️ Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void ShowError(string title, Exception ex = null)
+        {
+            string message = ex != null ? $"{title}\n\n{ex.Message}" : title;
+            MessageBox.Show(message, "❌ Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void ShowSuccess(string message)
+        {
+            MessageBox.Show(message, "✅ THÀNH CÔNG", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        #endregion
+
+        public List<RoomRentalDetail> GetSelectedRooms() => _selectedRooms;
+    }
+}

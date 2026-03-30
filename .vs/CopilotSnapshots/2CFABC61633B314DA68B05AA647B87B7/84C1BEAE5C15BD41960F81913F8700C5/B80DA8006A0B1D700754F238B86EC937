@@ -1,0 +1,36 @@
+﻿namespace QuanLyKhachSan.UI.BookingUI
+{
+    partial class BookingForm
+    {
+      private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+if (disposing && (components != null))
+            {
+       components.Dispose();
+        }
+     base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+ this.SuspendLayout();
+    // 
+        // BookingForm
+       // 
+       this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+       this.ClientSize = new System.Drawing.Size(1000, 700);
+    this.Font = new System.Drawing.Font("Segoe UI", 10F);
+        this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+this.MaximizeBox = false;
+ this.MinimizeBox = false;
+            this.Name = "BookingForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Phiếu Đặt Phòng";
+            this.Load += new System.EventHandler(this.BookingForm_Load);
+   this.ResumeLayout(false);
+ }
+    }
+}

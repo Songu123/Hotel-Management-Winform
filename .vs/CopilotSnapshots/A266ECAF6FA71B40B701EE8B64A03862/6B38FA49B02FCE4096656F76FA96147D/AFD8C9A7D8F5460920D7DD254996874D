@@ -1,0 +1,712 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    /// <summary>
+    /// 🏨 BOOKING DETAIL VIEW
+    /// Displays rental detail information with service usage management
+    /// Features: Room info, customer info, services used, total calculation
+    /// </summary>
+ public partial class UCBookingDetail : UserControl
+    {
+        #region ==================== FIELDS ====================
+
+  private IRentalDetailService _rentalDetailService;
+        private ICustomerService _customerService;
+        private IRoomRentalDetailService _roomRentalDetailService;
+        private IServiceInterface _serviceService;
+
+        private string _rentalDetailId = string.Empty;
+private RentalDetail _currentRental;
+        private Customer _currentCustomer;
+    private List<RoomRentalDetail> _roomDetails = new();
+   private List<ServiceRentalDetail> _serviceDetails = new();
+
+        private decimal _totalRoomCost = 0;
+ private decimal _totalServiceCost = 0;
+        private decimal _totalCost = 0;
+
+        #endregion
+
+     #region ==================== CONSTRUCTOR ====================
+
+ public UCBookingDetail()
+        {
+    InitializeComponent();
+        SetupUI();
+      }
+
+        public void Initialize(IRentalDetailService rentalDetailService, 
+            ICustomerService customerService,
+            IRoomRentalDetailService roomRentalDetailService,
+   IServiceInterface serviceService)
+        {
+       _rentalDetailService = rentalDetailService ?? throw new ArgumentNullException(nameof(rentalDetailService));
+          _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+       _roomRentalDetailService = roomRentalDetailService ?? throw new ArgumentNullException(nameof(roomRentalDetailService));
+          _serviceService = serviceService ?? throw new ArgumentNullException(nameof(serviceService));
+        }
+
+        #endregion
+
+      #region ==================== SETUP ====================
+
+        private void SetupUI()
+        {
+this.BackColor = Color.White;
+ CreateLayout();
+      }
+
+  private void CreateLayout()
+        {
+   // Clear controls
+this.Controls.Clear();
+
+            // Create split container
+  var splitContainer = new SplitContainer
+    {
+        Dock = DockStyle.Fill,
+        SplitterDistance = 280,
+    Orientation = Orientation.Vertical,
+    BackColor = Color.White
+            };
+
+  // Left panel - Booking info
+    var leftPanel = CreateLeftPanel();
+     splitContainer.Panel1.Controls.Add(leftPanel);
+
+  // Right panel - Details
+     var rightPanel = CreateRightPanel();
+            splitContainer.Panel2.Controls.Add(rightPanel);
+
+       this.Controls.Add(splitContainer);
+        }
+
+        private Panel CreateLeftPanel()
+   {
+            var panel = new Panel
+            {
+  Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(245, 247, 250),
+   Padding = new Padding(15),
+           AutoScroll = true
+            };
+
+            int yPos = 10;
+
+         // Header
+     var lblHeader = new Label
+       {
+        Text = "THÔNG TIN CHI TIẾT THUÊ",
+ Font = new Font("Segoe UI", 12, FontStyle.Bold),
+        ForeColor = Color.FromArgb(0, 102, 204),
+         Location = new Point(10, yPos),
+            AutoSize = true
+     };
+            panel.Controls.Add(lblHeader);
+
+            yPos += 40;
+
+     // Rental ID
+         var lblRentalId = new Label
+    {
+ Text = "Mã chi tiết thuê:",
+     Font = new Font("Segoe UI", 9),
+    ForeColor = Color.FromArgb(60, 60, 60),
+        Location = new Point(10, yPos),
+    AutoSize = true
+   };
+         panel.Controls.Add(lblRentalId);
+
+            var txtRentalId = new TextBox
+            {
+                Name = "txtRentalId",
+       Location = new Point(10, yPos + 20),
+                Width = 260,
+   Height = 28,
+         ReadOnly = true,
+          BackColor = Color.FromArgb(240, 240, 240),
+             BorderStyle = BorderStyle.FixedSingle,
+  Font = new Font("Segoe UI", 9)
+      };
+            panel.Controls.Add(txtRentalId);
+
+yPos += 60;
+
+            // Customer name
+            var lblCustomerName = new Label
+            {
+   Text = "Họ tên khách hàng:",
+Font = new Font("Segoe UI", 9),
+    ForeColor = Color.FromArgb(60, 60, 60),
+ Location = new Point(10, yPos),
+     AutoSize = true
+      };
+            panel.Controls.Add(lblCustomerName);
+
+         var txtCustomerName = new TextBox
+    {
+          Name = "txtCustomerName",
+     Location = new Point(10, yPos + 20),
+                Width = 260,
+    Height = 28,
+     ReadOnly = true,
+       BackColor = Color.FromArgb(240, 240, 240),
+    BorderStyle = BorderStyle.FixedSingle,
+  Font = new Font("Segoe UI", 9)
+       };
+         panel.Controls.Add(txtCustomerName);
+
+ yPos += 60;
+
+       // ID Number
+    var lblIdNumber = new Label
+     {
+   Text = "CMND/CCCD:",
+         Font = new Font("Segoe UI", 9),
+                ForeColor = Color.FromArgb(60, 60, 60),
+   Location = new Point(10, yPos),
+     AutoSize = true
+        };
+       panel.Controls.Add(lblIdNumber);
+
+   var txtIdNumber = new TextBox
+   {
+     Name = "txtIdNumber",
+       Location = new Point(10, yPos + 20),
+    Width = 260,
+            Height = 28,
+ReadOnly = true,
+BackColor = Color.FromArgb(240, 240, 240),
+                BorderStyle = BorderStyle.FixedSingle,
+     Font = new Font("Segoe UI", 9)
+  };
+  panel.Controls.Add(txtIdNumber);
+
+     yPos += 60;
+
+            // Phone
+      var lblPhone = new Label
+            {
+    Text = "Số điện thoại:",
+    Font = new Font("Segoe UI", 9),
+       ForeColor = Color.FromArgb(60, 60, 60),
+   Location = new Point(10, yPos),
+    AutoSize = true
+   };
+            panel.Controls.Add(lblPhone);
+
+            var txtPhone = new TextBox
+            {
+  Name = "txtPhone",
+         Location = new Point(10, yPos + 20),
+  Width = 260,
+      Height = 28,
+       ReadOnly = true,
+    BackColor = Color.FromArgb(240, 240, 240),
+                BorderStyle = BorderStyle.FixedSingle,
+ Font = new Font("Segoe UI", 9)
+         };
+            panel.Controls.Add(txtPhone);
+
+ yPos += 60;
+
+            // Booking date
+     var lblBookingDate = new Label
+            {
+      Text = "Ngày lập phiếu:",
+                Font = new Font("Segoe UI", 9),
+            ForeColor = Color.FromArgb(60, 60, 60),
+ Location = new Point(10, yPos),
+        AutoSize = true
+ };
+   panel.Controls.Add(lblBookingDate);
+
+            var txtBookingDate = new TextBox
+            {
+     Name = "txtBookingDate",
+        Location = new Point(10, yPos + 20),
+          Width = 260,
+  Height = 28,
+  ReadOnly = true,
+     BackColor = Color.FromArgb(240, 240, 240),
+             BorderStyle = BorderStyle.FixedSingle,
+                Font = new Font("Segoe UI", 9)
+            };
+  panel.Controls.Add(txtBookingDate);
+
+     yPos += 60;
+
+          // Employee
+    var lblEmployee = new Label
+   {
+       Text = "Nhân viên lập phiếu:",
+       Font = new Font("Segoe UI", 9),
+          ForeColor = Color.FromArgb(60, 60, 60),
+             Location = new Point(10, yPos),
+         AutoSize = true
+     };
+ panel.Controls.Add(lblEmployee);
+
+            var txtEmployee = new TextBox
+        {
+  Name = "txtEmployee",
+            Location = new Point(10, yPos + 20),
+    Width = 260,
+           Height = 28,
+       ReadOnly = true,
+        BackColor = Color.FromArgb(240, 240, 240),
+   BorderStyle = BorderStyle.FixedSingle,
+    Font = new Font("Segoe UI", 9),
+            Text = "Admin"
+};
+     panel.Controls.Add(txtEmployee);
+
+         yPos += 60;
+
+            // Deposit
+      var lblDeposit = new Label
+    {
+         Text = "Tiền đặt cọc:",
+         Font = new Font("Segoe UI", 9, FontStyle.Bold),
+        ForeColor = Color.FromArgb(220, 20, 60),
+            Location = new Point(10, yPos),
+        AutoSize = true
+            };
+            panel.Controls.Add(lblDeposit);
+
+   var txtDeposit = new TextBox
+   {
+      Name = "txtDeposit",
+           Location = new Point(10, yPos + 20),
+                Width = 260,
+           Height = 28,
+     ReadOnly = true,
+         BackColor = Color.FromArgb(240, 240, 240),
+    BorderStyle = BorderStyle.FixedSingle,
+   Font = new Font("Segoe UI", 9, FontStyle.Bold),
+   ForeColor = Color.FromArgb(220, 20, 60)
+            };
+     panel.Controls.Add(txtDeposit);
+
+         return panel;
+        }
+
+        private Panel CreateRightPanel()
+        {
+ var mainPanel = new Panel
+            {
+             Dock = DockStyle.Fill,
+         BackColor = Color.White,
+                Padding = new Padding(15)
+         };
+
+            // Create tabbed interface
+         var tabControl = new TabControl
+            {
+       Dock = DockStyle.Fill,
+     Font = new Font("Segoe UI", 9)
+            };
+
+            // Tab 1: Rooms
+   var roomsTab = CreateRoomsTab();
+            tabControl.TabPages.Add(roomsTab);
+
+    // Tab 2: Services
+          var servicesTab = CreateServicesTab();
+         tabControl.TabPages.Add(servicesTab);
+
+            mainPanel.Controls.Add(tabControl);
+  return mainPanel;
+        }
+
+        private TabPage CreateRoomsTab()
+        {
+     var tab = new TabPage
+ {
+   Text = "🏨 Phòng (Rooms)",
+       BackColor = Color.White,
+ Padding = new Padding(10)
+    };
+
+         // DataGridView for rooms
+            var dgvRooms = new DataGridView
+            {
+       Name = "dgvRooms",
+      Dock = DockStyle.Fill,
+      AllowUserToAddRows = false,
+         ReadOnly = true,
+         AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+  BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+     RowHeadersVisible = false,
+          RowTemplate = new DataGridViewRow { Height = 28 }
+         };
+
+            dgvRooms.Columns.Add("STT", "STT");
+  dgvRooms.Columns.Add("RoomId", "MÃ PHÒNG");
+            dgvRooms.Columns.Add("RentalDate", "NGÀY THUÊ");
+   dgvRooms.Columns.Add("ReturnDate", "NGÀY TRẢ");
+            dgvRooms.Columns.Add("RentalPrice", "GIÁ/ĐÊM");
+            dgvRooms.Columns.Add("Nights", "ĐÊM");
+    dgvRooms.Columns.Add("Total", "THÀNH TIỀN");
+
+    dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+ tab.Controls.Add(dgvRooms);
+       return tab;
+        }
+
+        private TabPage CreateServicesTab()
+    {
+        var tab = new TabPage
+            {
+      Text = "🍔 Dịch vụ (Services)",
+  BackColor = Color.White,
+           Padding = new Padding(0)
+            };
+
+            // Create layout with grid and buttons
+      var layout = new TableLayoutPanel
+         {
+         Dock = DockStyle.Fill,
+   ColumnCount = 1,
+      RowCount = 3
+            };
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
+
+            // DataGridView for services
+            var dgvServices = new DataGridView
+          {
+    Name = "dgvServices",
+          Dock = DockStyle.Fill,
+        AllowUserToAddRows = false,
+         ReadOnly = true,
+  AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+     BackgroundColor = Color.White,
+    BorderStyle = BorderStyle.FixedSingle,
+ RowHeadersVisible = false,
+       RowTemplate = new DataGridViewRow { Height = 28 }
+    };
+
+        dgvServices.Columns.Add("STT", "STT");
+         dgvServices.Columns.Add("ServiceId", "MÃ DV");
+       dgvServices.Columns.Add("ServiceName", "TÊN DỊCH VỤ");
+   dgvServices.Columns.Add("UsageDate", "NGÀY SỬ DỤNG");
+ dgvServices.Columns.Add("Quantity", "SỐ LƯỢNG");
+  dgvServices.Columns.Add("Price", "ĐƠN GIÁ");
+ dgvServices.Columns.Add("Total", "THÀNH TIỀN");
+
+            dgvServices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+layout.Controls.Add(dgvServices, 0, 0);
+
+     // Total panel
+            var totalPanel = new Panel
+    {
+                Dock = DockStyle.Fill,
+    BackColor = Color.FromArgb(245, 247, 250),
+        BorderStyle = BorderStyle.FixedSingle
+   };
+
+       var lblServiceTotal = new Label
+  {
+           Text = "Tổng cộng: ",
+       Font = new Font("Segoe UI", 10, FontStyle.Bold),
+              ForeColor = Color.FromArgb(220, 20, 60),
+      Location = new Point(400, 12),
+    AutoSize = true
+      };
+            totalPanel.Controls.Add(lblServiceTotal);
+
+            var txtServiceTotal = new TextBox
+            {
+     Name = "txtServiceTotal",
+       Location = new Point(480, 8),
+      Width = 150,
+         Height = 32,
+             ReadOnly = true,
+            BackColor = Color.White,
+      BorderStyle = BorderStyle.FixedSingle,
+       Font = new Font("Segoe UI", 10, FontStyle.Bold),
+            ForeColor = Color.FromArgb(220, 20, 60),
+        TextAlign = HorizontalAlignment.Right
+          };
+            totalPanel.Controls.Add(txtServiceTotal);
+
+            layout.Controls.Add(totalPanel, 0, 1);
+
+            // Button panel
+        var buttonPanel = new Panel
+   {
+     Dock = DockStyle.Fill,
+          BackColor = Color.FromArgb(245, 245, 245),
+    Padding = new Padding(10)
+            };
+
+            var btnAddService = new Button
+            {
+     Text = "➕ THÊM DỊCH VỤ",
+    Width = 150,
+     Height = 35,
+            Location = new Point(10, 5),
+     BackColor = Color.FromArgb(34, 177, 76),
+          ForeColor = Color.White,
+        Font = new Font("Segoe UI", 9, FontStyle.Bold),
+          FlatStyle = FlatStyle.Flat
+      };
+ btnAddService.Click += BtnAddService_Click;
+ buttonPanel.Controls.Add(btnAddService);
+
+            var btnRemoveService = new Button
+            {
+        Text = "❌ XÓA",
+                Width = 100,
+Height = 35,
+         Location = new Point(170, 5),
+                BackColor = Color.FromArgb(220, 53, 69),
+     ForeColor = Color.White,
+             Font = new Font("Segoe UI", 9, FontStyle.Bold),
+       FlatStyle = FlatStyle.Flat
+            };
+          btnRemoveService.Click += BtnRemoveService_Click;
+    buttonPanel.Controls.Add(btnRemoveService);
+
+            layout.Controls.Add(buttonPanel, 0, 2);
+
+            tab.Controls.Add(layout);
+   return tab;
+    }
+
+        #endregion
+
+        #region ==================== PUBLIC METHODS ====================
+
+        public async void LoadRentalDetail(string rentalDetailId)
+        {
+try
+     {
+    _rentalDetailId = rentalDetailId;
+
+           if (_rentalDetailService == null)
+    {
+MessageBox.Show("Dịch vụ không khả dụng", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+                }
+
+                // Load rental detail
+      _currentRental = await _rentalDetailService.GetRentalDetailAsync(rentalDetailId);
+
+ if (_currentRental == null)
+    {
+           MessageBox.Show("Không tìm thấy chi tiết thuê", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+     return;
+         }
+
+   // Load customer info
+if (!string.IsNullOrEmpty(_currentRental.CustomerId))
+  {
+      _currentCustomer = await _customerService.GetCustomerAsync(_currentRental.CustomerId);
+       }
+
+         // Load room details
+     _roomDetails = (await _roomRentalDetailService.GetRoomRentalDetailsByRentalDetailIdAsync(rentalDetailId))?.ToList() ?? new List<RoomRentalDetail>();
+
+        // Load service details
+    // _serviceDetails = await _serviceService.GetServicesByRentalDetailAsync(rentalDetailId);
+
+// Populate UI
+        PopulateUI();
+      RefreshDataGridViews();
+             CalculateTotals();
+            }
+     catch (Exception ex)
+         {
+    MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+#endregion
+
+        #region ==================== PRIVATE METHODS ====================
+
+     private void PopulateUI()
+        {
+      try
+     {
+    // Rental info
+     var txtRentalId = this.Controls.Find("txtRentalId", true).FirstOrDefault() as TextBox;
+     if (txtRentalId != null) txtRentalId.Text = _currentRental?.RentalDetailId ?? "";
+
+     var txtCustomerName = this.Controls.Find("txtCustomerName", true).FirstOrDefault() as TextBox;
+          if (txtCustomerName != null) txtCustomerName.Text = _currentCustomer?.Name ?? "";
+
+        var txtIdNumber = this.Controls.Find("txtIdNumber", true).FirstOrDefault() as TextBox;
+      if (txtIdNumber != null) txtIdNumber.Text = _currentCustomer?.IdNumber ?? "";
+
+                var txtPhone = this.Controls.Find("txtPhone", true).FirstOrDefault() as TextBox;
+  if (txtPhone != null) txtPhone.Text = _currentCustomer?.PhoneNumber ?? "";
+
+    var txtBookingDate = this.Controls.Find("txtBookingDate", true).FirstOrDefault() as TextBox;
+     if (txtBookingDate != null) txtBookingDate.Text = _currentRental?.CreatedDate.ToString("dd/MM/yyyy HH:mm") ?? "";
+
+          var txtDeposit = this.Controls.Find("txtDeposit", true).FirstOrDefault() as TextBox;
+     if (txtDeposit != null) txtDeposit.Text = (_currentRental?.DepositAmount ?? 0).ToString("N0") + " VNĐ";
+            }
+    catch (Exception ex)
+  {
+    System.Diagnostics.Debug.WriteLine($"[BookingDetail] PopulateUI Error: {ex.Message}");
+        }
+        }
+
+        private void RefreshDataGridViews()
+     {
+try
+{
+   RefreshRoomsGrid();
+        RefreshServicesGrid();
+            }
+            catch (Exception ex)
+            {
+     MessageBox.Show($"Lỗi làm mới danh sách: {ex.Message}", "Lỗi");
+            }
+        }
+
+        private void RefreshRoomsGrid()
+        {
+  var dgvRooms = this.Controls.Find("dgvRooms", true).FirstOrDefault() as DataGridView;
+            if (dgvRooms == null) return;
+
+     dgvRooms.Rows.Clear();
+
+   int stt = 1;
+ foreach (var room in _roomDetails)
+      {
+         int nights = (int)(room.ReturnDate - room.RentalDate).TotalDays;
+          if (nights <= 0) nights = 1;
+
+         int total = room.RentalPrice * nights;
+
+              dgvRooms.Rows.Add(
+  stt++,
+          room.RoomId,
+  room.RentalDate.ToString("dd/MM/yyyy"),
+                 room.ReturnDate.ToString("dd/MM/yyyy"),
+      room.RentalPrice.ToString("N0"),
+        nights,
+        total.ToString("N0")
+          );
+   }
+    }
+
+        private void RefreshServicesGrid()
+    {
+            var dgvServices = this.Controls.Find("dgvServices", true).FirstOrDefault() as DataGridView;
+   if (dgvServices == null) return;
+
+   dgvServices.Rows.Clear();
+
+   int stt = 1;
+   foreach (var service in _serviceDetails)
+       {
+           dgvServices.Rows.Add(
+     stt++,
+                    service.ServiceId,
+     "Service Name",  // TODO: Load actual service name
+    service.UsageDate.ToString("dd/MM/yyyy"),
+          "1",
+      service.Price.ToString("N0"),
+          service.Price.ToString("N0")
+         );
+            }
+ }
+
+      private void CalculateTotals()
+        {
+   try
+   {
+      // Calculate room total
+    _totalRoomCost = _roomDetails.Sum(r =>
+              {
+      int nights = Math.Max(1, (int)(r.ReturnDate - r.RentalDate).TotalDays);
+     return r.RentalPrice * nights;
+             });
+
+     // Calculate service total
+    _totalServiceCost = _serviceDetails.Sum(s => s.Price);
+
+      // Total cost
+ _totalCost = _totalRoomCost + _totalServiceCost;
+
+          // Update UI
+     var txtServiceTotal = this.Controls.Find("txtServiceTotal", true).FirstOrDefault() as TextBox;
+        if (txtServiceTotal != null)
+          {
+              txtServiceTotal.Text = _totalServiceCost.ToString("N0") + " VNĐ";
+    }
+            }
+   catch (Exception ex)
+            {
+  System.Diagnostics.Debug.WriteLine($"[BookingDetail] CalculateTotals Error: {ex.Message}");
+  }
+        }
+
+        private void BtnAddService_Click(object sender, EventArgs e)
+        {
+            try
+      {
+         MessageBox.Show("Tính năng thêm dịch vụ sẽ được phát triển", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+   // TODO: Implement add service functionality
+      }
+          catch (Exception ex)
+            {
+         MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi");
+          }
+        }
+
+    private void BtnRemoveService_Click(object sender, EventArgs e)
+   {
+            try
+            {
+    MessageBox.Show("Tính năng xóa dịch vụ sẽ được phát triển", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // TODO: Implement remove service functionality
+   }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi");
+   }
+        }
+
+   #endregion
+
+        #region ==================== DESIGNER ====================
+
+        private void InitializeComponent()
+        {
+  this.SuspendLayout();
+            // 
+            // UCBookingDetail
+       // 
+         this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.Name = "UCBookingDetail";
+  this.Size = new System.Drawing.Size(800, 600);
+          this.ResumeLayout(false);
+      }
+
+        #endregion
+    }
+}

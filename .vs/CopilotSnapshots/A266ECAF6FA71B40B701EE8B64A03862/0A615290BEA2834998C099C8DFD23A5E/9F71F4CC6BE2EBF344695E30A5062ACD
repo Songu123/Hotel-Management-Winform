@@ -1,0 +1,28 @@
+﻿using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Interfaces;
+
+namespace QuanLyKhachSan.Repositories.Implementations
+{
+/// <summary>
+    /// Repository interface cho Service (Dịch vụ)
+    /// </summary>
+    public interface IServiceRepository : IRepository<Service>
+    {
+       // Có thể extend interface IRepository với các method tùy chỉnh nếu cần
+   }
+
+    /// <summary>
+    /// Repository implementation cho Service
+    /// </summary>
+    public class ServiceRepository : BaseRepository<Service>, IServiceRepository
+    {
+ private readonly HotelDbContext _dbContext;
+
+        public ServiceRepository(HotelDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        }
+
+  // Có thể thêm các method tùy chỉnh khác nếu cần
+    }
+}

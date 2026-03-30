@@ -1,0 +1,433 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    public partial class BookingForm : Form
+    {
+   private Room _selectedRoom;
+        private DateTime _checkInDate;
+        private DateTime _checkOutDate;
+        private List<Customer> _allCustomers = new();
+        private Customer _selectedCustomer;
+     private List<RoomRentalDetail> _selectedRooms = new();
+
+        private IRoomService _roomService;
+        private ICustomerService _customerService;
+     private IRentalDetailService _rentalDetailService;
+private IRoomRentalDetailService _roomRentalDetailService;
+
+        public bool IsConfirmed { get; private set; } = false;
+
+        private TabControl tabControl;
+   private Label lblTitle;
+        private DataGridView dgvCustomers;
+        private TextBox txtSearchCustomer;
+  private Button btnSearchCustomer;
+private Button btnNewCustomer;
+  private Label lblSelectedCustomer;
+        private Label lblCheckin;
+        private Label lblCheckout;
+        private Label lblNights;
+        private Label lblTotalPrice;
+private Label lblRoomList;
+     private Button btnConfirm;
+ private Button btnCancel;
+
+        public BookingForm()
+        {
+    InitializeComponent();
+      }
+
+        public BookingForm(Room room, DateTime checkIn, DateTime checkOut, List<Customer> customers) : this()
+        {
+      _selectedRoom = room ?? throw new ArgumentNullException(nameof(room));
+     _checkInDate = checkIn;
+            _checkOutDate = checkOut;
+          _allCustomers = customers ?? new List<Customer>();
+
+      _selectedRooms.Add(new RoomRentalDetail
+            {
+        RoomId = room.RoomId,
+       RentalDate = checkIn,
+           ReturnDate = checkOut,
+       RentalPrice = room.Price,
+    Status = 0
+    });
+        }
+
+   public void Initialize(IRoomService roomService, ICustomerService customerService, IRentalDetailService rentalDetailService, IRoomRentalDetailService roomRentalDetailService)
+        {
+         _roomService = roomService;
+            _customerService = customerService;
+            _rentalDetailService = rentalDetailService;
+        _roomRentalDetailService = roomRentalDetailService;
+        }
+
+        private void BookingForm_Load(object sender, EventArgs e)
+        {
+ try
+        {
+     SetupUI();
+                LoadData();
+   }
+     catch (Exception ex)
+          {
+         MessageBox.Show($"Lỗi khởi tạo: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+         }
+        }
+
+        private void SetupUI()
+        {
+            this.Text = "🏨 PHIẾU ĐẶT PHÒNG";
+            this.Width = 1000;
+        this.Height = 700;
+       this.StartPosition = FormStartPosition.CenterParent;
+    this.BackColor = Color.White;
+       this.Font = new Font("Segoe UI", 10);
+
+            var mainPanel = new Panel { Dock = DockStyle.Fill, BackColor = Color.White };
+
+       var headerPanel = CreateHeaderPanel();
+         mainPanel.Controls.Add(headerPanel);
+
+         tabControl = new TabControl { Dock = DockStyle.Fill, Location = new Point(0, 60) };
+
+    var tabCustomer = new TabPage("👤 Khách Hàng");
+     var tabRoom = new TabPage("🏨 Phòng");
+       var tabConfirm = new TabPage("✅ Xác Nhận");
+
+    CreateCustomerTab(tabCustomer);
+        CreateRoomTab(tabRoom);
+            CreateConfirmTab(tabConfirm);
+
+     tabControl.TabPages.Add(tabCustomer);
+            tabControl.TabPages.Add(tabRoom);
+            tabControl.TabPages.Add(tabConfirm);
+
+            mainPanel.Controls.Add(tabControl);
+
+     var buttonsPanel = CreateButtonsPanel();
+    mainPanel.Controls.Add(buttonsPanel);
+
+ this.Controls.Add(mainPanel);
+     }
+
+    private Panel CreateHeaderPanel()
+        {
+            var panel = new Panel { Height = 60, Dock = DockStyle.Top, BackColor = Color.FromArgb(0, 102, 204), Padding = new Padding(15) };
+
+            lblTitle = new Label
+            {
+        Text = "🏨 TẠO PHIẾU ĐẶT PHÒNG",
+    Font = new Font("Segoe UI", 16, FontStyle.Bold),
+           ForeColor = Color.White,
+  Dock = DockStyle.Fill,
+         TextAlign = ContentAlignment.MiddleLeft
+ };
+
+            panel.Controls.Add(lblTitle);
+            return panel;
+ }
+
+        private void CreateCustomerTab(TabPage tab)
+    {
+            var panel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(15) };
+
+       var searchPanel = new Panel { Height = 50, Dock = DockStyle.Top, BackColor = Color.FromArgb(245, 245, 245) };
+         var searchLabel = new Label { Text = "🔍 Tìm kiếm khách hàng:", AutoSize = true, Top = 10, Left = 10 };
+         txtSearchCustomer = new TextBox { Width = 250, Left = 150, Top = 8, Height = 30 };
+    btnSearchCustomer = new Button { Text = "Tìm", Width = 80, Left = 410, Top = 8, Height = 30, BackColor = Color.FromArgb(0, 102, 204), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
+       btnSearchCustomer.Click += (s, e) => SearchCustomers();
+
+    btnNewCustomer = new Button { Text = "➕ Khách Mới", Width = 100, Left = 500, Top = 8, Height = 30, BackColor = Color.FromArgb(34, 177, 76), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
+   btnNewCustomer.Click += (s, e) => OpenNewCustomerForm();
+
+            searchPanel.Controls.AddRange(new Control[] { searchLabel, txtSearchCustomer, btnSearchCustomer, btnNewCustomer });
+          panel.Controls.Add(searchPanel);
+
+    dgvCustomers = new DataGridView { Dock = DockStyle.Fill, AllowUserToAddRows = false, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor = Color.White, BorderStyle = BorderStyle.None, RowTemplate = new DataGridViewRow { Height = 35 } };
+
+   dgvCustomers.Columns.Add("CustomerId", "Mã KH");
+          dgvCustomers.Columns.Add("Name", "Tên Khách Hàng");
+            dgvCustomers.Columns.Add("Phone", "SĐT");
+    dgvCustomers.Columns.Add("IdNumber", "CMND/CCCD");
+       dgvCustomers.Columns.Add("DOB", "Ngày Sinh");
+
+     dgvCustomers.CellDoubleClick += (s, e) => SelectCustomer(e.RowIndex);
+
+  panel.Controls.Add(dgvCustomers);
+   tab.Controls.Add(panel);
+        }
+
+  private void CreateRoomTab(TabPage tab)
+        {
+       var panel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(15) };
+
+            var infoPanel = new Panel { Height = 80, Dock = DockStyle.Top, BackColor = Color.FromArgb(240, 248, 255) };
+
+ lblCheckin = new Label { Text = $"📅 Check-in: {_checkInDate:dd/MM/yyyy HH:mm}", AutoSize = true, Top = 10, Left = 20, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+            lblCheckout = new Label { Text = $"📅 Check-out: {_checkOutDate:dd/MM/yyyy HH:mm}", AutoSize = true, Top = 10, Left = 400, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+
+    int nights = (int)(_checkOutDate - _checkInDate).TotalDays;
+     if (nights <= 0) nights = 1;
+
+   lblNights = new Label { Text = $"🌙 Thời gian: {nights} đêm", AutoSize = true, Top = 35, Left = 20, Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = Color.FromArgb(0, 102, 204) };
+
+            lblTotalPrice = new Label { Text = $"💰 Tổng tiền: 0 VNĐ", AutoSize = true, Top = 35, Left = 400, Font = new Font("Segoe UI", 11, FontStyle.Bold), ForeColor = Color.Red };
+
+            infoPanel.Controls.AddRange(new Control[] { lblCheckin, lblCheckout, lblNights, lblTotalPrice });
+      panel.Controls.Add(infoPanel);
+
+            var dgvRooms = new DataGridView { Dock = DockStyle.Fill, AllowUserToAddRows = false, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor = Color.White, BorderStyle = BorderStyle.None, RowTemplate = new DataGridViewRow { Height = 35 } };
+
+    dgvRooms.Columns.Add("STT", "STT");
+      dgvRooms.Columns.Add("RoomId", "Mã Phòng");
+     dgvRooms.Columns.Add("Name", "Tên");
+      dgvRooms.Columns.Add("Price", "Giá/Đêm");
+       dgvRooms.Columns.Add("Total", "Tổng Tiền");
+
+      int stt = 1;
+            decimal totalPrice = 0;
+      foreach (var room in _selectedRooms)
+ {
+   int roomNights = (int)(room.ReturnDate - room.RentalDate).TotalDays;
+         if (roomNights <= 0) roomNights = 1;
+    int roomTotal = room.RentalPrice * roomNights;
+     totalPrice += roomTotal;
+
+             dgvRooms.Rows.Add(stt++, room.RoomId, _selectedRoom?.Name ?? room.RoomId, room.RentalPrice.ToString("N0"), roomTotal.ToString("N0"));
+       }
+
+  lblTotalPrice.Text = $"💰 Tổng tiền: {totalPrice:N0} VNĐ";
+            panel.Controls.Add(dgvRooms);
+          tab.Controls.Add(panel);
+        }
+
+     private void CreateConfirmTab(TabPage tab)
+        {
+      var panel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(20), AutoScroll = true };
+
+var summaryLabel = new Label { Text = "📋 PHIẾU ĐẶT PHÒNG", Font = new Font("Segoe UI", 14, FontStyle.Bold), AutoSize = true, Padding = new Padding(0, 0, 0, 15), Top = 0 };
+    panel.Controls.Add(summaryLabel);
+
+      var customerSection = new GroupBox { Text = "👤 Thông Tin Khách Hàng", Width = panel.Width - 40, Height = 100, Top = 50, Left = 0 };
+
+        lblSelectedCustomer = new Label { Text = _selectedCustomer != null ? $"{_selectedCustomer.CustomerId} - {_selectedCustomer.Name}\nSĐT: {_selectedCustomer.PhoneNumber}\nCMND: {_selectedCustomer.IdNumber}" : "Chưa chọn khách hàng", AutoSize = false, Width = customerSection.Width - 20, Height = 70, Top = 20, Left = 10, Font = new Font("Segoe UI", 10) };
+
+          customerSection.Controls.Add(lblSelectedCustomer);
+            panel.Controls.Add(customerSection);
+
+          var roomSection = new GroupBox { Text = "🏨 Thông Tin Phòng", Width = panel.Width - 40, Height = 120, Top = 160, Left = 0 };
+
+          lblRoomList = new Label { Text = string.Join("\n", _selectedRooms.Select(r => $"• {r.RoomId} - {r.RentalPrice:N0} VNĐ/đêm")), AutoSize = false, Width = roomSection.Width - 20, Height = 90, Top = 20, Left = 10, Font = new Font("Segoe UI", 10) };
+
+    roomSection.Controls.Add(lblRoomList);
+     panel.Controls.Add(roomSection);
+
+       int nights = (int)(_checkOutDate - _checkInDate).TotalDays;
+   if (nights <= 0) nights = 1;
+     decimal total = _selectedRooms.Sum(r => r.RentalPrice * nights);
+
+        var bookingSection = new GroupBox { Text = "📅 Thông Tin Đặt Phòng", Width = panel.Width - 40, Height = 120, Top = 290, Left = 0 };
+
+ var bookingText = $"Check-in: {_checkInDate:dd/MM/yyyy HH:mm}\nCheck-out: {_checkOutDate:dd/MM/yyyy HH:mm}\nThời gian: {nights} đêm\nTổng tiền: {total:N0} VNĐ";
+
+       var bookingLabel = new Label { Text = bookingText, AutoSize = false, Width = bookingSection.Width - 20, Height = 90, Top = 20, Left = 10, Font = new Font("Segoe UI", 10, FontStyle.Bold) };
+
+        bookingSection.Controls.Add(bookingLabel);
+    panel.Controls.Add(bookingSection);
+
+            tab.Controls.Add(panel);
+ }
+
+        private Panel CreateButtonsPanel()
+  {
+            var panel = new Panel { Height = 50, Dock = DockStyle.Bottom, BackColor = Color.FromArgb(245, 245, 245), Padding = new Padding(15) };
+
+  btnConfirm = new Button { Text = "✅ Xác Nhận & Tạo Phiếu", Width = 180, Height = 40, Left = 700, BackColor = Color.FromArgb(34, 177, 76), ForeColor = Color.White, Font = new Font("Segoe UI", 10, FontStyle.Bold), FlatStyle = FlatStyle.Flat };
+            btnConfirm.Click += BtnConfirm_Click;
+
+  btnCancel = new Button { Text = "❌ Hủy", Width = 80, Height = 40, Left = 890, BackColor = Color.FromArgb(220, 53, 69), ForeColor = Color.White, Font = new Font("Segoe UI", 10, FontStyle.Bold), FlatStyle = FlatStyle.Flat };
+            btnCancel.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
+
+            panel.Controls.Add(btnConfirm);
+        panel.Controls.Add(btnCancel);
+
+            return panel;
+        }
+
+        private void LoadData()
+        {
+        try
+   {
+         DisplayAllCustomers();
+            }
+            catch (Exception ex)
+    {
+  System.Diagnostics.Debug.WriteLine($"Error loading data: {ex.Message}");
+        }
+        }
+
+    private void DisplayAllCustomers()
+        {
+            dgvCustomers.Rows.Clear();
+    foreach (var customer in _allCustomers)
+         {
+      dgvCustomers.Rows.Add(customer.CustomerId, customer.Name, customer.PhoneNumber, customer.IdNumber, customer.DateOfBirth.ToString("dd/MM/yyyy"));
+     }
+        }
+
+        private void SearchCustomers()
+  {
+            try
+            {
+    string term = txtSearchCustomer.Text.ToLower();
+    var filtered = _allCustomers.Where(c => c.Name.ToLower().Contains(term) || c.PhoneNumber.Contains(term) || c.IdNumber.Contains(term)).ToList();
+
+   dgvCustomers.Rows.Clear();
+   foreach (var customer in filtered)
+   {
+        dgvCustomers.Rows.Add(customer.CustomerId, customer.Name, customer.PhoneNumber, customer.IdNumber, customer.DateOfBirth.ToString("dd/MM/yyyy"));
+     }
+          }
+    catch (Exception ex)
+       {
+     MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+      }
+
+    private void SelectCustomer(int rowIndex)
+      {
+        try
+     {
+              if (rowIndex < 0) return;
+
+            string customerId = dgvCustomers.Rows[rowIndex].Cells[0].Value?.ToString();
+                _selectedCustomer = _allCustomers.FirstOrDefault(c => c.CustomerId == customerId);
+
+                if (_selectedCustomer != null)
+        {
+        MessageBox.Show($"✅ Đã chọn khách hàng: {_selectedCustomer.Name}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+         tabControl.SelectedIndex = 1;
+           }
+ }
+            catch (Exception ex)
+     {
+     MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+     }
+        }
+
+        private void OpenNewCustomerForm()
+ {
+    MessageBox.Show("Tính năng tạo khách hàng mới - Để được phát triển sau", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private async void BtnConfirm_Click(object sender, EventArgs e)
+        {
+            try
+            {
+      // Validate
+          if (_selectedCustomer == null)
+     {
+      MessageBox.Show("Vui lòng chọn khách hàng", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+           tabControl.SelectedIndex = 0;
+                return;
+             }
+
+        if (_selectedRooms.Count == 0)
+          {
+       MessageBox.Show("Chưa có phòng để đặt", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    return;
+       }
+
+   // Validate services
+        if (_rentalDetailService == null)
+     {
+        MessageBox.Show("Dịch vụ RentalDetail không khả dụng", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+             }
+
+        if (_roomRentalDetailService == null)
+         {
+  MessageBox.Show("Dịch vụ RoomRentalDetail không khả dụng", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    return;
+       }
+
+     // Create RentalDetail with validation
+        string rentalDetailId = _rentalDetailService.GenerateRentalDetailId();
+        
+  if (string.IsNullOrWhiteSpace(rentalDetailId))
+     {
+         MessageBox.Show("Không thể tạo mã chi tiết thuê", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+         return;
+       }
+
+                var rentalDetail = new RentalDetail
+        {
+    RentalDetailId = rentalDetailId,
+       CustomerId = _selectedCustomer.CustomerId ?? throw new ArgumentNullException("CustomerId"),
+          EmployeeId = "Admin",  // Default employee
+  CreatedDate = DateTime.Now,
+         DepositAmount = 0,
+    ProcessingStatus = 0,
+             IsDeleted = 0
+             };
+
+         // Save RentalDetail
+       System.Diagnostics.Debug.WriteLine($"Creating RentalDetail: {rentalDetailId}");
+     var savedRental = await _rentalDetailService.CreateRentalDetailAsync(rentalDetail);
+        
+            if (savedRental == null)
+                {
+         MessageBox.Show("Không thể lưu phiếu thuê", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+     return;
+    }
+
+                System.Diagnostics.Debug.WriteLine($"RentalDetail created successfully: {savedRental.RentalDetailId}");
+
+                // Save room details
+      foreach (var room in _selectedRooms)
+   {
+            room.RentalDetailId = rentalDetail.RentalDetailId;
+    }
+
+            System.Diagnostics.Debug.WriteLine($"Adding {_selectedRooms.Count} room rental details");
+      var roomsSaved = await _roomRentalDetailService.AddRoomRentalDetailsAsync(_selectedRooms);
+       
+if (!roomsSaved)
+           {
+         MessageBox.Show("Không thể lưu chi tiết phòng", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        return;
+    }
+
+  System.Diagnostics.Debug.WriteLine($"Room rental details saved successfully");
+
+       int nights = (int)(_checkOutDate - _checkInDate).TotalDays;
+  if (nights <= 0) nights = 1;
+          decimal total = _selectedRooms.Sum(r => r.RentalPrice * nights);
+
+        MessageBox.Show($"✅ ĐẶT PHÒNG THÀNH CÔNG\n\n📋 Mã phiếu: {rentalDetail.RentalDetailId}\n👤 Khách: {_selectedCustomer.Name}\n💰 Tổng tiền: {total:N0} VNĐ",
+           "THÀNH CÔNG", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+          IsConfirmed = true;
+        this.DialogResult = DialogResult.OK;
+                this.Close();
+        }
+            catch (Exception ex)
+            {
+     System.Diagnostics.Debug.WriteLine($"Error in BtnConfirm_Click: {ex.Message}");
+       System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
+  MessageBox.Show($"Lỗi: {ex.Message}\n\nChi tiết: {ex.InnerException?.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+   }
+        }
+
+        public List<RoomRentalDetail> GetSelectedRooms() => _selectedRooms;
+ }
+}

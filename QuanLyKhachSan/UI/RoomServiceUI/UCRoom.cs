@@ -476,5 +476,10 @@ namespace QuanLyKhachSan.UI.Room_Service
             tbAmenityId.Text = string.Empty;
             tbAmenityName.Text = string.Empty;
         }
+
+        private void dgvRooms_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

@@ -3,128 +3,212 @@
   "WorkspaceRootPath": "D:\\LearnC#\\QuanLyKhachSan\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\bookingform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\bookingform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\bookingform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\bookingform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\bookingform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\bookingform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\release_v4.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\release_v4.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\feature_v4.0_customer_selection.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\feature_v4.0_customer_selection.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\user_guide_v3.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\user_guide_v3.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\bookingdetailform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\bookingdetailform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\changelog_v2.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\changelog_v2.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\uclistbooking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\uclistbooking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\update_features_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\update_features_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\new_form_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\new_form_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\completion_report_v3.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\completion_report_v3.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\click_xem_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\click_xem_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\quick_test_5min.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\quick_test_5min.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\uclistbooking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\uclistbooking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\ucbookingdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\ucbookingdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\ucbookingdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\ucbookingdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\start_here.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\start_here.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\bookingdetailscontainerform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\bookingdetailscontainerform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\updated_click_xem.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\updated_click_xem.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\visual_click_xem_flow.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\visual_click_xem_flow.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\fixed_messagebox_to_form.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\fixed_messagebox_to_form.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\visual_form_flow.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\visual_form_flow.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\implementation_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\implementation_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\quick_solution.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\quick_solution.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\beautiful_new_form.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\beautiful_new_form.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\before_after_comparison.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\before_after_comparison.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\form_usage_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\form_usage_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\enhanced_features.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\enhanced_features.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\enhanced_visual_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\enhanced_visual_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\enhanced_quick_reference.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\enhanced_quick_reference.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\enhanced_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\enhanced_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\index.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\index.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\project_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\project_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\final_summary.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
       "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\final_summary.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\visual_infographic.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\visual_infographic.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\optimization_v3.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\optimization_v3.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\checklist.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\checklist.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\update_v3.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\update_v3.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\addroomdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\addroomdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\implementations\\rentaldetailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\implementations\\rentaldetailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\addservicedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\addservicedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\bug_fix_v3.2.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\bug_fix_v3.2.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\interfaces\\iserviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\interfaces\\iserviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\user_guide_v4.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\user_guide_v4.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\implementations\\serviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\implementations\\serviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\quick_reference_v4.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\quick_reference_v4.0.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\repositories\\implementations\\servicerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\repositories\\implementations\\servicerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\release_v4.1_ui_improvements.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\release_v4.1_ui_improvements.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\configuration\\servicecollectionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\configuration\\servicecollectionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\implementation_guide_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\implementation_guide_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\add_room_service_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\add_room_service_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\summary_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\summary_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\quick_start_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\quick_start_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\ui_mockups_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\ui_mockups_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\debuglogger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\debuglogger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\documentation_index_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\documentation_index_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\debug_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\debug_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\readme_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\readme_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\debug_quick_reference.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\debug_quick_reference.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\deliverables_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\deliverables_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\debug_implementation_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\debug_implementation_complete.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\fix_summary_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\fix_summary_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\integration_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\integration_guide.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\all_fixed.txt||{8B382828-6202-11D1-8870-0000F87579D2}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\all_fixed.txt||{8B382828-6202-11D1-8870-0000F87579D2}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\code_snippets.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\code_snippets.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\completion_checklist_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
-      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\completion_checklist_v4.1.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\complete_summary.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\complete_summary.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\quick_start.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\quick_start.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\readme_debug.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\readme_debug.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\final_completion_report.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\final_completion_report.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\bookingdetailform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\bookingdetailform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\services\\implementations\\roomrentaldetailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\services\\implementations\\roomrentaldetailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\paymentform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\paymentform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\paymentform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\paymentform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|d:\\learnc#\\quanlykhachsan\\quanlykhachsan\\ui\\bookingui\\selectrentalform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0DD08FC-6DA6-42EE-90DD-8D633316D129}|QuanLyKhachSan\\QuanLyKhachSan.csproj|solutionrelative:quanlykhachsan\\ui\\bookingui\\selectrentalform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -134,7 +218,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 29,
+          "SelectedChildIndex": 18,
           "Children": [
             {
               "$type": "Bookmark",
@@ -194,404 +278,677 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "COMPLETION_CHECKLIST_v4.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\COMPLETION_CHECKLIST_v4.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\COMPLETION_CHECKLIST_v4.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\COMPLETION_CHECKLIST_v4.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\COMPLETION_CHECKLIST_v4.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:21:53.045Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "ALL_FIXED.txt",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ALL_FIXED.txt",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\ALL_FIXED.txt",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ALL_FIXED.txt",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\ALL_FIXED.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAG8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2026-03-28T10:21:37.51Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "FIX_SUMMARY_v4.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FIX_SUMMARY_v4.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\FIX_SUMMARY_v4.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FIX_SUMMARY_v4.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\FIX_SUMMARY_v4.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:21:23.581Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "DELIVERABLES_v4.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DELIVERABLES_v4.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\DELIVERABLES_v4.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DELIVERABLES_v4.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\DELIVERABLES_v4.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIsBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:15:59.331Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "README_v4.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\README_v4.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\README_v4.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\README_v4.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\README_v4.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJEBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:15:35.574Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "DOCUMENTATION_INDEX_v4.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DOCUMENTATION_INDEX_v4.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\DOCUMENTATION_INDEX_v4.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DOCUMENTATION_INDEX_v4.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\DOCUMENTATION_INDEX_v4.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGoBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:15:07.766Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "UI_MOCKUPS_v4.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UI_MOCKUPS_v4.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UI_MOCKUPS_v4.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UI_MOCKUPS_v4.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UI_MOCKUPS_v4.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAG8BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:14:38.817Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "SUMMARY_v4.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\SUMMARY_v4.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\SUMMARY_v4.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\SUMMARY_v4.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\SUMMARY_v4.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:14:05.619Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "IMPLEMENTATION_GUIDE_v4.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\IMPLEMENTATION_GUIDE_v4.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\IMPLEMENTATION_GUIDE_v4.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\IMPLEMENTATION_GUIDE_v4.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\IMPLEMENTATION_GUIDE_v4.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:13:35.345Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "RELEASE_v4.1_UI_IMPROVEMENTS.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\RELEASE_v4.1_UI_IMPROVEMENTS.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\RELEASE_v4.1_UI_IMPROVEMENTS.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\RELEASE_v4.1_UI_IMPROVEMENTS.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\RELEASE_v4.1_UI_IMPROVEMENTS.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEQBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:12:31.147Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "BookingForm.cs [Design]",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingForm.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\BookingForm.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingForm.cs [Design]",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\BookingForm.cs [Design]",
+              "DocumentIndex": 51,
+              "Title": "SelectRentalForm.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\SelectRentalForm.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\SelectRentalForm.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\SelectRentalForm.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\SelectRentalForm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T10:08:14.867Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "QUICK_REFERENCE_v4.0.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_REFERENCE_v4.0.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_REFERENCE_v4.0.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_REFERENCE_v4.0.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_REFERENCE_v4.0.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:06:22.9Z",
+              "WhenOpened": "2026-03-30T10:24:03.205Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "RELEASE_v4.0.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\RELEASE_v4.0.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\RELEASE_v4.0.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\RELEASE_v4.0.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\RELEASE_v4.0.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:06:07.088Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "USER_GUIDE_v4.0.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\USER_GUIDE_v4.0.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\USER_GUIDE_v4.0.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\USER_GUIDE_v4.0.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\USER_GUIDE_v4.0.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHQBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:05:44.291Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "FEATURE_v4.0_CUSTOMER_SELECTION.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FEATURE_v4.0_CUSTOMER_SELECTION.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\FEATURE_v4.0_CUSTOMER_SELECTION.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FEATURE_v4.0_CUSTOMER_SELECTION.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\FEATURE_v4.0_CUSTOMER_SELECTION.md",
-              "ViewState": "AgIAALoAAAAAAAAAAAAAAE0BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T10:05:06.34Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "BookingForm.Designer.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingForm.Designer.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\BookingForm.Designer.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingForm.Designer.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\BookingForm.Designer.cs",
-              "ViewState": "AgIAADUCAAAAAAAAAAASwAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 50,
+              "Title": "PaymentForm.Designer.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\PaymentForm.Designer.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\PaymentForm.Designer.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\PaymentForm.Designer.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\PaymentForm.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T09:59:50.353Z",
+              "WhenOpened": "2026-03-30T10:23:22.849Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "BUG_FIX_v3.2.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BUG_FIX_v3.2.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\BUG_FIX_v3.2.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BUG_FIX_v3.2.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\BUG_FIX_v3.2.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:51:41.852Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "RentalDetailService.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\RentalDetailService.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Implementations\\RentalDetailService.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\RentalDetailService.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\Services\\Implementations\\RentalDetailService.cs",
-              "ViewState": "AgIAANoAAAAAAAAAAMBdwAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 49,
+              "Title": "PaymentForm.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\PaymentForm.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\PaymentForm.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\PaymentForm.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\PaymentForm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKYCAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T09:51:10.112Z",
+              "WhenOpened": "2026-03-30T10:23:13.823Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "UPDATE_v3.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UPDATE_v3.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UPDATE_v3.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UPDATE_v3.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UPDATE_v3.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:47:32.465Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "OPTIMIZATION_v3.1.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\OPTIMIZATION_v3.1.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\OPTIMIZATION_v3.1.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\OPTIMIZATION_v3.1.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\OPTIMIZATION_v3.1.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADMBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:47:22.248Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "README.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\README.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\README.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\README.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\README.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:42:51.354Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "FINAL_SUMMARY.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FINAL_SUMMARY.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\FINAL_SUMMARY.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FINAL_SUMMARY.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\FINAL_SUMMARY.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFoBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:42:21.466Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "QUICK_TEST_5MIN.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_TEST_5MIN.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_TEST_5MIN.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_TEST_5MIN.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_TEST_5MIN.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:41:53.355Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "COMPLETION_REPORT_v3.0.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\COMPLETION_REPORT_v3.0.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\COMPLETION_REPORT_v3.0.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\COMPLETION_REPORT_v3.0.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\COMPLETION_REPORT_v3.0.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGMBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:41:31.843Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "USER_GUIDE_v3.0.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\USER_GUIDE_v3.0.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\USER_GUIDE_v3.0.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\USER_GUIDE_v3.0.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\USER_GUIDE_v3.0.md",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAAAIoAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:41:06.358Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "BookingForm.cs",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingForm.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\BookingForm.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingForm.cs",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\BookingForm.cs",
-              "ViewState": "AgIAAKMDAAAAAAAAAAAcwHYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T09:40:21.841Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 48,
               "Title": "MainForm.Designer.cs",
               "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\MainForm.Designer.cs",
               "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\MainForm.Designer.cs",
               "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\MainForm.Designer.cs",
               "RelativeToolTip": "QuanLyKhachSan\\UI\\MainForm.Designer.cs",
-              "ViewState": "AgIAANIAAAAAAAAAAAAUwOwAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAIIBAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T09:23:18.748Z",
+              "WhenOpened": "2026-03-30T10:14:55.268Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "CHANGELOG_v2.0.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\CHANGELOG_v2.0.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\CHANGELOG_v2.0.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\CHANGELOG_v2.0.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\CHANGELOG_v2.0.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:25:18.323Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "UPDATE_FEATURES_GUIDE.md",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UPDATE_FEATURES_GUIDE.md",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UPDATE_FEATURES_GUIDE.md",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UPDATE_FEATURES_GUIDE.md",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UPDATE_FEATURES_GUIDE.md",
-              "ViewState": "AgIAAPkAAAAAAAAAAAAAAA8BAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-28T09:24:49.273Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "MainForm.cs",
               "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\MainForm.cs",
               "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\MainForm.cs",
               "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\MainForm.cs",
               "RelativeToolTip": "QuanLyKhachSan\\UI\\MainForm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAAOkAAAAAAAAAAAAYwP8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T09:23:15.542Z",
+              "WhenOpened": "2026-03-30T10:02:10.54Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "MainForm.cs [Design]",
-              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\MainForm.cs",
-              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\MainForm.cs",
-              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\MainForm.cs [Design]",
-              "RelativeToolTip": "QuanLyKhachSan\\UI\\MainForm.cs [Design]",
+              "DocumentIndex": 47,
+              "Title": "RoomRentalDetailService.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\RoomRentalDetailService.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Implementations\\RoomRentalDetailService.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\RoomRentalDetailService.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\Services\\Implementations\\RoomRentalDetailService.cs",
+              "ViewState": "AgIAAO8AAAAAAAAAACBjwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T09:23:12.701Z",
+              "WhenOpened": "2026-03-30T09:56:56.873Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "BookingDetailForm.Designer.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingDetailForm.Designer.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\BookingDetailForm.Designer.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingDetailForm.Designer.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\BookingDetailForm.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T09:40:30.073Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "FINAL_COMPLETION_REPORT.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FINAL_COMPLETION_REPORT.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\FINAL_COMPLETION_REPORT.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FINAL_COMPLETION_REPORT.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\FINAL_COMPLETION_REPORT.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAALMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T09:25:28.194Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "README_DEBUG.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\README_DEBUG.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\README_DEBUG.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\README_DEBUG.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\README_DEBUG.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJwBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T09:19:35.46Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "QUICK_START.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_START.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_START.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_START.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_START.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAP4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T09:19:10.787Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "COMPLETE_SUMMARY.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\COMPLETE_SUMMARY.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\COMPLETE_SUMMARY.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\COMPLETE_SUMMARY.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\COMPLETE_SUMMARY.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T09:18:48.226Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "CODE_SNIPPETS.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\CODE_SNIPPETS.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\CODE_SNIPPETS.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\CODE_SNIPPETS.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\CODE_SNIPPETS.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAK4BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T09:18:17.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "INTEGRATION_GUIDE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\INTEGRATION_GUIDE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\INTEGRATION_GUIDE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\INTEGRATION_GUIDE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\INTEGRATION_GUIDE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T09:17:50.184Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "DEBUG_IMPLEMENTATION_COMPLETE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DEBUG_IMPLEMENTATION_COMPLETE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\DEBUG_IMPLEMENTATION_COMPLETE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DEBUG_IMPLEMENTATION_COMPLETE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\DEBUG_IMPLEMENTATION_COMPLETE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T09:17:16.303Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BookingDetailForm.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingDetailForm.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\BookingDetailForm.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingDetailForm.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\BookingDetailForm.cs",
+              "ViewState": "AgIAAK4AAAAAAAAAAAAowL8AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T09:16:39.341Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "DEBUG_QUICK_REFERENCE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DEBUG_QUICK_REFERENCE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\DEBUG_QUICK_REFERENCE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DEBUG_QUICK_REFERENCE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\DEBUG_QUICK_REFERENCE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAO0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T09:14:01.927Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "DEBUG_GUIDE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DEBUG_GUIDE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\DEBUG_GUIDE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DEBUG_GUIDE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\DEBUG_GUIDE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFgBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T09:13:42.938Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "DebugLogger.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DebugLogger.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\DebugLogger.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\DebugLogger.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\DebugLogger.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T09:12:32.697Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "QUICK_START_GUIDE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_START_GUIDE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_START_GUIDE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_START_GUIDE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_START_GUIDE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEABAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:43:33.165Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "ADD_ROOM_SERVICE_COMPLETE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ADD_ROOM_SERVICE_COMPLETE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\ADD_ROOM_SERVICE_COMPLETE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ADD_ROOM_SERVICE_COMPLETE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\ADD_ROOM_SERVICE_COMPLETE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEYBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:43:11.121Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ServiceCollectionExtensions.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Configuration\\ServiceCollectionExtensions.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\Configuration\\ServiceCollectionExtensions.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Configuration\\ServiceCollectionExtensions.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\Configuration\\ServiceCollectionExtensions.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAMBdwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:39:17.666Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "ServiceRepository.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Implementations\\ServiceRepository.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\Repositories\\Implementations\\ServiceRepository.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Repositories\\Implementations\\ServiceRepository.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\Repositories\\Implementations\\ServiceRepository.cs",
+              "ViewState": "AgIAAGQAAAAAAAAAAABRwGcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:38:45.468Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "ServiceService.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\ServiceService.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Implementations\\ServiceService.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Implementations\\ServiceService.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\Services\\Implementations\\ServiceService.cs",
+              "ViewState": "AgIAAMkAAAAAAAAAAIBZwM4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:37:11.518Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "IServiceService.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Interfaces\\IServiceService.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\Services\\Interfaces\\IServiceService.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\Services\\Interfaces\\IServiceService.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\Services\\Interfaces\\IServiceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:36:58.746Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "AddServiceDialog.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\AddServiceDialog.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\AddServiceDialog.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\AddServiceDialog.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\AddServiceDialog.cs",
+              "ViewState": "AgIAACkBAAAAAAAAAEBVwC0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:36:37.063Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "AddRoomDialog.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\AddRoomDialog.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\AddRoomDialog.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\AddRoomDialog.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\AddRoomDialog.cs",
+              "ViewState": "AgIAAEoBAAAAAAAAAABRwE0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:36:16.381Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "CHECKLIST.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\CHECKLIST.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\CHECKLIST.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\CHECKLIST.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\CHECKLIST.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIoBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:34:08.902Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "VISUAL_INFOGRAPHIC.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\VISUAL_INFOGRAPHIC.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\VISUAL_INFOGRAPHIC.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\VISUAL_INFOGRAPHIC.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\VISUAL_INFOGRAPHIC.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFgBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:33:41.89Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "FINAL_SUMMARY.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FINAL_SUMMARY.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\FINAL_SUMMARY.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FINAL_SUMMARY.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\FINAL_SUMMARY.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGsBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:33:17.174Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "PROJECT_COMPLETE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\PROJECT_COMPLETE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\PROJECT_COMPLETE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\PROJECT_COMPLETE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\PROJECT_COMPLETE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:32:40.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "INDEX.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\INDEX.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\INDEX.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\INDEX.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\INDEX.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEwBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:32:10.253Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ENHANCED_COMPLETE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_COMPLETE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_COMPLETE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_COMPLETE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_COMPLETE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:31:33.438Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ENHANCED_QUICK_REFERENCE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_QUICK_REFERENCE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_QUICK_REFERENCE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_QUICK_REFERENCE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_QUICK_REFERENCE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:31:06.056Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ENHANCED_VISUAL_GUIDE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_VISUAL_GUIDE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_VISUAL_GUIDE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_VISUAL_GUIDE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_VISUAL_GUIDE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:30:47.686Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ENHANCED_FEATURES.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_FEATURES.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_FEATURES.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_FEATURES.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\ENHANCED_FEATURES.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:30:19.65Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NEW_FORM_COMPLETE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\NEW_FORM_COMPLETE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\NEW_FORM_COMPLETE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\NEW_FORM_COMPLETE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\NEW_FORM_COMPLETE.md",
+              "ViewState": "AgIAAJ8AAAAAAAAAAAAAABoBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:25:46.659Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "FORM_USAGE_GUIDE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FORM_USAGE_GUIDE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\FORM_USAGE_GUIDE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FORM_USAGE_GUIDE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\FORM_USAGE_GUIDE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:25:13.622Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "BEFORE_AFTER_COMPARISON.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BEFORE_AFTER_COMPARISON.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\BEFORE_AFTER_COMPARISON.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BEFORE_AFTER_COMPARISON.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\BEFORE_AFTER_COMPARISON.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:24:46.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "BEAUTIFUL_NEW_FORM.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BEAUTIFUL_NEW_FORM.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\BEAUTIFUL_NEW_FORM.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BEAUTIFUL_NEW_FORM.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\BEAUTIFUL_NEW_FORM.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:24:29.213Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "QUICK_SOLUTION.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_SOLUTION.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_SOLUTION.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\QUICK_SOLUTION.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\QUICK_SOLUTION.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:18:32.29Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "IMPLEMENTATION_COMPLETE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\IMPLEMENTATION_COMPLETE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\IMPLEMENTATION_COMPLETE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\IMPLEMENTATION_COMPLETE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\IMPLEMENTATION_COMPLETE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAANcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:18:23.26Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "VISUAL_FORM_FLOW.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\VISUAL_FORM_FLOW.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\VISUAL_FORM_FLOW.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\VISUAL_FORM_FLOW.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\VISUAL_FORM_FLOW.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:17:54.663Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "FIXED_MESSAGEBOX_TO_FORM.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FIXED_MESSAGEBOX_TO_FORM.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\FIXED_MESSAGEBOX_TO_FORM.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\FIXED_MESSAGEBOX_TO_FORM.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\FIXED_MESSAGEBOX_TO_FORM.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:17:26Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CLICK_XEM_COMPLETE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\CLICK_XEM_COMPLETE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\CLICK_XEM_COMPLETE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\CLICK_XEM_COMPLETE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\CLICK_XEM_COMPLETE.md",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAOMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:14:18.942Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "VISUAL_CLICK_XEM_FLOW.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\VISUAL_CLICK_XEM_FLOW.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\VISUAL_CLICK_XEM_FLOW.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\VISUAL_CLICK_XEM_FLOW.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\VISUAL_CLICK_XEM_FLOW.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:14:02.547Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UPDATED_CLICK_XEM.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UPDATED_CLICK_XEM.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UPDATED_CLICK_XEM.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UPDATED_CLICK_XEM.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UPDATED_CLICK_XEM.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:13:29.259Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BookingDetailsContainerForm.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingDetailsContainerForm.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\BookingDetailsContainerForm.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\BookingDetailsContainerForm.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\BookingDetailsContainerForm.cs",
+              "ViewState": "AgIAADwBAAAAAAAAAIBZwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:12:35.753Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UCListBooking.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCListBooking.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UCListBooking.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCListBooking.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UCListBooking.cs",
+              "ViewState": "AgIAAFACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:10:08.746Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UCListBooking.cs [Design]",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCListBooking.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UCListBooking.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCListBooking.cs [Design]",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UCListBooking.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:09:59.215Z",
               "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UCBookingDetail.cs",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCBookingDetail.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UCBookingDetail.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCBookingDetail.cs",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UCBookingDetail.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:09:28.592Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UCBookingDetail.cs [Design]",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCBookingDetail.cs",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\UCBookingDetail.cs",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\UCBookingDetail.cs [Design]",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\UCBookingDetail.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T08:09:26.255Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "START_HERE.md",
+              "DocumentMoniker": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\START_HERE.md",
+              "RelativeDocumentMoniker": "QuanLyKhachSan\\UI\\BookingUI\\START_HERE.md",
+              "ToolTip": "D:\\LearnC#\\QuanLyKhachSan\\QuanLyKhachSan\\UI\\BookingUI\\START_HERE.md",
+              "RelativeToolTip": "QuanLyKhachSan\\UI\\BookingUI\\START_HERE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-03-30T08:07:50.67Z",
+              "EditorCaption": ""
             }
           ]
         },

@@ -10,7 +10,7 @@ namespace QuanLyKhachSan.Data
             var optionsBuilder = new DbContextOptionsBuilder<HotelDbContext>();
 
             // Connection string SQL Server
-            optionsBuilder.UseSqlServer("Server=.;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=.;Database=HotelManagement;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;");
 
             return new HotelDbContext(optionsBuilder.Options);
         }
