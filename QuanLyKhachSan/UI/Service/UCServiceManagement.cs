@@ -1,0 +1,540 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.Service
+{
+    /// <summary>
+    /// 🛎️ UC QUẢN LÝ DỊCH VỤ - SERVICE MANAGEMENT
+    /// - Hiển thị danh sách dịch vụ
+    /// - Thêm dịch vụ mới
+    /// - Cập nhật dịch vụ
+    /// - Xóa dịch vụ
+    /// - Tìm kiếm/Lọc dịch vụ
+    /// </summary>
+    public partial class UCServiceManagement : UserControl
+    {
+        private readonly IServiceService _serviceService;
+        private List<Models.Service> _allServices = new();
+        private Models.Service? _selectedService = null;
+
+        // UI Controls
+        private DataGridView dgvServices;
+        private TextBox txtSearchName;
+        private ComboBox cboServiceType;
+        private Button btnSearch;
+        private Button btnRefresh;
+        private Button btnAdd;
+        private Button btnEdit;
+        private Button btnDelete;
+        private Label lblStatus;
+
+        public UCServiceManagement()
+        {
+            // No InitializeComponent needed - UI built programmatically
+        }
+
+        public UCServiceManagement(IServiceService serviceService) : this()
+        {
+            _serviceService = serviceService ?? throw new ArgumentNullException(nameof(serviceService));
+        }
+
+        private async void UCServiceManagement_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_serviceService == null)
+                {
+                    MessageBox.Show("Lỗi: IServiceService chưa được khởi tạo. Vui lòng kiểm tra Dependency Injection.",
+            "Lỗi Cấu Hình", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                InitializeUI();
+                await LoadServicesAsync();
+                AttachEventHandlers();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Initialize UI Components
+        /// </summary>
+        private void InitializeUI()
+        {
+            // Set form properties
+            this.BackColor = Color.FromArgb(240, 241, 245);
+            this.Padding = new Padding(15);
+
+            // Header Panel
+            var headerPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 50,
+                BackColor = Color.FromArgb(59, 130, 246),
+                Margin = new Padding(0, 0, 0, 10)
+            };
+
+            var lblHeader = new Label
+            {
+                Text = "🛎️ QUẢN LÝ DỊCH VỤ",
+                Font = new Font("Segoe UI", 16, FontStyle.Bold),
+                ForeColor = Color.White,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(20, 0, 0, 0)
+            };
+            headerPanel.Controls.Add(lblHeader);
+            this.Controls.Add(headerPanel);
+
+            // Search Panel
+            var searchPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 90,
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Padding = new Padding(15),
+                Margin = new Padding(0, 0, 0, 10)
+            };
+
+            // Search Name
+            var lblSearchName = new Label
+            {
+                Text = "Tên dịch vụ:",
+                Font = new Font("Segoe UI", 9),
+                Location = new Point(10, 10),
+                AutoSize = true
+            };
+            searchPanel.Controls.Add(lblSearchName);
+
+            txtSearchName = new TextBox
+            {
+                Location = new Point(100, 10),
+                Width = 200,
+                Height = 28,
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = new Font("Segoe UI", 9)
+            };
+            searchPanel.Controls.Add(txtSearchName);
+
+            // Service Type Filter
+            var lblServiceType = new Label
+            {
+                Text = "Loại dịch vụ:",
+                Font = new Font("Segoe UI", 9),
+                Location = new Point(10, 50),
+                AutoSize = true
+            };
+            searchPanel.Controls.Add(lblServiceType);
+
+            cboServiceType = new ComboBox
+            {
+                Location = new Point(100, 50),
+                Width = 200,
+                Height = 28,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Font = new Font("Segoe UI", 9)
+            };
+            searchPanel.Controls.Add(cboServiceType);
+
+            // Buttons
+            btnSearch = new Button
+            {
+                Text = "🔍 Tìm Kiếm",
+                Location = new Point(320, 10),
+                Width = 100,
+                Height = 28,
+                BackColor = Color.FromArgb(59, 130, 246),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            searchPanel.Controls.Add(btnSearch);
+
+            btnRefresh = new Button
+            {
+                Text = "🔄 Làm Mới",
+                Location = new Point(430, 10),
+                Width = 100,
+                Height = 28,
+                BackColor = Color.FromArgb(107, 114, 128),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            searchPanel.Controls.Add(btnRefresh);
+
+            btnAdd = new Button
+            {
+                Text = "➕ Thêm",
+                Location = new Point(540, 10),
+                Width = 80,
+                Height = 28,
+                BackColor = Color.FromArgb(34, 197, 94),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            searchPanel.Controls.Add(btnAdd);
+
+            btnEdit = new Button
+            {
+                Text = "✏️ Sửa",
+                Location = new Point(630, 10),
+                Width = 80,
+                Height = 28,
+                BackColor = Color.FromArgb(245, 158, 11),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            searchPanel.Controls.Add(btnEdit);
+
+            btnDelete = new Button
+            {
+                Text = "🗑️ Xóa",
+                Location = new Point(720, 10),
+                Width = 80,
+                Height = 28,
+                BackColor = Color.FromArgb(239, 68, 68),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            searchPanel.Controls.Add(btnDelete);
+
+            lblStatus = new Label
+            {
+                Text = "Chọn dịch vụ để sửa hoặc xóa",
+                Font = new Font("Segoe UI", 9, FontStyle.Italic),
+                ForeColor = Color.FromArgb(90, 90, 90),
+                Location = new Point(320, 50),
+                AutoSize = true
+            };
+            searchPanel.Controls.Add(lblStatus);
+
+            this.Controls.Add(searchPanel);
+
+            // DataGridView
+            dgvServices = new DataGridView
+            {
+                Dock = DockStyle.Fill,
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                ReadOnly = true,
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                RowHeadersVisible = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                ColumnHeadersHeight = 40,
+                ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.FromArgb(59, 130, 246),
+                    ForeColor = Color.White,
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    Alignment = DataGridViewContentAlignment.MiddleCenter
+                },
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Padding = new Padding(8, 5, 8, 5),
+                    Font = new Font("Segoe UI", 9)
+                }
+            };
+
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 50, Name = "colSTT" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Mã Dịch Vụ", Width = 100, Name = "colServiceId" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tên Dịch Vụ", Width = 200, Name = "colName" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Loại Dịch Vụ", Width = 150, Name = "colType" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Giá (VNĐ)", Width = 120, Name = "colPrice" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Hình Ảnh", Width = 200, Name = "colImage" });
+
+            this.Controls.Add(dgvServices);
+        }
+
+        /// <summary>
+        /// Load all services from database
+        /// </summary>
+        private async Task LoadServicesAsync()
+        {
+            try
+            {
+                var services = await _serviceService.GetAllServicesAsync();
+                _allServices = services.Where(s => s.IsDeleted == 0).ToList();
+                BindServicesToGrid(_allServices);
+                UpdateStatusLabel();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải dịch vụ: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Bind services to DataGridView
+        /// </summary>
+        private void BindServicesToGrid(List<Models.Service> services)
+        {
+            dgvServices.Rows.Clear();
+            int stt = 1;
+
+            foreach (var service in services)
+            {
+                dgvServices.Rows.Add(
+                 stt++,
+             service.ServiceId,
+                    service.Name,
+                   GetServiceTypeName(service.Type),
+             service.Price.ToString("N0"),
+              service.Image ?? "-"
+                 );
+            }
+
+            UpdateStatusLabel($"Tổng: {services.Count} dịch vụ");
+        }
+
+        /// <summary>
+        /// Get service type name
+        /// </summary>
+        private string GetServiceTypeName(string type)
+        {
+            return type switch
+            {
+                "1" => "Phòng Ăn",
+                "2" => "Giặt Ủi",
+                "3" => "SPA/Massage",
+                "4" => "Đưa Đón",
+                "5" => "Khác",
+                _ => type
+            };
+        }
+
+        /// <summary>
+        /// Initialize combo boxes
+        /// </summary>
+        private void InitializeComboBoxes()
+        {
+            cboServiceType.Items.Clear();
+            cboServiceType.Items.Add("-- Tất Cả --");
+            cboServiceType.Items.Add("1 - Phòng Ăn");
+            cboServiceType.Items.Add("2 - Giặt Ủi");
+            cboServiceType.Items.Add("3 - SPA/Massage");
+            cboServiceType.Items.Add("4 - Đưa Đón");
+            cboServiceType.Items.Add("5 - Khác");
+            cboServiceType.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Attach event handlers
+        /// </summary>
+        private void AttachEventHandlers()
+        {
+            InitializeComboBoxes();
+            btnSearch.Click += BtnSearch_Click;
+            btnRefresh.Click += BtnRefresh_Click;
+            btnAdd.Click += BtnAdd_Click;
+            btnEdit.Click += BtnEdit_Click;
+            btnDelete.Click += BtnDelete_Click;
+            dgvServices.SelectionChanged += DgvServices_SelectionChanged;
+            dgvServices.CellDoubleClick += DgvServices_CellDoubleClick;
+        }
+
+        /// <summary>
+        /// Search button click
+        /// </summary>
+        private void BtnSearch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string searchName = txtSearchName.Text.Trim();
+                string serviceType = cboServiceType.SelectedIndex > 0 ? cboServiceType.SelectedItem.ToString().Substring(0, 1) : "";
+
+                var filtered = _allServices.AsEnumerable();
+
+                if (!string.IsNullOrEmpty(searchName))
+                {
+                    filtered = filtered.Where(s => s.Name.Contains(searchName, StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (!string.IsNullOrEmpty(serviceType))
+                {
+                    filtered = filtered.Where(s => s.Type == serviceType);
+                }
+
+                var result = filtered.ToList();
+                BindServicesToGrid(result);
+
+                if (!result.Any())
+                {
+                    MessageBox.Show("Không tìm thấy dịch vụ phù hợp", "Tìm Kiếm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Refresh button click
+        /// </summary>
+        private async void BtnRefresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                txtSearchName.Clear();
+                cboServiceType.SelectedIndex = 0;
+                _selectedService = null;
+                await LoadServicesAsync();
+                MessageBox.Show("Làm mới dữ liệu thành công", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Add button click
+        /// </summary>
+        private async void BtnAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var addForm = new AddServiceForm(_serviceService);
+                if (addForm.ShowDialog() == DialogResult.OK)
+                {
+                    await LoadServicesAsync();
+                    MessageBox.Show("Thêm dịch vụ thành công", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Edit button click
+        /// </summary>
+        private async void BtnEdit_Click(object sender, EventArgs e)
+        {
+            if (_selectedService == null)
+            {
+                MessageBox.Show("Vui lòng chọn dịch vụ cần sửa", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                var editForm = new EditServiceForm(_serviceService, _selectedService);
+                if (editForm.ShowDialog() == DialogResult.OK)
+                {
+                    await LoadServicesAsync();
+                    MessageBox.Show("Cập nhật dịch vụ thành công", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Delete button click
+        /// </summary>
+        private async void BtnDelete_Click(object sender, EventArgs e)
+        {
+            if (_selectedService == null)
+            {
+                MessageBox.Show("Vui lòng chọn dịch vụ cần xóa", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                var result = MessageBox.Show(
+            $"Bạn chắc chắn muốn xóa dịch vụ '{_selectedService.Name}'?",
+          "Xác Nhận Xóa",
+                  MessageBoxButtons.YesNo,
+        MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    bool deleteSuccess = await _serviceService.DeleteServiceAsync(_selectedService.ServiceId);
+
+                    if (deleteSuccess)
+                    {
+                        await LoadServicesAsync();
+                        _selectedService = null;
+                        MessageBox.Show("Xóa dịch vụ thành công", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa dịch vụ thất bại", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// DataGridView selection changed
+        /// </summary>
+        private void DgvServices_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvServices.SelectedRows.Count > 0)
+            {
+                int rowIndex = dgvServices.SelectedRows[0].Index;
+                if (rowIndex < _allServices.Count)
+                {
+                    var serviceId = dgvServices.Rows[rowIndex].Cells["colServiceId"].Value?.ToString();
+                    _selectedService = _allServices.FirstOrDefault(s => s.ServiceId == serviceId);
+                    UpdateStatusLabel($"Đã chọn: {_selectedService?.Name}");
+                }
+            }
+            else
+            {
+                _selectedService = null;
+                UpdateStatusLabel("Chọn dịch vụ để sửa hoặc xóa");
+            }
+        }
+
+        /// <summary>
+        /// DataGridView cell double click
+        /// </summary>
+        private void DgvServices_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                BtnEdit_Click(null, null);
+            }
+        }
+
+        /// <summary>
+        /// Update status label
+        /// </summary>
+        private void UpdateStatusLabel(string? text = null)
+        {
+            if (text != null)
+            {
+                lblStatus.Text = text;
+            }
+            else
+            {
+                lblStatus.Text = _selectedService != null ? $"Đã chọn: {_selectedService.Name}" : "Chọn dịch vụ để sửa hoặc xóa";
+            }
+        }
+    }
+}

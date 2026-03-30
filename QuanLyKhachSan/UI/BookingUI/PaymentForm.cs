@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using QuanLyKhachSan.Models;
@@ -10,10 +11,41 @@ namespace QuanLyKhachSan.UI.BookingUI
 {
     /// <summary>
     /// 💳 PAYMENT FORM - Professional Hotel Payment Processing
-    /// Displays invoice information and handles payment methods
+    /// Modern, clean interface for payment processing
     /// </summary>
     public partial class PaymentForm : Form
     {
+        #region ==================== MODERN COLOR PALETTE ====================
+
+        private static class ModernColors
+        {
+            // Primary Colors
+            public static readonly Color Primary = Color.FromArgb(99, 102, 241);        // Indigo
+            public static readonly Color PrimaryDark = Color.FromArgb(79, 70, 229);
+            public static readonly Color Secondary = Color.FromArgb(139, 92, 246);      // Purple
+
+            // Accent Colors
+            public static readonly Color Success = Color.FromArgb(34, 197, 94);         // Green
+            public static readonly Color SuccessLight = Color.FromArgb(220, 252, 231);
+            public static readonly Color Danger = Color.FromArgb(239, 68, 68);          // Red
+            public static readonly Color Warning = Color.FromArgb(245, 158, 11);        // Orange
+            public static readonly Color Info = Color.FromArgb(14, 165, 233);           // Sky Blue
+
+            // Neutrals
+            public static readonly Color Background = Color.FromArgb(248, 250, 252);
+            public static readonly Color Card = Color.White;
+            public static readonly Color CardHover = Color.FromArgb(249, 250, 251);
+            public static readonly Color Border = Color.FromArgb(226, 232, 240);
+            public static readonly Color BorderLight = Color.FromArgb(241, 245, 249);
+
+            // Text Colors
+            public static readonly Color TextPrimary = Color.FromArgb(15, 23, 42);
+            public static readonly Color TextSecondary = Color.FromArgb(100, 116, 139);
+            public static readonly Color TextMuted = Color.FromArgb(148, 163, 184);
+        }
+
+        #endregion
+
         #region ==================== FIELDS ====================
 
         private IRentalDetailService _rentalDetailService;
@@ -21,12 +53,12 @@ namespace QuanLyKhachSan.UI.BookingUI
 
         private RentalDetail _rentalDetail;
         private Invoice _invoice;
- private int _totalAmount;
-  private int _depositAmount;
+        private int _totalAmount;
+        private int _depositAmount;
         private int _remainingAmount;
 
         // UI Controls
-     private Label lblRentalId;
+        private Label lblRentalId;
         private Label lblCustomerName;
         private Label lblIdNumber;
         private Label lblInvoiceNumber;
@@ -34,14 +66,14 @@ namespace QuanLyKhachSan.UI.BookingUI
         private DataGridView dgvServices;
         private Label lblTotalRoomCost;
         private Label lblTotalServiceCost;
- private Label lblDepositPaid;
-      private Label lblRemaining;
+        private Label lblDepositPaid;
+        private Label lblRemaining;
         private Label lblGrandTotal;
         private NumericUpDown nudPaymentAmount;
         private ComboBox cboPaymentMethod;
-    private Button btnPay;
+        private Button btnPay;
         private Button btnCancel;
-        private Label lblQRCode;
+        private Panel pnlQRCode;
 
         #endregion
 
@@ -49,24 +81,24 @@ namespace QuanLyKhachSan.UI.BookingUI
 
         public PaymentForm()
         {
-       InitializeComponent();
- }
+            InitializeComponent();
+        }
 
-    public PaymentForm(
- RentalDetail rentalDetail,
-      Invoice invoice,
+        public PaymentForm(
+            RentalDetail rentalDetail,
+            Invoice invoice,
             int totalAmount,
             int depositAmount,
             IRentalDetailService rentalDetailService,
-       IInvoiceService invoiceService) : this()
-    {
+            IInvoiceService invoiceService) : this()
+        {
             _rentalDetail = rentalDetail;
             _invoice = invoice;
-        _totalAmount = totalAmount;
-      _depositAmount = depositAmount;
-       _remainingAmount = totalAmount - depositAmount;
-        _rentalDetailService = rentalDetailService;
-          _invoiceService = invoiceService;
+            _totalAmount = totalAmount;
+            _depositAmount = depositAmount;
+            _remainingAmount = totalAmount - depositAmount;
+            _rentalDetailService = rentalDetailService;
+            _invoiceService = invoiceService;
         }
 
         #endregion
@@ -76,397 +108,683 @@ namespace QuanLyKhachSan.UI.BookingUI
         private void PaymentForm_Load(object sender, EventArgs e)
         {
             try
-   {
-                SetupForm();
-                CreateUI();
-             PopulateData();
-  }
-        catch (Exception ex)
-        {
-          MessageBox.Show($"Lỗi khởi tạo form: {ex.Message}", "Lỗi",
-        MessageBoxButtons.OK, MessageBoxIcon.Error);
-    }
+            {
+                SetupModernForm();
+                CreateModernUI();
+                PopulateData();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Lỗi khởi tạo form: {ex.Message}");
+            }
         }
 
         #endregion
 
-        #region ==================== SETUP ====================
+        #region ==================== MODERN SETUP ====================
 
-        private void SetupForm()
+        private void SetupModernForm()
         {
-            this.Text = "💳 THANH TOÁN";
-            this.Width = 1400;
-          this.Height = 750;
-     this.StartPosition = FormStartPosition.CenterParent;
+            this.Text = "💳 THANH TOÁN - Payment Processing";
+            this.Width = 1450;
+            this.Height = 820;
+            this.StartPosition = FormStartPosition.CenterParent;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-       this.MaximizeBox = false;
-         this.MinimizeBox = false;
-         this.BackColor = Color.FromArgb(249, 250, 251);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.BackColor = ModernColors.Background;
+            this.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
         }
 
         #endregion
 
-        #region ==================== UI CREATION ====================
+        #region ==================== MODERN UI CREATION ====================
 
-        private void CreateUI()
-   {
-  // Header
-  var headerPanel = CreateHeaderPanel();
+        private void CreateModernUI()
+        {
+            // Modern Header with Gradient
+            var headerPanel = CreateModernHeader();
             Controls.Add(headerPanel);
 
-         // Main Layout
-   var mainLayout = new TableLayoutPanel
+            // Main Content Container
+            var contentPanel = new Panel
             {
-                Dock = DockStyle.Fill,
-          ColumnCount = 2,
-       RowCount = 1,
-        BackColor = Color.Transparent,
-           Padding = new Padding(15)
-     };
-  mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
-    mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+                Location = new Point(0, 90),
+                Size = new Size(this.ClientSize.Width, this.ClientSize.Height - 170),
+                BackColor = Color.Transparent,
+                Padding = new Padding(20, 0, 20, 0)
+            };
 
-            // Left Panel - Invoice Details
-            var leftPanel = CreateLeftPanel();
-     mainLayout.Controls.Add(leftPanel, 0, 0);
+            // Two-Column Layout
+            var leftPanel = CreateModernLeftPanel();
+            leftPanel.Location = new Point(20, 10);
+            leftPanel.Size = new Size(880, contentPanel.Height - 20);
+            contentPanel.Controls.Add(leftPanel);
 
- // Right Panel - Payment Info
-     var rightPanel = CreateRightPanel();
- mainLayout.Controls.Add(rightPanel, 1, 0);
+            var rightPanel = CreateModernRightPanel();
+            rightPanel.Location = new Point(920, 10);
+            rightPanel.Size = new Size(490, contentPanel.Height - 20);
+            contentPanel.Controls.Add(rightPanel);
 
-     Controls.Add(mainLayout);
+            Controls.Add(contentPanel);
 
-// Footer
-            var footerPanel = CreateFooterPanel();
-        Controls.Add(footerPanel);
+            // Modern Footer
+            var footerPanel = CreateModernFooter();
+            Controls.Add(footerPanel);
         }
 
-        private Panel CreateHeaderPanel()
+        private Panel CreateModernHeader()
         {
-     var panel = new Panel
- {
-          Height = 70,
-      Dock = DockStyle.Top,
-     BackColor = Color.FromArgb(20, 184, 166),
-          Padding = new Padding(20)
-   };
-
-          var lblTitle = new Label
-      {
-     Text = "Vui lòng kiểm tra thông tin thanh toán trước khi thanh toán",
-      Font = new Font("Segoe UI", 13, FontStyle.Bold),
-        ForeColor = Color.White,
-     Dock = DockStyle.Fill,
-    TextAlign = ContentAlignment.MiddleLeft
-            };
-
-     panel.Controls.Add(lblTitle);
-     return panel;
-        }
-
- private Panel CreateLeftPanel()
-     {
             var panel = new Panel
-         {
-    Dock = DockStyle.Fill,
-  BackColor = Color.White,
-           Padding = new Padding(15),
-        AutoScroll = true,
-BorderStyle = BorderStyle.FixedSingle
-            };
-
-   var layout = new TableLayoutPanel
             {
-     Dock = DockStyle.Top,
-        ColumnCount = 1,
-     RowCount = 5,
-          AutoSize = true,
-Padding = new Padding(0)
+                Height = 90,
+                Dock = DockStyle.Top,
+                BackColor = ModernColors.Card
             };
-   layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 120));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 200));
-          layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 180));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
-            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-          // Section 1: Rental Info
-            layout.Controls.Add(CreateRentalInfoPanel(), 0, 0);
+            // Gradient background
+            panel.Paint += (s, e) =>
+            {
+                using (var brush = new LinearGradientBrush(
+                    panel.ClientRectangle,
+                    ModernColors.Primary,
+                    ModernColors.Secondary,
+                    LinearGradientMode.Horizontal))
+                {
+                    e.Graphics.FillRectangle(brush, panel.ClientRectangle);
+                }
 
-            // Section 2: Rooms Table
-  layout.Controls.Add(CreateRoomsPanel(), 0, 1);
+                // Bottom shadow
+                using (var shadowBrush = new SolidBrush(Color.FromArgb(20, 0, 0, 0)))
+                {
+                    e.Graphics.FillRectangle(shadowBrush, 0, panel.Height - 3, panel.Width, 3);
+                }
+            };
 
-            // Section 3: Services Table
-            layout.Controls.Add(CreateServicesPanel(), 0, 2);
+            // Icon
+            var iconLabel = new Label
+            {
+                Text = "💳",
+                Font = new Font("Segoe UI", 28F),
+                ForeColor = Color.White,
+                Location = new Point(25, 20),
+                AutoSize = true
+            };
+            panel.Controls.Add(iconLabel);
 
-            // Section 4: Separator
-  var separator = new Panel { Height = 1, BackColor = Color.FromArgb(200, 200, 200) };
-            layout.Controls.Add(separator, 0, 3);
+            // Title
+            var lblTitle = new Label
+            {
+                Text = "Thanh Toán Hoá Đơn",
+                Font = new Font("Segoe UI", 20F, FontStyle.Bold),
+                ForeColor = Color.White,
+                Location = new Point(85, 18),
+                AutoSize = true
+            };
+            panel.Controls.Add(lblTitle);
 
-     panel.Controls.Add(layout);
+            // Subtitle
+            var lblSubtitle = new Label
+            {
+                Text = "Vui lòng kiểm tra kỹ thông tin trước khi xác nhận thanh toán",
+                Font = new Font("Segoe UI", 10F),
+                ForeColor = Color.FromArgb(240, 240, 255),
+                Location = new Point(85, 50),
+                AutoSize = true
+            };
+            panel.Controls.Add(lblSubtitle);
+
             return panel;
         }
 
-        private Panel CreateRentalInfoPanel()
+        private Panel CreateModernLeftPanel()
         {
-    var panel = new Panel
-      {
-        Dock = DockStyle.Top,
-     Height = 120,
-  BackColor = Color.FromArgb(243, 244, 246),
- BorderStyle = BorderStyle.FixedSingle,
-       Padding = new Padding(10)
-};
+            var panel = new Panel
+            {
+                BackColor = Color.Transparent,
+                AutoScroll = true
+            };
 
-         var lblSectionTitle = new Label
- {
-          Text = "DANH SÁCH PHÒNG THUÊ",
-  Font = new Font("Segoe UI", 11, FontStyle.Bold),
- ForeColor = Color.FromArgb(59, 130, 246),
-           AutoSize = true,
-         Location = new Point(10, 5)
-      };
-     panel.Controls.Add(lblSectionTitle);
+            int yPos = 0;
 
-            int y = 30;
-     AddInfoRow(panel, "Mã chi tiết:", ref lblRentalId, y); y += 25;
-      AddInfoRow(panel, "Tên khách hàng:", ref lblCustomerName, y); y += 25;
-            AddInfoRow(panel, "CMND/CCCD:", ref lblIdNumber, y);
+            // Customer Info Card
+            var customerCard = CreateInfoCard("Thông Tin Khách Hàng", ModernColors.Info);
+            customerCard.Location = new Point(0, yPos);
+            customerCard.Width = panel.Width - 20;
 
-   return panel;
+            int cardY = 50;
+            AddModernInfoRow(customerCard, "Mã chi tiết thuê:", ref lblRentalId, cardY); cardY += 35;
+            AddModernInfoRow(customerCard, "Tên khách hàng:", ref lblCustomerName, cardY); cardY += 35;
+            AddModernInfoRow(customerCard, "CMND/CCCD:", ref lblIdNumber, cardY);
+
+            customerCard.Height = 160;
+            panel.Controls.Add(customerCard);
+            yPos += 170;
+
+            // Rooms Card
+            var roomsCard = CreateDataCard("Danh Sách Phòng Thuê", ModernColors.Primary);
+            roomsCard.Location = new Point(0, yPos);
+            roomsCard.Width = panel.Width - 20;
+            roomsCard.Height = 250;
+
+            dgvRooms = CreateModernDataGridView(ModernColors.Primary);
+            dgvRooms.Location = new Point(15, 50);
+            dgvRooms.Size = new Size(roomsCard.Width - 30, 185);
+
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 50, Name = "colStt" });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tên Phòng", Width = 130, Name = "colRoom" });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Loại Thuê", Width = 120, Name = "colType" });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Ngày Thuê", Width = 140, Name = "colCheckIn" });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Ngày Trả", Width = 140, Name = "colCheckOut" });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Giá Phòng", Width = 130, Name = "colPrice" });
+
+            roomsCard.Controls.Add(dgvRooms);
+            panel.Controls.Add(roomsCard);
+            yPos += 260;
+
+            // Services Card
+            var servicesCard = CreateDataCard("Danh Sách Dịch Vụ", ModernColors.Warning);
+            servicesCard.Location = new Point(0, yPos);
+            servicesCard.Width = panel.Width - 20;
+            servicesCard.Height = 230;
+
+            dgvServices = CreateModernDataGridView(ModernColors.Warning);
+            dgvServices.Location = new Point(15, 50);
+            dgvServices.Size = new Size(servicesCard.Width - 30, 165);
+
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 50, Name = "colStt2" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Dịch Vụ", Width = 180, Name = "colService" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Loại", Width = 120, Name = "colServiceType" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Ngày SD", Width = 130, Name = "colDate" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "SL", Width = 70, Name = "colQty" });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Đơn Giá", Width = 130, Name = "colUnitPrice" });
+
+            servicesCard.Controls.Add(dgvServices);
+            panel.Controls.Add(servicesCard);
+
+            return panel;
         }
 
-        private Panel CreateRoomsPanel()
+        private Panel CreateModernRightPanel()
         {
             var panel = new Panel
- {
-             Dock = DockStyle.Top,
-      Height = 200,
- BackColor = Color.White,
-              Padding = new Padding(10),
-     BorderStyle = BorderStyle.FixedSingle
-    };
+            {
+                BackColor = Color.Transparent
+            };
 
-     var lblTitle = new Label
-  {
-      Text = "DANH SÁCH PHÒNG THUÊ",
- Font = new Font("Segoe UI", 11, FontStyle.Bold),
-    ForeColor = Color.FromArgb(59, 130, 246),
-    AutoSize = true,
-     Location = new Point(10, 5)
-    };
-       panel.Controls.Add(lblTitle);
+            int yPos = 0;
 
-     dgvRooms = new DataGridView
-      {
-  Name = "dgvRooms",
-       AutoGenerateColumns = false,
-     AllowUserToAddRows = false,
-         ReadOnly = true,
-        BackgroundColor = Color.White,
-      BorderStyle = BorderStyle.FixedSingle,
-        RowHeadersVisible = false,
-                Width = panel.Width - 30,
-       Height = 160,
-  Location = new Point(10, 35)
-     };
+            // Payment Summary Card
+            var summaryCard = CreateSummaryCard();
+            summaryCard.Location = new Point(0, yPos);
+            summaryCard.Width = panel.Width - 5;
+            summaryCard.Height = 240;
+            panel.Controls.Add(summaryCard);
+            yPos += 250;
 
- dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 40 });
-            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "TÊN PHÒNG", Width = 120 });
-  dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "LOẠI HÌNH THUÊ", Width = 100 });
-          dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NGÀY THUÊ", Width = 110 });
-            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NGÀY TRẢ", Width = 110 });
-       dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "GIÁ PHÒNG", Width = 100 });
+            // Payment Method Card
+            var methodCard = CreatePaymentMethodCard();
+            methodCard.Location = new Point(0, yPos);
+            methodCard.Width = panel.Width - 5;
+            methodCard.Height = 180;
+            panel.Controls.Add(methodCard);
+            yPos += 190;
 
-    dgvRooms.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(59, 130, 246);
-    dgvRooms.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-      dgvRooms.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            // Total Card
+            var totalCard = CreateTotalCard();
+            totalCard.Location = new Point(0, yPos);
+            totalCard.Width = panel.Width - 5;
+            totalCard.Height = 120;
+            panel.Controls.Add(totalCard);
+            yPos += 130;
 
-   panel.Controls.Add(dgvRooms);
-     return panel;
-    }
+            // Action Buttons
+            var buttonPanel = CreateActionButtons();
+            buttonPanel.Location = new Point(0, yPos);
+            buttonPanel.Width = panel.Width - 5;
+            buttonPanel.Height = 80;
+            panel.Controls.Add(buttonPanel);
 
-        private Panel CreateServicesPanel()
+            return panel;
+        }
+
+        private Panel CreateInfoCard(string title, Color accentColor)
         {
-            var panel = new Panel
-   {
-        Dock = DockStyle.Top,
-   Height = 180,
-  BackColor = Color.White,
- Padding = new Padding(10),
- BorderStyle = BorderStyle.FixedSingle
+            var card = new Panel
+            {
+                BackColor = ModernColors.Card,
+                BorderStyle = BorderStyle.None
+            };
+
+            ApplyCardStyle(card);
+
+            // Header with accent
+            var header = new Panel
+            {
+                Height = 45,
+                Dock = DockStyle.Top,
+                BackColor = Color.FromArgb(248, 250, 252)
+            };
+
+            header.Paint += (s, e) =>
+            {
+                // Left accent bar
+                using (var brush = new SolidBrush(accentColor))
+                {
+                    e.Graphics.FillRectangle(brush, 0, 0, 5, header.Height);
+                }
             };
 
             var lblTitle = new Label
             {
-         Text = "DANH SÁCH DỊCH VỤ THUÊ",
-    Font = new Font("Segoe UI", 11, FontStyle.Bold),
-        ForeColor = Color.FromArgb(245, 158, 11),
-      AutoSize = true,
-                Location = new Point(10, 5)
-         };
-        panel.Controls.Add(lblTitle);
-
-          dgvServices = new DataGridView
-      {
-           Name = "dgvServices",
-         AutoGenerateColumns = false,
-     AllowUserToAddRows = false,
- ReadOnly = true,
-                BackgroundColor = Color.White,
-            BorderStyle = BorderStyle.FixedSingle,
-                RowHeadersVisible = false,
-      Width = panel.Width - 30,
-        Height = 130,
-              Location = new Point(10, 35)
+                Text = title,
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                ForeColor = ModernColors.TextPrimary,
+                Location = new Point(20, 12),
+                AutoSize = true
             };
+            header.Controls.Add(lblTitle);
 
-     dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 40 });
-   dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "TÊN DỊCH VỤ", Width = 150 });
-    dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "LOẠI DỊCH VỤ", Width = 100 });
-            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NGÀY SỬ DỤNG", Width = 110 });
-    dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "SỐ LƯỢNG", Width = 80 });
-   dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "ĐƠN GIÁ", Width = 100 });
+            card.Controls.Add(header);
+            return card;
+        }
 
-            dgvServices.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(245, 158, 11);
-            dgvServices.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvServices.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-
-            panel.Controls.Add(dgvServices);
-  return panel;
-    }
-
-        private Panel CreateRightPanel()
+        private Panel CreateDataCard(string title, Color accentColor)
         {
-        var panel = new Panel
+            var card = new Panel
             {
-        Dock = DockStyle.Fill,
-         BackColor = Color.White,
-          Padding = new Padding(15),
-      BorderStyle = BorderStyle.FixedSingle,
-       Margin = new Padding(10, 0, 0, 0)
-      };
-
-   var layout = new TableLayoutPanel
-            {
-            Dock = DockStyle.Fill,
-    ColumnCount = 1,
-             RowCount = 6,
-    AutoSize = false
+                BackColor = ModernColors.Card,
+                BorderStyle = BorderStyle.None
             };
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
-     layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 200));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 120));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 150));
-            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-   layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
-        // Title
+            ApplyCardStyle(card);
+
+            // Header
+            var header = new Panel
+            {
+                Height = 45,
+                Dock = DockStyle.Top,
+                BackColor = Color.FromArgb(248, 250, 252)
+            };
+
+            header.Paint += (s, e) =>
+            {
+                using (var brush = new SolidBrush(accentColor))
+                {
+                    e.Graphics.FillRectangle(brush, 0, 0, 5, header.Height);
+                }
+            };
+
             var lblTitle = new Label
-         {
-                Text = "THÔNG TIN THANH TOÁN",
-         Font = new Font("Segoe UI", 12, FontStyle.Bold),
-ForeColor = Color.FromArgb(20, 184, 166),
-   Dock = DockStyle.Fill,
-     TextAlign = ContentAlignment.MiddleLeft
-    };
-layout.Controls.Add(lblTitle, 0, 0);
+            {
+                Text = title,
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                ForeColor = ModernColors.TextPrimary,
+                Location = new Point(20, 12),
+                AutoSize = true
+            };
+            header.Controls.Add(lblTitle);
 
-     // Customer Info
-       var custPanel = new Panel { Dock = DockStyle.Fill, BackColor = Color.FromArgb(243, 244, 246), BorderStyle = BorderStyle.FixedSingle, Padding = new Padding(10) };
-  int yPos = 5;
-        AddInfoLabel(custPanel, "Hộ tên khách hàng:", ref lblCustomerName, yPos); yPos += 30;
-         AddInfoLabel(custPanel, "CMND/CCCD:", ref lblIdNumber, yPos); yPos += 30;
-     AddInfoLabel(custPanel, "Số lần thuê trước:", new Label { Text = "1", Location = new Point(120, yPos), AutoSize = true }, yPos);
-          layout.Controls.Add(custPanel, 0, 1);
+            card.Controls.Add(header);
+            return card;
+        }
 
-            // Amount Info
-            var amountPanel = new Panel { Dock = DockStyle.Fill, BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle, Padding = new Padding(10) };
-  yPos = 5;
-     AddMoneyRow(amountPanel, "Tổng tiền phòng:", ref lblTotalRoomCost, yPos); yPos += 30;
-    AddMoneyRow(amountPanel, "Tổng tiền dịch vụ:", ref lblTotalServiceCost, yPos); yPos += 30;
-            AddMoneyRow(amountPanel, "Tiền đặt cọc:", ref lblDepositPaid, yPos);
-            layout.Controls.Add(amountPanel, 0, 2);
+        private Panel CreateSummaryCard()
+        {
+            var card = CreateInfoCard("Chi Tiết Thanh Toán", ModernColors.Success);
+            card.Height = 240;
 
-      // Payment Method
-    var paymentPanel = new Panel { Dock = DockStyle.Fill, BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle, Padding = new Padding(10) };
-   var lblPaymentTitle = new Label { Text = "Phương thức thanh toán:", Font = new Font("Segoe UI", 10, FontStyle.Bold), Location = new Point(10, 10), AutoSize = true };
-            paymentPanel.Controls.Add(lblPaymentTitle);
+            int yPos = 60;
+            AddAmountRow(card, "💰 Tổng tiền phòng:", ref lblTotalRoomCost, yPos, ModernColors.Primary);
+            yPos += 45;
+            AddAmountRow(card, "🛎️ Tổng tiền dịch vụ:", ref lblTotalServiceCost, yPos, ModernColors.Warning);
+            yPos += 45;
+            AddAmountRow(card, "💵 Tiền đặt cọc:", ref lblDepositPaid, yPos, ModernColors.Info);
+            yPos += 45;
 
-        cboPaymentMethod = new ComboBox
-     {
-        Location = new Point(10, 35),
-  Width = 300,
-        Height = 28,
-             DropDownStyle = ComboBoxStyle.DropDownList
-          };
-        cboPaymentMethod.Items.AddRange(new string[] { "Tiền mặt", "Chuyển khoản", "Thẻ tín dụng", "Khác" });
+            // Divider
+            var divider = new Panel
+            {
+                Height = 2,
+                Width = card.Width - 40,
+                Location = new Point(20, yPos - 10),
+                BackColor = ModernColors.BorderLight
+            };
+            card.Controls.Add(divider);
+
+            return card;
+        }
+
+        private Panel CreatePaymentMethodCard()
+        {
+            var card = CreateInfoCard("Phương Thức Thanh Toán", ModernColors.Secondary);
+
+            var lblMethod = new Label
+            {
+                Text = "Chọn phương thức:",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = ModernColors.TextSecondary,
+                Location = new Point(20, 60),
+                AutoSize = true
+            };
+            card.Controls.Add(lblMethod);
+
+            cboPaymentMethod = new ComboBox
+            {
+                Location = new Point(20, 85),
+                Width = card.Width - 40,
+                Height = 35,
+                Font = new Font("Segoe UI", 10F),
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                FlatStyle = FlatStyle.Flat
+            };
+            cboPaymentMethod.Items.AddRange(new string[] {
+                "💵 Tiền mặt",
+                "🏦 Chuyển khoản",
+                "💳 Thẻ tín dụng",
+                "📱 Ví điện tử",
+                "🔄 Khác"
+            });
             cboPaymentMethod.SelectedIndex = 0;
-          paymentPanel.Controls.Add(cboPaymentMethod);
+            StyleComboBox(cboPaymentMethod);
+            card.Controls.Add(cboPaymentMethod);
 
-   var lblAmountTitle = new Label { Text = "Số tiền cần thanh toán:", Font = new Font("Segoe UI", 10, FontStyle.Bold), Location = new Point(10, 70), AutoSize = true };
-          paymentPanel.Controls.Add(lblAmountTitle);
-
-        nudPaymentAmount = new NumericUpDown
+            var lblAmount = new Label
             {
-            Location = new Point(10, 95),
-                Width = 300,
-        Height = 28,
-             Maximum = 1000000000,
-         DecimalPlaces = 0,
-    ThousandsSeparator = true
-  };
-  paymentPanel.Controls.Add(nudPaymentAmount);
- layout.Controls.Add(paymentPanel, 0, 3);
+                Text = "Số tiền thanh toán:",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = ModernColors.TextSecondary,
+                Location = new Point(20, 130),
+                AutoSize = true
+            };
+            card.Controls.Add(lblAmount);
 
-// Grand Total
-      var totalPanel = new Panel { Dock = DockStyle.Fill, BackColor = Color.FromArgb(243, 244, 246), BorderStyle = BorderStyle.FixedSingle, Padding = new Padding(10) };
-    var lblGrandTotalLabel = new Label { Text = "TỔNG THÀNH TIỀN:", Font = new Font("Segoe UI", 11, FontStyle.Bold), Location = new Point(10, 10), AutoSize = true };
-totalPanel.Controls.Add(lblGrandTotalLabel);
-   lblGrandTotal = new Label { Text = "0 VNĐ", Font = new Font("Segoe UI", 14, FontStyle.Bold), ForeColor = Color.FromArgb(220, 20, 60), Location = new Point(10, 35), AutoSize = true };
-    totalPanel.Controls.Add(lblGrandTotal);
-layout.Controls.Add(totalPanel, 0, 4);
+            nudPaymentAmount = new NumericUpDown
+            {
+                Location = new Point(20, 155),
+                Width = card.Width - 40,
+                Height = 35,
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                Maximum = 1000000000,
+                DecimalPlaces = 0,
+                ThousandsSeparator = true,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            StyleNumericUpDown(nudPaymentAmount);
+            card.Controls.Add(nudPaymentAmount);
 
-            // QR Code & Buttons
-      var bottomPanel = new Panel { Dock = DockStyle.Fill, BackColor = Color.White };
-            lblQRCode = new Label { Text = "QR CODE", Location = new Point(10, 10), Width = 150, Height = 150, BorderStyle = BorderStyle.FixedSingle, TextAlign = ContentAlignment.MiddleCenter };
-            bottomPanel.Controls.Add(lblQRCode);
+            return card;
+        }
 
-    btnPay = new Button { Text = "Thanh toán", Width = 100, Height = 40, Location = new Point(170, 120), BackColor = Color.FromArgb(34, 197, 94), ForeColor = Color.White, Font = new Font("Segoe UI", 10, FontStyle.Bold), FlatStyle = FlatStyle.Flat };
-       btnPay.Click += BtnPay_Click;
-    bottomPanel.Controls.Add(btnPay);
+        private Panel CreateTotalCard()
+        {
+            var card = new Panel
+            {
+                BackColor = ModernColors.SuccessLight,
+                BorderStyle = BorderStyle.None
+            };
 
-  btnCancel = new Button { Text = "Hủy", Width = 100, Height = 40, Location = new Point(280, 120), BackColor = Color.FromArgb(239, 68, 68), ForeColor = Color.White, Font = new Font("Segoe UI", 10, FontStyle.Bold), FlatStyle = FlatStyle.Flat };
-         btnCancel.Click += (s, e) => this.Close();
-            bottomPanel.Controls.Add(btnCancel);
+            ApplyCardStyle(card);
 
-   layout.Controls.Add(bottomPanel, 0, 5);
+            card.Paint += (s, e) =>
+            {
+                // Left success bar
+                using (var brush = new SolidBrush(ModernColors.Success))
+                {
+                    e.Graphics.FillRectangle(brush, 0, 0, 8, card.Height);
+                }
+            };
 
-      panel.Controls.Add(layout);
+            var lblLabel = new Label
+            {
+                Text = "TỔNG THANH TOÁN",
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                ForeColor = ModernColors.TextSecondary,
+                Location = new Point(25, 20),
+                AutoSize = true
+            };
+            card.Controls.Add(lblLabel);
+
+            lblGrandTotal = new Label
+            {
+                Text = "0 VNĐ",
+                Font = new Font("Segoe UI", 22F, FontStyle.Bold),
+                ForeColor = ModernColors.Success,
+                Location = new Point(25, 50),
+                AutoSize = true
+            };
+            card.Controls.Add(lblGrandTotal);
+
+            return card;
+        }
+
+        private Panel CreateActionButtons()
+        {
+            var panel = new Panel
+            {
+                BackColor = Color.Transparent
+            };
+
+            btnPay = new Button
+            {
+                Text = "✓ Xác Nhận Thanh Toán",
+                Size = new Size(panel.Width - 5, 50),
+                Location = new Point(0, 0),
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            ApplyPrimaryButton(btnPay);
+            btnPay.Click += BtnPay_Click;
+            panel.Controls.Add(btnPay);
+
+            btnCancel = new Button
+            {
+                Text = "✕ Huỷ Bỏ",
+                Size = new Size(panel.Width - 5, 40),
+                Location = new Point(0, 60),
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            ApplySecondaryButton(btnCancel);
+            btnCancel.Click += (s, e) => this.Close();
+            panel.Controls.Add(btnCancel);
+
             return panel;
         }
 
-        private Panel CreateFooterPanel()
+        private Panel CreateModernFooter()
         {
-         var panel = new Panel
+            var panel = new Panel
             {
-         Height = 60,
-      Dock = DockStyle.Bottom,
-    BackColor = Color.FromArgb(243, 244, 246),
- Padding = new Padding(15),
-        BorderStyle = BorderStyle.FixedSingle
-       };
+                Height = 70,
+                Dock = DockStyle.Bottom,
+                BackColor = ModernColors.Card,
+                Padding = new Padding(25, 20, 25, 20)
+            };
 
- var lblInfo = new Label
-  {
-          Text = "Vui lòng xác nhận toàn bộ thông tin thanh toán trước khi hoàn tất giao dịch",
-    Font = new Font("Segoe UI", 9),
- ForeColor = Color.FromArgb(100, 100, 100),
-                Dock = DockStyle.Fill,
-         TextAlign = ContentAlignment.MiddleLeft
-     };
+            panel.Paint += (s, e) =>
+            {
+                // Top border
+                using (var pen = new Pen(ModernColors.Border, 1))
+                {
+                    e.Graphics.DrawLine(pen, 0, 0, panel.Width, 0);
+                }
+            };
 
-        panel.Controls.Add(lblInfo);
+            var iconLabel = new Label
+            {
+                Text = "ℹ️",
+                Font = new Font("Segoe UI", 14F),
+                Location = new Point(25, 23),
+                AutoSize = true
+            };
+            panel.Controls.Add(iconLabel);
+
+            var lblInfo = new Label
+            {
+                Text = "Vui lòng kiểm tra kỹ thông tin trước khi xác nhận. Giao dịch sẽ được ghi nhận ngay lập tức.",
+                Font = new Font("Segoe UI", 9F),
+                ForeColor = ModernColors.TextSecondary,
+                Location = new Point(55, 25),
+                AutoSize = true
+            };
+            panel.Controls.Add(lblInfo);
+
             return panel;
+        }
+
+        private DataGridView CreateModernDataGridView(Color headerColor)
+        {
+            var dgv = new DataGridView
+            {
+                AutoGenerateColumns = false,
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                ReadOnly = true,
+                BackgroundColor = ModernColors.Card,
+                BorderStyle = BorderStyle.None,
+                CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal,
+                GridColor = ModernColors.BorderLight,
+                RowHeadersVisible = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                MultiSelect = false,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                RowTemplate = { Height = 40 },
+                EnableHeadersVisualStyles = false
+            };
+
+            // Header style
+            dgv.ColumnHeadersHeight = 42;
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = headerColor;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgv.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            // Row styles
+            dgv.DefaultCellStyle.BackColor = ModernColors.Card;
+            dgv.DefaultCellStyle.ForeColor = ModernColors.TextPrimary;
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(238, 242, 255);
+            dgv.DefaultCellStyle.SelectionForeColor = ModernColors.Primary;
+            dgv.DefaultCellStyle.Padding = new Padding(8, 5, 5, 5);
+
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(249, 250, 251);
+
+            return dgv;
+        }
+
+        #endregion
+
+        #region ==================== STYLING HELPERS ====================
+
+        private void ApplyCardStyle(Panel card)
+        {
+            card.Paint += (s, e) =>
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+                var rect = card.ClientRectangle;
+                using (var path = RoundedRect(rect, 10))
+                {
+                    // Fill
+                    using (var brush = new SolidBrush(card.BackColor))
+                    {
+                        e.Graphics.FillPath(brush, path);
+                    }
+
+                    // Border
+                    using (var pen = new Pen(ModernColors.Border, 1))
+                    {
+                        e.Graphics.DrawPath(pen, path);
+                    }
+                }
+
+                // Subtle shadow
+                using (var shadowBrush = new SolidBrush(Color.FromArgb(8, 0, 0, 0)))
+                {
+                    e.Graphics.FillRectangle(shadowBrush, 3, card.Height - 2, card.Width - 6, 2);
+                }
+            };
+        }
+
+        private void ApplyPrimaryButton(Button btn)
+        {
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.BackColor = ModernColors.Success;
+            btn.ForeColor = Color.White;
+            btn.FlatAppearance.BorderSize = 0;
+
+            btn.Paint += (s, e) =>
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                using (var path = RoundedRect(btn.ClientRectangle, 8))
+                {
+                    btn.Region = new Region(path);
+                }
+            };
+
+            btn.MouseEnter += (s, e) => btn.BackColor = Color.FromArgb(22, 163, 74);
+            btn.MouseLeave += (s, e) => btn.BackColor = ModernColors.Success;
+        }
+
+        private void ApplySecondaryButton(Button btn)
+        {
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.BackColor = ModernColors.Card;
+            btn.ForeColor = ModernColors.TextSecondary;
+            btn.FlatAppearance.BorderColor = ModernColors.Border;
+            btn.FlatAppearance.BorderSize = 2;
+
+            btn.Paint += (s, e) =>
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                using (var path = RoundedRect(btn.ClientRectangle, 8))
+                {
+                    btn.Region = new Region(path);
+                }
+            };
+
+            btn.MouseEnter += (s, e) => btn.BackColor = ModernColors.CardHover;
+            btn.MouseLeave += (s, e) => btn.BackColor = ModernColors.Card;
+        }
+
+        private void StyleComboBox(ComboBox cbo)
+        {
+            cbo.BackColor = Color.FromArgb(249, 250, 251);
+            cbo.ForeColor = ModernColors.TextPrimary;
+        }
+
+        private void StyleNumericUpDown(NumericUpDown nud)
+        {
+            nud.BackColor = Color.FromArgb(249, 250, 251);
+            nud.ForeColor = ModernColors.TextPrimary;
+        }
+
+        private GraphicsPath RoundedRect(Rectangle bounds, int radius)
+        {
+            int diameter = radius * 2;
+            Size size = new Size(diameter, diameter);
+            Rectangle arc = new Rectangle(bounds.Location, size);
+            GraphicsPath path = new GraphicsPath();
+
+            if (radius == 0)
+            {
+                path.AddRectangle(bounds);
+                return path;
+            }
+
+            path.AddArc(arc, 180, 90);
+            arc.X = bounds.Right - diameter;
+            path.AddArc(arc, 270, 90);
+            arc.Y = bounds.Bottom - diameter;
+            path.AddArc(arc, 0, 90);
+            arc.X = bounds.Left;
+            path.AddArc(arc, 90, 90);
+            path.CloseFigure();
+
+            return path;
         }
 
         #endregion
@@ -476,202 +794,187 @@ layout.Controls.Add(totalPanel, 0, 4);
         private void PopulateData()
         {
             try
-   {
-  if (_rentalDetail == null) return;
+            {
+                if (_rentalDetail == null) return;
 
-          // Rental Info
-            lblRentalId.Text = _rentalDetail.RentalDetailId;
-   lblCustomerName.Text = _rentalDetail.Customer?.Name ?? "N/A";
-  lblIdNumber.Text = _rentalDetail.Customer?.IdNumber ?? "N/A";
+                lblRentalId.Text = _rentalDetail.RentalDetailId ?? "N/A";
+                lblCustomerName.Text = _rentalDetail.Customer?.Name ?? "N/A";
+                lblIdNumber.Text = _rentalDetail.Customer?.IdNumber ?? "N/A";
 
-      // Amount Info
-              int roomCost = _rentalDetail.RoomRentalDetails?.Sum(r => r.RentalPrice * (int)(r.ReturnDate - r.RentalDate).TotalDays) ?? 0;
-       int serviceCost = _rentalDetail.ServiceRentalDetails?.Sum(s => s.Price * s.Quantity) ?? 0;
+                int roomCost = _rentalDetail.RoomRentalDetails?.Sum(r =>
+                    r.RentalPrice * (int)(r.ReturnDate - r.RentalDate).TotalDays) ?? 0;
+                int serviceCost = _rentalDetail.ServiceRentalDetails?.Sum(s =>
+                    s.Price * s.Quantity) ?? 0;
 
-     lblTotalRoomCost.Text = roomCost.ToString("N0") + " VNĐ";
-            lblTotalServiceCost.Text = serviceCost.ToString("N0") + " VNĐ";
- lblDepositPaid.Text = _depositAmount.ToString("N0") + " VNĐ";
-                lblGrandTotal.Text = _totalAmount.ToString("N0") + " VNĐ";
+                lblTotalRoomCost.Text = FormatCurrency(roomCost);
+                lblTotalServiceCost.Text = FormatCurrency(serviceCost);
+                lblDepositPaid.Text = FormatCurrency(_depositAmount);
+                lblGrandTotal.Text = FormatCurrency(_totalAmount);
 
-  nudPaymentAmount.Value = _remainingAmount;
+                nudPaymentAmount.Value = _remainingAmount;
 
- // Populate Grids
- PopulateRoomsGrid();
-     PopulateServicesGrid();
-  }
-        catch (Exception ex)
- {
-    MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi",
-             MessageBoxButtons.OK, MessageBoxIcon.Error);
+                PopulateRoomsGrid();
+                PopulateServicesGrid();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Lỗi tải dữ liệu: {ex.Message}");
             }
         }
 
         private void PopulateRoomsGrid()
-   {
-  if (dgvRooms == null || _rentalDetail?.RoomRentalDetails == null) return;
+        {
+            if (dgvRooms == null || _rentalDetail?.RoomRentalDetails == null) return;
 
             dgvRooms.Rows.Clear();
-int stt = 1;
- foreach (var room in _rentalDetail.RoomRentalDetails)
+            int stt = 1;
+            foreach (var room in _rentalDetail.RoomRentalDetails)
             {
-         dgvRooms.Rows.Add(
-             stt++,
-            room.RoomId,
-        "Theo Ngày",
-          room.RentalDate.ToString("dd/MM/yyyy"),
-              room.ReturnDate.ToString("dd/MM/yyyy"),
-           room.RentalPrice.ToString("N0")
-      );
-            }
-   }
-
-        private void PopulateServicesGrid()
-{
-   if (dgvServices == null || _rentalDetail?.ServiceRentalDetails == null) return;
-
-  dgvServices.Rows.Clear();
-          int stt = 1;
-         foreach (var service in _rentalDetail.ServiceRentalDetails)
-            {
-                dgvServices.Rows.Add(
-             stt++,
-   service.ServiceId,
-           "Dịch Vụ",
-        service.UsageDate.ToString("dd/MM/yyyy"),
-    service.Quantity,
-                service.Price.ToString("N0")
-       );
+                dgvRooms.Rows.Add(
+                    stt++,
+                    room.RoomId,
+                    "Theo Ngày",
+                    room.RentalDate.ToString("dd/MM/yyyy HH:mm"),
+                    room.ReturnDate.ToString("dd/MM/yyyy HH:mm"),
+                    FormatCurrency(room.RentalPrice)
+                );
             }
         }
 
-     #endregion
+        private void PopulateServicesGrid()
+        {
+            if (dgvServices == null || _rentalDetail?.ServiceRentalDetails == null) return;
 
-        #region ==================== EVENT HANDLERS ====================
-
- private async void BtnPay_Click(object sender, EventArgs e)
-      {
-            try
-    {
-         if (nudPaymentAmount.Value <= 0)
-     {
-    MessageBox.Show("Vui lòng nhập số tiền thanh toán", "Cảnh báo",
-     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-    return;
-     }
-
-         var result = MessageBox.Show(
-         $"Xác nhận thanh toán {nudPaymentAmount.Value:N0} VNĐ bằng {cboPaymentMethod.SelectedItem}?",
-           "Xác nhận thanh toán",
-               MessageBoxButtons.YesNo,
-     MessageBoxIcon.Question);
-
-     if (result == DialogResult.Yes)
+            dgvServices.Rows.Clear();
+            int stt = 1;
+            foreach (var service in _rentalDetail.ServiceRentalDetails)
             {
-        // Update invoice payment method
-             if (_invoice != null && _invoiceService != null)
-      {
-       _invoice.PaymentMethod = cboPaymentMethod.SelectedIndex;
- _invoice.PaymentDate = DateTime.Now;
-            await _invoiceService.UpdateInvoiceAsync(_invoice);
-               }
-
-    MessageBox.Show(
-     "✓ Thanh toán thành công!",
-        "Thành công",
-      MessageBoxButtons.OK,
-    MessageBoxIcon.Information);
-
-    this.DialogResult = DialogResult.OK;
-       this.Close();
-    }
-            }
-       catch (Exception ex)
-      {
-         MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi",
-   MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dgvServices.Rows.Add(
+                    stt++,
+                    service.ServiceId,
+                    "Dịch Vụ",
+                    service.UsageDate.ToString("dd/MM/yyyy"),
+                    service.Quantity,
+                    FormatCurrency(service.Price)
+                );
             }
         }
 
         #endregion
 
- #region ==================== HELPERS ====================
+        #region ==================== EVENT HANDLERS ====================
 
-        private void AddInfoRow(Panel panel, string label, ref Label valueControl, int yPos)
+        private async void BtnPay_Click(object sender, EventArgs e)
         {
-            var lbl = new Label
+            try
             {
-      Text = label,
-  Font = new Font("Segoe UI", 9),
-           Location = new Point(10, yPos),
-      AutoSize = true
-  };
-      panel.Controls.Add(lbl);
+                if (nudPaymentAmount.Value <= 0)
+                {
+                    ShowWarningMessage("Vui lòng nhập số tiền thanh toán hợp lệ");
+                    return;
+                }
 
-            valueControl = new Label
-    {
-      Text = "N/A",
-          Font = new Font("Segoe UI", 9, FontStyle.Bold),
-         Location = new Point(140, yPos),
-             AutoSize = true
-            };
-   panel.Controls.Add(valueControl);
+                var result = MessageBox.Show(
+                    $"Xác nhận thanh toán {FormatCurrency((int)nudPaymentAmount.Value)}?\n\n" +
+                    $"Phương thức: {cboPaymentMethod.SelectedItem}\n" +
+                    $"Số tiền: {FormatCurrency((int)nudPaymentAmount.Value)}",
+                    "Xác Nhận Thanh Toán",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    if (_invoice != null && _invoiceService != null)
+                    {
+                        _invoice.PaymentMethod = cboPaymentMethod.SelectedIndex;
+                        _invoice.PaymentDate = DateTime.Now;
+                        await _invoiceService.UpdateInvoiceAsync(_invoice);
+                    }
+
+                    ShowSuccessMessage("Thanh toán thành công!\n\nGiao dịch đã được ghi nhận.");
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Lỗi thanh toán: {ex.Message}");
+            }
         }
 
-        private void AddInfoLabel(Panel panel, string label, ref Label valueControl, int yPos)
-    {
-            var lbl = new Label
-  {
-     Text = label,
-   Font = new Font("Segoe UI", 9),
-        Location = new Point(10, yPos),
-    AutoSize = true
-  };
-    panel.Controls.Add(lbl);
+        #endregion
 
-  valueControl = new Label
-      {
-             Text = "N/A",
- Font = new Font("Segoe UI", 9, FontStyle.Bold),
-             Location = new Point(140, yPos),
-      AutoSize = true
+        #region ==================== HELPER METHODS ====================
+
+        private void AddModernInfoRow(Panel panel, string label, ref Label valueControl, int yPos)
+        {
+            var lblLabel = new Label
+            {
+                Text = label,
+                Font = new Font("Segoe UI", 9F),
+                ForeColor = ModernColors.TextSecondary,
+                Location = new Point(20, yPos),
+                AutoSize = true
+            };
+            panel.Controls.Add(lblLabel);
+
+            valueControl = new Label
+            {
+                Text = "N/A",
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                ForeColor = ModernColors.TextPrimary,
+                Location = new Point(180, yPos - 2),
+                AutoSize = true
             };
             panel.Controls.Add(valueControl);
         }
 
-private void AddInfoLabel(Panel panel, string label, Label valueControl, int yPos)
+        private void AddAmountRow(Panel panel, string label, ref Label valueControl, int yPos, Color accentColor)
         {
-        var lbl = new Label
+            var lblLabel = new Label
             {
-  Text = label,
-                Font = new Font("Segoe UI", 9),
-              Location = new Point(10, yPos),
-     AutoSize = true
+                Text = label,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = ModernColors.TextSecondary,
+                Location = new Point(20, yPos),
+                AutoSize = true
             };
-            panel.Controls.Add(lbl);
-      panel.Controls.Add(valueControl);
+            panel.Controls.Add(lblLabel);
+
+            valueControl = new Label
+            {
+                Text = "0 VNĐ",
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                ForeColor = accentColor,
+                Location = new Point(panel.Width - 180, yPos - 2),
+                AutoSize = true,
+                TextAlign = ContentAlignment.MiddleRight
+            };
+            panel.Controls.Add(valueControl);
         }
 
-private void AddMoneyRow(Panel panel, string label, ref Label valueControl, int yPos)
+        private string FormatCurrency(int amount)
         {
-    var lbl = new Label
-        {
-     Text = label,
-       Font = new Font("Segoe UI", 9),
-        Location = new Point(10, yPos),
-AutoSize = true
-    };
-            panel.Controls.Add(lbl);
+            return amount.ToString("N0") + " VNĐ";
+        }
 
-      valueControl = new Label
-            {
-        Text = "0 VNĐ",
-            Font = new Font("Segoe UI", 10, FontStyle.Bold),
-       ForeColor = Color.FromArgb(220, 20, 60),
-  Location = new Point(140, yPos),
-        AutoSize = true
-      };
-          panel.Controls.Add(valueControl);
- }
+        private void ShowSuccessMessage(string message)
+        {
+            MessageBox.Show(message, "✓ Thành Công",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ShowWarningMessage(string message)
+        {
+            MessageBox.Show(message, "⚠ Cảnh Báo",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            MessageBox.Show(message, "✕ Lỗi",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
         #endregion
     }

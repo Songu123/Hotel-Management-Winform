@@ -1,0 +1,625 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    public partial class UCListBooking : UserControl
+    {
+        private IRentalDetailService _rentalDetailService;
+        private ICustomerService _customerService;
+        private IEmployeeService _employeeService;
+        private IRoomRentalDetailService _roomRentalDetailService;
+        private IRoomService _roomService;
+        private IServiceService _serviceService;
+        private IInvoiceService _invoiceService;
+        private IServiceRentalDetailService _serviceRentalDetailService;
+        private List<RentalDetail> _allRentalDetails = new();
+
+        public UCListBooking()
+        {
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// Initialize with services from DI
+        /// ✅ FIX: Load data on UI thread, not background thread
+        /// </summary>
+        public void InitializeWithServices(
+            IRentalDetailService rentalDetailService,
+            ICustomerService customerService,
+            IEmployeeService employeeService,
+            IRoomRentalDetailService roomRentalDetailService,
+            IRoomService roomService,
+            IServiceService serviceService,
+            IInvoiceService invoiceService = null,
+            IServiceRentalDetailService serviceRentalDetailService = null)
+        {
+            _rentalDetailService = rentalDetailService ?? throw new ArgumentNullException(nameof(rentalDetailService));
+            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            _employeeService = employeeService ?? throw new ArgumentNullException(nameof(employeeService));
+            _roomRentalDetailService = roomRentalDetailService ?? throw new ArgumentNullException(nameof(roomRentalDetailService));
+            _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
+            _serviceService = serviceService ?? throw new ArgumentNullException(nameof(serviceService));
+            _invoiceService = invoiceService;
+            _serviceRentalDetailService = serviceRentalDetailService;
+
+            InitializeDataGridView();
+            SetupEventHandlers();
+
+            // ✅ FIX: Load data asynchronously without blocking UI thread
+            _ = LoadAndDisplayDataAsync();
+        }
+
+        /// <summary>
+        /// Load filters and rental details asynchronously
+        /// ✅ FIX: Runs on UI thread context, no cross-thread issues
+        /// </summary>
+        private async Task LoadAndDisplayDataAsync()
+        {
+            try
+            {
+                await LoadFiltersAsync();
+                await LoadRentalDetailsAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khởi tạo: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Setup DataGridView columns
+        /// </summary>
+        private void InitializeDataGridView()
+        {
+            dgvChiTietThue.AutoGenerateColumns = false;
+            dgvChiTietThue.Columns.Clear();
+
+            dgvChiTietThue.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "RentalDetailId",
+                HeaderText = "Mã Chi Tiết",
+                DataPropertyName = "RentalDetailId",
+                Width = 120,
+                ReadOnly = true
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "CustomerId",
+                HeaderText = "Mã KH",
+                DataPropertyName = "CustomerId",
+                Width = 80,
+                ReadOnly = true
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "CustomerName",
+                HeaderText = "Tên Khách Hàng",
+                DataPropertyName = "CustomerName",
+                Width = 150,
+                ReadOnly = true
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "EmployeeId",
+                HeaderText = "Mã NV",
+                DataPropertyName = "EmployeeId",
+                Width = 80,
+                ReadOnly = true
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "EmployeeName",
+                HeaderText = "Tên Nhân Viên",
+                DataPropertyName = "EmployeeName",
+                Width = 150,
+                ReadOnly = true
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "CreatedDate",
+                HeaderText = "Ngày Lập Phiếu",
+                DataPropertyName = "CreatedDate",
+                Width = 120,
+                ReadOnly = true
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "DepositAmount",
+                HeaderText = "Tiền Đặt Cọc",
+                DataPropertyName = "DepositAmount",
+                Width = 100,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "N0", Alignment = DataGridViewContentAlignment.MiddleRight }
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "ProcessingStatus",
+                HeaderText = "Tình Trạng",
+                DataPropertyName = "ProcessingStatus",
+                Width = 100,
+                ReadOnly = true
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "TotalPrice",
+                HeaderText = "Tổng Tiền",
+                DataPropertyName = "TotalPrice",
+                Width = 100,
+                ReadOnly = true,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "N0", Alignment = DataGridViewContentAlignment.MiddleRight }
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "btnView",
+                HeaderText = "Chi Tiết",
+                Text = "Xem",
+                Width = 70,
+                UseColumnTextForButtonValue = true
+            });
+
+            dgvChiTietThue.Columns.Add(new DataGridViewButtonColumn
+            {
+                Name = "btnEdit",
+                HeaderText = "Sửa",
+                Text = "Sửa",
+                Width = 70,
+                UseColumnTextForButtonValue = true
+            });
+
+            dgvChiTietThue.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(59, 130, 246);
+            dgvChiTietThue.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvChiTietThue.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvChiTietThue.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(243, 244, 246);
+            dgvChiTietThue.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+        }
+
+        /// <summary>
+        /// Setup event handlers
+        /// </summary>
+        private void SetupEventHandlers()
+        {
+            btnTimKiem.Click += BtnTimKiem_Click;
+            btnLamMoi.Click += BtnLamMoi_Click;
+            dgvChiTietThue.CellClick += DgvChiTietThue_CellClick;
+            cboKhachHang.SelectedIndexChanged += CboFilter_Changed;
+            cboNhanVien.SelectedIndexChanged += CboFilter_Changed;
+            cboTrangThai.SelectedIndexChanged += CboFilter_Changed;
+            cboLoaiThue.SelectedIndexChanged += CboFilter_Changed;
+        }
+
+        /// <summary>
+        /// Load filter data (customers, employees)
+        /// Optimized with LINQ Select
+        /// ✅ FIX: Changed from async void to async Task
+        /// ✅ FIX: Added null checks and empty data handling
+        /// </summary>
+        private async Task LoadFiltersAsync()
+        {
+            try
+            {
+                var customers = await _customerService.GetAllCustomersAsync();
+                var customerList = customers?.ToList() ?? new List<Customer>();
+
+                var activeCustomers = customerList
+            .Where(c => c.IsDeleted == 0)
+         .Select(c => new { DisplayText = $"{c.CustomerId} - {c.Name}", c.CustomerId })
+        .ToList();
+
+                cboKhachHang.DataSource = activeCustomers;
+                cboKhachHang.DisplayMember = "DisplayText";
+                cboKhachHang.ValueMember = "CustomerId";
+                cboKhachHang.SelectedIndex = -1;
+
+                var employees = await _employeeService.GetAllEmployeesAsync();
+                var employeeList = employees?.ToList() ?? new List<Employee>();
+
+                var activeEmployees = employeeList
+          .Where(e => e.IsDeleted == 0)
+         .Select(e => new { DisplayText = $"{e.EmployeeId} - {e.Name}", e.EmployeeId })
+       .ToList();
+
+                cboNhanVien.DataSource = activeEmployees;
+                cboNhanVien.DisplayMember = "DisplayText";
+                cboNhanVien.ValueMember = "EmployeeId";
+                cboNhanVien.SelectedIndex = -1;
+
+                cboTrangThai.Items.Clear();
+                foreach (var item in new[] { "Đang Xử Lý", "Đã Xác Nhận", "Đã Hủy" })
+                    cboTrangThai.Items.Add(item);
+                cboTrangThai.SelectedIndex = -1;
+
+                cboLoaiThue.Items.Clear();
+                foreach (var item in new[] { "Theo Ngày", "Theo Giờ", "Khác" })
+                    cboLoaiThue.Items.Add(item);
+                cboLoaiThue.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải bộ lọc: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Load rental details from database
+        /// ✅ FIX: Changed from async void to async Task
+        /// </summary>
+        private async Task LoadRentalDetailsAsync()
+        {
+            try
+            {
+                var rentalDetails = await _rentalDetailService.GetAllRentalDetailsAsync();
+                _allRentalDetails = rentalDetails.ToList();
+
+                if (_allRentalDetails.Count == 0)
+                    MessageBox.Show("Không có chi tiết thuê nào", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                await DisplayRentalDetailsAsync(_allRentalDetails);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Display rental details in DataGridView
+        /// ✅ FIX: Properly populate customer and employee names with correct binding
+        /// </summary>
+        private async Task DisplayRentalDetailsAsync(List<RentalDetail> rentalDetails)
+        {
+            try
+            {
+                dgvChiTietThue.DataSource = null;
+
+                var customersData = await _customerService.GetAllCustomersAsync();
+                var employeesData = await _employeeService.GetAllEmployeesAsync();
+
+                var allCustomers = customersData?.ToList() ?? new List<Customer>();
+                var allEmployees = employeesData?.ToList() ?? new List<Employee>();
+
+                var customerDict = allCustomers
+                    .Where(c => c.IsDeleted == 0)
+                   .GroupBy(c => c.CustomerId)
+                        .ToDictionary(g => g.Key, g => g.FirstOrDefault());
+
+                var employeeDict = allEmployees
+                 .Where(e => e.IsDeleted == 0)
+              .GroupBy(e => e.EmployeeId)
+             .ToDictionary(g => g.Key, g => g.FirstOrDefault());
+
+                var displayList = new List<DisplayRentalDetailDto>();
+
+                foreach (var rental in rentalDetails)
+                {
+                    customerDict.TryGetValue(rental.CustomerId, out var customer);
+                    employeeDict.TryGetValue(rental.EmployeeId, out var employee);
+
+                    // ✅ NEW: Calculate TOTAL price from both rooms AND services
+                    var roomTotalPrice = await _roomRentalDetailService.CalculateTotalPriceAsync(rental.RentalDetailId);
+       
+                    int serviceTotalPrice = 0;
+                    if (_serviceRentalDetailService != null)
+         {
+         serviceTotalPrice = await _serviceRentalDetailService.CalculateTotalServicePriceAsync(rental.RentalDetailId);
+   }
+         
+        int totalPrice = roomTotalPrice + serviceTotalPrice;
+
+       displayList.Add(new DisplayRentalDetailDto
+  {
+     RentalDetailId = rental.RentalDetailId,
+             CustomerId = rental.CustomerId,
+      CustomerName = customer?.Name ?? "N/A",
+     EmployeeId = rental.EmployeeId,
+            EmployeeName = employee?.Name ?? "N/A",
+                 CreatedDate = rental.CreatedDate.ToString("dd/MM/yyyy HH:mm"),
+   DepositAmount = rental.DepositAmount,
+    ProcessingStatus = GetProcessingStatusName(rental.ProcessingStatus),
+        TotalPrice = totalPrice,
+                OriginalRental = rental
+          });
+
+  System.Diagnostics.Debug.WriteLine(
+      $"✅ Row: {rental.RentalDetailId} | KH: {customer?.Name} | NV: {employee?.Name} | Total: {totalPrice:N0}");
+                }
+
+                if (displayList.Count > 0)
+                {
+                    dgvChiTietThue.DataSource = displayList;
+                    System.Diagnostics.Debug.WriteLine($"✅ Displayed {displayList.Count} rows");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("⚠️ No rental details to display");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error: {ex.Message}\n{ex.StackTrace}");
+                MessageBox.Show($"Lỗi hiển thị dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// DataGridView cell click handler
+        /// </summary>
+        private void DgvChiTietThue_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var columnName = dgvChiTietThue.Columns[e.ColumnIndex].Name;
+            var rentalDetailId = dgvChiTietThue.Rows[e.RowIndex].Cells["RentalDetailId"].Value?.ToString();
+
+            if (string.IsNullOrEmpty(rentalDetailId)) return;
+
+            switch (columnName)
+            {
+                case "btnView":
+                    ViewDetailsAsync(rentalDetailId);
+                    break;
+                case "btnEdit":
+                    EditStatusAsync(rentalDetailId);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// View details - Open BookingDetailForm with professional UI
+        /// </summary>
+        private async void ViewDetailsAsync(string rentalDetailId)
+        {
+            try
+            {
+                // ✅ Create form and set services BEFORE using
+                var detailForm = new BookingDetailForm();
+
+                // ✅ Inject all services (including new ones)
+                detailForm.SetServices(
+                    _rentalDetailService,
+                    _customerService,
+                    _roomRentalDetailService,
+                    _roomService,
+                    _serviceService,
+                    _invoiceService,
+                    _serviceRentalDetailService
+                );
+
+                // Load data
+                await detailForm.LoadBookingDetailAsync(rentalDetailId);
+
+                // Show form
+                detailForm.ShowDialog();
+
+                // ✅ NEW: Refresh danh sách sau khi form đóng
+                // Điều này đảm bảo tổng tiền được cập nhật nếu user thay đổi phòng/dịch vụ
+                await LoadRentalDetailsAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Get parent form
+        /// </summary>
+        private Form GetParentForm()
+        {
+            Control current = this;
+            while (current != null)
+            {
+                if (current is Form form)
+                    return form;
+                current = current.Parent;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Edit status dialog
+        /// </summary>
+        private async void EditStatusAsync(string rentalDetailId)
+        {
+            try
+            {
+                var rental = await _rentalDetailService.GetRentalDetailAsync(rentalDetailId);
+                if (rental == null) return;
+
+                var form = new Form
+                {
+                    Text = "Cập Nhật Tình Trạng",
+                    Width = 350,
+                    Height = 200,
+                    StartPosition = FormStartPosition.CenterParent,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    MaximizeBox = false,
+                    MinimizeBox = false
+                };
+
+                var lbl = new Label { Text = "Tình Trạng:", Location = new Point(20, 30), AutoSize = true };
+                var cbo = new ComboBox
+                {
+                    Location = new Point(100, 25),
+                    Width = 200,
+                    DropDownStyle = ComboBoxStyle.DropDownList
+                };
+                cbo.Items.AddRange(new[] { "Đang Xử Lý", "Đã Xác Nhận", "Đã Hủy" });
+                cbo.SelectedIndex = rental.ProcessingStatus;
+
+                var btnOk = new Button
+                {
+                    Text = "Lưu",
+                    DialogResult = DialogResult.OK,
+                    Location = new Point(100, 80),
+                    Width = 80,
+                    BackColor = Color.FromArgb(34, 197, 94),
+                    ForeColor = Color.White
+                };
+
+                var btnCancel = new Button
+                {
+                    Text = "Hủy",
+                    DialogResult = DialogResult.Cancel,
+                    Location = new Point(200, 80),
+                    Width = 80,
+                    BackColor = Color.FromArgb(107, 114, 128),
+                    ForeColor = Color.White
+                };
+
+                form.Controls.Add(lbl);
+                form.Controls.Add(cbo);
+                form.Controls.Add(btnOk);
+                form.Controls.Add(btnCancel);
+
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    rental.ProcessingStatus = cbo.SelectedIndex;
+                    await _rentalDetailService.UpdateRentalDetailAsync(rental);
+                    MessageBox.Show("✓ Cập nhật thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await LoadRentalDetailsAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Apply filters and search
+        /// ✅ FIX: Removed .Wait() which was causing deadlocks
+        /// </summary>
+        private async void BtnTimKiem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var filtered = ApplyFilters(_allRentalDetails);
+                await DisplayRentalDetailsAsync(filtered);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Reset all filters
+        /// ✅ FIX: Changed from async void + .Wait() pattern
+        /// </summary>
+        private async void BtnLamMoi_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                txtMaChiTiet.Clear();
+                cboKhachHang.SelectedIndex = -1;
+                cboNhanVien.SelectedIndex = -1;
+                cboTrangThai.SelectedIndex = -1;
+                cboLoaiThue.SelectedIndex = -1;
+                dtpNgayThue.Value = DateTime.Now.AddMonths(-1);
+                dtpNgayTra.Value = DateTime.Now;
+                await LoadRentalDetailsAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Filter combo changed event
+        /// </summary>
+        private void CboFilter_Changed(object sender, EventArgs e)
+        {
+            // Auto-search on filter change (optional)
+        }
+
+        /// <summary>
+        /// Apply filters to rental details using LINQ
+        /// Optimized with fluent LINQ chains
+        /// </summary>
+        private List<RentalDetail> ApplyFilters(List<RentalDetail> rentalDetails)
+        {
+            var filtered = rentalDetails
+          .Where(r => string.IsNullOrWhiteSpace(txtMaChiTiet.Text) ||
+                  r.RentalDetailId.Contains(txtMaChiTiet.Text, StringComparison.OrdinalIgnoreCase))
+             .Where(r => cboKhachHang.SelectedIndex < 0 ||
+                 r.CustomerId == cboKhachHang.SelectedValue?.ToString())
+          .Where(r => cboNhanVien.SelectedIndex < 0 ||
+           r.EmployeeId == cboNhanVien.SelectedValue?.ToString())
+                     .Where(r => cboTrangThai.SelectedIndex < 0 ||
+             r.ProcessingStatus == cboTrangThai.SelectedIndex)
+                .Where(r =>
+             {
+                 var startDate = dtpNgayThue.Value.Date;
+                 var endDate = dtpNgayTra.Value.Date;
+                 return startDate <= endDate &&
+            r.CreatedDate.Date >= startDate &&
+          r.CreatedDate.Date <= endDate;
+             })
+             .ToList();
+
+            return filtered;
+        }
+
+        /// <summary>
+        /// Get status names using Dictionary for faster lookup
+        /// </summary>
+        private static readonly Dictionary<int, string> StatusMap = new()
+        {
+      { 0, "Đang Xử Lý" },
+            { 1, "Đã Xác Nhận" },
+    { 2, "Đã Hủy" }
+        };
+
+        /// <summary>
+        /// Convert status code to text
+        /// </summary>
+        private string GetProcessingStatusName(int status)
+        {
+            return StatusMap.TryGetValue(status, out var statusName)
+                 ? statusName
+                : "Không Xác Định";
+        }
+
+        private void lblLoaiThue_Click(object sender, EventArgs e)
+        {
+        }
+    }
+
+    /// <summary>
+    /// ✅ Display DTO - Data Transfer Object for DataGridView binding
+    /// Ensures proper column-to-property mapping
+    /// </summary>
+    public class DisplayRentalDetailDto
+    {
+        public string RentalDetailId { get; set; }
+        public string CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
+        public string CreatedDate { get; set; }
+        public int DepositAmount { get; set; }
+        public string ProcessingStatus { get; set; }
+        public int TotalPrice { get; set; }
+        public RentalDetail OriginalRental { get; set; }
+    }
+}

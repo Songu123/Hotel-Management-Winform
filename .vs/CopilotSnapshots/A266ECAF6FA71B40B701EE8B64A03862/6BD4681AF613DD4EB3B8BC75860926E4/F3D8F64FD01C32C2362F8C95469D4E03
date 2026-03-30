@@ -1,0 +1,260 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Services.RequestHandlers;
+using QuanLyKhachSan.Services.RequestHandlers.Interfaces;
+using QuanLyKhachSan.UI.Service;
+using QuanLyKhachSan.UI.Room_Service;
+using QuanLyKhachSan.UI.CustomerUI;
+using QuanLyKhachSan.UI.BookingUI;
+using QuanLyKhachSan.UI.InvoiceUI;
+
+namespace QuanLyKhachSan.UI
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void ShowPanel(UserControl uc)
+        {
+            panelMain.Controls.Clear();
+            uc.Dock = DockStyle.Fill;
+            panelMain.Controls.Add(uc);
+            uc.BringToFront();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnDashboard_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCDashboard());
+
+        }
+
+        private void btnRooms_Click(object sender, EventArgs e)
+        {
+            var serviceProvider = (IServiceProvider)Program.Services;
+            var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+            var dbContext = serviceProvider.GetService(typeof(HotelDbContext)) as HotelDbContext;
+
+            ShowPanel(new UCRoom(roomService, dbContext));
+        }
+
+        private void btnBooking_Click(object sender, EventArgs e)
+        {
+            var serviceProvider = (IServiceProvider)Program.Services;
+            var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+            var bookingService = serviceProvider.GetService(typeof(IBookingService)) as IBookingService;
+
+            if (roomService == null || bookingService == null)
+            {
+                MessageBox.Show("Lỗi: Không thể khởi tạo services", "Lỗi",
+        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var booking = new BookingUI.UCBooking();
+            // Initialize with services via new method
+            booking.InitializeWithServices(roomService, bookingService);
+            ShowPanel(booking);
+        }
+
+        private void btnCustomers_Click(object sender, EventArgs e)
+        {
+            var serviceProvider = (IServiceProvider)Program.Services;
+            var customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
+            var refreshHandler = serviceProvider.GetService(typeof(IRefreshCustomerListRequestHandler)) as IRefreshCustomerListRequestHandler;
+            var resetHandler = serviceProvider.GetService(typeof(ResetSearchCriteriaRequestHandler)) as ResetSearchCriteriaRequestHandler;
+
+            if (customerService == null)
+            {
+                MessageBox.Show("Lỗi: Không thể khởi tạo ICustomerService", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (refreshHandler == null || resetHandler == null)
+            {
+                MessageBox.Show("Lỗi: Không thể khởi tạo request handlers", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            ShowPanel(new UCCustomer(customerService, refreshHandler, resetHandler));
+        }
+
+        private void btnInvoice_Click(object sender, EventArgs e)
+        {
+            var serviceProvider = (IServiceProvider)Program.Services;
+            var invoiceService = serviceProvider.GetService(typeof(IInvoiceService)) as IInvoiceService;
+            var rentalDetailService = serviceProvider.GetService(typeof(IRentalDetailService)) as IRentalDetailService;
+            var roomRentalDetailService = serviceProvider.GetService(typeof(IRoomRentalDetailService)) as IRoomRentalDetailService;
+            var employeeService = serviceProvider.GetService(typeof(IEmployeeService)) as IEmployeeService;
+            var dbContext = serviceProvider.GetService(typeof(HotelDbContext)) as HotelDbContext;
+
+            if (invoiceService == null || rentalDetailService == null || roomRentalDetailService == null || employeeService == null || dbContext == null)
+            {
+                MessageBox.Show("Lỗi: Không thể khởi tạo dịch vụ quản lý hóa đơn", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            ShowPanel(new UCInvoiceManagement(invoiceService, rentalDetailService, roomRentalDetailService, employeeService, dbContext));
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            ShowPanel(new UCServices());
+
+        }
+
+        private void btnFloorView_Click(object sender, EventArgs e)
+        {
+            var serviceProvider = (IServiceProvider)Program.Services;
+            var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+            var bookingService = serviceProvider.GetService(typeof(IBookingService)) as IBookingService;
+
+            ShowPanel(new UCRoomFloorView(roomService, bookingService));
+        }
+
+        private void panelMain_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnListBooking_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var serviceProvider = (IServiceProvider)Program.Services;
+                var rentalDetailService = serviceProvider.GetService(typeof(IRentalDetailService)) as IRentalDetailService;
+                var customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
+                var employeeService = serviceProvider.GetService(typeof(IEmployeeService)) as IEmployeeService;
+                var roomRentalDetailService = serviceProvider.GetService(typeof(IRoomRentalDetailService)) as IRoomRentalDetailService;
+                var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+                var serviceService = serviceProvider.GetService(typeof(IServiceService)) as IServiceService;
+                var invoiceService = serviceProvider.GetService(typeof(IInvoiceService)) as IInvoiceService;
+                var serviceRentalDetailService = serviceProvider.GetService(typeof(IServiceRentalDetailService)) as IServiceRentalDetailService;
+
+                if (rentalDetailService == null || customerService == null || employeeService == null || 
+                    roomRentalDetailService == null || roomService == null || serviceService == null)
+                {
+                    MessageBox.Show("Lỗi: Không thể khởi tạo services", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var listBooking = new UCListBooking();
+                listBooking.InitializeWithServices(
+                    rentalDetailService, 
+                    customerService, 
+                    employeeService, 
+                    roomRentalDetailService,
+                    roomService,
+                    serviceService,
+                    invoiceService,
+                    serviceRentalDetailService);
+                ShowPanel(listBooking);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Open Booking Detail Form for Checkout
+        /// </summary>
+        private void btnCheckout_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var serviceProvider = (IServiceProvider)Program.Services;
+                var rentalDetailService = serviceProvider.GetService(typeof(IRentalDetailService)) as IRentalDetailService;
+                var customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
+                var roomRentalDetailService = serviceProvider.GetService(typeof(IRoomRentalDetailService)) as IRoomRentalDetailService;
+                var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+                var serviceService = serviceProvider.GetService(typeof(IServiceService)) as IServiceService;
+                var invoiceService = serviceProvider.GetService(typeof(IInvoiceService)) as IInvoiceService;
+
+                if (rentalDetailService == null || customerService == null || roomRentalDetailService == null || 
+ roomService == null || serviceService == null)
+     {
+     MessageBox.Show("Lỗi: Không thể khởi tạo services", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+         return;
+        }
+
+    // ✅ Create and show BookingDetailForm
+             var detailForm = new BookingDetailForm();
+  detailForm.SetServices(
+        rentalDetailService,
+         customerService,
+    roomRentalDetailService,
+      roomService,
+            serviceService,
+         invoiceService);
+
+// Show form dialog
+      detailForm.ShowDialog();
+            }
+            catch (Exception ex)
+          {
+            MessageBox.Show($"Lỗi mở form checkout: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Open Payment Form for existing rental details
+        /// </summary>
+        private void btnPayment_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var serviceProvider = (IServiceProvider)Program.Services;
+                var rentalDetailService = serviceProvider.GetService(typeof(IRentalDetailService)) as IRentalDetailService;
+                var invoiceService = serviceProvider.GetService(typeof(IInvoiceService)) as IInvoiceService;
+
+                if (rentalDetailService == null || invoiceService == null)
+                {
+                    MessageBox.Show("Lỗi: Không thể khởi tạo services", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Show dialog to select rental
+                var selectForm = new SelectRentalForm(rentalDetailService);
+                if (selectForm.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(selectForm.SelectedRentalId))
+                {
+                    // Open payment form for selected rental
+                    var paymentForm = new PaymentForm(
+                        null,
+                        null,
+                        0,
+                        0,
+                        rentalDetailService,
+                        invoiceService);
+
+                    paymentForm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi mở form thanh toán: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}

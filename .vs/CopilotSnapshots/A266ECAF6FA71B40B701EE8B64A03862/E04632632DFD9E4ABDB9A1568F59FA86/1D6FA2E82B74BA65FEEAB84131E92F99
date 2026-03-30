@@ -1,0 +1,321 @@
+﻿using Microsoft.EntityFrameworkCore;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Repositories.Implementations;
+using QuanLyKhachSan.Repositories.Interfaces;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.Services.Implementations
+{
+    /// <summary>
+    /// Service implementation cho RentalDetail
+    /// Optimized with LINQ for better data processing
+    /// ✅ DataReader issues fixed
+    /// </summary>
+    public class RentalDetailService : IRentalDetailService
+    {
+        private readonly RentalDetailRepository _rentalDetailRepository;
+        private readonly ICustomerService _customerService;
+
+        public RentalDetailService(
+             RentalDetailRepository rentalDetailRepository,
+     ICustomerService customerService)
+        {
+            _rentalDetailRepository = rentalDetailRepository ?? throw new ArgumentNullException(nameof(rentalDetailRepository));
+            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+        }
+
+        /// <summary>
+        /// Tạo chi tiết thuê phòng mới
+        /// </summary>
+        public async Task<RentalDetail?> CreateRentalDetailAsync(RentalDetail rentalDetail)
+        {
+            try
+            {
+                if (rentalDetail == null)
+                    throw new ArgumentNullException(nameof(rentalDetail));
+
+                // ✅ Validate required fields using LINQ
+                var validationErrors = new List<string>();
+
+                if (string.IsNullOrWhiteSpace(rentalDetail.RentalDetailId))
+                    validationErrors.Add("Mã chi tiết thuê không được để trống");
+
+                if (string.IsNullOrWhiteSpace(rentalDetail.CustomerId))
+                    validationErrors.Add("Mã khách hàng không được để trống");
+
+                if (string.IsNullOrWhiteSpace(rentalDetail.EmployeeId))
+                    validationErrors.Add("Mã nhân viên không được để trống");
+
+                if (validationErrors.Any())
+                    throw new ArgumentException(string.Join("; ", validationErrors));
+
+                // Check if rental detail already exists
+                var existing = await _rentalDetailRepository.GetByIdAsync(rentalDetail.RentalDetailId);
+                if (existing != null)
+                    throw new InvalidOperationException($"Chi tiết thuê {rentalDetail.RentalDetailId} đã tồn tại");
+
+                rentalDetail.IsDeleted = 0;
+                rentalDetail.CreatedDate = DateTime.Now;
+
+                await _rentalDetailRepository.AddAsync(rentalDetail);
+                await _rentalDetailRepository.SaveChangesAsync();
+
+                return rentalDetail;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tạo chi tiết thuê phòng", ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy chi tiết thuê phòng theo ID
+        /// </summary>
+        public async Task<RentalDetail?> GetRentalDetailAsync(string rentalDetailId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(rentalDetailId))
+                    return null;
+
+                return await _rentalDetailRepository.GetByIdAsync(rentalDetailId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi lấy chi tiết thuê {rentalDetailId}", ex);
+            }
+        }
+
+        /// <summary>
+        /// Cập nhật chi tiết thuê phòng
+        /// </summary>
+        public async Task<bool> UpdateRentalDetailAsync(RentalDetail rentalDetail)
+        {
+            try
+            {
+                if (rentalDetail == null)
+                    throw new ArgumentNullException(nameof(rentalDetail));
+
+                var existing = await _rentalDetailRepository.GetByIdAsync(rentalDetail.RentalDetailId);
+                if (existing == null)
+                    throw new InvalidOperationException($"Chi tiết thuê {rentalDetail.RentalDetailId} không tồn tại");
+
+                // ✅ Update only changed properties
+                existing.CustomerId = rentalDetail.CustomerId;
+                existing.EmployeeId = rentalDetail.EmployeeId;
+                existing.DepositAmount = rentalDetail.DepositAmount;
+                existing.ProcessingStatus = rentalDetail.ProcessingStatus;
+
+                await _rentalDetailRepository.UpdateAsync(existing);
+                await _rentalDetailRepository.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi cập nhật chi tiết thuê phòng", ex);
+            }
+        }
+
+        /// <summary>
+        /// Xóa chi tiết thuê phòng (soft delete)
+        /// </summary>
+        public async Task<bool> DeleteRentalDetailAsync(string rentalDetailId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(rentalDetailId))
+                    throw new ArgumentException("Mã chi tiết thuê không được để trống");
+
+                var rentalDetail = await _rentalDetailRepository.GetByIdAsync(rentalDetailId);
+                if (rentalDetail == null)
+                    throw new InvalidOperationException($"Chi tiết thuê {rentalDetailId} không tồn tại");
+
+                rentalDetail.IsDeleted = 1;
+                await _rentalDetailRepository.UpdateAsync(rentalDetail);
+                await _rentalDetailRepository.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi xóa chi tiết thuê phòng", ex);
+            }
+        }
+
+        /// <summary>
+        /// Lấy tất cả chi tiết thuê phòng
+        /// ✅ FIX: Filter deleted records + materializes data immediately
+        /// Returns: List<RentalDetail> (materialized, not IQueryable)
+        /// </summary>
+        public async Task<IEnumerable<RentalDetail>> GetAllRentalDetailsAsync()
+        {
+            return await _rentalDetailRepository.GetActiveAsync();
+        }
+
+        /// <summary>
+        /// Lấy chi tiết thuê phòng của khách hàng
+        /// ✅ FIX: Use LINQ with safe null handling
+        /// Returns: List<RentalDetail> (materialized)
+        /// </summary>
+        public async Task<IEnumerable<RentalDetail>> GetRentalDetailsByCustomerAsync(string customerId)
+        {
+            if (string.IsNullOrWhiteSpace(customerId))
+                return new List<RentalDetail>();
+
+            return await _rentalDetailRepository.GetByCustomerAsync(customerId);
+        }
+
+        /// <summary>
+        /// Lấy chi tiết thuê phòng cùng với thông tin liên quan
+        /// ✅ ENHANCED: Load related data efficiently
+        /// ✅ FIX: Avoids multiple DataReader calls
+        /// </summary>
+        public async Task<RentalDetail?> GetRentalDetailWithDetailsAsync(string rentalDetailId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(rentalDetailId))
+                    return null;
+
+                var rentalDetail = await _rentalDetailRepository.GetByIdAsync(rentalDetailId);
+                if (rentalDetail == null)
+                    return null;
+
+                // ✅ Load related customer if not loaded
+                if (rentalDetail.Customer == null && !string.IsNullOrWhiteSpace(rentalDetail.CustomerId))
+                {
+                    rentalDetail.Customer = await _customerService.GetCustomerAsync(rentalDetail.CustomerId);
+                }
+
+                return rentalDetail;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi lấy chi tiết thuê cùng thông tin liên quan", ex);
+            }
+        }
+
+        /// <summary>
+        /// Tạo số chi tiết thuê phòng mới
+        /// ✅ Uses high-precision timestamp to ensure uniqueness
+        /// </summary>
+        public string GenerateRentalDetailId()
+        {
+            // Format: CTT + yyyyMMddHHmmss + milliseconds
+            return $"CTT{DateTime.Now:yyyyMMddHHmmss}{DateTime.Now.Millisecond:D3}";
+        }
+
+        /// <summary>
+        /// Lấy chi tiết thuê phòng trong khoảng ngày
+        /// ✅ FIX: Proper date range filtering with LINQ
+        /// ✅ FIX: Data materialized immediately (.ToList())
+        /// </summary>
+        public async Task<IEnumerable<RentalDetail>> GetRentalDetailsByDateRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                // ✅ FIX: Materialize immediately to avoid DataReader issues
+                var allDetails = await _rentalDetailRepository.GetAllAsync();
+
+                // ✅ LINQ: Date range filter + not deleted + order by date
+                // Normalize dates to start/end of day for accurate range
+                var normalizedStartDate = startDate.Date;
+                var normalizedEndDate = endDate.Date.AddDays(1).AddSeconds(-1);  // Include end of day
+
+                return allDetails
+                       .Where(r => r.CreatedDate >= normalizedStartDate &&
+                r.CreatedDate <= normalizedEndDate &&
+                   r.IsDeleted == 0)
+                     .OrderByDescending(r => r.CreatedDate)
+                  .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Lỗi khi lấy chi tiết thuê trong khoảng ngày", ex);
+            }
+        }
+
+        /// <summary>
+        /// Helper: Get rental details by filter criteria (bonus method)
+        /// ✅ LINQ for flexible filtering
+        /// ✅ FIX: Data materialized before filtering
+        /// </summary>
+        public async Task<IEnumerable<RentalDetail>> GetRentalDetailsByFilterAsync(
+   string? customerId = null,
+         string? employeeId = null,
+            int? status = null,
+     DateTime? fromDate = null,
+            DateTime? toDate = null)
+        {
+            try
+            {
+                // ✅ FIX: Materialize immediately to avoid DataReader issues
+                var allDetails = await _rentalDetailRepository.GetAllAsync();
+
+                // ✅ LINQ chain multiple filters
+                var filtered = allDetails
+         .Where(r => r.IsDeleted == 0)
+             .WhereIf(!string.IsNullOrEmpty(customerId), r => r.CustomerId == customerId)
+     .WhereIf(!string.IsNullOrEmpty(employeeId), r => r.EmployeeId == employeeId)
+           .WhereIf(status.HasValue, r => r.ProcessingStatus == status)
+               .WhereIf(fromDate.HasValue, r => r.CreatedDate >= fromDate!.Value.Date)
+        .WhereIf(toDate.HasValue, r => r.CreatedDate <= toDate!.Value.Date.AddDays(1))
+     .OrderByDescending(r => r.CreatedDate)
+    .ToList();
+
+                return filtered;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi lấy chi tiết thuê theo bộ lọc", ex);
+            }
+        }
+
+        /// <summary>
+        /// Get total prices for multiple rentals
+        /// ✅ FIX: Materialized data before aggregation
+        /// ✅ IMPORTANT: This prevents DataReader conflicts in UCListBooking
+        /// </summary>
+        public async Task<Dictionary<string, int>> GetTotalPricesAsync(List<string> rentalIds)
+        {
+            try
+            {
+                // ✅ FIX: Materialize first, then aggregate
+                var allDetails = await _rentalDetailRepository.GetAllAsync();
+
+                return allDetails
+                   .Where(x => rentalIds.Contains(x.RentalDetailId))
+                 .GroupBy(x => x.RentalDetailId)
+         .Select(g => new
+         {
+             RentalDetailId = g.Key,
+             // ✅ FIX: Use Sum() on materialized data
+             Total = g.Sum(x => x.DepositAmount)  // Fixed: RentalPrice → DepositAmount
+         })
+                    .ToDictionary(x => x.RentalDetailId, x => x.Total);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi khi tính tổng giá chi tiết thuê", ex);
+            }
+        }
+    }
+
+    /// <summary>
+    /// ✅ LINQ Extension methods for cleaner code
+    /// </summary>
+    public static class LinqExtensions
+    {
+        /// <summary>
+        /// Conditional Where clause
+        /// </summary>
+        public static IEnumerable<T> WhereIf<T>(
+    this IEnumerable<T> source,
+          bool condition,
+ Func<T, bool> predicate)
+        {
+            return condition ? source.Where(predicate) : source;
+        }
+    }
+}

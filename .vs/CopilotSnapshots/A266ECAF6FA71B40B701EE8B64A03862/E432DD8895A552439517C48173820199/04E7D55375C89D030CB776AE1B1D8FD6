@@ -1,0 +1,178 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.Service
+{
+    /// <summary>
+    /// ✏️ EDIT SERVICE FORM
+    /// </summary>
+public class EditServiceForm : Form
+    {
+   private readonly IServiceService _serviceService;
+        private readonly Models.Service _service;
+     private TextBox txtServiceId;
+        private TextBox txtName;
+        private ComboBox cboType;
+  private NumericUpDown nudPrice;
+     private TextBox txtDescription;
+        private Button btnSave;
+        private Button btnCancel;
+
+        public EditServiceForm(IServiceService serviceService, Models.Service service)
+        {
+            _serviceService = serviceService ?? throw new ArgumentNullException(nameof(serviceService));
+          _service = service ?? throw new ArgumentNullException(nameof(service));
+       InitializeUI();
+         LoadData();
+   }
+
+        private void InitializeUI()
+        {
+    this.Text = "✏️ Chỉnh Sửa Dịch Vụ";
+            this.Width = 500;
+          this.Height = 450;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+   this.MaximizeBox = false;
+        this.MinimizeBox = false;
+         this.BackColor = Color.FromArgb(240, 241, 245);
+
+            int yPos = 20;
+     int labelWidth = 120;
+
+         // Mã Dịch Vụ (Read-Only)
+        var lblServiceId = new Label { Text = "Mã Dịch Vụ:", Location = new Point(20, yPos), Width = labelWidth, AutoSize = false };
+        this.Controls.Add(lblServiceId);
+            txtServiceId = new TextBox { Location = new Point(150, yPos), Width = 300, Height = 28, BorderStyle = BorderStyle.FixedSingle, ReadOnly = true };
+            this.Controls.Add(txtServiceId);
+
+ yPos += 45;
+
+     // Tên Dịch Vụ
+            var lblName = new Label { Text = "Tên Dịch Vụ:", Location = new Point(20, yPos), Width = labelWidth, AutoSize = false };
+       this.Controls.Add(lblName);
+            txtName = new TextBox { Location = new Point(150, yPos), Width = 300, Height = 28, BorderStyle = BorderStyle.FixedSingle };
+      this.Controls.Add(txtName);
+
+  yPos += 45;
+
+            // Loại Dịch Vụ
+     var lblType = new Label { Text = "Loại Dịch Vụ:", Location = new Point(20, yPos), Width = labelWidth, AutoSize = false };
+        this.Controls.Add(lblType);
+   cboType = new ComboBox { Location = new Point(150, yPos), Width = 300, Height = 28, DropDownStyle = ComboBoxStyle.DropDownList };
+cboType.Items.AddRange(new[] { "1 - Phòng Ăn", "2 - Giặt Ủi", "3 - SPA/Massage", "4 - Đưa Đón", "5 - Khác" });
+            cboType.SelectedIndex = 0;
+  this.Controls.Add(cboType);
+
+    yPos += 45;
+
+            // Giá
+            var lblPrice = new Label { Text = "Giá (VNĐ):", Location = new Point(20, yPos), Width = labelWidth, AutoSize = false };
+    this.Controls.Add(lblPrice);
+            nudPrice = new NumericUpDown { Location = new Point(150, yPos), Width = 300, Height = 28, Maximum = 100000000, Minimum = 0 };
+  this.Controls.Add(nudPrice);
+
+       yPos += 45;
+
+            // Mô Tả
+    var lblDescription = new Label { Text = "Mô Tả:", Location = new Point(20, yPos), Width = labelWidth, AutoSize = false };
+ this.Controls.Add(lblDescription);
+      txtDescription = new TextBox { Location = new Point(150, yPos), Width = 300, Height = 60, Multiline = true, BorderStyle = BorderStyle.FixedSingle };
+            this.Controls.Add(txtDescription);
+
+    yPos += 80;
+
+    // Buttons
+ btnSave = new Button
+        {
+             Text = "💾 Lưu",
+           Location = new Point(150, yPos),
+     Width = 140,
+     Height = 40,
+                BackColor = Color.FromArgb(34, 197, 94),
+           ForeColor = Color.White,
+     Font = new Font("Segoe UI", 10, FontStyle.Bold),
+            FlatStyle = FlatStyle.Flat
+  };
+btnSave.Click += BtnSave_Click;
+            this.Controls.Add(btnSave);
+
+ btnCancel = new Button
+    {
+    Text = "❌ Hủy",
+       Location = new Point(310, yPos),
+       Width = 140,
+            Height = 40,
+     BackColor = Color.FromArgb(107, 114, 128),
+      ForeColor = Color.White,
+ Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+  };
+  btnCancel.Click += (s, e) => this.Close();
+            this.Controls.Add(btnCancel);
+        }
+
+        private void LoadData()
+        {
+ try
+  {
+         txtServiceId.Text = _service.ServiceId;
+ txtName.Text = _service.Name;
+    nudPrice.Value = _service.Price;
+    txtDescription.Text = _service.Image ?? "";
+
+  // Set combo box
+         if (int.TryParse(_service.Type, out int typeId))
+      {
+    cboType.SelectedIndex = typeId - 1;
+  }
+          }
+        catch (Exception ex)
+         {
+    MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void BtnSave_Click(object sender, EventArgs e)
+        {
+      try
+  {
+    // Validate input
+       if (string.IsNullOrWhiteSpace(txtName.Text))
+          {
+           MessageBox.Show("Vui lòng nhập tên dịch vụ", "Cảnh Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+           return;
+    }
+
+       if (nudPrice.Value <= 0)
+      {
+      MessageBox.Show("Vui lòng nhập giá hợp lệ", "Cảnh Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+       return;
+    }
+
+                _service.Name = txtName.Text.Trim();
+     _service.Type = cboType.SelectedItem.ToString().Substring(0, 1);
+  _service.Price = (int)nudPrice.Value;
+           _service.Description = txtDescription.Text.Trim();
+
+        bool result = await _serviceService.UpdateServiceAsync(_service);
+    if (result)
+       {
+       MessageBox.Show("Cập nhật dịch vụ thành công", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        this.DialogResult = DialogResult.OK;
+          this.Close();
+        }
+     else
+                {
+ MessageBox.Show("Cập nhật dịch vụ thất bại", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+       catch (Exception ex)
+            {
+       MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+     }
+      }
+  }
+}

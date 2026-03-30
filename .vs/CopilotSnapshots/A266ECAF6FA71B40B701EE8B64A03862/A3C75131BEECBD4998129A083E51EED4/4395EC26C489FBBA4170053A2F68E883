@@ -1,0 +1,664 @@
+﻿using DrawingColor = System.Drawing.Color;
+using DrawingSize = System.Drawing.Size;
+using System.Diagnostics;
+using System.Drawing.Printing;
+using Microsoft.EntityFrameworkCore;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.InvoiceUI
+{
+    public class UCInvoiceManagement : UserControl
+    {
+        private readonly IInvoiceService _invoiceService;
+        private readonly IRentalDetailService _rentalDetailService;
+        private readonly IRoomRentalDetailService _roomRentalDetailService;
+        private readonly IEmployeeService _employeeService;
+        private readonly HotelDbContext _dbContext;
+
+        private readonly List<InvoiceRowVm> _allRows = new();
+
+        private TextBox _txtInvoiceId = null!;
+        private TextBox _txtRentalId = null!;
+        private DateTimePicker _dtFrom = null!;
+        private DateTimePicker _dtTo = null!;
+        private TextBox _txtEmployeeName = null!;
+        private TextBox _txtDiscount = null!;
+        private TextBox _txtSurcharge = null!;
+        private ComboBox _cboPaymentMethod = null!;
+        private TextBox _txtTotal = null!;
+        private TextBox _txtRoomTotal = null!;
+        private TextBox _txtServiceTotal = null!;
+        private DataGridView _dgvInvoices = null!;
+
+        private Button _btnSearch = null!;
+        private Button _btnRefresh = null!;
+        private Button _btnPrint = null!;
+        private Button _btnExportPdf = null!;
+
+        public UCInvoiceManagement(
+            IInvoiceService invoiceService,
+            IRentalDetailService rentalDetailService,
+            IRoomRentalDetailService roomRentalDetailService,
+            IEmployeeService employeeService,
+            HotelDbContext dbContext)
+        {
+            _invoiceService = invoiceService;
+            _rentalDetailService = rentalDetailService;
+            _roomRentalDetailService = roomRentalDetailService;
+            _employeeService = employeeService;
+            _dbContext = dbContext;
+
+            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
+            InitializeUi();
+            Load += UCInvoiceManagement_Load;
+        }
+
+        private async void UCInvoiceManagement_Load(object? sender, EventArgs e)
+        {
+            await LoadInvoicesAsync();
+        }
+
+        private void InitializeUi()
+        {
+            BackColor = DrawingColor.FromArgb(241, 242, 244);
+
+            var root = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 3,
+                Padding = new Padding(12)
+            };
+            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 170));
+            root.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 54));
+
+            var filterPanel = BuildFilterPanel();
+            var listPanel = BuildListPanel();
+            var actionPanel = BuildActionPanel();
+
+            root.Controls.Add(filterPanel, 0, 0);
+            root.Controls.Add(listPanel, 0, 1);
+            root.Controls.Add(actionPanel, 0, 2);
+            Controls.Add(root);
+        }
+
+        private Panel BuildFilterPanel()
+        {
+            var panel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = DrawingColor.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Padding = new Padding(12)
+            };
+
+            var title = new Label
+            {
+                Text = "QUẢN LÝ HÓA ĐƠN",
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                ForeColor = DrawingColor.FromArgb(87, 122, 245),
+                AutoSize = true,
+                Location = new Point(8, 4)
+            };
+
+            var subtitle = new Label
+            {
+                Text = "Vui lòng bấm vào bảng danh sách hóa đơn để xem chi tiết",
+                Font = new Font("Segoe UI", 9, FontStyle.Italic),
+                ForeColor = DrawingColor.FromArgb(90, 90, 90),
+                AutoSize = true,
+                Location = new Point(8, 32)
+            };
+
+            var grid = new TableLayoutPanel
+            {
+                Location = new Point(8, 58),
+                Size = new DrawingSize(1100, 96),
+                ColumnCount = 8,
+                RowCount = 3
+            };
+
+            for (var i = 0; i < 8; i++)
+                grid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.5f));
+            for (var i = 0; i < 3; i++)
+                grid.RowStyles.Add(new RowStyle(SizeType.Absolute, 32));
+
+            _txtInvoiceId = CreateTextBox();
+            _txtRentalId = CreateTextBox();
+            _dtFrom = CreateDatePicker();
+            _dtTo = CreateDatePicker();
+            _txtEmployeeName = CreateTextBox();
+            _txtDiscount = CreateTextBox();
+            _txtSurcharge = CreateTextBox();
+            _cboPaymentMethod = CreateCombo();
+            _txtTotal = CreateTextBox();
+            _txtRoomTotal = CreateTextBox();
+            _txtServiceTotal = CreateTextBox();
+
+            _cboPaymentMethod.Items.AddRange(new[] { "", "Tiền mặt", "Thẻ", "Ví điện tử", "Chuyển khoản" });
+
+            _btnSearch = new Button
+            {
+                Text = "Tìm kiếm",
+                Dock = DockStyle.Fill,
+                BackColor = DrawingColor.FromArgb(116, 90, 255),
+                ForeColor = DrawingColor.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            _btnSearch.Click += (s, e) => ApplyFilter();
+
+            _btnRefresh = new Button
+            {
+                Text = "Làm mới",
+                Dock = DockStyle.Fill,
+                BackColor = DrawingColor.FromArgb(167, 171, 177),
+                ForeColor = DrawingColor.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            _btnRefresh.Click += async (s, e) => await RefreshAsync();
+
+            AddLabeledCell(grid, 0, 0, "Mã hóa đơn:", _txtInvoiceId);
+            AddLabeledCell(grid, 2, 0, "Mã chi tiết thuê:", _txtRentalId);
+            AddLabeledCell(grid, 4, 0, "Ngày TT : từ ngày", _dtFrom);
+            AddLabeledCell(grid, 6, 0, "đến ngày", _dtTo);
+
+            AddLabeledCell(grid, 0, 1, "Tên nhân viên:", _txtEmployeeName);
+            AddLabeledCell(grid, 2, 1, "Giảm giá:", _txtDiscount);
+            AddLabeledCell(grid, 4, 1, "Phụ thu:", _txtSurcharge);
+            AddLabeledCell(grid, 6, 1, "Phương thức TT:", _cboPaymentMethod);
+
+            AddLabeledCell(grid, 0, 2, "Tổng tiền:", _txtTotal);
+            AddLabeledCell(grid, 2, 2, "Tổng tiền phòng:", _txtRoomTotal);
+            AddLabeledCell(grid, 4, 2, "Tổng tiền dịch vụ:", _txtServiceTotal);
+            grid.Controls.Add(_btnSearch, 6, 2);
+            grid.Controls.Add(_btnRefresh, 7, 2);
+
+            panel.Controls.Add(title);
+            panel.Controls.Add(subtitle);
+            panel.Controls.Add(grid);
+            return panel;
+        }
+
+        private Panel BuildListPanel()
+        {
+            var panel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = DrawingColor.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Padding = new Padding(10)
+            };
+
+            //var title = new Label
+            //{
+            //    Text = "DANH SÁCH HÓA ĐƠN",
+            //    Font = new Font("Segoe UI", 12, FontStyle.Bold),
+            //    AutoSize = true,
+            //    Location = new Point(4, 4)
+            //};
+
+            _dgvInvoices = new DataGridView
+            {
+                Dock = DockStyle.Bottom,
+                Height = 360,
+                AllowUserToAddRows = false,
+                ReadOnly = true,
+                RowHeadersVisible = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                BackgroundColor = DrawingColor.White,
+                BorderStyle = BorderStyle.None,
+                RowTemplate = new DataGridViewRow { Height = 32 }
+            };
+
+            _dgvInvoices.Columns.Add("stt", "STT");
+            _dgvInvoices.Columns.Add("maHD", "MÃ HÓA ĐƠN");
+            _dgvInvoices.Columns.Add("maCTT", "MÃ CHI TIẾT THUÊ");
+            _dgvInvoices.Columns.Add("nhanVien", "NHÂN VIÊN LẬP HÓA ĐƠN");
+            _dgvInvoices.Columns.Add("tienPhong", "TIỀN PHÒNG");
+            _dgvInvoices.Columns.Add("tienDV", "TIỀN DỊCH VỤ");
+            _dgvInvoices.Columns.Add("giamGia", "GIẢM GIÁ");
+            _dgvInvoices.Columns.Add("phuThu", "PHỤ THU");
+            _dgvInvoices.Columns.Add("tongTien", "TỔNG TIỀN");
+            _dgvInvoices.Columns.Add("thanhToan", "NGÀY TT");
+
+            _dgvInvoices.CellClick += DgvInvoices_CellClick;
+
+            //panel.Controls.Add(title);
+            panel.Controls.Add(_dgvInvoices);
+            return panel;
+        }
+
+        private Panel BuildActionPanel()
+        {
+            var panel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = DrawingColor.Transparent
+            };
+
+            var flow = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Right,
+                FlowDirection = FlowDirection.RightToLeft,
+                WrapContents = false,
+                AutoSize = true
+            };
+
+            _btnPrint = new Button
+            {
+                Text = "In hóa đơn",
+                Width = 130,
+                Height = 34,
+                BackColor = DrawingColor.FromArgb(87, 144, 245),
+                ForeColor = DrawingColor.White,
+                FlatStyle = FlatStyle.Flat,
+                Margin = new Padding(8, 10, 0, 0)
+            };
+            _btnPrint.Click += BtnPrint_Click;
+
+            _btnExportPdf = new Button
+            {
+                Text = "Xuất PDF",
+                Width = 130,
+                Height = 34,
+                BackColor = DrawingColor.FromArgb(116, 90, 255),
+                ForeColor = DrawingColor.White,
+                FlatStyle = FlatStyle.Flat,
+                Margin = new Padding(8, 10, 0, 0)
+            };
+            _btnExportPdf.Click += BtnExportPdf_Click;
+
+            flow.Controls.Add(_btnPrint);
+            flow.Controls.Add(_btnExportPdf);
+            panel.Controls.Add(flow);
+            return panel;
+        }
+
+        private static TextBox CreateTextBox() => new() { Dock = DockStyle.Fill };
+
+        private static DateTimePicker CreateDatePicker() => new()
+        {
+            Dock = DockStyle.Fill,
+            Format = DateTimePickerFormat.Short,
+            ShowCheckBox = true
+        };
+
+        private static ComboBox CreateCombo() => new()
+        {
+            Dock = DockStyle.Fill,
+            DropDownStyle = ComboBoxStyle.DropDownList
+        };
+
+        private static void AddLabeledCell(TableLayoutPanel table, int col, int row, string label, Control control)
+        {
+            var labelPanel = new Panel { Dock = DockStyle.Fill };
+            var lbl = new Label
+            {
+                Text = label,
+                AutoSize = true,
+                Location = new Point(0, 8),
+                Font = new Font("Segoe UI", 9)
+            };
+            labelPanel.Controls.Add(lbl);
+            table.Controls.Add(labelPanel, col, row);
+            table.Controls.Add(control, col + 1, row);
+        }
+
+        private async Task LoadInvoicesAsync()
+        {
+            _allRows.Clear();
+            var invoices = (await _invoiceService.GetAllInvoicesAsync()).OrderByDescending(x => x.PaymentDate).ToList();
+
+            foreach (var invoice in invoices)
+            {
+                var rental = await _rentalDetailService.GetRentalDetailAsync(invoice.RentalDetailId);
+                var employeeName = rental?.EmployeeId ?? string.Empty;
+                if (!string.IsNullOrWhiteSpace(rental?.EmployeeId))
+                {
+                    var employee = await _employeeService.GetEmployeeAsync(rental.EmployeeId);
+                    if (employee != null) employeeName = employee.Name;
+                }
+
+                var roomDetails = await _roomRentalDetailService.GetRoomRentalDetailsByRentalDetailIdAsync(invoice.RentalDetailId);
+                
+                // ✅ FIX: Calculate room total correctly = RentalPrice × Number of nights
+                int roomTotal = 0;
+                foreach (var room in roomDetails)
+                {
+                    int nights = Math.Max(1, (int)(room.ReturnDate - room.RentalDate).TotalDays);
+                    int roomPrice = room.RentalPrice * nights;
+                    roomTotal += roomPrice;
+        
+              System.Diagnostics.Debug.WriteLine(
+$"📌 Invoice {invoice.InvoiceId} - Room {room.RoomId}: {room.RentalPrice:N0} × {nights} nights = {roomPrice:N0} VNĐ");
+     }
+    
+      // ✅ FIX: Calculate service total correctly = Price × Quantity
+           var serviceTotal = await _dbContext.ServiceRentalDetails
+             .Where(x => x.RentalDetailId == invoice.RentalDetailId)
+          .SumAsync(x => (int?)x.Price * x.Quantity) ?? 0;
+
+           System.Diagnostics.Debug.WriteLine(
+         $"📌 Invoice {invoice.InvoiceId}: Room Total = {roomTotal:N0} VNĐ, Service Total = {serviceTotal:N0} VNĐ");
+
+       // ✅ Calculate final total: Room + Service - Discount + Surcharge
+      var total = roomTotal + serviceTotal - invoice.Discount + invoice.Surcharge;
+
+        System.Diagnostics.Debug.WriteLine(
+            $"✅ Invoice {invoice.InvoiceId}: {roomTotal:N0} + {serviceTotal:N0} - {invoice.Discount:N0} + {invoice.Surcharge:N0} = {total:N0} VNĐ");
+
+                _allRows.Add(new InvoiceRowVm
+                {
+    InvoiceId = invoice.InvoiceId,
+     RentalDetailId = invoice.RentalDetailId,
+            EmployeeName = employeeName,
+         RoomTotal = roomTotal,
+           ServiceTotal = serviceTotal,
+          Discount = invoice.Discount,
+     Surcharge = invoice.Surcharge,
+          Total = total,
+ PaymentDate = invoice.PaymentDate,
+         PaymentMethod = invoice.PaymentMethod
+ });
+}
+
+     BindGrid(_allRows);
+        }
+      private void ApplyFilter()
+        {
+    var query = _allRows.AsEnumerable();
+
+     if (!string.IsNullOrWhiteSpace(_txtInvoiceId.Text))
+                query = query.Where(x => x.InvoiceId.Contains(_txtInvoiceId.Text.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            if (!string.IsNullOrWhiteSpace(_txtRentalId.Text))
+      query = query.Where(x => x.RentalDetailId.Contains(_txtRentalId.Text.Trim(), StringComparison.OrdinalIgnoreCase));
+
+          if (_dtFrom.Checked)
+            query = query.Where(x => x.PaymentDate.Date >= _dtFrom.Value.Date);
+
+    if (_dtTo.Checked)
+             query = query.Where(x => x.PaymentDate.Date <= _dtTo.Value.Date);
+
+         if (!string.IsNullOrWhiteSpace(_txtEmployeeName.Text))
+    query = query.Where(x => x.EmployeeName.Contains(_txtEmployeeName.Text.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            if (int.TryParse(_txtDiscount.Text.Replace(",", ""), out var discount))
+        query = query.Where(x => x.Discount == discount);
+
+            if (int.TryParse(_txtSurcharge.Text.Replace(",", ""), out var surcharge))
+     query = query.Where(x => x.Surcharge == surcharge);
+
+ if (!string.IsNullOrWhiteSpace(_txtTotal.Text) && int.TryParse(_txtTotal.Text.Replace(",", ""), out var total))
+    query = query.Where(x => x.Total == total);
+
+            if (!string.IsNullOrWhiteSpace(_txtRoomTotal.Text) && int.TryParse(_txtRoomTotal.Text.Replace(",", ""), out var roomTotal))
+      query = query.Where(x => x.RoomTotal == roomTotal);
+
+    if (!string.IsNullOrWhiteSpace(_txtServiceTotal.Text) && int.TryParse(_txtServiceTotal.Text.Replace(",", ""), out var serviceTotal))
+  query = query.Where(x => x.ServiceTotal == serviceTotal);
+
+     if (_cboPaymentMethod.SelectedIndex > 0)
+      query = query.Where(x => GetPaymentMethodText(x.PaymentMethod) == _cboPaymentMethod.Text);
+
+BindGrid(query);
+      }
+
+        private async Task RefreshAsync()
+    {
+            _txtInvoiceId.Clear();
+    _txtRentalId.Clear();
+       _txtEmployeeName.Clear();
+            _txtDiscount.Clear();
+  _txtSurcharge.Clear();
+            _txtTotal.Clear();
+            _txtRoomTotal.Clear();
+    _txtServiceTotal.Clear();
+         _cboPaymentMethod.SelectedIndex = 0;
+            _dtFrom.Checked = false;
+    _dtTo.Checked = false;
+
+            await LoadInvoicesAsync();
+        }
+
+        private void DgvInvoices_CellClick(object? sender, DataGridViewCellEventArgs e)
+    {
+   if (e.RowIndex < 0 || e.RowIndex >= _dgvInvoices.Rows.Count) return;
+   var invoiceId = _dgvInvoices.Rows[e.RowIndex].Cells[1].Value?.ToString();
+    if (string.IsNullOrWhiteSpace(invoiceId)) return;
+
+   var selected = _allRows.FirstOrDefault(x => x.InvoiceId == invoiceId);
+        if (selected == null) return;
+
+     _txtInvoiceId.Text = selected.InvoiceId;
+_txtRentalId.Text = selected.RentalDetailId;
+  _txtEmployeeName.Text = selected.EmployeeName;
+         _txtDiscount.Text = selected.Discount.ToString("N0");
+    _txtSurcharge.Text = selected.Surcharge.ToString("N0");
+        _txtTotal.Text = selected.Total.ToString("N0");
+   _txtRoomTotal.Text = selected.RoomTotal.ToString("N0");
+          _txtServiceTotal.Text = selected.ServiceTotal.ToString("N0");
+          _cboPaymentMethod.Text = GetPaymentMethodText(selected.PaymentMethod);
+            _dtFrom.Value = selected.PaymentDate;
+    _dtFrom.Checked = true;
+    _dtTo.Value = selected.PaymentDate;
+   _dtTo.Checked = true;
+    
+            // ✅ NEW: Open Professional Invoice Form
+    OpenProfessionalInvoiceAsync(invoiceId);
+     }
+        
+        // ✅ NEW: Open Professional Invoice Form
+   private async void OpenProfessionalInvoiceAsync(string invoiceId)
+ {
+        try
+      {
+      var invoice = await _invoiceService.GetInvoiceAsync(invoiceId);
+                if (invoice == null)
+  {
+               MessageBox.Show("Không tìm thấy hoá đơn", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+   return;
+          }
+          
+          var rentalDetail = await _rentalDetailService.GetRentalDetailWithDetailsAsync(invoice.RentalDetailId);
+  if (rentalDetail == null)
+          {
+    MessageBox.Show("Không tìm thấy chi tiết thuê phòng", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      return;
+              }
+
+            // Open Professional Invoice Form
+            var invoiceForm = new ProfessionalInvoiceForm(
+          invoice,
+   rentalDetail,
+   _rentalDetailService,
+     _roomRentalDetailService,
+   _employeeService,
+   _dbContext
+   );
+                
+    await invoiceForm.LoadInvoiceDataAsync();
+    invoiceForm.ShowDialog();
+}
+          catch (Exception ex)
+     {
+      MessageBox.Show($"Lỗi mở hoá đơn: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+  }
+
+        private void BtnPrint_Click(object? sender, EventArgs e)
+   {
+ if (_dgvInvoices.SelectedRows.Count == 0)
+        {
+    MessageBox.Show("Vui lòng chọn hóa đơn để in.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+         return;
+    }
+
+       var invoiceId = _dgvInvoices.SelectedRows[0].Cells[1].Value?.ToString();
+         var row = _allRows.FirstOrDefault(x => x.InvoiceId == invoiceId);
+      if (row == null) return;
+
+     var lines = new[]
+        {
+     "HÓA ĐƠN THANH TOÁN",
+    $"Mã hóa đơn: {row.InvoiceId}",
+        $"Mã chi tiết thuê: {row.RentalDetailId}",
+     $"Nhân viên: {row.EmployeeName}",
+       $"Ngày TT: {row.PaymentDate:dd/MM/yyyy}",
+       $"Tiền phòng: {row.RoomTotal:N0} VNĐ",
+     $"Tiền dịch vụ: {row.ServiceTotal:N0} VNĐ",
+     $"Giảm giá: {row.Discount:N0}",
+          $"Phụ thu: {row.Surcharge:N0}",
+  $"TỔNG TIỀN: {row.Total:N0} VNĐ"
+          };
+
+     var printDoc = new PrintDocument();
+     printDoc.PrintPage += (_, ev) =>
+            {
+        float y = 40;
+     foreach (var line in lines)
+          {
+         ev.Graphics.DrawString(line, new Font("Segoe UI", 11), Brushes.Black, 40, y);
+  y += 30;
+           }
+  };
+
+          var preview = new PrintPreviewDialog { Document = printDoc, Width = 900, Height = 700 };
+            preview.ShowDialog();
+        }
+
+        private void BtnExportPdf_Click(object? sender, EventArgs e)
+        {
+     if (_dgvInvoices.SelectedRows.Count == 0)
+            {
+         MessageBox.Show("Vui lòng chọn hóa đơn để xuất PDF.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      return;
+  }
+
+       var invoiceId = _dgvInvoices.SelectedRows[0].Cells[1].Value?.ToString();
+   var row = _allRows.FirstOrDefault(x => x.InvoiceId == invoiceId);
+         if (row == null) return;
+
+     using var saveDialog = new SaveFileDialog
+{
+       Filter = "PDF Files|*.pdf",
+    Title = "Lưu hóa đơn PDF",
+  FileName = $"{row.InvoiceId}.pdf"
+   };
+
+            if (saveDialog.ShowDialog() != DialogResult.OK)
+       return;
+
+  try
+            {
+         Document.Create(container =>
+  {
+         container.Page(page =>
+            {
+page.Margin(30);
+   page.Size(PageSizes.A4);
+    page.DefaultTextStyle(x => x.FontSize(12));
+
+          page.Content().Column(col =>
+            {
+        col.Item().Text("HÓA ĐƠN THANH TOÁN").Bold().FontSize(18).FontColor(Colors.Blue.Darken2);
+        col.Item().Text($"Mã hóa đơn: {row.InvoiceId}");
+      col.Item().Text($"Mã chi tiết thuê: {row.RentalDetailId}");
+          col.Item().Text($"Nhân viên lập: {row.EmployeeName}");
+          col.Item().Text($"Ngày thanh toán: {row.PaymentDate:dd/MM/yyyy}");
+col.Item().PaddingTop(10).LineHorizontal(1);
+
+         col.Item().PaddingTop(10).Table(table =>
+                {
+      table.ColumnsDefinition(columns =>
+        {
+            columns.RelativeColumn();
+        columns.RelativeColumn();
+     });
+
+      table.Cell().BorderBottom(1).Background(Colors.Grey.Lighten3).Padding(5).Text("Khoản mục");
+     table.Cell().BorderBottom(1).Background(Colors.Grey.Lighten3).Padding(5).AlignRight().Text("Giá trị");
+
+          table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).Padding(5).Text("Tiền phòng");
+    table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).Padding(5).AlignRight().Text($"{row.RoomTotal:N0} VNĐ");
+
+                 table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).Padding(5).Text("Tiền dịch vụ");
+     table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).Padding(5).AlignRight().Text($"{row.ServiceTotal:N0} VNĐ");
+
+ table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).Padding(5).Text("Giảm giá");
+           table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).Padding(5).AlignRight().Text($"{row.Discount:N0} VNĐ");
+
+     table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).Padding(5).Text("Phụ thu");
+       table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).Padding(5).AlignRight().Text($"{row.Surcharge:N0} VNĐ");
+
+               table.Cell().BorderBottom(1).Background(Colors.Grey.Lighten3).Padding(5).Text("TỔNG TIỀN").Bold();
+     table.Cell().BorderBottom(1).Background(Colors.Grey.Lighten3).Padding(5).AlignRight().Text($"{row.Total:N0} VNĐ").Bold();
+       });
+    });
+  });
+    }).GeneratePdf(saveDialog.FileName);
+
+        Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
+            }
+        catch (Exception ex)
+            {
+         MessageBox.Show($"Xuất PDF thất bại: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+        }
+
+        private void BindGrid(IEnumerable<InvoiceRowVm> rows)
+     {
+        _dgvInvoices.Rows.Clear();
+  var i = 1;
+      foreach (var row in rows)
+            {
+       _dgvInvoices.Rows.Add(
+i++,
+              row.InvoiceId,
+      row.RentalDetailId,
+            row.EmployeeName,
+        $"{row.RoomTotal:N0} VNĐ",
+            $"{row.ServiceTotal:N0} VNĐ",
+           $"{row.Discount:N0}",
+           $"{row.Surcharge:N0}",
+   $"{row.Total:N0} VNĐ",
+         row.PaymentDate.ToString("dd/MM/yyyy")
+    );
+          }
+}
+
+    private static string GetPaymentMethodText(int value)
+        {
+      return value switch
+            {
+        0 => "Tiền mặt",
+   1 => "Thẻ",
+     2 => "Ví điện tử",
+   3 => "Chuyển khoản",
+    _ => "Khác"
+    };
+        }
+
+   private sealed class InvoiceRowVm
+  {
+          public string InvoiceId { get; set; } = string.Empty;
+            public string RentalDetailId { get; set; } = string.Empty;
+      public string EmployeeName { get; set; } = string.Empty;
+            public int RoomTotal { get; set; }
+      public int ServiceTotal { get; set; }
+            public int Discount { get; set; }
+public int Surcharge { get; set; }
+         public int Total { get; set; }
+       public DateTime PaymentDate { get; set; }
+            public int PaymentMethod { get; set; }
+        }
+    }
+}

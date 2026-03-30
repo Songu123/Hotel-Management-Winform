@@ -1,0 +1,389 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.Login
+{
+    /// <summary>
+    /// 🔐 SIMPLE LOGIN FORM - Thiết kế đơn giản, dễ sử dụng
+    /// </summary>
+    public partial class LoginForm : Form
+  {
+        private Label lblTitle;
+        private Label lblUsername;
+      private Label lblPassword;
+        private TextBox txtUsername;
+        private TextBox txtPassword;
+        private Button btnLogin;
+private CheckBox chkRememberMe;
+        private Label lblError;
+        private Button btnCancel;
+
+   // Authentication service
+        private readonly IAuthenticationService _authService;
+
+        public LoginForm(IAuthenticationService authService = null)
+        {
+      InitializeComponent();
+ _authService = authService;
+     BuildUI();
+            LoadRememberedCredentials();
+        }
+
+        private void BuildUI()
+        {
+  // Form setup
+         this.Text = "Đăng Nhập - Quản Lý Khách Sạn";
+this.Width = 450;
+     this.Height = 400;
+   this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+        this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.BackColor = Color.White;
+      this.Icon = null;
+
+            int xMargin = 50;
+   int yPos = 30;
+            int spacing = 60;
+
+            // ===== TITLE =====
+        lblTitle = new Label
+       {
+     Text = "Đăng Nhập",
+     Font = new Font("Segoe UI", 24, FontStyle.Bold),
+    ForeColor = Color.FromArgb(31, 41, 55),
+ AutoSize = true,
+     Location = new Point(xMargin, yPos)
+  };
+            this.Controls.Add(lblTitle);
+
+          yPos += 60;
+
+        // ===== USERNAME FIELD =====
+        lblUsername = new Label
+         {
+     Text = "Tên đăng nhập:",
+      Font = new Font("Segoe UI", 10),
+                ForeColor = Color.FromArgb(75, 85, 99),
+          Location = new Point(xMargin, yPos),
+    AutoSize = true
+     };
+     this.Controls.Add(lblUsername);
+
+   yPos += 25;
+
+      txtUsername = new TextBox
+            {
+  Location = new Point(xMargin, yPos),
+   Width = 350,
+     Height = 35,
+      Font = new Font("Segoe UI", 11),
+         BorderStyle = BorderStyle.FixedSingle
+     };
+            txtUsername.PlaceholderText = "Nhập tên đăng nhập";
+   this.Controls.Add(txtUsername);
+
+            yPos += spacing;
+
+      // ===== PASSWORD FIELD =====
+            lblPassword = new Label
+            {
+           Text = "Mật khẩu:",
+     Font = new Font("Segoe UI", 10),
+  ForeColor = Color.FromArgb(75, 85, 99),
+          Location = new Point(xMargin, yPos),
+          AutoSize = true
+            };
+            this.Controls.Add(lblPassword);
+
+         yPos += 25;
+
+          txtPassword = new TextBox
+      {
+    Location = new Point(xMargin, yPos),
+ Width = 350,
+  Height = 35,
+                Font = new Font("Segoe UI", 11),
+       BorderStyle = BorderStyle.FixedSingle,
+      UseSystemPasswordChar = true
+    };
+  txtPassword.PlaceholderText = "Nhập mật khẩu";
+        txtPassword.KeyDown += (s, e) =>
+  {
+                if (e.KeyCode == Keys.Return)
+            {
+           e.SuppressKeyPress = true;
+    BtnLogin_Click(null, null);
+  }
+          };
+  this.Controls.Add(txtPassword);
+
+            yPos += 50;
+
+          // ===== REMEMBER ME =====
+      chkRememberMe = new CheckBox
+            {
+  Text = "Ghi nhớ tôi",
+    Font = new Font("Segoe UI", 10),
+         ForeColor = Color.FromArgb(75, 85, 99),
+     Location = new Point(xMargin, yPos),
+      AutoSize = true,
+     Cursor = Cursors.Hand
+            };
+            this.Controls.Add(chkRememberMe);
+
+      yPos += 35;
+
+          // ===== ERROR MESSAGE =====
+      lblError = new Label
+            {
+                Text = "",
+   Font = new Font("Segoe UI", 10),
+        ForeColor = Color.FromArgb(220, 38, 38),
+                Location = new Point(xMargin, yPos),
+                Width = 350,
+             Height = 30,
+       AutoSize = false,
+            Visible = false,
+      TextAlign = ContentAlignment.MiddleLeft
+            };
+     this.Controls.Add(lblError);
+
+   yPos += 45;
+
+// ===== BUTTONS =====
+       btnLogin = new Button
+     {
+     Location = new Point(xMargin, yPos),
+                Width = 165,
+     Height = 40,
+      Text = "Đăng Nhập",
+     Font = new Font("Segoe UI", 11, FontStyle.Bold),
+        BackColor = Color.FromArgb(34, 197, 94),
+    ForeColor = Color.White,
+         FlatStyle = FlatStyle.Flat,
+       Cursor = Cursors.Hand
+    };
+   btnLogin.FlatAppearance.BorderSize = 0;
+  btnLogin.Click += BtnLogin_Click;
+            btnLogin.MouseEnter += (s, e) => btnLogin.BackColor = Color.FromArgb(22, 163, 74);
+    btnLogin.MouseLeave += (s, e) => btnLogin.BackColor = Color.FromArgb(34, 197, 94);
+    this.Controls.Add(btnLogin);
+
+         btnCancel = new Button
+        {
+        Location = new Point(xMargin + 185, yPos),
+Width = 165,
+   Height = 40,
+      Text = "Hủy",
+           Font = new Font("Segoe UI", 11, FontStyle.Bold),
+           BackColor = Color.FromArgb(107, 114, 128),
+           ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+         Cursor = Cursors.Hand
+    };
+     btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.Click += (s, e) =>
+    {
+    this.DialogResult = DialogResult.Cancel;
+      this.Close();
+            };
+            btnCancel.MouseEnter += (s, e) => btnCancel.BackColor = Color.FromArgb(75, 85, 99);
+            btnCancel.MouseLeave += (s, e) => btnCancel.BackColor = Color.FromArgb(107, 114, 128);
+this.Controls.Add(btnCancel);
+
+      this.KeyDown += (s, e) =>
+            {
+    if (e.KeyCode == Keys.Escape)
+        {
+      this.DialogResult = DialogResult.Cancel;
+        this.Close();
+        }
+     };
+        }
+
+        /// <summary>
+        /// Handle login button click
+        /// </summary>
+        private void BtnLogin_Click(object sender, EventArgs e)
+        {
+     lblError.Visible = false;
+
+          // Validate
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+             ShowError("Vui lòng nhập tên đăng nhập!");
+    txtUsername.Focus();
+return;
+ }
+
+if (string.IsNullOrWhiteSpace(txtPassword.Text))
+         {
+         ShowError("Vui lòng nhập mật khẩu!");
+         txtPassword.Focus();
+            return;
+  }
+
+        // Nếu có Authentication Service, sử dụng nó
+     if (_authService != null)
+            {
+     PerformDatabaseAuthentication();
+            }
+            else
+          {
+   // Fallback: sử dụng xác thực cơ bản
+   PerformBasicAuthentication();
+  }
+        }
+
+        /// <summary>
+        /// Xác thực từ database
+        /// </summary>
+        private async void PerformDatabaseAuthentication()
+     {
+            try
+     {
+       btnLogin.Enabled = false;
+  btnLogin.Text = "Đang kiểm tra...";
+
+       // Gọi service xác thực
+        var account = await _authService.AuthenticateAsync(txtUsername.Text, txtPassword.Text);
+
+       if (account != null)
+ {
+           // Đăng nhập thành công
+        if (chkRememberMe.Checked)
+  SaveCredentials(txtUsername.Text);
+        else
+           ClearSavedCredentials();
+
+        this.DialogResult = DialogResult.OK;
+       this.Close();
+         }
+     else
+      {
+        // Đăng nhập thất bại
+ ShowError("Tên đăng nhập hoặc mật khẩu không đúng!");
+      txtPassword.Clear();
+       txtPassword.Focus();
+ }
+          }
+  catch (Exception ex)
+ {
+                ShowError($"Lỗi khi đăng nhập: {ex.Message}");
+      txtPassword.Clear();
+     }
+            finally
+    {
+ btnLogin.Enabled = true;
+     btnLogin.Text = "Đăng Nhập";
+      }
+        }
+
+        /// <summary>
+        /// Xác thực cơ bản (không dùng database)
+        /// </summary>
+        private void PerformBasicAuthentication()
+    {
+  // Test credentials
+       const string DEFAULT_USERNAME = "admin";
+ const string DEFAULT_PASSWORD = "123456";
+
+            if (txtUsername.Text.Length < 3)
+      {
+         ShowError("Tên đăng nhập phải >= 3 ký tự!");
+   txtUsername.Focus();
+      return;
+            }
+
+          if (txtPassword.Text.Length < 6)
+     {
+              ShowError("Mật khẩu phải >= 6 ký tự!");
+       txtPassword.Focus();
+          return;
+            }
+
+ if (txtUsername.Text == DEFAULT_USERNAME && txtPassword.Text == DEFAULT_PASSWORD)
+        {
+   if (chkRememberMe.Checked)
+         SaveCredentials(txtUsername.Text);
+              else
+        ClearSavedCredentials();
+
+      this.DialogResult = DialogResult.OK;
+                this.Close();
+          }
+            else
+            {
+              ShowError("Tên đăng nhập hoặc mật khẩu không đúng!");
+      txtPassword.Clear();
+      txtPassword.Focus();
+            }
+        }
+
+  /// <summary>
+   /// Show error message
+        /// </summary>
+    private void ShowError(string message)
+        {
+      lblError.Text = message;
+lblError.Visible = true;
+        }
+
+        /// <summary>
+        /// Load remembered credentials
+        /// </summary>
+        private void LoadRememberedCredentials()
+        {
+   try
+  {
+            var regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\QuanLyKhachSan");
+      if (regKey != null)
+             {
+    string username = regKey.GetValue("Username")?.ToString() ?? "";
+             if (!string.IsNullOrEmpty(username))
+                    {
+       txtUsername.Text = username;
+          chkRememberMe.Checked = true;
+         txtPassword.Focus();
+}
+       regKey.Close();
+    }
+            }
+          catch { }
+    }
+
+   /// <summary>
+        /// Save credentials
+        /// </summary>
+        private void SaveCredentials(string username)
+        {
+         try
+            {
+ var regKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"Software\QuanLyKhachSan");
+                regKey.SetValue("Username", username);
+      regKey.Close();
+            }
+  catch { }
+    }
+
+   /// <summary>
+        /// Clear saved credentials
+        /// </summary>
+    private void ClearSavedCredentials()
+        {
+            try
+         {
+      var regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\QuanLyKhachSan", true);
+     if (regKey != null)
+         {
+           regKey.DeleteValue("Username", false);
+     regKey.Close();
+                }
+    }
+   catch { }
+        }
+    }
+}

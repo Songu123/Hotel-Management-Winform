@@ -1,0 +1,229 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    /// <summary>
+    /// 📝 EDIT SERVICE DIALOG
+    /// Allows editing service quantity, price, and usage date
+    /// </summary>
+    public partial class EditServiceDialog : Form
+    {
+private IServiceService _serviceService;
+        private ServiceRentalDetail _service;
+
+        public int Quantity { get; private set; }
+   public int ServicePrice { get; private set; }
+        public DateTime UsageDate { get; private set; }
+
+ private NumericUpDown nudQuantity;
+        private NumericUpDown nudPrice;
+ private DateTimePicker dtpUsageDate;
+      private Button btnSave;
+    private Button btnCancel;
+
+ public EditServiceDialog(IServiceService serviceService, ServiceRentalDetail service)
+        {
+          InitializeComponent();
+            _serviceService = serviceService;
+            _service = service;
+
+      SetupForm();
+    LoadData();
+        }
+
+        private void SetupForm()
+        {
+   this.Text = "✏️ SỬA DỊCH VỤ";
+         this.Width = 400;
+     this.Height = 300;
+this.StartPosition = FormStartPosition.CenterParent;
+     this.FormBorderStyle = FormBorderStyle.FixedDialog;
+         this.MaximizeBox = false;
+    this.MinimizeBox = false;
+            this.BackColor = Color.FromArgb(249, 250, 251);
+
+  // Header
+var lblHeader = new Label
+    {
+                Text = "Chỉnh sửa thông tin dịch vụ",
+           Font = new Font("Segoe UI", 12, FontStyle.Bold),
+           ForeColor = Color.FromArgb(59, 130, 246),
+       AutoSize = true,
+    Location = new Point(20, 20)
+          };
+            this.Controls.Add(lblHeader);
+
+            // Service Name (Read-only)
+         var lblService = new Label
+ {
+             Text = "Dịch Vụ:",
+     Font = new Font("Segoe UI", 10),
+       AutoSize = true,
+                Location = new Point(20, 60)
+          };
+          this.Controls.Add(lblService);
+
+            var txtService = new TextBox
+       {
+     ReadOnly = true,
+    Width = 350,
+     Height = 28,
+         Location = new Point(20, 85),
+         BackColor = Color.FromArgb(240, 240, 240),
+      BorderStyle = BorderStyle.FixedSingle,
+          Font = new Font("Segoe UI", 9)
+    };
+  this.Controls.Add(txtService);
+
+      // Quantity
+   var lblQuantity = new Label
+            {
+         Text = "Số Lượng:",
+       Font = new Font("Segoe UI", 10),
+   AutoSize = true,
+     Location = new Point(20, 120)
+  };
+            this.Controls.Add(lblQuantity);
+
+    nudQuantity = new NumericUpDown
+       {
+Width = 100,
+  Height = 28,
+ Location = new Point(20, 145),
+    Minimum = 1,
+      Maximum = 1000,
+      Value = 1,
+        BorderStyle = BorderStyle.FixedSingle,
+       Font = new Font("Segoe UI", 9)
+            };
+this.Controls.Add(nudQuantity);
+
+            // Price
+       var lblPrice = new Label
+    {
+         Text = "Giá (VNĐ):",
+  Font = new Font("Segoe UI", 10),
+           AutoSize = true,
+                Location = new Point(150, 120)
+    };
+    this.Controls.Add(lblPrice);
+
+            nudPrice = new NumericUpDown
+        {
+    Width = 200,
+       Height = 28,
+        Location = new Point(150, 145),
+                Minimum = 0,
+      Maximum = 1000000000,
+ DecimalPlaces = 0,
+     ThousandsSeparator = true,
+  Value = 0,
+    BorderStyle = BorderStyle.FixedSingle,
+            Font = new Font("Segoe UI", 9)
+            };
+     this.Controls.Add(nudPrice);
+
+            // Usage Date
+        var lblDate = new Label
+            {
+     Text = "Ngày Sử Dụng:",
+          Font = new Font("Segoe UI", 10),
+         AutoSize = true,
+    Location = new Point(20, 180)
+            };
+  this.Controls.Add(lblDate);
+
+      dtpUsageDate = new DateTimePicker
+            {
+   Width = 330,
+     Height = 28,
+            Location = new Point(20, 205),
+Value = DateTime.Now,
+    Format = DateTimePickerFormat.Short,
+ BorderStyle = BorderStyle.FixedSingle,
+      Font = new Font("Segoe UI", 9)
+         };
+       this.Controls.Add(dtpUsageDate);
+
+   // Buttons
+    btnSave = new Button
+    {
+       Text = "💾 Lưu",
+      Width = 100,
+           Height = 35,
+    Location = new Point(120, 245),
+    BackColor = Color.FromArgb(34, 197, 94),
+         ForeColor = Color.White,
+       Font = new Font("Segoe UI", 10, FontStyle.Bold),
+  FlatStyle = FlatStyle.Flat,
+            DialogResult = DialogResult.OK
+        };
+            btnSave.Click += (s, e) => SaveData();
+            this.Controls.Add(btnSave);
+
+   btnCancel = new Button
+            {
+   Text = "Hủy",
+          Width = 100,
+         Height = 35,
+       Location = new Point(230, 245),
+    BackColor = Color.FromArgb(107, 114, 128),
+                ForeColor = Color.White,
+  Font = new Font("Segoe UI", 10, FontStyle.Bold),
+     FlatStyle = FlatStyle.Flat,
+      DialogResult = DialogResult.Cancel
+            };
+            this.Controls.Add(btnCancel);
+
+    // Populate service name
+            txtService.Text = _service?.ServiceId ?? "N/A";
+        }
+
+        private void LoadData()
+        {
+         nudQuantity.Value = _service?.Quantity ?? 1;
+          nudPrice.Value = _service?.Price ?? 0;
+      dtpUsageDate.Value = _service?.UsageDate ?? DateTime.Now;
+        }
+
+    private void SaveData()
+    {
+            Quantity = (int)nudQuantity.Value;
+            ServicePrice = (int)nudPrice.Value;
+  UsageDate = dtpUsageDate.Value;
+        }
+    }
+
+    partial class EditServiceDialog
+    {
+        private System.ComponentModel.IContainer components = null;
+
+ protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+ components.Dispose();
+            }
+            base.Dispose(disposing);
+ }
+
+        private void InitializeComponent()
+   {
+            this.SuspendLayout();
+
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+  this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.ClientSize = new System.Drawing.Size(400, 300);
+            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+       this.Name = "EditServiceDialog";
+        this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+          this.Text = "✏️ SỬA DỊCH VỤ";
+
+        this.ResumeLayout(false);
+        }
+    }
+}

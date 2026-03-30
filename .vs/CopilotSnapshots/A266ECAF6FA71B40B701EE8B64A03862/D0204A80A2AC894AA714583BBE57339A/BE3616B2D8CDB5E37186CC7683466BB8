@@ -1,0 +1,479 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    /// <summary>
+    /// 🏠 ROOM STATUS MANAGEMENT FORM
+    /// Quản lý cập nhật trạng thái phòng trong quá trình đặt phòng
+    /// </summary>
+    public partial class RoomStatusManagementForm : Form
+    {
+        private readonly IRoomRentalDetailService _roomRentalDetailService;
+        private readonly IRentalDetailService _rentalDetailService;
+        private List<RoomRentalDetail> _allRoomDetails = new();
+
+        // UI Controls
+        private DataGridView dgvRoomStatus;
+        private TextBox txtSearchRental;
+        private ComboBox cboStatus;
+        private Button btnSearch;
+        private Button btnUpdateStatus;
+        private Button btnRefresh;
+        private Label lblStatusInfo;
+
+        public RoomStatusManagementForm(
+    IRoomRentalDetailService roomRentalDetailService,
+          IRentalDetailService rentalDetailService)
+        {
+            _roomRentalDetailService = roomRentalDetailService;
+            _rentalDetailService = rentalDetailService;
+
+            InitializeComponent();
+            SetupUI();
+        }
+
+        private void InitializeComponent()
+        {
+            this.Text = "🏠 Quản Lý Trạng Thái Phòng";
+            this.Width = 1000;
+            this.Height = 700;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = Color.FromArgb(241, 242, 244);
+        }
+
+        private void SetupUI()
+        {
+            // Header
+            var headerPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 60,
+                BackColor = Color.FromArgb(59, 130, 246),
+                Padding = new Padding(15)
+            };
+
+            var lblHeader = new Label
+            {
+                Text = "🏠 QUẢN LÝ TRẠNG THÁI PHÒNG",
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                ForeColor = Color.White,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            headerPanel.Controls.Add(lblHeader);
+            this.Controls.Add(headerPanel);
+
+            // Search Panel
+            var searchPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 80,
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Padding = new Padding(15)
+            };
+
+            // Search by Rental ID
+            var lblSearch = new Label
+            {
+                Text = "Tìm kiếm theo Mã Chi Tiết Thuê:",
+                Font = new Font("Segoe UI", 9, FontStyle.Regular),
+                Location = new Point(0, 0),
+                AutoSize = true
+            };
+            searchPanel.Controls.Add(lblSearch);
+
+            txtSearchRental = new TextBox
+            {
+                Location = new Point(0, 20),
+                Width = 250,
+                Height = 28,
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = new Font("Segoe UI", 9)
+            };
+            searchPanel.Controls.Add(txtSearchRental);
+
+            // Status Filter
+            var lblStatusFilter = new Label
+            {
+                Text = "Lọc theo Trạng Thái:",
+                Font = new Font("Segoe UI", 9, FontStyle.Regular),
+                Location = new Point(280, 0),
+                AutoSize = true
+            };
+            searchPanel.Controls.Add(lblStatusFilter);
+
+            cboStatus = new ComboBox
+            {
+                Location = new Point(280, 20),
+                Width = 200,
+                Height = 28,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Font = new Font("Segoe UI", 9)
+            };
+            cboStatus.Items.AddRange(new[] {
+          "-- Tất Cả --",
+             "0 - Đang Thuê",
+         "1 - Đang Dọn Dẹp",
+        "2 - Sẵn Sàng"
+   });
+            cboStatus.SelectedIndex = 0;
+            searchPanel.Controls.Add(cboStatus);
+
+            // Buttons
+            btnSearch = new Button
+            {
+                Text = "🔍 Tìm Kiếm",
+                Location = new Point(510, 20),
+                Width = 100,
+                Height = 28,
+                BackColor = Color.FromArgb(59, 130, 246),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            btnSearch.Click += async (s, e) => await SearchRoomsAsync();
+            searchPanel.Controls.Add(btnSearch);
+
+            btnRefresh = new Button
+            {
+                Text = "🔄 Làm Mới",
+                Location = new Point(620, 20),
+                Width = 100,
+                Height = 28,
+                BackColor = Color.FromArgb(107, 114, 128),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            btnRefresh.Click += async (s, e) => await LoadAllRoomsAsync();
+            searchPanel.Controls.Add(btnRefresh);
+
+            this.Controls.Add(searchPanel);
+
+            // Main Content Panel
+            var contentPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(15)
+            };
+
+            // Grid
+            dgvRoomStatus = new DataGridView
+            {
+                Dock = DockStyle.Fill,
+                AllowUserToAddRows = false,
+                ReadOnly = false,
+                RowHeadersVisible = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Height = 400
+            };
+
+            dgvRoomStatus.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 40, ReadOnly = true });
+            dgvRoomStatus.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "MÃ CHI TIẾT THUÊ", Width = 150, ReadOnly = true });
+            dgvRoomStatus.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "MÃ PHÒNG", Width = 100, ReadOnly = true });
+            dgvRoomStatus.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NGÀY THUÊ", Width = 120, ReadOnly = true });
+            dgvRoomStatus.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NGÀY TRẢ", Width = 120, ReadOnly = true });
+            dgvRoomStatus.Columns.Add(new DataGridViewComboBoxColumn
+            {
+                HeaderText = "TRẠNG THÁI HIỆN TẠI",
+                Width = 150,
+                Name = "CurrentStatus"
+            });
+
+            var statusColumn = (DataGridViewComboBoxColumn)dgvRoomStatus.Columns["CurrentStatus"];
+            statusColumn.Items.AddRange(new[] { "Đang Thuê", "Đang Dọn Dẹp", "Sẵn Sàng" });
+
+            dgvRoomStatus.Columns.Add(new DataGridViewComboBoxColumn
+            {
+                HeaderText = "TRẠNG THÁI MỚI",
+                Width = 150,
+                Name = "NewStatus"
+            });
+
+            var newStatusColumn = (DataGridViewComboBoxColumn)dgvRoomStatus.Columns["NewStatus"];
+            newStatusColumn.Items.AddRange(new[] { "Đang Thuê", "Đang Dọn Dẹp", "Sẵn Sàng" });
+
+            dgvRoomStatus.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(59, 130, 246);
+            dgvRoomStatus.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvRoomStatus.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+
+            contentPanel.Controls.Add(dgvRoomStatus);
+
+            // Bottom Action Panel
+            var actionPanel = new Panel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 80,
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Padding = new Padding(15)
+            };
+
+            lblStatusInfo = new Label
+            {
+                Text = "Chọn phòng và trạng thái mới, sau đó click 'Cập Nhật'",
+                Font = new Font("Segoe UI", 9, FontStyle.Italic),
+                ForeColor = Color.FromArgb(90, 90, 90),
+                Location = new Point(0, 0),
+                AutoSize = true
+            };
+            actionPanel.Controls.Add(lblStatusInfo);
+
+            btnUpdateStatus = new Button
+            {
+                Text = "✅ Cập Nhật Trạng Thái",
+                Location = new Point(0, 30),
+                Width = 180,
+                Height = 40,
+                BackColor = Color.FromArgb(34, 197, 94),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            btnUpdateStatus.Click += async (s, e) => await UpdateRoomStatusAsync();
+            actionPanel.Controls.Add(btnUpdateStatus);
+
+            var btnClose = new Button
+            {
+                Text = "❌ Đóng",
+                Location = new Point(190, 30),
+                Width = 100,
+                Height = 40,
+                BackColor = Color.FromArgb(107, 114, 128),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            btnClose.Click += (s, e) => this.Close();
+            actionPanel.Controls.Add(btnClose);
+
+            contentPanel.Controls.Add(actionPanel);
+            this.Controls.Add(contentPanel);
+
+            // Load data on form load
+            this.Load += async (s, e) => await LoadAllRoomsAsync();
+        }
+
+        /// <summary>
+        /// Load phòng đang dọn dẹp (Status = 1)
+        /// </summary>
+        private async Task LoadAllRoomsAsync()
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("📌 Loading room rental details with Status = 1 (Đang Dọn Dẹp)...");
+
+                // Get all rentals
+                var rentals = await _rentalDetailService.GetAllRentalDetailsAsync();
+                if (rentals == null)
+                {
+                    MessageBox.Show("Không có dữ liệu chi tiết thuê.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                _allRoomDetails.Clear();
+
+                // Get room details for each rental
+                foreach (var rental in rentals)
+                {
+                    var roomDetails = await _roomRentalDetailService.GetRoomRentalDetailsByRentalDetailIdAsync(rental.RentalDetailId);
+                    if (roomDetails != null)
+                    {
+                        // ✅ FILTER: Chỉ lấy phòng có Status = 1 (Đang Dọn Dẹp)
+                        var cleaningRooms = roomDetails.Where(r => r.Status == 1).ToList();
+                        _allRoomDetails.AddRange(cleaningRooms);
+                    }
+                }
+
+                BindGrid(_allRoomDetails);
+                lblStatusInfo.Text = $"✅ Đã tải {_allRoomDetails.Count} phòng đang dọn dẹp";
+
+                System.Diagnostics.Debug.WriteLine($"✅ Loaded {_allRoomDetails.Count} room details with Status = 1");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error loading rooms: {ex.Message}");
+                MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Tìm kiếm phòng theo Mã Chi Tiết Thuê
+        /// </summary>
+        private async Task SearchRoomsAsync()
+        {
+            try
+            {
+                string searchText = txtSearchRental.Text.Trim();
+                if (string.IsNullOrWhiteSpace(searchText))
+                {
+                    await LoadAllRoomsAsync();
+                    return;
+                }
+
+                System.Diagnostics.Debug.WriteLine($"🔍 Searching rooms for rental: {searchText}");
+
+                var roomDetails = await _roomRentalDetailService.GetRoomRentalDetailsByRentalDetailIdAsync(searchText);
+                if (roomDetails == null || !roomDetails.Any())
+                {
+                    MessageBox.Show($"Không tìm thấy phòng cho mã chi tiết thuê: {searchText}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    _allRoomDetails.Clear();
+                    BindGrid(_allRoomDetails);
+                    return;
+                }
+
+                _allRoomDetails = roomDetails.ToList();
+                BindGrid(_allRoomDetails);
+                lblStatusInfo.Text = $"✅ Tìm thấy {_allRoomDetails.Count} phòng";
+
+                System.Diagnostics.Debug.WriteLine($"✅ Found {_allRoomDetails.Count} rooms");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error searching rooms: {ex.Message}");
+                MessageBox.Show($"Lỗi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Cập nhật trạng thái phòng
+        /// </summary>
+        private async Task UpdateRoomStatusAsync()
+        {
+            try
+            {
+                if (dgvRoomStatus.SelectedRows.Count == 0)
+                {
+                    MessageBox.Show("Vui lòng chọn phòng cần cập nhật.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                int updatedCount = 0;
+
+                foreach (DataGridViewRow row in dgvRoomStatus.SelectedRows)
+                {
+                    // Get new status from grid
+                    var newStatusText = row.Cells["NewStatus"].Value?.ToString();
+                    if (string.IsNullOrWhiteSpace(newStatusText))
+                    {
+                        lblStatusInfo.Text = "⚠️ Vui lòng chọn trạng thái mới cho tất cả phòng";
+                        continue;
+                    }
+
+                    // Convert status text to number
+                    int newStatus = GetStatusValue(newStatusText);
+
+                    // Find original room detail
+                    var rentalDetailId = row.Cells[1].Value?.ToString();
+                    var roomId = row.Cells[2].Value?.ToString();
+
+                    if (string.IsNullOrWhiteSpace(rentalDetailId) || string.IsNullOrWhiteSpace(roomId))
+                        continue;
+
+                    var roomDetail = _allRoomDetails.FirstOrDefault(x =>
+                        x.RentalDetailId == rentalDetailId && x.RoomId == roomId);
+
+                    if (roomDetail != null)
+                    {
+                        // Update status
+                        roomDetail.Status = newStatus;
+
+                        // Save to database
+                        bool success = await _roomRentalDetailService.UpdateRoomRentalDetailAsync(roomDetail);
+
+                        if (success)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"✅ Updated room {roomId} status to {newStatus}");
+                            updatedCount++;
+
+                            // Update grid display
+                            row.Cells["CurrentStatus"].Value = newStatusText;
+                            row.Cells["NewStatus"].Value = "";
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine($"⚠️ Failed to update room {roomId}");
+                        }
+                    }
+                }
+
+                MessageBox.Show(
+                       $"✅ Đã cập nhật {updatedCount} phòng.\n\nTrạng thái được cập nhật thành công!",
+           "Thành công",
+                 MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+                lblStatusInfo.Text = $"✅ Đã cập nhật {updatedCount} phòng";
+
+                // Reload data
+                await LoadAllRoomsAsync();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error updating room status: {ex.Message}");
+                MessageBox.Show($"Lỗi cập nhật: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Convert status text to value
+        /// </summary>
+        private int GetStatusValue(string statusText)
+        {
+            return statusText switch
+            {
+                "Đang Thuê" => 0,
+                "Đang Dọn Dẹp" => 1,
+                "Sẵn Sàng" => 2,
+                _ => 0
+            };
+        }
+
+        /// <summary>
+        /// Convert status value to text
+        /// </summary>
+        private string GetStatusText(int status)
+        {
+            return status switch
+            {
+                0 => "Đang Thuê",
+                1 => "Đang Dọn Dẹp",
+                2 => "Sẵn Sàng",
+                _ => "Không xác định"
+            };
+        }
+
+        /// <summary>
+        /// Bind data to grid
+        /// </summary>
+        private void BindGrid(List<RoomRentalDetail> roomDetails)
+        {
+            dgvRoomStatus.Rows.Clear();
+            int stt = 1;
+
+            foreach (var room in roomDetails)
+            {
+                dgvRoomStatus.Rows.Add(
+          stt++,
+ room.RentalDetailId,
+  room.RoomId,
+ room.RentalDate.ToString("dd/MM/yyyy HH:mm"),
+   room.ReturnDate.ToString("dd/MM/yyyy HH:mm"),
+  GetStatusText(room.Status),
+              ""  // New status column (empty for user to select)
+    );
+            }
+        }
+    }
+}
