@@ -1,0 +1,460 @@
+﻿namespace QuanLyKhachSan.UI.BookingUI
+{
+    partial class BookingDetailForm
+    {
+     /// <summary>
+        /// Required designer variable.
+  /// </summary>
+    private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+         {
+        components.Dispose();
+     }
+          base.Dispose(disposing);
+        }
+
+  #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+        this.SuspendLayout();
+
+      // Main Container Panel
+     var mainPanel = new Panel
+   {
+     Dock = DockStyle.Fill,
+        AutoScroll = true,
+        BackColor = System.Drawing.Color.FromArgb(249, 250, 251),
+         Padding = new Padding(15)
+            };
+
+     // ===== SECTION 1: Header =====
+  var headerPanel = new Panel
+       {
+   Dock = DockStyle.Top,
+            Height = 50,
+           BackColor = System.Drawing.Color.FromArgb(59, 130, 246),
+Padding = new Padding(15)
+            };
+       var lblHeader = new Label
+         {
+   Text = "📋 CHI TIẾT ĐẶT PHÒNG",
+        Font = new System.Drawing.Font("Segoe UI", 16, System.Drawing.FontStyle.Bold),
+  ForeColor = System.Drawing.Color.White,
+      AutoSize = false,
+    Dock = DockStyle.Fill,
+                TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            };
+            headerPanel.Controls.Add(lblHeader);
+            mainPanel.Controls.Add(headerPanel);
+
+            // ===== SECTION 2: Top Panel (Booking Info + Customer Info) =====
+     var topPanel = new Panel
+    {
+           Dock = DockStyle.Top,
+        Height = 280,
+   Margin = new Padding(0, 10, 0, 10)
+            };
+
+    // Booking Info Panel
+        var panelBookingInfo = new Panel
+      {
+       BackColor = System.Drawing.Color.White,
+       BorderStyle = BorderStyle.FixedSingle,
+        Width = 520,
+    Height = 270,
+         Location = new System.Drawing.Point(0, 0)
+     };
+            AddBookingInfoControls(panelBookingInfo);
+   topPanel.Controls.Add(panelBookingInfo);
+
+            // Customer Info Panel
+       var panelCustomerInfo = new Panel
+ {
+           BackColor = System.Drawing.Color.White,
+ BorderStyle = BorderStyle.FixedSingle,
+             Width = 520,
+       Height = 270,
+     Location = new System.Drawing.Point(540, 0)
+      };
+            AddCustomerInfoControls(panelCustomerInfo);
+         topPanel.Controls.Add(panelCustomerInfo);
+
+      mainPanel.Controls.Add(topPanel);
+
+            // ===== SECTION 3: Rooms Panel =====
+            var roomsPanel = new Panel
+     {
+           Dock = DockStyle.Top,
+     Height = 280,
+    BackColor = System.Drawing.Color.White,
+      BorderStyle = BorderStyle.FixedSingle,
+        Margin = new Padding(0, 10, 0, 10),
+           Padding = new Padding(10)
+    };
+
+        var lblRoomsTitle = new Label
+    {
+          Text = "🏨 DANH SÁCH PHÒNG",
+      Font = new System.Drawing.Font("Segoe UI", 12, System.Drawing.FontStyle.Bold),
+ForeColor = System.Drawing.Color.FromArgb(59, 130, 246),
+                AutoSize = true,
+                Location = new System.Drawing.Point(10, 10)
+            };
+ roomsPanel.Controls.Add(lblRoomsTitle);
+
+            dgvRooms = new DataGridView
+   {
+     Name = "dgvRooms",
+        AutoGenerateColumns = false,
+          AllowUserToAddRows = false,
+     ReadOnly = true,
+            BackgroundColor = System.Drawing.Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+           RowHeadersVisible = false,
+             Width = 1040,
+        Height = 180,
+             Location = new System.Drawing.Point(10, 40)
+            };
+       dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 40 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Mã Phòng", Width = 80 });
+    dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Loại", Width = 100 });
+    dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Nhận", Width = 90 });
+        dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Trả", Width = 90 });
+     dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Đêm", Width = 45 });
+        dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Giá/Đêm", Width = 100 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Thành Tiền", Width = 100 });
+            dgvRooms.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(59, 130, 246);
+    dgvRooms.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+ dgvRooms.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold);
+            roomsPanel.Controls.Add(dgvRooms);
+
+        btnAddRoom = new Button
+         {
+          Name = "btnAddRoom",
+    Text = "➕ Thêm Phòng",
+       Width = 120,
+             Height = 35,
+     Location = new System.Drawing.Point(10, 230),
+           BackColor = System.Drawing.Color.FromArgb(34, 197, 94),
+   ForeColor = System.Drawing.Color.White,
+  Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold),
+   FlatStyle = FlatStyle.Flat
+    };
+         roomsPanel.Controls.Add(btnAddRoom);
+
+       mainPanel.Controls.Add(roomsPanel);
+
+            // ===== SECTION 4: Services Panel =====
+       var servicesPanel = new Panel
+     {
+       Dock = DockStyle.Top,
+      Height = 260,
+       BackColor = System.Drawing.Color.White,
+  BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(0, 10, 0, 10),
+       Padding = new Padding(10)
+         };
+
+            var lblServicesTitle = new Label
+      {
+    Text = "🍔 DANH SÁCH DỊCH VỤ",
+    Font = new System.Drawing.Font("Segoe UI", 12, System.Drawing.FontStyle.Bold),
+                ForeColor = System.Drawing.Color.FromArgb(245, 158, 11),
+ AutoSize = true,
+             Location = new System.Drawing.Point(10, 10)
+       };
+    servicesPanel.Controls.Add(lblServicesTitle);
+
+            dgvServices = new DataGridView
+        {
+           Name = "dgvServices",
+                AutoGenerateColumns = false,
+          AllowUserToAddRows = false,
+          ReadOnly = true,
+                BackgroundColor = System.Drawing.Color.White,
+ BorderStyle = BorderStyle.FixedSingle,
+    RowHeadersVisible = false,
+     Width = 1040,
+      Height = 160,
+     Location = new System.Drawing.Point(10, 40)
+      };
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 40 });
+       dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Dịch Vụ", Width = 200 });
+     dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Số Lượng", Width = 80 });
+ dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Giá", Width = 100 });
+     dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Thành Tiền", Width = 100 });
+            dgvServices.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(245, 158, 11);
+   dgvServices.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+       dgvServices.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold);
+     servicesPanel.Controls.Add(dgvServices);
+
+            btnAddService = new Button
+            {
+       Name = "btnAddService",
+                Text = "➕ Thêm Dịch Vụ",
+    Width = 120,
+    Height = 35,
+                Location = new System.Drawing.Point(10, 210),
+            BackColor = System.Drawing.Color.FromArgb(245, 158, 11),
+             ForeColor = System.Drawing.Color.White,
+            Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold),
+    FlatStyle = FlatStyle.Flat
+            };
+      servicesPanel.Controls.Add(btnAddService);
+
+       mainPanel.Controls.Add(servicesPanel);
+
+            // ===== SECTION 5: Summary Panel =====
+            var summaryPanel = new Panel
+   {
+     Dock = DockStyle.Top,
+           Height = 140,
+              BackColor = System.Drawing.Color.FromArgb(243, 244, 246),
+       BorderStyle = BorderStyle.FixedSingle,
+             Margin = new Padding(0, 10, 0, 0),
+    Padding = new Padding(20)
+            };
+
+       var lblRoomCost = new Label
+            {
+                Text = "Tổng tiền phòng:",
+        Font = new System.Drawing.Font("Segoe UI", 10),
+     Location = new System.Drawing.Point(20, 15),
+          AutoSize = true
+         };
+         summaryPanel.Controls.Add(lblRoomCost);
+
+        txtRoomCost = new TextBox
+       {
+            Name = "txtRoomCost",
+          Location = new System.Drawing.Point(180, 12),
+              Width = 150,
+                Height = 28,
+         ReadOnly = true,
+    BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+      BorderStyle = BorderStyle.FixedSingle,
+     Font = new System.Drawing.Font("Segoe UI", 9)
+    };
+            summaryPanel.Controls.Add(txtRoomCost);
+
+      var lblServiceCost = new Label
+            {
+Text = "Tổng tiền dịch vụ:",
+      Font = new System.Drawing.Font("Segoe UI", 10),
+     Location = new System.Drawing.Point(20, 50),
+     AutoSize = true
+       };
+    summaryPanel.Controls.Add(lblServiceCost);
+
+     txtServiceCost = new TextBox
+            {
+ Name = "txtServiceCost",
+         Location = new System.Drawing.Point(180, 47),
+                Width = 150,
+       Height = 28,
+   ReadOnly = true,
+     BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+        BorderStyle = BorderStyle.FixedSingle,
+                Font = new System.Drawing.Font("Segoe UI", 9)
+            };
+            summaryPanel.Controls.Add(txtServiceCost);
+
+            var lblTotal = new Label
+         {
+ Text = "TỔNG CỘNG:",
+       Font = new System.Drawing.Font("Segoe UI", 12, System.Drawing.FontStyle.Bold),
+      ForeColor = System.Drawing.Color.FromArgb(220, 20, 60),
+                Location = new System.Drawing.Point(520, 35),
+   AutoSize = true
+          };
+   summaryPanel.Controls.Add(lblTotal);
+
+    lblTotalAmount = new Label
+   {
+     Name = "lblTotalAmount",
+        Text = "0 VNĐ",
+        Font = new System.Drawing.Font("Segoe UI", 16, System.Drawing.FontStyle.Bold),
+       ForeColor = System.Drawing.Color.FromArgb(220, 20, 60),
+  Location = new System.Drawing.Point(670, 30),
+                AutoSize = true
+    };
+      summaryPanel.Controls.Add(lblTotalAmount);
+
+        btnCheckout = new Button
+        {
+       Name = "btnCheckout",
+     Text = "✓ Checkout",
+      Width = 110,
+            Height = 40,
+     Location = new System.Drawing.Point(750, 80),
+        BackColor = System.Drawing.Color.FromArgb(34, 197, 94),
+    ForeColor = System.Drawing.Color.White,
+        Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold),
+        FlatStyle = FlatStyle.Flat
+       };
+    summaryPanel.Controls.Add(btnCheckout);
+
+            btnPrint = new Button
+ {
+     Name = "btnPrint",
+        Text = "🖨️ In",
+         Width = 100,
+        Height = 40,
+     Location = new System.Drawing.Point(870, 80),
+        BackColor = System.Drawing.Color.FromArgb(59, 130, 246),
+      ForeColor = System.Drawing.Color.White,
+      Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold),
+       FlatStyle = FlatStyle.Flat
+       };
+            summaryPanel.Controls.Add(btnPrint);
+
+   btnClose = new Button
+  {
+           Name = "btnClose",
+       Text = "✕ Đóng",
+                Width = 100,
+         Height = 40,
+      Location = new System.Drawing.Point(980, 80),
+      BackColor = System.Drawing.Color.FromArgb(107, 114, 128),
+    ForeColor = System.Drawing.Color.White,
+   Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold),
+             FlatStyle = FlatStyle.Flat
+        };
+    summaryPanel.Controls.Add(btnClose);
+
+            mainPanel.Controls.Add(summaryPanel);
+
+            // Add main panel to form
+        this.Controls.Add(mainPanel);
+
+            // Form properties
+          this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+    this.AutoScaleMode = AutoScaleMode.Font;
+       this.ClientSize = new System.Drawing.Size(1100, 950);
+   this.Font = new System.Drawing.Font("Segoe UI", 10F);
+       this.Name = "BookingDetailForm";
+  this.StartPosition = FormStartPosition.CenterScreen;
+       this.Text = "📋 CHI TIẾT ĐẶT PHÒNG";
+          this.BackColor = System.Drawing.Color.FromArgb(249, 250, 251);
+
+      this.ResumeLayout(false);
+        }
+
+        private void AddBookingInfoControls(Panel panel)
+        {
+    int yPos = 15;
+
+   var lblTitle = new Label
+            {
+       Text = "THÔNG TIN ĐẶT PHÒNG",
+                Font = new System.Drawing.Font("Segoe UI", 11, System.Drawing.FontStyle.Bold),
+           ForeColor = System.Drawing.Color.FromArgb(59, 130, 246),
+   Location = new System.Drawing.Point(15, yPos),
+     AutoSize = true
+      };
+   panel.Controls.Add(lblTitle);
+
+            yPos += 35;
+
+   panel.Controls.Add(CreateLabel("Mã chi tiết:", 15, yPos));
+          txtRentalId = CreateTextBox(15, yPos + 20, 450, "txtRentalId");
+            panel.Controls.Add(txtRentalId);
+
+   yPos += 55;
+
+            panel.Controls.Add(CreateLabel("Ngày lập phiếu:", 15, yPos));
+            txtCreatedDate = CreateTextBox(15, yPos + 20, 450, "txtCreatedDate");
+            panel.Controls.Add(txtCreatedDate);
+
+  yPos += 55;
+
+            panel.Controls.Add(CreateLabel("Tiền đặt cọc:", 15, yPos));
+            txtDeposit = CreateTextBox(15, yPos + 20, 450, "txtDeposit");
+          panel.Controls.Add(txtDeposit);
+
+    yPos += 55;
+
+        panel.Controls.Add(CreateLabel("Tình trạng:", 15, yPos));
+       txtStatus = CreateTextBox(15, yPos + 20, 450, "txtStatus");
+            panel.Controls.Add(txtStatus);
+     }
+
+        private void AddCustomerInfoControls(Panel panel)
+        {
+         int yPos = 15;
+
+            var lblTitle = new Label
+   {
+                Text = "THÔNG TIN KHÁCH HÀNG",
+   Font = new System.Drawing.Font("Segoe UI", 11, System.Drawing.FontStyle.Bold),
+   ForeColor = System.Drawing.Color.FromArgb(34, 197, 94),
+            Location = new System.Drawing.Point(15, yPos),
+         AutoSize = true
+       };
+            panel.Controls.Add(lblTitle);
+
+            yPos += 35;
+
+            panel.Controls.Add(CreateLabel("Tên khách hàng:", 15, yPos));
+     txtCustomerName = CreateTextBox(15, yPos + 20, 450, "txtCustomerName");
+panel.Controls.Add(txtCustomerName);
+
+            yPos += 55;
+
+            panel.Controls.Add(CreateLabel("CMND/CCCD:", 15, yPos));
+            txtIdNumber = CreateTextBox(15, yPos + 20, 450, "txtIdNumber");
+          panel.Controls.Add(txtIdNumber);
+
+            yPos += 55;
+
+    panel.Controls.Add(CreateLabel("Số điện thoại:", 15, yPos));
+         txtPhone = CreateTextBox(15, yPos + 20, 450, "txtPhone");
+            panel.Controls.Add(txtPhone);
+
+       yPos += 55;
+
+            panel.Controls.Add(CreateLabel("Địa chỉ:", 15, yPos));
+      txtAddress = CreateTextBox(15, yPos + 20, 450, "txtAddress");
+        panel.Controls.Add(txtAddress);
+        }
+
+        private Label CreateLabel(string text, int x, int y)
+  {
+            return new Label
+            {
+ Text = text,
+     Font = new System.Drawing.Font("Segoe UI", 9),
+    ForeColor = System.Drawing.Color.FromArgb(60, 60, 60),
+       Location = new System.Drawing.Point(x, y),
+     AutoSize = true
+};
+        }
+
+        private TextBox CreateTextBox(int x, int y, int width, string name)
+        {
+   return new TextBox
+            {
+          Name = name,
+      Location = new System.Drawing.Point(x, y),
+  Width = width,
+                Height = 28,
+                ReadOnly = true,
+   BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+           BorderStyle = BorderStyle.FixedSingle,
+      Font = new System.Drawing.Font("Segoe UI", 9)
+   };
+        }
+    }
+}

@@ -1,0 +1,40 @@
+﻿        public BookingForm(Room room, DateTime checkInDate, DateTime checkOutDate, List<Customer> customers) : this()
+        {
+   _selectedRoom = room ?? throw new ArgumentNullException(nameof(room));
+            _checkInDate = checkInDate;
+       _checkOutDate = checkOutDate;
+  _customers = customers ?? new List<Customer>();
+
+          try
+        {
+         var serviceProvider = (IServiceProvider)Program.Services;
+            _roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
+        _bookingService = serviceProvider.GetService(typeof(IBookingService)) as IBookingService;
+     _customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
+   _rentalDetailService = serviceProvider.GetService(typeof(IRentalDetailService)) as IRentalDetailService;
+   _roomRentalDetailService = serviceProvider.GetService(typeof(IRoomRentalDetailService)) as IRoomRentalDetailService;
+    _printService = serviceProvider.GetService(typeof(IPrintService)) as IPrintService;
+
+       // ✅ Thêm phòng ngay khi khởi tạo form
+   AddInitialRoom();
+     }
+    catch (Exception ex)
+{
+ System.Diagnostics.Debug.WriteLine($"Error getting services: {ex.Message}");
+  }
+}
+
+        /// <summary>
+      /// Initialize services (for external initialization)
+        /// </summary>
+   public void Initialize(
+      IRoomService roomService,
+         ICustomerService customerService,
+            IRentalDetailService rentalDetailService,
+         IRoomRentalDetailService roomRentalDetailService)
+    {
+            _roomService = roomService;
+ _customerService = customerService;
+            _rentalDetailService = rentalDetailService;
+            _roomRentalDetailService = roomRentalDetailService;
+ }

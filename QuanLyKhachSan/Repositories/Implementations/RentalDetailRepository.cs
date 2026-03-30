@@ -10,23 +10,23 @@ namespace QuanLyKhachSan.Repositories.Implementations
     /// </summary>
     public class RentalDetailRepository : IRepository<RentalDetail>
     {
-     protected readonly HotelDbContext _context;
+        protected readonly HotelDbContext _context;
         protected readonly DbSet<RentalDetail> _dbSet;
 
         public RentalDetailRepository(HotelDbContext context)
         {
-        _context = context;
+            _context = context;
             _dbSet = context.Set<RentalDetail>();
-   }
+        }
 
-     public virtual async Task<IEnumerable<RentalDetail>> GetAllAsync()
-   {
-      return await _dbSet.ToListAsync();
-   }
+        public virtual async Task<IEnumerable<RentalDetail>> GetAllAsync()
+        {
+            return await _dbSet.ToListAsync();
+        }
 
         public virtual async Task<RentalDetail?> GetByIdAsync(int id)
- {
-  throw new NotImplementedException("Sử dụng GetByIdAsync(string) thay thế");
+        {
+            throw new NotImplementedException("Sử dụng GetByIdAsync(string) thay thế");
         }
 
         /// <summary>
@@ -34,69 +34,87 @@ namespace QuanLyKhachSan.Repositories.Implementations
         /// </summary>
         public virtual async Task<RentalDetail?> GetByIdAsync(string id)
         {
-      return await _dbSet.FirstOrDefaultAsync(r => r.RentalDetailId == id);
+            return await _dbSet.FirstOrDefaultAsync(r => r.RentalDetailId == id);
         }
 
         public virtual async Task AddAsync(RentalDetail entity)
-      {
-     await _dbSet.AddAsync(entity);
-      }
+        {
+            await _dbSet.AddAsync(entity);
+        }
 
         public virtual async Task AddRangeAsync(IEnumerable<RentalDetail> entities)
         {
-         await _dbSet.AddRangeAsync(entities);
+            await _dbSet.AddRangeAsync(entities);
         }
 
-    public virtual async Task UpdateAsync(RentalDetail entity)
+        public virtual async Task UpdateAsync(RentalDetail entity)
         {
-    _dbSet.Update(entity);
-        await Task.CompletedTask;
-}
+            _dbSet.Update(entity);
+            await Task.CompletedTask;
+        }
 
         public virtual async Task UpdateRangeAsync(IEnumerable<RentalDetail> entities)
-      {
-     _dbSet.UpdateRange(entities);
+        {
+            _dbSet.UpdateRange(entities);
             await Task.CompletedTask;
-  }
+        }
 
-     public virtual async Task DeleteAsync(int id)
-   {
-      throw new NotImplementedException("Sử dụng DeleteAsync(RentalDetail) thay thế");
-    }
+        public virtual async Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException("Sử dụng DeleteAsync(RentalDetail) thay thế");
+        }
 
         public virtual async Task DeleteAsync(RentalDetail entity)
-{
-     _dbSet.Remove(entity);
-     await Task.CompletedTask;
-      }
+        {
+            _dbSet.Remove(entity);
+            await Task.CompletedTask;
+        }
 
         public virtual async Task DeleteRangeAsync(IEnumerable<RentalDetail> entities)
         {
-     _dbSet.RemoveRange(entities);
+            _dbSet.RemoveRange(entities);
             await Task.CompletedTask;
-}
+        }
 
         public virtual async Task<bool> ExistsAsync(int id)
         {
-        throw new NotImplementedException("Sử dụng ExistsAsync(string) thay thế");
+            throw new NotImplementedException("Sử dụng ExistsAsync(string) thay thế");
         }
 
-    public virtual async Task<int> CountAsync()
-     {
-       return await _dbSet.CountAsync();
-        }
-
- public virtual async Task SaveChangesAsync()
+        public virtual async Task<int> CountAsync()
         {
-    await _context.SaveChangesAsync();
+            return await _dbSet.CountAsync();
         }
 
-     /// <summary>
+        public virtual async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Check if rental detail exists
         /// </summary>
         public virtual async Task<bool> ExistsAsync(string id)
         {
-       return await _dbSet.AnyAsync(r => r.RentalDetailId == id);
+            return await _dbSet.AnyAsync(r => r.RentalDetailId == id);
+        }
+
+        public async Task<List<RentalDetail>> GetActiveAsync()
+        {
+            return await _dbSet
+                .Where(r => r.IsDeleted == 0)
+                .OrderByDescending(r => r.CreatedDate)
+                .ToListAsync();
+        }
+
+
+
+        public async Task<List<RentalDetail>> GetByCustomerAsync(string customerId)
+        {
+            return await _dbSet
+                .Where(r => r.CustomerId == customerId && r.IsDeleted == 0)
+                .OrderByDescending(r => r.CreatedDate)
+                .ToListAsync();
         }
     }
 }

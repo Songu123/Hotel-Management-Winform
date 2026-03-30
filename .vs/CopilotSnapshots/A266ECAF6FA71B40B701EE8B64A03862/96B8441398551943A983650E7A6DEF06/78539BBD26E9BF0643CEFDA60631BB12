@@ -1,0 +1,755 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Services.RequestHandlers.Dtos;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    /// <summary>
+    /// 👤 CREATE CUSTOMER IN BOOKING FORM
+    /// Modern form for creating new customer directly from booking workflow
+    /// Designed to integrate seamlessly with BookingNewForm
+    /// </summary>
+    public partial class CreateCustomerInBookingForm : Form
+    {
+ #region ==================== FIELDS ====================
+
+        private ICustomerService _customerService;
+        private Customer _createdCustomer = null;
+
+        // Generated Customer ID
+        private string _customerId = string.Empty;
+
+        #endregion
+
+        #region ==================== CONSTRUCTOR ====================
+
+        public CreateCustomerInBookingForm()
+  {
+  InitializeComponent();
+_customerId = GenerateCustomerId();
+   }
+
+        public CreateCustomerInBookingForm(ICustomerService customerService) : this()
+        {
+            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+        }
+
+  #endregion
+
+    #region ==================== PROPERTIES ====================
+
+        /// <summary>
+/// Get the created customer (null if cancelled)
+        /// </summary>
+      public Customer CreatedCustomer => _createdCustomer;
+
+      #endregion
+
+        #region ==================== FORM LOAD & SETUP ====================
+
+        private void CreateCustomerInBookingForm_Load(object sender, EventArgs e)
+        {
+try
+            {
+     SetupFormAppearance();
+        PopulateCustomerId();
+ SetupEventHandlers();
+           SetupValidation();
+  ApplyModernStyling();
+            }
+       catch (Exception ex)
+            {
+     ShowError("Lỗi khởi tạo form", ex);
+   }
+        }
+
+   private void SetupFormAppearance()
+        {
+        this.Text = "👤 THÊM KHÁCH HÀNG MỚI";
+  this.Width = 800;
+     this.Height = 600;
+        this.StartPosition = FormStartPosition.CenterParent;
+          this.BackColor = Color.White;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+          this.MaximizeBox = false;
+       this.MinimizeBox = false;
+
+            // Setup panels and controls through designer
+          CreateUILayout();
+     }
+
+        private void CreateUILayout()
+        {
+   // Clear default controls
+         this.Controls.Clear();
+
+  // Header Panel
+            var headerPanel = CreateHeaderPanel();
+            this.Controls.Add(headerPanel);
+
+            // Main Content Panel
+       var contentPanel = CreateContentPanel();
+          this.Controls.Add(contentPanel);
+
+            // Button Panel
+      var buttonPanel = CreateButtonPanel();
+  this.Controls.Add(buttonPanel);
+        }
+
+        private Panel CreateHeaderPanel()
+        {
+            var panel = new Panel
+{
+    Height = 60,
+    Dock = DockStyle.Top,
+  BackColor = Color.FromArgb(0, 102, 204),
+         Padding = new Padding(20)
+            };
+
+    var lblTitle = new Label
+  {
+     Text = "👤 THÊM KHÁCH HÀNG MỚI",
+   Font = new Font("Segoe UI", 14, FontStyle.Bold),
+  ForeColor = Color.White,
+                Dock = DockStyle.Fill,
+         TextAlign = ContentAlignment.MiddleLeft
+      };
+
+   panel.Controls.Add(lblTitle);
+            return panel;
+        }
+
+        private Panel CreateContentPanel()
+     {
+          var mainPanel = new Panel
+         {
+ Dock = DockStyle.Fill,
+  BackColor = Color.White,
+  Padding = new Padding(20),
+           AutoScroll = true
+ };
+
+    int yPos = 10;
+            int labelWidth = 120;
+            int inputWidth = 250;
+
+      // Row 1: Customer ID
+    var lblMaKH = new Label
+      {
+       Text = "Mã khách hàng:",
+            Location = new Point(20, yPos),
+          Width = labelWidth,
+         AutoSize = false,
+        Font = new Font("Segoe UI", 9),
+   TextAlign = ContentAlignment.MiddleLeft
+};
+         mainPanel.Controls.Add(lblMaKH);
+
+            var txtMaKH = new TextBox
+            {
+            Name = "txtMaKH",
+                Location = new Point(20 + labelWidth + 10, yPos),
+      Width = inputWidth,
+ Height = 28,
+    Text = _customerId,
+            ReadOnly = true,
+     BackColor = Color.FromArgb(240, 240, 240),
+    BorderStyle = BorderStyle.FixedSingle,
+         Font = new Font("Segoe UI", 9)
+      };
+            mainPanel.Controls.Add(txtMaKH);
+
+            yPos += 45;
+
+    // Row 2: Full Name & CMND/CCCD (Side by side)
+ var lblTenKH = new Label
+      {
+  Text = "Họ tên khách hàng:",
+          Location = new Point(20, yPos),
+    Width = labelWidth,
+       AutoSize = false,
+ Font = new Font("Segoe UI", 9),
+        TextAlign = ContentAlignment.MiddleLeft
+            };
+         mainPanel.Controls.Add(lblTenKH);
+
+      var txtTenKH = new TextBox
+        {
+    Name = "txtTenKH",
+  Location = new Point(20 + labelWidth + 10, yPos),
+            Width = inputWidth,
+         Height = 28,
+           BorderStyle = BorderStyle.FixedSingle,
+            Font = new Font("Segoe UI", 9)
+            };
+     mainPanel.Controls.Add(txtTenKH);
+
+            var lblCMND = new Label
+  {
+     Text = "CMND/CCCD:",
+    Location = new Point(20 + labelWidth + 10 + inputWidth + 30, yPos),
+            Width = 100,
+          AutoSize = false,
+       Font = new Font("Segoe UI", 9),
+             TextAlign = ContentAlignment.MiddleLeft
+       };
+    mainPanel.Controls.Add(lblCMND);
+
+ var txtCMND = new TextBox
+            {
+Name = "txtCMND",
+       Location = new Point(20 + labelWidth + 10 + inputWidth + 30 + 100 + 10, yPos),
+            Width = 170,
+      Height = 28,
+     BorderStyle = BorderStyle.FixedSingle,
+    Font = new Font("Segoe UI", 9)
+    };
+            mainPanel.Controls.Add(txtCMND);
+
+        yPos += 45;
+
+  // Row 3: Date of Birth & Phone Number
+     var lblNgaySinh = new Label
+            {
+           Text = "Ngày sinh:",
+        Location = new Point(20, yPos),
+              Width = labelWidth,
+         AutoSize = false,
+        Font = new Font("Segoe UI", 9),
+      TextAlign = ContentAlignment.MiddleLeft
+       };
+     mainPanel.Controls.Add(lblNgaySinh);
+
+    var dtpNgaySinh = new DateTimePicker
+     {
+ Name = "dtpNgaySinh",
+             Location = new Point(20 + labelWidth + 10, yPos),
+ Width = inputWidth,
+       Height = 28,
+           Format = DateTimePickerFormat.Short,
+     Value = DateTime.Now.AddYears(-18),
+   Font = new Font("Segoe UI", 9)
+        };
+     mainPanel.Controls.Add(dtpNgaySinh);
+
+            var lblSDT = new Label
+  {
+             Text = "Số điện thoại:",
+   Location = new Point(20 + labelWidth + 10 + inputWidth + 30, yPos),
+          Width = 100,
+   AutoSize = false,
+                Font = new Font("Segoe UI", 9),
+  TextAlign = ContentAlignment.MiddleLeft
+            };
+ mainPanel.Controls.Add(lblSDT);
+
+            var txtSDT = new TextBox
+{
+                Name = "txtSDT",
+     Location = new Point(20 + labelWidth + 10 + inputWidth + 30 + 100 + 10, yPos),
+         Width = 170,
+ Height = 28,
+     BorderStyle = BorderStyle.FixedSingle,
+    Font = new Font("Segoe UI", 9)
+        };
+          mainPanel.Controls.Add(txtSDT);
+
+        yPos += 50;
+
+     // Row 4: Gender
+            var lblGioiTinh = new Label
+    {
+         Text = "Giới tính:",
+           Location = new Point(20, yPos),
+    Width = labelWidth,
+  AutoSize = false,
+     Font = new Font("Segoe UI", 9),
+ TextAlign = ContentAlignment.MiddleLeft
+            };
+    mainPanel.Controls.Add(lblGioiTinh);
+
+            var rbNam = new RadioButton
+  {
+Name = "rbNam",
+    Text = "Nam",
+      Location = new Point(20 + labelWidth + 10, yPos),
+          Width = 80,
+           Height = 28,
+       Font = new Font("Segoe UI", 9),
+     Checked = true
+            };
+            mainPanel.Controls.Add(rbNam);
+
+    var rbNu = new RadioButton
+          {
+          Name = "rbNu",
+          Text = "Nữ",
+                Location = new Point(20 + labelWidth + 10 + 100, yPos),
+  Width = 80,
+          Height = 28,
+    Font = new Font("Segoe UI", 9)
+        };
+       mainPanel.Controls.Add(rbNu);
+
+   yPos += 50;
+
+            // Row 5: Address Section
+            var lblDiaChi = new Label
+       {
+    Text = "Địa chỉ",
+            Location = new Point(20, yPos),
+           Width = 400,
+     AutoSize = false,
+          Font = new Font("Segoe UI", 10, FontStyle.Bold),
+      ForeColor = Color.FromArgb(0, 102, 204),
+ TextAlign = ContentAlignment.MiddleLeft
+            };
+        mainPanel.Controls.Add(lblDiaChi);
+
+        yPos += 35;
+
+        // Address detail fields
+            var addressControls = CreateAddressFields(mainPanel, yPos);
+       yPos = addressControls.Item1;
+
+  // Row 6: Nationality
+  var lblQuocTich = new Label
+   {
+    Text = "Quốc tịch:",
+        Location = new Point(20, yPos),
+         Width = labelWidth,
+      AutoSize = false,
+        Font = new Font("Segoe UI", 9),
+ TextAlign = ContentAlignment.MiddleLeft
+            };
+   mainPanel.Controls.Add(lblQuocTich);
+
+      var txtQuocTich = new TextBox
+            {
+       Name = "txtQuocTich",
+       Location = new Point(20 + labelWidth + 10, yPos),
+        Width = inputWidth,
+  Height = 28,
+     Text = "Việt Nam",
+   BorderStyle = BorderStyle.FixedSingle,
+    Font = new Font("Segoe UI", 9)
+         };
+            mainPanel.Controls.Add(txtQuocTich);
+
+            return mainPanel;
+        }
+
+        private Tuple<int, Panel> CreateAddressFields(Panel parentPanel, int startY)
+        {
+    int yPos = startY;
+
+            // Đường
+      var lblDuong = new Label
+     {
+     Text = "Đường:",
+     Location = new Point(20, yPos),
+         Width = 70,
+ AutoSize = false,
+      Font = new Font("Segoe UI", 9),
+    TextAlign = ContentAlignment.MiddleLeft
+      };
+         parentPanel.Controls.Add(lblDuong);
+
+ var txtDuong = new TextBox
+  {
+       Name = "txtDuong",
+      Location = new Point(95, yPos),
+       Width = 140,
+                Height = 28,
+             BorderStyle = BorderStyle.FixedSingle,
+        Font = new Font("Segoe UI", 9)
+   };
+    parentPanel.Controls.Add(txtDuong);
+
+            // Phường/Thôn
+          var lblPhuongThon = new Label
+            {
+                Text = "Phường/Thôn:",
+    Location = new Point(245, yPos),
+      Width = 100,
+     AutoSize = false,
+      Font = new Font("Segoe UI", 9),
+         TextAlign = ContentAlignment.MiddleLeft
+      };
+            parentPanel.Controls.Add(lblPhuongThon);
+
+            var txtPhuongThon = new TextBox
+        {
+    Name = "txtPhuongThon",
+    Location = new Point(350, yPos),
+              Width = 120,
+       Height = 28,
+                BorderStyle = BorderStyle.FixedSingle,
+     Font = new Font("Segoe UI", 9)
+            };
+            parentPanel.Controls.Add(txtPhuongThon);
+
+        // Quận/Huyện
+            var lblQuanHuyen = new Label
+   {
+                Text = "Quận/Huyện:",
+     Location = new Point(480, yPos),
+           Width = 100,
+          AutoSize = false,
+    Font = new Font("Segoe UI", 9),
+                TextAlign = ContentAlignment.MiddleLeft
+    };
+   parentPanel.Controls.Add(lblQuanHuyen);
+
+    var txtQuanHuyen = new TextBox
+        {
+   Name = "txtQuanHuyen",
+        Location = new Point(585, yPos),
+        Width = 120,
+  Height = 28,
+      BorderStyle = BorderStyle.FixedSingle,
+             Font = new Font("Segoe UI", 9)
+    };
+ parentPanel.Controls.Add(txtQuanHuyen);
+
+            // Tỉnh/Thành phố
+            var lblTinhThanh = new Label
+   {
+  Text = "Tỉnh/Thành:",
+       Location = new Point(715, yPos),
+  Width = 100,
+              AutoSize = false,
+            Font = new Font("Segoe UI", 9),
+      TextAlign = ContentAlignment.MiddleLeft
+          };
+ parentPanel.Controls.Add(lblTinhThanh);
+
+        var txtTinhThanh = new TextBox
+            {
+                Name = "txtTinhThanh",
+        Location = new Point(820, yPos),
+                Width = 100,
+      Height = 28,
+                BorderStyle = BorderStyle.FixedSingle,
+    Font = new Font("Segoe UI", 9)
+            };
+ parentPanel.Controls.Add(txtTinhThanh);
+
+            return Tuple.Create(yPos + 45, parentPanel);
+        }
+
+        private Panel CreateButtonPanel()
+        {
+         var panel = new Panel
+    {
+          Height = 60,
+          Dock = DockStyle.Bottom,
+  BackColor = Color.FromArgb(245, 245, 245),
+                Padding = new Padding(20),
+      BorderStyle = BorderStyle.FixedSingle
+        };
+
+     // Cancel Button
+            var btnHuy = new Button
+         {
+   Text = "❌ HỦY",
+      Width = 120,
+        Height = 40,
+   Location = new Point(650, 10),
+ BackColor = Color.FromArgb(100, 100, 100),
+                ForeColor = Color.White,
+    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+  FlatStyle = FlatStyle.Flat,
+   DialogResult = DialogResult.Cancel
+            };
+     btnHuy.Click += (s, e) =>
+      {
+                this.DialogResult = DialogResult.Cancel;
+this.Close();
+ };
+            panel.Controls.Add(btnHuy);
+
+            // Save Button
+     var btnLuu = new Button
+{
+       Text = "💾 LƯU",
+                Width = 120,
+      Height = 40,
+   Location = new Point(780, 10),
+                BackColor = Color.FromArgb(34, 177, 76),
+     ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+         FlatStyle = FlatStyle.Flat
+            };
+  btnLuu.Click += BtnLuu_Click;
+          panel.Controls.Add(btnLuu);
+
+            return panel;
+        }
+
+        #endregion
+
+        #region ==================== EVENT HANDLERS ====================
+
+        private void SetupEventHandlers()
+        {
+    // Validation on text change
+     var txtControls = new[] { "txtTenKH", "txtSDT", "txtCMND" };
+    foreach (var controlName in txtControls)
+   {
+           var ctrl = this.Controls.Find(controlName, true).FirstOrDefault() as TextBox;
+                if (ctrl != null)
+         {
+           ctrl.TextChanged += ValidateForm;
+       }
+            }
+        }
+
+        private void ValidateForm(object sender, EventArgs e)
+   {
+   // Real-time validation can be added here
+}
+
+  private async void BtnLuu_Click(object sender, EventArgs e)
+     {
+        try
+  {
+       // Validation
+     if (!ValidateInputs())
+ return;
+
+ if (_customerService == null)
+           {
+    ShowError("Dịch vụ khách hàng không khả dụng");
+               return;
+     }
+
+            // Get input values
+   var tenKH = GetControlValue("txtTenKH");
+             var sdt = GetControlValue("txtSDT");
+        var cmnd = GetControlValue("txtCMND");
+            var dtpNgaySinh = this.Controls.Find("dtpNgaySinh", true).FirstOrDefault() as DateTimePicker;
+                var rbNam = this.Controls.Find("rbNam", true).FirstOrDefault() as RadioButton;
+    var txtDuong = GetControlValue("txtDuong");
+ var txtPhuongThon = GetControlValue("txtPhuongThon");
+   var txtQuanHuyen = GetControlValue("txtQuanHuyen");
+  var txtTinhThanh = GetControlValue("txtTinhThanh");
+     var txtQuocTich = GetControlValue("txtQuocTich");
+
+     // Build address
+   var address = $"{txtDuong}, {txtPhuongThon}, {txtQuanHuyen}, {txtTinhThanh}";
+
+    // Create customer request
+      var customerRequest = new CustomerCreateRequest
+         {
+        CustomerId = _customerId,
+             Name = tenKH,
+         PhoneNumber = sdt,
+      IdNumber = cmnd,
+      Gender = rbNam?.Checked == true ? 1 : 0,
+     DateOfBirth = dtpNgaySinh?.Value ?? DateTime.Now,
+         Address = address.TrimEnd(','),
+     Nationality = txtQuocTich
+   };
+
+System.Diagnostics.Debug.WriteLine($"[CreateCustomer] Creating customer: {customerRequest.Name}");
+
+      // Create customer via service
+     var result = await _customerService.CreateCustomerAsync(customerRequest);
+
+                if (result != null)
+      {
+     _createdCustomer = new Customer
+    {
+       CustomerId = result.CustomerId,
+        Name = result.Name,
+     PhoneNumber = result.PhoneNumber,
+           IdNumber = result.IdNumber,
+     Gender = result.Gender,
+            DateOfBirth = result.DateOfBirth,
+        Address = result.Address,
+          Nationality = result.Nationality,
+      IsDeleted = 0
+         };
+
+  ShowSuccess($"✅ Khách hàng {tenKH} đã được tạo thành công!\n\nMã khách: {_customerId}");
+      this.DialogResult = DialogResult.OK;
+            this.Close();
+      }
+ else
+        {
+  ShowError("Không thể tạo khách hàng. Vui lòng thử lại.");
+    }
+            }
+ catch (Exception ex)
+            {
+   System.Diagnostics.Debug.WriteLine($"[CreateCustomer] Error: {ex.Message}");
+       ShowError("Lỗi tạo khách hàng", ex);
+      }
+     }
+
+        #endregion
+
+        #region ==================== VALIDATION ====================
+
+        private void SetupValidation()
+      {
+    // Can add real-time validation rules here
+      }
+
+      private bool ValidateInputs()
+        {
+        var tenKH = GetControlValue("txtTenKH");
+      var sdt = GetControlValue("txtSDT");
+            var cmnd = GetControlValue("txtCMND");
+
+      if (string.IsNullOrWhiteSpace(tenKH))
+            {
+                ShowWarning("Vui lòng nhập họ tên khách hàng");
+     return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(sdt))
+            {
+  ShowWarning("Vui lòng nhập số điện thoại");
+      return false;
+   }
+
+   // Validate phone number format
+            if (!System.Text.RegularExpressions.Regex.IsMatch(sdt, @"^0\d{9}$"))
+     {
+        ShowWarning("Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số");
+  return false;
+            }
+
+      if (string.IsNullOrWhiteSpace(cmnd))
+      {
+         ShowWarning("Vui lòng nhập CMND/CCCD");
+       return false;
+            }
+
+            return true;
+        }
+
+      #endregion
+
+        #region ==================== HELPERS ====================
+
+     private string GenerateCustomerId()
+    {
+    // Format: KH + yyyyMMddHHmmss + milliseconds
+    return $"KH{DateTime.Now:yyyyMMddHHmmss}{DateTime.Now.Millisecond:D3}";
+        }
+
+private void PopulateCustomerId()
+        {
+         var txtMaKH = this.Controls.Find("txtMaKH", true).FirstOrDefault() as TextBox;
+            if (txtMaKH != null)
+        {
+       txtMaKH.Text = _customerId;
+     }
+        }
+
+        private string GetControlValue(string controlName)
+     {
+     var ctrl = this.Controls.Find(controlName, true).FirstOrDefault() as TextBox;
+            return ctrl?.Text ?? string.Empty;
+        }
+
+     private void ApplyModernStyling()
+   {
+       // Apply modern styling to all controls
+      foreach (Control ctrl in GetAllControls(this))
+     {
+                if (ctrl is TextBox txt)
+          {
+          txt.Font = new Font("Segoe UI", 9);
+   txt.BorderStyle = BorderStyle.FixedSingle;
+    }
+        else if (ctrl is Label lbl)
+      {
+          lbl.Font = new Font("Segoe UI", 9);
+        lbl.ForeColor = Color.FromArgb(60, 60, 60);
+    }
+        else if (ctrl is Button btn)
+          {
+            btn.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+              btn.FlatStyle = FlatStyle.Flat;
+    }
+      else if (ctrl is DateTimePicker dtp)
+   {
+ dtp.Font = new Font("Segoe UI", 9);
+        }
+   else if (ctrl is RadioButton rb)
+{
+         rb.Font = new Font("Segoe UI", 9);
+                }
+            }
+   }
+
+        private IEnumerable<Control> GetAllControls(Control container)
+        {
+     foreach (Control ctrl in container.Controls)
+            {
+    yield return ctrl;
+  foreach (var child in GetAllControls(ctrl))
+          {
+     yield return child;
+     }
+            }
+ }
+
+        private void ShowMessage(string message, string title)
+        {
+    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+  }
+
+        private void ShowWarning(string message)
+        {
+            MessageBox.Show(message, "⚠️ Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+  private void ShowError(string title, Exception ex = null)
+        {
+  string message = ex != null ? $"{title}\n\n{ex.Message}" : title;
+       MessageBox.Show(message, "❌ Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+
+        private void ShowSuccess(string message)
+        {
+          MessageBox.Show(message, "✅ THÀNH CÔNG", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        #endregion
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+    // 
+    // CreateCustomerInBookingForm
+// 
+  this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+     this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+   this.BackColor = System.Drawing.Color.White;
+    this.ClientSize = new System.Drawing.Size(900, 600);
+   this.Font = new System.Drawing.Font("Segoe UI", 9F);
+   this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+   this.MaximizeBox = false;
+ this.MinimizeBox = false;
+  this.Name = "CreateCustomerInBookingForm";
+        this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+   this.Text = "👤 THÊM KHÁCH HÀNG MỚI";
+ this.Load += new System.EventHandler(this.CreateCustomerInBookingForm_Load);
+      this.ResumeLayout(false);
+        }
+    }
+}

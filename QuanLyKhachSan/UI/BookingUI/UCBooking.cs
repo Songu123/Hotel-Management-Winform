@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using QuanLyKhachSan.Models;
 using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.UI.BookingUI;
 
 namespace QuanLyKhachSan.UI.BookingUI
 {
@@ -356,34 +357,39 @@ namespace QuanLyKhachSan.UI.BookingUI
                     return;
                 }
 
-                // Load customers from database
-                List<Customer> customers = new List<Customer>();
+                // Get services from service provider
+                var serviceProvider = (IServiceProvider)Program.Services;
+                var customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
+                var rentalDetailService = serviceProvider.GetService(typeof(IRentalDetailService)) as IRentalDetailService;
+                var roomRentalDetailService = serviceProvider.GetService(typeof(IRoomRentalDetailService)) as IRoomRentalDetailService;
+
+                if (customerService == null || rentalDetailService == null || roomRentalDetailService == null)
+                {
+                    MessageBox.Show("Lỗi: Dịch vụ không khả dụng", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Load customers
+                List<Customer> customers = new();
                 try
                 {
-                    if (_roomService != null)
+                    var allCustomers = await customerService.GetAllCustomersAsync();
+                    if (allCustomers != null)
                     {
-                        // Get service provider to access ICustomerService
-                        var serviceProvider = (IServiceProvider)Program.Services;
-                        var customerService = serviceProvider.GetService(typeof(ICustomerService)) as ICustomerService;
-
-                        if (customerService != null)
-                        {
-                            var allCustomers = await customerService.GetAllCustomersAsync();
-                            if (allCustomers != null)
-                            {
-                                customers = allCustomers.Where(c => c.IsDeleted == 0).ToList();
-                            }
-                        }
+                        customers = allCustomers.Where(c => c.IsDeleted == 0).ToList();
                     }
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
-                    // Continue even if customer loading fails
+                    MessageBox.Show("Cảnh báo: Không thể tải danh sách khách hàng", "Thông báo",
+    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
-                // Show booking form
-                var bookingForm = new BookingForm(room, dtpNgayThue.Value, dtpNgayTra.Value, customers);
+                // Show booking form with all services
+                var bookingForm = new BookingNewForm(room, dtpNgayThue.Value, dtpNgayTra.Value, customers);
+                bookingForm.Initialize(_roomService, customerService, rentalDetailService, roomRentalDetailService);
+
                 var result = bookingForm.ShowDialog();
 
                 if (result == DialogResult.OK && bookingForm.IsConfirmed)
@@ -398,6 +404,9 @@ namespace QuanLyKhachSan.UI.BookingUI
 
                     // Update room status in UI
                     _roomCardContainer.UpdateRoomStatus(room.RoomId, RoomStatusType.Occupied);
+
+                    MessageBox.Show($"✅ Đặt phòng thành công!\n\nPhòng: {room.Name}\nGiá: {totalPrice:N0} VNĐ",
+         "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     // Refresh room list
                     await Task.Delay(500);

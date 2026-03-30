@@ -1,0 +1,338 @@
+﻿namespace QuanLyKhachSan.UI.BookingUI
+{
+    partial class BookingDetailForm
+    {
+     /// <summary>
+        /// Required designer variable.
+  /// </summary>
+    private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+         {
+        components.Dispose();
+     }
+          base.Dispose(disposing);
+        }
+
+  #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+// Booking Info Panel
+            var panelBookingInfo = new Panel
+   {
+                BackColor = System.Drawing.Color.White,
+       BorderStyle = BorderStyle.FixedSingle,
+   Width = 500,
+    Height = 270,
+          Location = new System.Drawing.Point(0, 0)
+     };
+
+       // Customer Info Panel
+ var panelCustomerInfo = new Panel
+     {
+      BackColor = System.Drawing.Color.White,
+      BorderStyle = BorderStyle.FixedSingle,
+          Width = 500,
+                Height = 270,
+       Location = new System.Drawing.Point(520, 0)
+    };
+
+    // TextBoxes - Booking Info
+            txtRentalId = new TextBox
+     {
+            Name = "txtRentalId",
+   Location = new System.Drawing.Point(15, 55),
+         Width = 450,
+  Height = 28,
+    ReadOnly = true,
+   BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+BorderStyle = BorderStyle.FixedSingle,
+     Font = new System.Drawing.Font("Segoe UI", 9)
+   };
+
+            txtCreatedDate = new TextBox
+ {
+                Name = "txtCreatedDate",
+        Location = new System.Drawing.Point(15, 110),
+                Width = 450,
+          Height = 28,
+                ReadOnly = true,
+          BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+        BorderStyle = BorderStyle.FixedSingle,
+    Font = new System.Drawing.Font("Segoe UI", 9)
+  };
+
+   txtDeposit = new TextBox
+            {
+    Name = "txtDeposit",
+       Location = new System.Drawing.Point(15, 165),
+    Width = 450,
+                Height = 28,
+      ReadOnly = true,
+           BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+       BorderStyle = BorderStyle.FixedSingle,
+    Font = new System.Drawing.Font("Segoe UI", 9)
+            };
+
+            txtStatus = new TextBox
+         {
+           Name = "txtStatus",
+   Location = new System.Drawing.Point(15, 220),
+              Width = 450,
+            Height = 28,
+      ReadOnly = true,
+         BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+     BorderStyle = BorderStyle.FixedSingle,
+        Font = new System.Drawing.Font("Segoe UI", 9)
+   };
+
+            // TextBoxes - Customer Info
+  txtCustomerName = new TextBox
+          {
+        Name = "txtCustomerName",
+Location = new System.Drawing.Point(15, 55),
+                Width = 450,
+           Height = 28,
+    ReadOnly = true,
+        BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+  BorderStyle = BorderStyle.FixedSingle,
+        Font = new System.Drawing.Font("Segoe UI", 9)
+            };
+
+   txtIdNumber = new TextBox
+       {
+                Name = "txtIdNumber",
+  Location = new System.Drawing.Point(15, 110),
+     Width = 450,
+     Height = 28,
+     ReadOnly = true,
+            BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+        BorderStyle = BorderStyle.FixedSingle,
+       Font = new System.Drawing.Font("Segoe UI", 9)
+        };
+
+         txtPhone = new TextBox
+            {
+                Name = "txtPhone",
+      Location = new System.Drawing.Point(15, 165),
+         Width = 450,
+            Height = 28,
+     ReadOnly = true,
+        BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+           BorderStyle = BorderStyle.FixedSingle,
+       Font = new System.Drawing.Font("Segoe UI", 9)
+            };
+
+       txtAddress = new TextBox
+            {
+        Name = "txtAddress",
+                Location = new System.Drawing.Point(15, 220),
+         Width = 450,
+    Height = 28,
+      ReadOnly = true,
+     BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+            BorderStyle = BorderStyle.FixedSingle,
+     Font = new System.Drawing.Font("Segoe UI", 9)
+            };
+
+     // DataGridViews
+    dgvRooms = new DataGridView
+     {
+      Name = "dgvRooms",
+       AutoGenerateColumns = false,
+         AllowUserToAddRows = false,
+       ReadOnly = true,
+     BackgroundColor = System.Drawing.Color.White,
+           BorderStyle = BorderStyle.FixedSingle,
+          RowHeadersVisible = false,
+   Width = 1000,
+        Height = 200,
+    Location = new System.Drawing.Point(0, 40)
+          };
+
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 40 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Mã Phòng", Width = 80 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Loại", Width = 100 });
+       dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Nhận", Width = 90 });
+  dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Trả", Width = 90 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Đêm", Width = 45 });
+      dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Giá/Đêm", Width = 85 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Thành Tiền", Width = 100 });
+
+dgvRooms.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(59, 130, 246);
+            dgvRooms.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+         dgvRooms.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold);
+
+        dgvServices = new DataGridView
+  {
+         Name = "dgvServices",
+         AutoGenerateColumns = false,
+      AllowUserToAddRows = false,
+   ReadOnly = true,
+      BackgroundColor = System.Drawing.Color.White,
+  BorderStyle = BorderStyle.FixedSingle,
+                RowHeadersVisible = false,
+  Width = 1000,
+      Height = 180,
+     Location = new System.Drawing.Point(0, 40)
+    };
+
+   dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 40 });
+        dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Dịch Vụ", Width = 200 });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Số Lượng", Width = 80 });
+      dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Giá", Width = 100 });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Thành Tiền", Width = 100 });
+
+   dgvServices.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(245, 158, 11);
+         dgvServices.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+      dgvServices.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold);
+
+       // Summary TextBoxes
+      txtRoomCost = new TextBox
+       {
+        Name = "txtRoomCost",
+    Location = new System.Drawing.Point(180, 12),
+          Width = 150,
+      Height = 28,
+  ReadOnly = true,
+       BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+       BorderStyle = BorderStyle.FixedSingle,
+       Font = new System.Drawing.Font("Segoe UI", 9)
+            };
+
+  txtServiceCost = new TextBox
+      {
+    Name = "txtServiceCost",
+        Location = new System.Drawing.Point(180, 47),
+         Width = 150,
+       Height = 28,
+       ReadOnly = true,
+           BackColor = System.Drawing.Color.FromArgb(240, 240, 240),
+                BorderStyle = BorderStyle.FixedSingle,
+    Font = new System.Drawing.Font("Segoe UI", 9)
+            };
+
+            // Total Amount Label
+     lblTotalAmount = new Label
+ {
+         Name = "lblTotalAmount",
+ Text = "0 VNĐ",
+    Font = new System.Drawing.Font("Segoe UI", 16, System.Drawing.FontStyle.Bold),
+        ForeColor = System.Drawing.Color.FromArgb(220, 20, 60),
+     Location = new System.Drawing.Point(670, 30),
+        AutoSize = true
+   };
+
+      // Buttons
+            btnAddRoom = new Button
+   {
+       Name = "btnAddRoom",
+         Text = "➕ Thêm Phòng",
+                Width = 120,
+     Height = 35,
+                Location = new System.Drawing.Point(0, 250),
+     BackColor = System.Drawing.Color.FromArgb(34, 197, 94),
+       ForeColor = System.Drawing.Color.White,
+  Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold),
+           FlatStyle = FlatStyle.Flat
+            };
+
+            btnAddService = new Button
+            {
+  Name = "btnAddService",
+ Text = "➕ Thêm Dịch Vụ",
+Width = 120,
+        Height = 35,
+       Location = new System.Drawing.Point(0, 230),
+      BackColor = System.Drawing.Color.FromArgb(245, 158, 11),
+ ForeColor = System.Drawing.Color.White,
+                Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold),
+    FlatStyle = FlatStyle.Flat
+            };
+
+        btnCheckout = new Button
+            {
+    Name = "btnCheckout",
+      Text = "✓ Checkout",
+    Width = 110,
+         Height = 40,
+  Location = new System.Drawing.Point(750, 80),
+     BackColor = System.Drawing.Color.FromArgb(34, 197, 94),
+ForeColor = System.Drawing.Color.White,
+         Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold),
+      FlatStyle = FlatStyle.Flat
+     };
+
+  btnPrint = new Button
+            {
+          Name = "btnPrint",
+Text = "🖨️ In",
+   Width = 100,
+       Height = 40,
+      Location = new System.Drawing.Point(870, 80),
+  BackColor = System.Drawing.Color.FromArgb(59, 130, 246),
+     ForeColor = System.Drawing.Color.White,
+    Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold),
+          FlatStyle = FlatStyle.Flat
+    };
+
+            btnClose = new Button
+        {
+      Name = "btnClose",
+      Text = "✕ Đóng",
+    Width = 100,
+             Height = 40,
+    Location = new System.Drawing.Point(980, 80),
+            BackColor = System.Drawing.Color.FromArgb(107, 114, 128),
+      ForeColor = System.Drawing.Color.White,
+        Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold),
+       FlatStyle = FlatStyle.Flat
+            };
+
+      // Form Setup
+ this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+        this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1100, 950);
+            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Name = "BookingDetailForm";
+            this.StartPosition = FormStartPosition.CenterScreen;
+     this.Text = "📋 CHI TIẾT ĐẶT PHÒNG";
+     this.BackColor = System.Drawing.Color.FromArgb(249, 250, 251);
+
+            this.ResumeLayout(false);
+}
+
+        #endregion
+
+        // Control declarations
+     private TextBox txtRentalId;
+  private TextBox txtCreatedDate;
+        private TextBox txtDeposit;
+    private TextBox txtStatus;
+        private TextBox txtCustomerName;
+        private TextBox txtIdNumber;
+     private TextBox txtPhone;
+        private TextBox txtAddress;
+  private TextBox txtRoomCost;
+        private TextBox txtServiceCost;
+  private DataGridView dgvRooms;
+        private DataGridView dgvServices;
+      private Label lblTotalAmount;
+        private Button btnAddRoom;
+        private Button btnAddService;
+private Button btnCheckout;
+        private Button btnPrint;
+        private Button btnClose;
+    }
+}

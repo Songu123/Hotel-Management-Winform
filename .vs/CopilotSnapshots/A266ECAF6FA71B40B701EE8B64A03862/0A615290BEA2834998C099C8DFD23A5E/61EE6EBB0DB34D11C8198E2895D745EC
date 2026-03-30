@@ -1,0 +1,65 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using QuanLyKhachSan.Data;
+using QuanLyKhachSan.Repositories.Implementations;
+using QuanLyKhachSan.Repositories.Interfaces;
+using QuanLyKhachSan.Services.Implementations;
+using QuanLyKhachSan.Services.Interfaces;
+using QuanLyKhachSan.Services.RequestHandlers;
+using QuanLyKhachSan.Services.RequestHandlers.Interfaces;
+
+namespace QuanLyKhachSan.Configuration
+{
+    public static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddHotelManagementServices(this IServiceCollection services, string connectionString)
+        {
+            services.AddDbContext<HotelDbContext>(options =>
+        options.UseSqlServer(connectionString,
+            sqlServerOptionsAction: sqlOptions =>
+            {
+                sqlOptions.MigrationsAssembly(typeof(HotelDbContext).Assembly.FullName);
+            }));
+
+            services.AddTransient<IRoomRepository, RoomRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IBookingRepository, BookingRepository>();
+            services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+
+            // Add RentalDetail and RoomRentalDetail repositories
+            services.AddTransient<RentalDetailRepository>();
+            services.AddTransient<RoomRentalDetailRepository>();
+            services.AddTransient<EmployeeRepository>();
+
+            services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IBookingService, BookingService>();
+            services.AddTransient<IInvoiceService, InvoiceService>();
+
+            // Add RentalDetail and RoomRentalDetail services
+            services.AddTransient<IRentalDetailService, RentalDetailService>();
+            services.AddTransient<IRoomRentalDetailService, RoomRentalDetailService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+
+            // Add Print service
+            services.AddTransient<IPrintService, PrintService>();
+
+            // Add request handlers
+            services.AddTransient<ICustomerCreateRequestHandler, CustomerCreateRequestHandler>();
+            services.AddTransient<IRefreshCustomerListRequestHandler, RefreshCustomerListRequestHandler>();
+            services.AddTransient<ResetSearchCriteriaRequestHandler>();
+
+            return services;
+        }
+
+        public static async Task InitializeDatabaseAsync(IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<HotelDbContext>();
+
+            await dbContext.Database.EnsureCreatedAsync();
+
+            HotelDbSeeder.SeedDatabase(dbContext);
+        }
+    }
+}
