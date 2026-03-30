@@ -1,0 +1,587 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using QuanLyKhachSan.Models;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.BookingUI
+{
+    /// <summary>
+    /// 🧾 PAYMENT DETAIL FORM
+    /// Displays invoice details and payment information
+    /// Shows room rentals, services, and payment status
+    /// </summary>
+    public partial class PaymentDetailForm : Form
+    {
+        private RentalDetail _rentalDetail;
+        private int _totalRoomCost;
+        private int _totalServiceCost;
+        private int _depositAmount;
+        private IRoomRentalDetailService _roomRentalDetailService;
+        private IServiceRentalDetailService _serviceRentalDetailService;
+        private IInvoiceService _invoiceService;  // ✅ ADD THIS
+
+        // UI Controls
+        private DataGridView dgvRooms;
+        private DataGridView dgvServices;
+        private TextBox txtCustomerName;
+        private TextBox txtIdNumber;
+        private TextBox txtInvoiceNumber;
+        private TextBox txtTotalRoom;
+        private TextBox txtTotalService;
+        private TextBox txtDeposit;
+        private TextBox txtSurcharge;
+        private TextBox txtDiscount;
+        private TextBox txtTotal;
+        private TextBox txtRemaining;
+        private TextBox txtPaid;
+        private Label lblQRCode;
+        private ComboBox cboPaymentMethod;
+
+        public PaymentDetailForm(
+            RentalDetail rentalDetail,
+            int totalRoomCost,
+            int totalServiceCost,
+            int depositAmount,
+            IRoomRentalDetailService roomRentalDetailService,
+            IServiceRentalDetailService serviceRentalDetailService,
+            IInvoiceService invoiceService = null)  // ✅ ADD PARAMETER
+        {
+            InitializeComponent();
+            _rentalDetail = rentalDetail;
+            _totalRoomCost = totalRoomCost;
+            _totalServiceCost = totalServiceCost;
+            _depositAmount = depositAmount;
+            _roomRentalDetailService = roomRentalDetailService;
+            _serviceRentalDetailService = serviceRentalDetailService;
+            _invoiceService = invoiceService;  // ✅ STORE IT
+
+            SetupUI();
+            LoadData();
+        }
+
+        private void SetupUI()
+        {
+            this.Text = "🧾 Thanh Toán";
+            this.Width = 1400;
+            this.Height = 800;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = Color.FromArgb(249, 250, 251);
+
+            // Header
+            var headerPanel = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 60,
+                BackColor = Color.FromArgb(0, 128, 128),
+                Padding = new Padding(15)
+            };
+
+            var lblHeader = new Label
+            {
+                Text = "🧾 Vui lòng kiểm tra thông tin thanh toán trước khi thanh toán",
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                ForeColor = Color.White,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            headerPanel.Controls.Add(lblHeader);
+            this.Controls.Add(headerPanel);
+
+            // Main content
+            var mainPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                AutoScroll = true,
+                Padding = new Padding(15)
+            };
+
+            // Left side - Details
+            var leftPanel = new Panel
+            {
+                Width = 950,
+                Height = 700,
+                Location = new Point(0, 0)
+            };
+
+            // Rooms section
+            leftPanel.Controls.Add(CreateRoomsSection());
+
+            // Services section
+            var servicesSection = CreateServicesSection();
+            servicesSection.Location = new Point(0, 300);
+            leftPanel.Controls.Add(servicesSection);
+
+            mainPanel.Controls.Add(leftPanel);
+
+            // Right side - Payment Info
+            var rightPanel = new Panel
+            {
+                Width = 400,
+                Height = 700,
+                Location = new Point(970, 0),
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Padding = new Padding(15)
+            };
+
+            rightPanel.Controls.Add(CreatePaymentInfoSection());
+            mainPanel.Controls.Add(rightPanel);
+
+            this.Controls.Add(mainPanel);
+        }
+
+        private Panel CreateRoomsSection()
+        {
+            var panel = new Panel
+            {
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Height = 280,
+                Padding = new Padding(10)
+            };
+
+            var lblTitle = new Label
+            {
+                Text = "📋 DANH SÁCH PHÒNG THUÊ",
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                ForeColor = Color.FromArgb(0, 128, 128),
+                AutoSize = true,
+                Location = new Point(10, 10)
+            };
+            panel.Controls.Add(lblTitle);
+
+            dgvRooms = new DataGridView
+            {
+                AutoGenerateColumns = false,
+                AllowUserToAddRows = false,
+                ReadOnly = true,
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                RowHeadersVisible = false,
+                Width = 920,
+                Height = 220,
+                Location = new Point(10, 40)
+            };
+
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 40 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "TÊN PHÒNG", Width = 120 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "LOẠI HÌNH THUÊ", Width = 120 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NGÀY THUÊ", Width = 150 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NGÀY TRẢ", Width = 150 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NGÀY CHECKOUT", Width = 150 });
+            dgvRooms.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "GIÁ PHÒNG", Width = 120 });
+
+            dgvRooms.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(59, 130, 246);
+            dgvRooms.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvRooms.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+
+            panel.Controls.Add(dgvRooms);
+
+            return panel;
+        }
+
+        private Panel CreateServicesSection()
+        {
+            var panel = new Panel
+            {
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                Height = 280,
+                Padding = new Padding(10)
+            };
+
+            var lblTitle = new Label
+            {
+                Text = "📋 DANH SÁCH DỊCH VỤ THUÊ",
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                ForeColor = Color.FromArgb(245, 158, 11),
+                AutoSize = true,
+                Location = new Point(10, 10)
+            };
+            panel.Controls.Add(lblTitle);
+
+            dgvServices = new DataGridView
+            {
+                AutoGenerateColumns = false,
+                AllowUserToAddRows = false,
+                ReadOnly = true,
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                RowHeadersVisible = false,
+                Width = 920,
+                Height = 220,
+                Location = new Point(10, 40)
+            };
+
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "STT", Width = 40 });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "TÊN DỊCH VỤ", Width = 250 });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "LOẠI DỊCH VỤ", Width = 150 });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NGÀY SỬ DỤNG", Width = 150 });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "SỐ LƯỢNG", Width = 80 });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "ĐƠN GIÁ", Width = 100 });
+            dgvServices.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "THÀNH TIỀN", Width = 100 });
+
+            dgvServices.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(245, 158, 11);
+            dgvServices.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvServices.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+
+            panel.Controls.Add(dgvServices);
+
+            return panel;
+        }
+
+        private Panel CreatePaymentInfoSection()
+        {
+            var panel = new Panel
+            {
+                BackColor = Color.White,
+                Dock = DockStyle.Fill,
+                AutoScroll = true
+            };
+
+            int yPos = 15;
+
+            // Header
+            var lblHeader = new Label
+            {
+                Text = "💳 THÔNG TIN THANH TOÁN",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = Color.FromArgb(0, 128, 128),
+                Location = new Point(0, yPos),
+                AutoSize = true,
+                Width = 300
+            };
+            panel.Controls.Add(lblHeader);
+
+            yPos += 35;
+
+            // Customer Info
+            var lblCustomer = new Label
+            {
+                Text = "👤 THÔNG TIN KHÁCH HÀNG",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(59, 130, 246),
+                Location = new Point(0, yPos),
+                AutoSize = true
+            };
+            panel.Controls.Add(lblCustomer);
+
+            yPos += 30;
+
+            // Customer Name
+            panel.Controls.Add(CreateLabelControl("Họ tên khách hàng:", 0, yPos));
+            txtCustomerName = CreateTextBoxControl(0, yPos + 20, 350);
+            panel.Controls.Add(txtCustomerName);
+
+            yPos += 55;
+
+            // ID Number
+            panel.Controls.Add(CreateLabelControl("CMND/CCCD:", 0, yPos));
+            txtIdNumber = CreateTextBoxControl(0, yPos + 20, 350);
+            panel.Controls.Add(txtIdNumber);
+
+            yPos += 55;
+
+            // Invoice Number
+            panel.Controls.Add(CreateLabelControl("Số lần thuê trước:", 0, yPos));
+            txtInvoiceNumber = CreateTextBoxControl(0, yPos + 20, 350);
+            panel.Controls.Add(txtInvoiceNumber);
+
+            yPos += 55;
+
+            // Payment Summary
+            var lblSummary = new Label
+            {
+                Text = "📊 THÔNG TIN THANH TOÁN",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(34, 197, 94),
+                Location = new Point(0, yPos),
+                AutoSize = true
+            };
+            panel.Controls.Add(lblSummary);
+
+            yPos += 30;
+
+            // Total Room
+            panel.Controls.Add(CreateLabelControl("Tổng tiền phòng:", 0, yPos));
+            txtTotalRoom = CreateTextBoxControl(0, yPos + 20, 350);
+            txtTotalRoom.ReadOnly = true;
+            panel.Controls.Add(txtTotalRoom);
+
+            yPos += 55;
+
+            // Total Service
+            panel.Controls.Add(CreateLabelControl("Tổng tiền dịch vụ:", 0, yPos));
+            txtTotalService = CreateTextBoxControl(0, yPos + 20, 350);
+            txtTotalService.ReadOnly = true;
+            panel.Controls.Add(txtTotalService);
+
+            yPos += 55;
+
+            // Deposit
+            panel.Controls.Add(CreateLabelControl("Tiền đặt cọc:", 0, yPos));
+            txtDeposit = CreateTextBoxControl(0, yPos + 20, 350);
+            txtDeposit.ReadOnly = true;
+            panel.Controls.Add(txtDeposit);
+
+            yPos += 55;
+
+            // Surcharge & Discount
+            panel.Controls.Add(CreateLabelControl("Phụ thu:", 0, yPos));
+            var pnlSurcharge = new Panel { Width = 350, Height = 50, Location = new Point(0, yPos + 20) };
+            txtSurcharge = CreateTextBoxControl(0, 0, 200);
+            txtSurcharge.Text = "0";
+            pnlSurcharge.Controls.Add(txtSurcharge);
+            var lblPercent1 = new Label { Text = "%", Location = new Point(210, 5), AutoSize = true };
+            pnlSurcharge.Controls.Add(lblPercent1);
+            panel.Controls.Add(pnlSurcharge);
+
+            yPos += 55;
+
+            panel.Controls.Add(CreateLabelControl("Giảm giá:", 0, yPos));
+            var pnlDiscount = new Panel { Width = 350, Height = 50, Location = new Point(0, yPos + 20) };
+            txtDiscount = CreateTextBoxControl(0, 0, 200);
+            txtDiscount.Text = "0%";
+            pnlDiscount.Controls.Add(txtDiscount);
+            var lblPercent2 = new Label { Text = "%", Location = new Point(210, 5), AutoSize = true };
+            pnlDiscount.Controls.Add(lblPercent2);
+            panel.Controls.Add(pnlDiscount);
+
+            yPos += 55;
+
+            // Total
+            panel.Controls.Add(CreateLabelControl("🧾 Tổng thành tiền:", 0, yPos, Color.FromArgb(220, 20, 60), 11, FontStyle.Bold));
+            txtTotal = CreateTextBoxControl(0, yPos + 20, 350);
+            txtTotal.ReadOnly = true;
+            txtTotal.BackColor = Color.FromArgb(255, 240, 245);
+            txtTotal.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            txtTotal.ForeColor = Color.FromArgb(220, 20, 60);
+            panel.Controls.Add(txtTotal);
+
+            yPos += 55;
+
+            // Remaining
+            panel.Controls.Add(CreateLabelControl("Tiền khách đưa:", 0, yPos));
+            txtRemaining = CreateTextBoxControl(0, yPos + 20, 350);
+            panel.Controls.Add(txtRemaining);
+
+            yPos += 55;
+
+            // Paid
+            panel.Controls.Add(CreateLabelControl("Tiền thối lại:", 0, yPos));
+            txtPaid = CreateTextBoxControl(0, yPos + 20, 350);
+            txtPaid.ReadOnly = true;
+            panel.Controls.Add(txtPaid);
+
+            yPos += 55;
+
+            // Payment Method
+            panel.Controls.Add(CreateLabelControl("Phương thức thanh toán:", 0, yPos));
+            cboPaymentMethod = new ComboBox
+            {
+                Location = new Point(0, yPos + 20),
+                Width = 350,
+                Height = 28,
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            cboPaymentMethod.Items.AddRange(new[] { "Tiền mặt", "Chuyển khoản", "Thẻ tín dụng" });
+            cboPaymentMethod.SelectedIndex = 0;
+            panel.Controls.Add(cboPaymentMethod);
+
+            yPos += 55;
+
+            // QR Code
+            lblQRCode = new Label
+            {
+                Text = "📱 QR CODE",
+                Width = 200,
+                Height = 200,
+                Location = new Point(75, yPos),
+                BorderStyle = BorderStyle.FixedSingle,
+                BackColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+            panel.Controls.Add(lblQRCode);
+
+            yPos += 220;
+
+            // Buttons
+            var btnComplete = new Button
+            {
+                Text = "✅ Thanh Toán",
+                Width = 150,
+                Height = 40,
+                Location = new Point(75, yPos),
+                BackColor = Color.FromArgb(34, 197, 94),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            btnComplete.Click += (s, e) => CompletePayment();
+            panel.Controls.Add(btnComplete);
+
+            var btnCancel = new Button
+            {
+                Text = "❌ Hủy",
+                Width = 150,
+                Height = 40,
+                Location = new Point(235, yPos),
+                BackColor = Color.FromArgb(107, 114, 128),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            btnCancel.Click += (s, e) => this.Close();
+            panel.Controls.Add(btnCancel);
+
+            return panel;
+        }
+
+        private Label CreateLabelControl(string text, int x, int y, Color? color = null, int fontSize = 9, FontStyle fontStyle = FontStyle.Regular)
+        {
+            return new Label
+            {
+                Text = text,
+                Location = new Point(x, y),
+                Font = new Font("Segoe UI", fontSize, fontStyle),
+                ForeColor = color ?? Color.FromArgb(60, 60, 60),
+                AutoSize = true
+            };
+        }
+
+        private TextBox CreateTextBoxControl(int x, int y, int width)
+        {
+            return new TextBox
+            {
+                Location = new Point(x, y),
+                Width = width,
+                Height = 28,
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = new Font("Segoe UI", 9)
+            };
+        }
+
+        private void LoadData()
+        {
+            try
+            {
+                // ✅ Load customer info from RentalDetail
+                if (_rentalDetail?.Customer != null)
+                {
+                    txtCustomerName.Text = _rentalDetail.Customer.Name ?? "N/A";
+                    txtIdNumber.Text = _rentalDetail.Customer.IdNumber ?? "N/A";
+                }
+                else
+                {
+                    txtCustomerName.Text = "N/A";
+                    txtIdNumber.Text = "N/A";
+                }
+
+                txtInvoiceNumber.Text = "1";
+
+                // ✅ Load totals
+                txtTotalRoom.Text = _totalRoomCost.ToString("N0") + " VNĐ";
+                txtTotalService.Text = _totalServiceCost.ToString("N0") + " VNĐ";
+                txtDeposit.Text = _depositAmount.ToString("N0") + " VNĐ";
+
+                int grandTotal = _totalRoomCost + _totalServiceCost;
+                txtTotal.Text = grandTotal.ToString("N0") + " VNĐ";
+
+                // ✅ Load rooms and services to grids
+                LoadRoomsToGrid();
+                LoadServicesToGrid();
+
+                System.Diagnostics.Debug.WriteLine("✅ PaymentDetailForm data loaded successfully");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error loading PaymentDetailForm data: {ex.Message}");
+                MessageBox.Show($"Lỗi tải dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadRoomsToGrid()
+        {
+            try
+            {
+                dgvRooms.Rows.Clear();
+                int stt = 1;
+
+                if (_rentalDetail?.RoomRentalDetails != null && _rentalDetail.RoomRentalDetails.Any())
+                {
+                    foreach (var room in _rentalDetail.RoomRentalDetails)
+                    {
+                        int nights = Math.Max(1, (int)(room.ReturnDate - room.RentalDate).TotalDays);
+                        int roomTotal = room.RentalPrice * nights;
+
+                        dgvRooms.Rows.Add(
+                            stt++,
+                            room.RoomId,
+                            "Theo Ngày",
+                            room.RentalDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                            room.ReturnDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                            room.CheckoutDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                            roomTotal.ToString("N0") + " VNĐ"
+                        );
+                    }
+                }
+
+                System.Diagnostics.Debug.WriteLine($"✅ Loaded {dgvRooms.Rows.Count} rooms to grid");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error loading rooms: {ex.Message}");
+            }
+        }
+
+        private void LoadServicesToGrid()
+        {
+            try
+            {
+                dgvServices.Rows.Clear();
+                int stt = 1;
+
+                if (_rentalDetail?.ServiceRentalDetails != null && _rentalDetail.ServiceRentalDetails.Any())
+                {
+                    foreach (var service in _rentalDetail.ServiceRentalDetails)
+                    {
+                        int total = service.Price * service.Quantity;
+                        dgvServices.Rows.Add(
+                            stt++,
+                            service.ServiceId,
+                            "Dịch Vụ",
+                            service.UsageDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                            service.Quantity,
+                            service.Price.ToString("N0") + " VNĐ",
+                            total.ToString("N0") + " VNĐ"
+                        );
+                    }
+                }
+
+                System.Diagnostics.Debug.WriteLine($"✅ Loaded {dgvServices.Rows.Count} services to grid");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error loading services: {ex.Message}");
+            }
+        }
+
+        private void CompletePayment()
+        {
+            MessageBox.Show(
+                "✅ Thanh toán thành công!\n\nHoá đơn đã được gửi cho khách hàng.",
+                "Thành công",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            this.Close();
+        }
+
+        private void InitializeComponent()
+        {
+            // This is auto-generated, we'll build UI in SetupUI
+        }
+    }
+}

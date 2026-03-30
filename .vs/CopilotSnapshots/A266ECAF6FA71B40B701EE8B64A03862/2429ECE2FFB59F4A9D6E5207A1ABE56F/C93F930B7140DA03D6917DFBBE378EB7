@@ -1,0 +1,454 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace QuanLyKhachSan.UI.Login
+{
+    /// <summary>
+    /// 🔐 LOGIN FORM - Đăng Nhập Hệ Thống
+    /// - Nhập username và password
+    /// - Hiển thị/Ẩn mật khẩu
+    /// - Validation dữ liệu
+    /// - Remember me chức năng
+    /// - Đẹp, hiện đại
+    /// </summary>
+    public partial class LoginForm : Form
+    {
+   private TextBox txtUsername;
+ private TextBox txtPassword;
+private Button btnLogin;
+      private Button btnExit;
+    private CheckBox chkRememberMe;
+        private Button btnTogglePassword;
+        private Label lblErrorMessage;
+        private PictureBox picLogo;
+   private bool isPasswordVisible = false;
+
+ // Test credentials - sau này sẽ thay bằng database
+        private const string DEFAULT_USERNAME = "admin";
+        private const string DEFAULT_PASSWORD = "123456";
+
+        public LoginForm()
+        {
+  InitializeUI();
+        LoadRememberedCredentials();
+        }
+
+        /// <summary>
+  /// Initialize UI Components
+    /// </summary>
+        private void InitializeUI()
+        {
+            // Form properties
+   this.Text = "🔐 Đăng Nhập - Hệ Thống Quản Lý Khách Sạn";
+        this.Width = 500;
+            this.Height = 600;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+         this.MinimizeBox = false;
+          this.BackColor = Color.White;
+            this.Icon = null;
+
+     // Header Panel with gradient effect
+         var headerPanel = new Panel
+            {
+  Dock = DockStyle.Top,
+                Height = 100,
+          BackColor = Color.FromArgb(59, 130, 246)
+          };
+
+          var lblHeader = new Label
+            {
+           Text = "🏨 QUẢN LÝ KHÁCH SẠN",
+          Font = new Font("Segoe UI", 24, FontStyle.Bold),
+         ForeColor = Color.White,
+    AutoSize = false,
+       Dock = DockStyle.Fill,
+  TextAlign = ContentAlignment.MiddleCenter
+    };
+        headerPanel.Controls.Add(lblHeader);
+    this.Controls.Add(headerPanel);
+
+       // Main content panel
+            var mainPanel = new Panel
+{
+    Dock = DockStyle.Fill,
+    BackColor = Color.White,
+             Padding = new Padding(40, 30, 40, 30)
+       };
+
+        int yPos = 20;
+
+   // Username Label
+        var lblUsername = new Label
+     {
+ Text = "👤 Tên đăng nhập:",
+     Font = new Font("Segoe UI", 11, FontStyle.Bold),
+       ForeColor = Color.FromArgb(31, 41, 55),
+       Location = new Point(0, yPos),
+     AutoSize = true
+      };
+            mainPanel.Controls.Add(lblUsername);
+
+            yPos += 35;
+
+      // Username TextBox
+            txtUsername = new TextBox
+            {
+      Location = new Point(0, yPos),
+            Width = 380,
+        Height = 40,
+   Font = new Font("Segoe UI", 11),
+         BorderStyle = BorderStyle.FixedSingle,
+        Padding = new Padding(10)
+   };
+     mainPanel.Controls.Add(txtUsername);
+
+        yPos += 60;
+
+            // Password Label
+            var lblPassword = new Label
+            {
+        Text = "🔒 Mật khẩu:",
+     Font = new Font("Segoe UI", 11, FontStyle.Bold),
+    ForeColor = Color.FromArgb(31, 41, 55),
+         Location = new Point(0, yPos),
+      AutoSize = true
+            };
+ mainPanel.Controls.Add(lblPassword);
+
+            yPos += 35;
+
+         // Password Panel with show/hide button
+            var passwordPanel = new Panel
+      {
+  Location = new Point(0, yPos),
+   Width = 380,
+      Height = 40,
+    BorderStyle = BorderStyle.FixedSingle
+            };
+
+            txtPassword = new TextBox
+            {
+                Location = new Point(0, 0),
+                Width = 340,
+  Height = 40,
+     Font = new Font("Segoe UI", 11),
+        BorderStyle = BorderStyle.None,
+UseSystemPasswordChar = true,
+                Padding = new Padding(10)
+ };
+            passwordPanel.Controls.Add(txtPassword);
+
+            // Show/Hide Password Button
+       btnTogglePassword = new Button
+            {
+ Location = new Point(340, 0),
+Width = 40,
+          Height = 40,
+                Text = "👁️",
+    Font = new Font("Segoe UI", 14),
+        BackColor = Color.FromArgb(243, 244, 246),
+     ForeColor = Color.FromArgb(107, 114, 128),
+         FlatStyle = FlatStyle.Flat
+    };
+btnTogglePassword.FlatAppearance.BorderSize = 0;
+      btnTogglePassword.Click += BtnTogglePassword_Click;
+      passwordPanel.Controls.Add(btnTogglePassword);
+
+   mainPanel.Controls.Add(passwordPanel);
+
+  yPos += 60;
+
+       // Remember Me Checkbox
+     chkRememberMe = new CheckBox
+            {
+     Text = "💾 Ghi nhớ tôi",
+       Location = new Point(0, yPos),
+      AutoSize = true,
+       Font = new Font("Segoe UI", 10),
+                ForeColor = Color.FromArgb(107, 114, 128)
+   };
+            mainPanel.Controls.Add(chkRememberMe);
+
+    yPos += 40;
+
+    // Error Message Label
+    lblErrorMessage = new Label
+      {
+    Text = "",
+         Location = new Point(0, yPos),
+   Width = 380,
+                Height = 40,
+       Font = new Font("Segoe UI", 9),
+      ForeColor = Color.FromArgb(239, 68, 68),
+    AutoSize = false,
+ Visible = false,
+        TextAlign = ContentAlignment.TopLeft
+     };
+            mainPanel.Controls.Add(lblErrorMessage);
+
+    yPos += 50;
+
+            // Login Button
+  btnLogin = new Button
+            {
+      Text = "✅ Đăng Nhập",
+  Location = new Point(0, yPos),
+                Width = 180,
+   Height = 45,
+              Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                BackColor = Color.FromArgb(59, 130, 246),
+  ForeColor = Color.White,
+FlatStyle = FlatStyle.Flat,
+         Cursor = Cursors.Hand
+            };
+      btnLogin.Click += BtnLogin_Click;
+   btnLogin.FlatAppearance.BorderSize = 0;
+            mainPanel.Controls.Add(btnLogin);
+
+            // Exit Button
+      btnExit = new Button
+     {
+        Text = "❌ Thoát",
+           Location = new Point(200, yPos),
+                Width = 180,
+       Height = 45,
+       Font = new Font("Segoe UI", 11, FontStyle.Bold),
+    BackColor = Color.FromArgb(107, 114, 128),
+   ForeColor = Color.White,
+        FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+ };
+            btnExit.Click += (s, e) => Application.Exit();
+       btnExit.FlatAppearance.BorderSize = 0;
+  mainPanel.Controls.Add(btnExit);
+
+            this.Controls.Add(mainPanel);
+
+ // Footer
+            var footerPanel = new Panel
+    {
+      Dock = DockStyle.Bottom,
+        Height = 40,
+                BackColor = Color.FromArgb(243, 244, 246)
+            };
+
+            var lblFooter = new Label
+     {
+          Text = "© 2024 Hệ Thống Quản Lý Khách Sạn v1.0",
+         Font = new Font("Segoe UI", 9),
+  ForeColor = Color.FromArgb(107, 114, 128),
+                Dock = DockStyle.Fill,
+           TextAlign = ContentAlignment.MiddleCenter
+            };
+            footerPanel.Controls.Add(lblFooter);
+   this.Controls.Add(footerPanel);
+
+   // Event handlers
+            this.KeyDown += LoginForm_KeyDown;
+            txtUsername.KeyDown += TextBox_KeyDown;
+            txtPassword.KeyDown += TextBox_KeyDown;
+     }
+
+        /// <summary>
+        /// Toggle password visibility
+     /// </summary>
+ private void BtnTogglePassword_Click(object sender, EventArgs e)
+        {
+  isPasswordVisible = !isPasswordVisible;
+            txtPassword.UseSystemPasswordChar = !isPasswordVisible;
+       btnTogglePassword.Text = isPasswordVisible ? "🙈" : "👁️";
+        }
+
+        /// <summary>
+     /// Login button click handler
+        /// </summary>
+        private void BtnLogin_Click(object sender, EventArgs e)
+        {
+  // Validate input
+    if (!ValidateInput())
+    {
+            return;
+            }
+
+       // Check credentials
+    if (CheckCredentials(txtUsername.Text, txtPassword.Text))
+            {
+ // Save credentials if Remember Me is checked
+       if (chkRememberMe.Checked)
+              {
+          SaveCredentials(txtUsername.Text);
+        }
+          else
+                {
+        ClearSavedCredentials();
+        }
+
+    // Close login form and show main form
+     this.DialogResult = DialogResult.OK;
+       this.Close();
+            }
+         else
+ {
+    ShowError("❌ Tên đăng nhập hoặc mật khẩu không đúng!");
+       txtPassword.Clear();
+    txtUsername.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Validate input
+        /// </summary>
+private bool ValidateInput()
+    {
+            // Clear previous error
+    lblErrorMessage.Visible = false;
+            lblErrorMessage.Text = "";
+
+        // Check username
+         if (string.IsNullOrWhiteSpace(txtUsername.Text))
+     {
+      ShowError("❌ Vui lòng nhập tên đăng nhập!");
+       txtUsername.Focus();
+          return false;
+        }
+
+      // Check password
+   if (string.IsNullOrWhiteSpace(txtPassword.Text))
+    {
+          ShowError("❌ Vui lòng nhập mật khẩu!");
+         txtPassword.Focus();
+ return false;
+      }
+
+            // Check length
+      if (txtUsername.Text.Length < 3)
+            {
+      ShowError("❌ Tên đăng nhập phải >= 3 ký tự!");
+         txtUsername.Focus();
+      return false;
+    }
+
+      if (txtPassword.Text.Length < 6)
+            {
+ShowError("❌ Mật khẩu phải >= 6 ký tự!");
+    txtPassword.Focus();
+     return false;
+          }
+
+     return true;
+  }
+
+        /// <summary>
+      /// Check credentials (temporary - will be replaced with database)
+        /// </summary>
+     private bool CheckCredentials(string username, string password)
+    {
+            // TODO: Replace with actual database check
+  // For now, using hardcoded credentials
+            return username == DEFAULT_USERNAME && password == DEFAULT_PASSWORD;
+  }
+
+        /// <summary>
+        /// Show error message
+  /// </summary>
+        private void ShowError(string message)
+    {
+       lblErrorMessage.Text = message;
+            lblErrorMessage.Visible = true;
+ }
+
+        /// <summary>
+        /// Load remembered credentials from registry
+      /// </summary>
+        private void LoadRememberedCredentials()
+        {
+         try
+   {
+  // Try to load from Windows Registry
+       var regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\QuanLyKhachSan");
+  
+        if (regKey != null)
+         {
+            string username = regKey.GetValue("Username")?.ToString() ?? "";
+       
+          if (!string.IsNullOrEmpty(username))
+ {
+        txtUsername.Text = username;
+          chkRememberMe.Checked = true;
+     txtPassword.Focus();
+               }
+ 
+     regKey.Close();
+              }
+            }
+            catch
+     {
+         // Ignore registry errors
+        }
+        }
+
+        /// <summary>
+    /// Save credentials to registry
+        /// </summary>
+        private void SaveCredentials(string username)
+        {
+        try
+    {
+         var regKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"Software\QuanLyKhachSan");
+             regKey.SetValue("Username", username);
+      regKey.Close();
+            }
+            catch
+   {
+                // Ignore registry errors
+   }
+        }
+
+        /// <summary>
+        /// Clear saved credentials from registry
+        /// </summary>
+ private void ClearSavedCredentials()
+        {
+    try
+        {
+                var regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\QuanLyKhachSan", true);
+   
+        if (regKey != null)
+              {
+      regKey.DeleteValue("Username", false);
+     regKey.Close();
+}
+          }
+            catch
+            {
+ // Ignore registry errors
+            }
+        }
+
+  /// <summary>
+ /// Key down event handler - Allow Enter to login
+        /// </summary>
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+ {
+          if (e.KeyCode == Keys.Return)
+            {
+      e.SuppressKeyPress = true;
+        BtnLogin_Click(null, null);
+       }
+        }
+
+   /// <summary>
+        /// Form key down event handler
+        /// </summary>
+  private void LoginForm_KeyDown(object sender, KeyEventArgs e)
+        {
+      if (e.KeyCode == Keys.Escape)
+            {
+        Application.Exit();
+            }
+        }
+    }
+}

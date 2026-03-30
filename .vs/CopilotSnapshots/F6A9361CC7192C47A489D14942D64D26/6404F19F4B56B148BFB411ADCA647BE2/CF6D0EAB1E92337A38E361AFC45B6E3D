@@ -1,0 +1,539 @@
+﻿using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Windows.Forms;
+using QuanLyKhachSan.Services.Interfaces;
+
+namespace QuanLyKhachSan.UI.Login
+{
+    /// <summary>
+    /// 🔐 MODERN BEAUTIFUL LOGIN FORM - Giao diện đẹp, hiện đại
+    /// </summary>
+    public partial class LoginForm : Form
+    {
+        // UI Controls
+        private Panel pnlBackground;
+        private Panel pnlLeftBrand;
+        private Panel pnlRightForm;
+        private Label lblBrandIcon;
+        private Label lblBrandTitle;
+        private Label lblBrandSubtitle;
+        private Label lblWelcome;
+        private Label lblDescription;
+        private Label lblUsername;
+        private Label lblPassword;
+        private TextBox txtUsername;
+        private TextBox txtPassword;
+        private Button btnLogin;
+        private Button btnCancel;
+        private Button btnTogglePassword;
+        private CheckBox chkRememberMe;
+        private Label lblError;
+        private bool isPasswordVisible = false;
+
+        // Authentication service
+        private readonly IAuthenticationService _authService;
+
+        public LoginForm(IAuthenticationService authService = null)
+        {
+            InitializeComponent();
+            _authService = authService;
+            this.DoubleBuffered = true;
+            BuildUI();
+            LoadRememberedCredentials();
+        }
+
+        private void BuildUI()
+        {
+            // ===== FORM SETUP =====
+            this.Text = "Đăng Nhập - Quản Lý Khách Sạn";
+            this.Width = 1000;
+            this.Height = 600;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.BackColor = Color.White;
+            this.Icon = null;
+
+            // Main background
+            pnlBackground = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.White
+            };
+            this.Controls.Add(pnlBackground);
+
+            // ===== LEFT BRAND PANEL =====
+            CreateLeftBrandPanel();
+
+            // ===== RIGHT FORM PANEL =====
+            CreateRightFormPanel();
+
+            // Handle ESC key
+            this.KeyPreview = true;
+            this.KeyDown += (s, e) =>
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.DialogResult = DialogResult.Cancel;
+                this.Close();
+            }
+        };
+        }
+
+        /// <summary>
+        /// Create LEFT PANEL with branding
+        /// </summary>
+        private void CreateLeftBrandPanel()
+        {
+            pnlLeftBrand = new Panel
+            {
+                Dock = DockStyle.Left,
+                Width = 450,
+                BackColor = Color.White
+            };
+
+            // Gradient background
+            pnlLeftBrand.Paint += (s, e) =>
+                {
+                    using (var brush = new LinearGradientBrush(
+                        e.ClipRectangle,
+                          Color.FromArgb(59, 130, 246),      // Blue
+                            Color.FromArgb(37, 99, 235),       // Dark Blue
+                        LinearGradientMode.Vertical))
+                    {
+                        e.Graphics.FillRectangle(brush, e.ClipRectangle);
+                    }
+                };
+
+            // Logo Icon
+            lblBrandIcon = new Label
+            {
+                Text = "🏨",
+                Font = new Font("Segoe UI", 100, FontStyle.Bold),
+                ForeColor = Color.White,
+                AutoSize = true,
+                Location = new Point(75, 80),
+                BackColor = Color.Transparent
+            };
+            pnlLeftBrand.Controls.Add(lblBrandIcon);
+
+            // Brand Title
+            lblBrandTitle = new Label
+            {
+                Text = "QUẢN LÝ\nKHÁCH SẠN",
+                Font = new Font("Segoe UI", 38, FontStyle.Bold),
+                ForeColor = Color.White,
+                Location = new Point(20, 200),
+                Width = 410,
+                Height = 100,
+                AutoSize = false,
+                BackColor = Color.Transparent
+            };
+            pnlLeftBrand.Controls.Add(lblBrandTitle);
+
+            // Brand Subtitle
+            lblBrandSubtitle = new Label
+            {
+                Text = "Hệ thống quản lý khách sạn\nchuyên nghiệp, hiện đại",
+                Font = new Font("Segoe UI", 12),
+                ForeColor = Color.FromArgb(219, 234, 254),
+                Location = new Point(20, 310),
+                Width = 410,
+                AutoSize = false,
+                BackColor = Color.Transparent
+            };
+            pnlLeftBrand.Controls.Add(lblBrandSubtitle);
+
+            // Decorative Line
+            var pnlLine = new Panel
+            {
+                Location = new Point(20, 380),
+                Width = 100,
+                Height = 3,
+                BackColor = Color.FromArgb(147, 197, 253),
+            };
+            pnlLeftBrand.Controls.Add(pnlLine);
+
+            // Features list
+            string[] features = { "✓ Quản lý phòng", "✓ Đặt phòng", "✓ Hóa đơn", "✓ Báo cáo" };
+            int yPos = 420;
+            foreach (var feature in features)
+            {
+                var lblFeature = new Label
+                {
+                    Text = feature,
+                    Font = new Font("Segoe UI", 11),
+                    ForeColor = Color.FromArgb(219, 234, 254),
+                    Location = new Point(20, yPos),
+                    AutoSize = true,
+                    BackColor = Color.Transparent
+                };
+                pnlLeftBrand.Controls.Add(lblFeature);
+                yPos += 30;
+            }
+
+            pnlBackground.Controls.Add(pnlLeftBrand);
+        }
+
+        /// <summary>
+        /// Create RIGHT PANEL with login form
+        /// </summary>
+        private void CreateRightFormPanel()
+        {
+            pnlRightForm = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(248, 250, 252)
+            };
+
+            // 🔥 TẠO CONTAINER GOM NHÓM ĐỂ CĂN GIỮA
+            var pnlCenter = new Panel
+            {
+                Width = 380,
+                Height = 520, // Tổng chiều cao ước tính của các control
+                BackColor = Color.Transparent
+            };
+
+            // Tính toán vị trí để căn giữa pnlCenter
+            // Form Width = 1000, Left Brand = 450 => Right = 550
+            // X = (550 - 380) / 2 = 85
+            // Y = (600 - 520) / 2 = 40
+            pnlCenter.Location = new Point(85, 40);
+            pnlCenter.Anchor = AnchorStyles.None; // Giữ cố định ở giữa
+
+            int yPos = 0;
+
+            // ===== WELCOME SECTION =====
+            lblWelcome = new Label { Text = "Chào mừng!", Font = new Font("Segoe UI", 32, FontStyle.Bold), ForeColor = Color.FromArgb(31, 41, 55), AutoSize = true, Location = new Point(0, yPos), BackColor = Color.Transparent };
+            pnlCenter.Controls.Add(lblWelcome);
+            yPos += 55;
+
+            lblDescription = new Label { Text = "Đăng nhập vào hệ thống để tiếp tục", Font = new Font("Segoe UI", 12), ForeColor = Color.FromArgb(107, 114, 128), AutoSize = true, Location = new Point(5, yPos), BackColor = Color.Transparent };
+            pnlCenter.Controls.Add(lblDescription);
+            yPos += 50;
+
+            // ===== USERNAME FIELD =====
+            lblUsername = new Label { Text = "👤 Tên đăng nhập", Font = new Font("Segoe UI", 11, FontStyle.Bold), ForeColor = Color.FromArgb(31, 41, 55), AutoSize = true, Location = new Point(0, yPos), BackColor = Color.Transparent };
+            pnlCenter.Controls.Add(lblUsername);
+            yPos += 30;
+
+            txtUsername = new TextBox { Location = new Point(0, yPos), Width = 380, Height = 45, Font = new Font("Segoe UI", 14), BorderStyle = BorderStyle.None, BackColor = Color.White, ForeColor = Color.FromArgb(31, 41, 55) };
+            txtUsername.PlaceholderText = "admin";
+            // ApplyTextBoxStyle(txtUsername); // Giữ nguyên hàm của bạn
+            pnlCenter.Controls.Add(txtUsername);
+            yPos += 55;
+
+            // ===== PASSWORD FIELD =====
+            lblPassword = new Label { Text = "🔒 Mật khẩu", Font = new Font("Segoe UI", 11, FontStyle.Bold), ForeColor = Color.FromArgb(31, 41, 55), AutoSize = true, Location = new Point(0, yPos), BackColor = Color.Transparent };
+            pnlCenter.Controls.Add(lblPassword);
+            yPos += 30;
+
+            var pnlPasswordContainer = new Panel { Location = new Point(0, yPos), Width = 380, Height = 45, BackColor = Color.White, BorderStyle = BorderStyle.None };
+            txtPassword = new TextBox { Location = new Point(5, 5), Width = 325, Height = 35, Font = new Font("Segoe UI", 14), BorderStyle = BorderStyle.None, UseSystemPasswordChar = true, ForeColor = Color.FromArgb(31, 41, 55), BackColor = Color.White };
+            txtPassword.PlaceholderText = "123456";
+            txtPassword.KeyDown += (s, e) => { if (e.KeyCode == Keys.Return) { e.SuppressKeyPress = true; /* BtnLogin_Click(null, null); */ } };
+            pnlPasswordContainer.Controls.Add(txtPassword);
+
+            btnTogglePassword = new Button { Location = new Point(330, 0), Width = 50, Height = 45, Text = "👁️", Font = new Font("Segoe UI", 12), BackColor = Color.White, ForeColor = Color.FromArgb(107, 114, 128), FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
+            btnTogglePassword.FlatAppearance.BorderSize = 0;
+            // btnTogglePassword.Click += BtnTogglePassword_Click;
+            pnlPasswordContainer.Controls.Add(btnTogglePassword);
+            // ApplyPanelBorder(pnlPasswordContainer); // Giữ nguyên hàm của bạn
+            pnlCenter.Controls.Add(pnlPasswordContainer);
+            yPos += 60;
+
+            // ===== REMEMBER ME =====
+            chkRememberMe = new CheckBox { Text = "💾 Ghi nhớ tôi", Font = new Font("Segoe UI", 11), ForeColor = Color.FromArgb(75, 85, 99), Location = new Point(0, yPos), AutoSize = true, Cursor = Cursors.Hand, BackColor = Color.Transparent };
+            pnlCenter.Controls.Add(chkRememberMe);
+            yPos += 40;
+
+            // ===== ERROR MESSAGE =====
+            lblError = new Label { Text = "Sai tài khoản hoặc mật khẩu!", Font = new Font("Segoe UI", 10), ForeColor = Color.FromArgb(220, 38, 38), Location = new Point(0, yPos), Width = 380, Height = 35, AutoSize = false, Visible = false, TextAlign = ContentAlignment.MiddleLeft, BackColor = Color.FromArgb(254, 226, 226) };
+            pnlCenter.Controls.Add(lblError);
+            yPos += 45;
+
+            // ===== LOGIN BUTTON =====
+            btnLogin = new Button { Location = new Point(0, yPos), Width = 380, Height = 48, Text = "✅ Đăng Nhập", Font = new Font("Segoe UI", 12, FontStyle.Bold), BackColor = Color.FromArgb(34, 197, 94), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
+            btnLogin.FlatAppearance.BorderSize = 0;
+            // btnLogin.Click += BtnLogin_Click;
+            pnlCenter.Controls.Add(btnLogin);
+            yPos += 60;
+
+            // ===== CANCEL BUTTON =====
+            btnCancel = new Button { Location = new Point(0, yPos), Width = 380, Height = 45, Text = "❌ Hủy", Font = new Font("Segoe UI", 12), BackColor = Color.FromArgb(229, 231, 235), ForeColor = Color.FromArgb(75, 85, 99), FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
+            pnlCenter.Controls.Add(btnCancel);
+
+            // Add pnlCenter vào phần bên phải
+            pnlRightForm.Controls.Add(pnlCenter);
+            pnlBackground.Controls.Add(pnlRightForm);
+        }
+        /// <summary>
+        /// Apply border and shadow effect to textbox
+        /// </summary>
+        private void ApplyTextBoxStyle(TextBox txt)
+        {
+            // Add border effect using panel
+            var pnlBorder = new Panel
+            {
+                Location = txt.Location,
+                Width = txt.Width,
+                Height = txt.Height,
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            pnlBorder.Controls.Add(txt);
+            txt.Location = new Point(0, 0);
+            txt.Width = pnlBorder.Width - 2;
+            txt.Height = pnlBorder.Height - 2;
+            txt.BorderStyle = BorderStyle.None;
+
+            // Hover effect
+            txt.MouseEnter += (s, e) =>
+   {
+       if (!txt.Focused)
+           pnlBorder.BackColor = Color.FromArgb(249, 250, 251);
+   };
+
+            txt.MouseLeave += (s, e) =>
+            {
+                if (!txt.Focused)
+                    pnlBorder.BackColor = Color.White;
+            };
+
+            txt.GotFocus += (s, e) =>
+                {
+                    pnlBorder.BackColor = Color.FromArgb(240, 253, 250);
+                };
+
+            txt.LostFocus += (s, e) =>
+               {
+                   pnlBorder.BackColor = Color.White;
+               };
+
+            txt.KeyDown += (s, e) =>
+             {
+                 if (e.KeyCode == Keys.Return)
+                 {
+                     e.SuppressKeyPress = true;
+                     BtnLogin_Click(null, null);
+                 }
+             };
+        }
+
+        /// <summary>
+        /// Apply border effect to panel
+        /// </summary>
+        private void ApplyPanelBorder(Panel pnl)
+        {
+            pnl.Paint += (s, e) =>
+    {
+        ControlPaint.DrawBorder(e.Graphics, pnl.ClientRectangle,
+                  Color.FromArgb(209, 213, 219), 1, ButtonBorderStyle.Solid,
+          Color.FromArgb(209, 213, 219), 1, ButtonBorderStyle.Solid,
+     Color.FromArgb(209, 213, 219), 1, ButtonBorderStyle.Solid,
+Color.FromArgb(209, 213, 219), 1, ButtonBorderStyle.Solid);
+    };
+
+            pnl.MouseEnter += (s, e) =>
+            {
+                pnl.BackColor = Color.FromArgb(249, 250, 251);
+            };
+
+            pnl.MouseLeave += (s, e) =>
+                  {
+                      pnl.BackColor = Color.White;
+                  };
+        }
+
+        /// <summary>
+        /// Toggle password visibility
+        /// </summary>
+        private void BtnTogglePassword_Click(object sender, EventArgs e)
+        {
+            isPasswordVisible = !isPasswordVisible;
+            txtPassword.UseSystemPasswordChar = !isPasswordVisible;
+            btnTogglePassword.Text = isPasswordVisible ? "🙈" : "👁️";
+        }
+
+        /// <summary>
+        /// Handle login button click
+        /// </summary>
+        private void BtnLogin_Click(object sender, EventArgs e)
+        {
+            lblError.Visible = false;
+
+            // Validate
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                ShowError("Vui lòng nhập tên đăng nhập!");
+                txtUsername.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                ShowError("Vui lòng nhập mật khẩu!");
+                txtPassword.Focus();
+                return;
+            }
+
+            // Perform authentication
+            if (_authService != null)
+            {
+                PerformDatabaseAuthentication();
+            }
+            else
+            {
+                PerformBasicAuthentication();
+            }
+        }
+
+        /// <summary>
+        /// Database authentication
+        /// </summary>
+        private async void PerformDatabaseAuthentication()
+        {
+            try
+            {
+                btnLogin.Enabled = false;
+                btnLogin.Text = "⏳ Đang kiểm tra...";
+
+                var account = await _authService.AuthenticateAsync(txtUsername.Text, txtPassword.Text);
+
+                if (account != null)
+                {
+                    if (chkRememberMe.Checked)
+                        SaveCredentials(txtUsername.Text);
+                    else
+                        ClearSavedCredentials();
+
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    ShowError("❌ Tên đăng nhập hoặc mật khẩu không đúng!");
+                    txtPassword.Clear();
+                    txtPassword.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError($"❌ Lỗi: {ex.Message}");
+                txtPassword.Clear();
+            }
+            finally
+            {
+                btnLogin.Enabled = true;
+                btnLogin.Text = "✅ Đăng Nhập";
+            }
+        }
+
+        /// <summary>
+        /// Basic authentication
+        /// </summary>
+        private void PerformBasicAuthentication()
+        {
+            const string DEFAULT_USERNAME = "admin";
+            const string DEFAULT_PASSWORD = "123456";
+
+            if (txtUsername.Text.Length < 3)
+            {
+                ShowError("❌ Tên đăng nhập phải >= 3 ký tự!");
+                txtUsername.Focus();
+                return;
+            }
+
+            if (txtPassword.Text.Length < 6)
+            {
+                ShowError("❌ Mật khẩu phải >= 6 ký tự!");
+                txtPassword.Focus();
+                return;
+            }
+
+            if (txtUsername.Text == DEFAULT_USERNAME && txtPassword.Text == DEFAULT_PASSWORD)
+            {
+                if (chkRememberMe.Checked)
+                    SaveCredentials(txtUsername.Text);
+                else
+                    ClearSavedCredentials();
+
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                ShowError("❌ Tên đăng nhập hoặc mật khẩu không đúng!");
+                txtPassword.Clear();
+                txtPassword.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Show error message
+        /// </summary>
+        private void ShowError(string message)
+        {
+            lblError.Text = message;
+            lblError.Visible = true;
+        }
+
+        /// <summary>
+        /// Load remembered credentials
+        /// </summary>
+        private void LoadRememberedCredentials()
+        {
+            try
+            {
+                var regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\QuanLyKhachSan");
+                if (regKey != null)
+                {
+                    string username = regKey.GetValue("Username")?.ToString() ?? "";
+                    if (!string.IsNullOrEmpty(username))
+                    {
+                        txtUsername.Text = username;
+                        chkRememberMe.Checked = true;
+                        txtPassword.Focus();
+                    }
+                    regKey.Close();
+                }
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Save credentials
+        /// </summary>
+        private void SaveCredentials(string username)
+        {
+            try
+            {
+                var regKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"Software\QuanLyKhachSan");
+                regKey.SetValue("Username", username);
+                regKey.Close();
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Clear saved credentials
+        /// </summary>
+        private void ClearSavedCredentials()
+        {
+            try
+            {
+                var regKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\QuanLyKhachSan", true);
+                if (regKey != null)
+                {
+                    regKey.DeleteValue("Username", false);
+                    regKey.Close();
+                }
+            }
+            catch { }
+        }
+    }
+}

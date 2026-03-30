@@ -115,8 +115,25 @@ namespace QuanLyKhachSan.UI
 
         private void button6_Click(object sender, EventArgs e)
         {
-            ShowPanel(new UCServices());
+            try
+            {
+                var serviceProvider = (IServiceProvider)Program.Services;
+                var serviceService = serviceProvider.GetService(typeof(IServiceService)) as IServiceService;
 
+                if (serviceService == null)
+                {
+                    MessageBox.Show("Lỗi: Không thể khởi tạo IServiceService", "Lỗi",
+        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // ✅ Use new UCServiceManagement instead of UCServices
+                ShowPanel(new UCServiceManagement(serviceService));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnFloorView_Click(object sender, EventArgs e)
@@ -149,8 +166,10 @@ namespace QuanLyKhachSan.UI
                 var roomRentalDetailService = serviceProvider.GetService(typeof(IRoomRentalDetailService)) as IRoomRentalDetailService;
                 var roomService = serviceProvider.GetService(typeof(IRoomService)) as IRoomService;
                 var serviceService = serviceProvider.GetService(typeof(IServiceService)) as IServiceService;
+                var invoiceService = serviceProvider.GetService(typeof(IInvoiceService)) as IInvoiceService;
+                var serviceRentalDetailService = serviceProvider.GetService(typeof(IServiceRentalDetailService)) as IServiceRentalDetailService;
 
-                if (rentalDetailService == null || customerService == null || employeeService == null || 
+                if (rentalDetailService == null || customerService == null || employeeService == null ||
                     roomRentalDetailService == null || roomService == null || serviceService == null)
                 {
                     MessageBox.Show("Lỗi: Không thể khởi tạo services", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -159,12 +178,14 @@ namespace QuanLyKhachSan.UI
 
                 var listBooking = new UCListBooking();
                 listBooking.InitializeWithServices(
-                    rentalDetailService, 
-                    customerService, 
-                    employeeService, 
+                    rentalDetailService,
+                    customerService,
+                    employeeService,
                     roomRentalDetailService,
                     roomService,
-                    serviceService);
+                    serviceService,
+                    invoiceService,
+                    serviceRentalDetailService);
                 ShowPanel(listBooking);
             }
             catch (Exception ex)
@@ -188,29 +209,29 @@ namespace QuanLyKhachSan.UI
                 var serviceService = serviceProvider.GetService(typeof(IServiceService)) as IServiceService;
                 var invoiceService = serviceProvider.GetService(typeof(IInvoiceService)) as IInvoiceService;
 
-                if (rentalDetailService == null || customerService == null || roomRentalDetailService == null || 
+                if (rentalDetailService == null || customerService == null || roomRentalDetailService == null ||
  roomService == null || serviceService == null)
-     {
-     MessageBox.Show("Lỗi: Không thể khởi tạo services", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-         return;
-        }
+                {
+                    MessageBox.Show("Lỗi: Không thể khởi tạo services", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-    // ✅ Create and show BookingDetailForm
-             var detailForm = new BookingDetailForm();
-  detailForm.SetServices(
-        rentalDetailService,
-         customerService,
-    roomRentalDetailService,
-      roomService,
-            serviceService,
-         invoiceService);
+                // ✅ Create and show BookingDetailForm
+                var detailForm = new BookingDetailForm();
+                detailForm.SetServices(
+                      rentalDetailService,
+                       customerService,
+                  roomRentalDetailService,
+                    roomService,
+                          serviceService,
+                       invoiceService);
 
-// Show form dialog
-      detailForm.ShowDialog();
+                // Show form dialog
+                detailForm.ShowDialog();
             }
             catch (Exception ex)
-          {
-            MessageBox.Show($"Lỗi mở form checkout: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            {
+                MessageBox.Show($"Lỗi mở form checkout: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -237,12 +258,12 @@ namespace QuanLyKhachSan.UI
                 {
                     // Open payment form for selected rental
                     var paymentForm = new PaymentForm(
-                        null,
-                        null,
-                        0,
-                        0,
-                        rentalDetailService,
-                        invoiceService);
+                                null,
+                                 null,
+                         0,
+                         0,
+                             rentalDetailService,
+                         invoiceService);
 
                     paymentForm.ShowDialog();
                 }
@@ -250,6 +271,33 @@ namespace QuanLyKhachSan.UI
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi mở form thanh toán: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ✅ NEW: Open Room Status Management Form
+        /// <summary>
+        /// Open Room Status Management Form - Quản Lý Trạng Thái Phòng
+        /// </summary>
+        public void OpenRoomStatusManagement()
+        {
+            try
+            {
+                var serviceProvider = (IServiceProvider)Program.Services;
+                var roomRentalDetailService = serviceProvider.GetService(typeof(IRoomRentalDetailService)) as IRoomRentalDetailService;
+                var rentalDetailService = serviceProvider.GetService(typeof(IRentalDetailService)) as IRentalDetailService;
+
+                if (roomRentalDetailService == null || rentalDetailService == null)
+                {
+                    MessageBox.Show("Lỗi: Không thể khởi tạo dịch vụ", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var statusForm = new RoomStatusManagementForm(roomRentalDetailService, rentalDetailService);
+                statusForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi mở form quản lý trạng thái phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

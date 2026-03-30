@@ -20,6 +20,8 @@ namespace QuanLyKhachSan.UI.BookingUI
         private IRoomRentalDetailService _roomRentalDetailService;
         private IRoomService _roomService;
         private IServiceService _serviceService;
+        private IInvoiceService _invoiceService;
+        private IServiceRentalDetailService _serviceRentalDetailService;
         private List<RentalDetail> _allRentalDetails = new();
 
         public UCListBooking()
@@ -37,7 +39,9 @@ namespace QuanLyKhachSan.UI.BookingUI
             IEmployeeService employeeService,
             IRoomRentalDetailService roomRentalDetailService,
             IRoomService roomService,
-            IServiceService serviceService)
+            IServiceService serviceService,
+            IInvoiceService invoiceService = null,
+            IServiceRentalDetailService serviceRentalDetailService = null)
         {
             _rentalDetailService = rentalDetailService ?? throw new ArgumentNullException(nameof(rentalDetailService));
             _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
@@ -45,6 +49,8 @@ namespace QuanLyKhachSan.UI.BookingUI
             _roomRentalDetailService = roomRentalDetailService ?? throw new ArgumentNullException(nameof(roomRentalDetailService));
             _roomService = roomService ?? throw new ArgumentNullException(nameof(roomService));
             _serviceService = serviceService ?? throw new ArgumentNullException(nameof(serviceService));
+            _invoiceService = invoiceService;
+            _serviceRentalDetailService = serviceRentalDetailService;
 
             InitializeDataGridView();
             SetupEventHandlers();
@@ -306,8 +312,27 @@ namespace QuanLyKhachSan.UI.BookingUI
                 {
                     customerDict.TryGetValue(rental.CustomerId, out var customer);
                     employeeDict.TryGetValue(rental.EmployeeId, out var employee);
+                    
+                    // ✅ Calculate TOTAL price from both rooms AND services
+                    var roomTotalPrice = await _roomRentalDetailService.CalculateTotalPriceAsync(rental.RentalDetailId);
 
-                    var totalPrice = await _roomRentalDetailService.CalculateTotalPriceAsync(rental.RentalDetailId);
+                    int serviceTotalPrice = 0;
+                    if (_serviceRentalDetailService != null)
+                    {
+                        try
+                        {
+                            serviceTotalPrice = await _serviceRentalDetailService.CalculateTotalServicePriceAsync(rental.RentalDetailId);
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"⚠️ Error calculating service price for {rental.RentalDetailId}: {ex.Message}");
+                            serviceTotalPrice = 0;
+                        }
+                    }
+
+                    int totalPrice = roomTotalPrice + serviceTotalPrice;
+
+                    var rentalId = rental.RentalDetailId;
 
                     displayList.Add(new DisplayRentalDetailDto
                     {
@@ -319,12 +344,12 @@ namespace QuanLyKhachSan.UI.BookingUI
                         CreatedDate = rental.CreatedDate.ToString("dd/MM/yyyy HH:mm"),
                         DepositAmount = rental.DepositAmount,
                         ProcessingStatus = GetProcessingStatusName(rental.ProcessingStatus),
-                        TotalPrice = (int)totalPrice,
+                        TotalPrice = totalPrice,
                         OriginalRental = rental
                     });
 
                     System.Diagnostics.Debug.WriteLine(
-                $"✅ Row: {rental.RentalDetailId} | KH: {customer?.Name} | NV: {employee?.Name}");
+                 $"✅ Row: {rental.RentalDetailId} | KH: {customer?.Name} | NV: {employee?.Name} | Room: {roomTotalPrice:N0} | Service: {serviceTotalPrice:N0} | Total: {totalPrice:N0}");
                 }
 
                 if (displayList.Count > 0)
@@ -377,13 +402,15 @@ namespace QuanLyKhachSan.UI.BookingUI
                 // ✅ Create form and set services BEFORE using
                 var detailForm = new BookingDetailForm();
 
-                // ✅ Inject all services
+                // ✅ Inject all services (including new ones)
                 detailForm.SetServices(
                     _rentalDetailService,
                     _customerService,
                     _roomRentalDetailService,
                     _roomService,
-                    _serviceService
+                    _serviceService,
+                    _invoiceService,
+                    _serviceRentalDetailService
                 );
 
                 // Load data
@@ -391,6 +418,10 @@ namespace QuanLyKhachSan.UI.BookingUI
 
                 // Show form
                 detailForm.ShowDialog();
+
+                // ✅ NEW: Refresh danh sách sau khi form đóng
+                // Điều này đảm bảo tổng tiền được cập nhật nếu user thay đổi phòng/dịch vụ
+                await LoadRentalDetailsAsync();
             }
             catch (Exception ex)
             {
@@ -577,6 +608,42 @@ namespace QuanLyKhachSan.UI.BookingUI
             return StatusMap.TryGetValue(status, out var statusName)
                  ? statusName
                 : "Không Xác Định";
+        }
+
+        /// <summary>
+        /// ✅ NEW: Helper method to verify total price calculation
+        /// Used for debugging and ensuring accuracy
+        /// </summary>
+        private async Task<int> VerifyTotalPriceAsync(string rentalDetailId)
+        {
+            try
+            {
+                var roomPrice = await _roomRentalDetailService.CalculateTotalPriceAsync(rentalDetailId);
+                int servicePrice = 0;
+
+                if (_serviceRentalDetailService != null)
+                {
+                    try
+                    {
+                        servicePrice = await _serviceRentalDetailService.CalculateTotalServicePriceAsync(rentalDetailId);
+                    }
+                    catch
+                    {
+                        servicePrice = 0;
+                    }
+                }
+
+                int total = roomPrice + servicePrice;
+                System.Diagnostics.Debug.WriteLine(
+                   $"✅ VERIFY TOTAL: {rentalDetailId} | Rooms: {roomPrice:N0} + Services: {servicePrice:N0} = Total: {total:N0}");
+
+                return total;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Error verifying total price: {ex.Message}");
+                return 0;
+            }
         }
 
         private void lblLoaiThue_Click(object sender, EventArgs e)

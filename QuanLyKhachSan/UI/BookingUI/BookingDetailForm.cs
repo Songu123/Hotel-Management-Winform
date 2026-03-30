@@ -28,7 +28,8 @@ namespace QuanLyKhachSan.UI.BookingUI
         private IRoomRentalDetailService _roomRentalDetailService;
         private IRoomService _roomService;
         private IServiceService _serviceService;
-      private IInvoiceService _invoiceService;
+        private IInvoiceService _invoiceService;
+        private IServiceRentalDetailService _serviceRentalDetailService;
 
         private string _rentalDetailId = string.Empty;
         private RentalDetail _currentRental;
@@ -60,6 +61,9 @@ namespace QuanLyKhachSan.UI.BookingUI
         // Buttons
         private Button btnAddRoom;
         private Button btnAddService;
+        private Button btnEditService;
+        private Button btnDeleteService;
+        private Button btnSave;
         private Button btnCheckout;
         private Button btnPrint;
         private Button btnClose;
@@ -76,6 +80,9 @@ namespace QuanLyKhachSan.UI.BookingUI
             // Wire up event handlers
             btnAddRoom.Click += BtnAddRoom_Click;
             btnAddService.Click += BtnAddService_Click;
+            btnEditService.Click += BtnEditService_Click;
+            btnDeleteService.Click += BtnDeleteService_Click;
+            btnSave.Click += BtnSave_Click;
             btnCheckout.Click += BtnCheckout_Click;
             btnPrint.Click += BtnPrint_Click;
             btnClose.Click += (s, e) => this.Close();
@@ -179,7 +186,9 @@ namespace QuanLyKhachSan.UI.BookingUI
                 RowHeadersVisible = false,
                 Width = 1040,
                 Height = 180,
-                Location = new Point(10, 40)
+                Location = new Point(10, 40),
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                MultiSelect = false
             };
             SetupRoomsGrid();
             roomsPanel.Controls.Add(dgvRooms);
@@ -232,7 +241,9 @@ namespace QuanLyKhachSan.UI.BookingUI
                 RowHeadersVisible = false,
                 Width = 1040,
                 Height = 160,
-                Location = new Point(10, 40)
+                Location = new Point(10, 40),
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                MultiSelect = false
             };
             SetupServicesGrid();
             servicesPanel.Controls.Add(dgvServices);
@@ -250,6 +261,34 @@ namespace QuanLyKhachSan.UI.BookingUI
                 FlatStyle = FlatStyle.Flat
             };
             servicesPanel.Controls.Add(btnAddService);
+
+            btnEditService = new Button
+            {
+                Name = "btnEditService",
+                Text = "✏️ Sửa Dịch Vụ",
+                Width = 120,
+                Height = 35,
+                Location = new Point(140, 210),
+                BackColor = Color.FromArgb(59, 130, 246),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            servicesPanel.Controls.Add(btnEditService);
+
+            btnDeleteService = new Button
+            {
+                Name = "btnDeleteService",
+                Text = "🗑️ Xóa Dịch Vụ",
+                Width = 120,
+                Height = 35,
+                Location = new Point(270, 210),
+                BackColor = Color.FromArgb(239, 68, 68),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            servicesPanel.Controls.Add(btnDeleteService);
 
             mainPanel.Controls.Add(servicesPanel);
 
@@ -343,13 +382,27 @@ namespace QuanLyKhachSan.UI.BookingUI
             };
             summaryPanel.Controls.Add(btnCheckout);
 
+            btnSave = new Button
+            {
+                Name = "btnSave",
+                Text = "💾 Lưu",
+                Width = 110,
+                Height = 40,
+                Location = new Point(870, 15),
+                BackColor = Color.FromArgb(59, 130, 246),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
+            summaryPanel.Controls.Add(btnSave);
+
             btnPrint = new Button
             {
                 Name = "btnPrint",
                 Text = "🖨️ In",
                 Width = 100,
                 Height = 40,
-                Location = new Point(870, 80),
+                Location = new Point(980, 80),
                 BackColor = Color.FromArgb(59, 130, 246),
                 ForeColor = Color.White,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
@@ -496,17 +549,19 @@ namespace QuanLyKhachSan.UI.BookingUI
     ICustomerService customerService,
       IRoomRentalDetailService roomRentalDetailService,
      IRoomService roomService,
-     IServiceService serviceService,
-       IInvoiceService invoiceService = null)
+  IServiceService serviceService,
+       IInvoiceService invoiceService = null,
+     IServiceRentalDetailService serviceRentalDetailService = null)
         {
-     _rentalDetailService = rentalDetailService ?? throw new ArgumentNullException(nameof(rentalDetailService));
- _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
-  _roomRentalDetailService = roomRentalDetailService ?? throw new ArgumentNullException(nameof(roomRentalDetailService));
-    _roomService = roomService;
+            _rentalDetailService = rentalDetailService ?? throw new ArgumentNullException(nameof(rentalDetailService));
+            _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            _roomRentalDetailService = roomRentalDetailService ?? throw new ArgumentNullException(nameof(roomRentalDetailService));
+            _roomService = roomService;
             _serviceService = serviceService;
-     _invoiceService = invoiceService;
+            _invoiceService = invoiceService;
+            _serviceRentalDetailService = serviceRentalDetailService;
 
-        DebugLogger.Info("✓ SetServices called - all dependencies injected");
+            DebugLogger.Info("✓ SetServices called - all dependencies injected");
         }
 
         public async Task LoadBookingDetailAsync(string rentalDetailId)
@@ -534,8 +589,21 @@ namespace QuanLyKhachSan.UI.BookingUI
                     DebugLogger.Info($"✓ Customer loaded: {_currentCustomer?.Name ?? "N/A"}");
                 }
 
+                // ✅ Load room details from database
                 _roomDetails = (await _roomRentalDetailService.GetRoomRentalDetailsByRentalDetailIdAsync(rentalDetailId))?.ToList() ?? new List<RoomRentalDetail>();
                 DebugLogger.Info($"✓ Loaded {_roomDetails.Count} room details from database");
+
+                // ✅ NEW: Load service details from database
+                if (_serviceRentalDetailService != null)
+                {
+                    _serviceDetails = (await _serviceRentalDetailService.GetServiceRentalDetailsByRentalDetailIdAsync(rentalDetailId))?.ToList() ?? new List<ServiceRentalDetail>();
+                    DebugLogger.Info($"✓ Loaded {_serviceDetails.Count} service details from database");
+                }
+                else
+                {
+                    _serviceDetails = new List<ServiceRentalDetail>();
+                    DebugLogger.Warning("⚠ IServiceRentalDetailService not available");
+                }
 
                 PopulateUI();
                 RefreshUI();
@@ -568,6 +636,24 @@ namespace QuanLyKhachSan.UI.BookingUI
                 if (txtPhone != null) txtPhone.Text = _currentCustomer?.PhoneNumber ?? "N/A";
                 if (txtAddress != null) txtAddress.Text = _currentCustomer?.Address ?? "N/A";
 
+                // ✅ NEW: Disable checkout button if status = "Đã Xác Nhận" (ProcessingStatus = 1)
+                if (btnCheckout != null)
+                {
+                    bool isAlreadyConfirmed = _currentRental?.ProcessingStatus == 1;
+                    btnCheckout.Enabled = !isAlreadyConfirmed;
+
+                    if (isAlreadyConfirmed)
+                    {
+                        btnCheckout.BackColor = Color.FromArgb(180, 180, 180);  // Gray out
+                        DebugLogger.Info("⚠️ Checkout button DISABLED - Booking already confirmed");
+                    }
+                    else
+                    {
+                        btnCheckout.BackColor = Color.FromArgb(34, 197, 94);  // Green
+                        DebugLogger.Info("✅ Checkout button ENABLED - Booking not yet confirmed");
+                    }
+                }
+
                 DebugLogger.Info("✓ UI populated with data");
             }
             catch (Exception ex)
@@ -580,6 +666,54 @@ namespace QuanLyKhachSan.UI.BookingUI
         {
             RefreshRoomsGrid();
             RefreshServicesGrid();
+
+            // ✅ NEW: Disable edit/delete buttons when booking is already confirmed
+            bool isAlreadyConfirmed = _currentRental?.ProcessingStatus == 1;
+
+            if (btnAddRoom != null)
+            {
+                btnAddRoom.Enabled = !isAlreadyConfirmed;
+                btnAddRoom.BackColor = isAlreadyConfirmed
+             ? Color.FromArgb(180, 180, 180)
+                 : Color.FromArgb(34, 197, 94);
+            }
+
+            if (btnAddService != null)
+            {
+                btnAddService.Enabled = !isAlreadyConfirmed;
+                btnAddService.BackColor = isAlreadyConfirmed
+             ? Color.FromArgb(180, 180, 180)
+                : Color.FromArgb(245, 158, 11);
+            }
+
+            if (btnEditService != null)
+            {
+                btnEditService.Enabled = !isAlreadyConfirmed;
+                btnEditService.BackColor = isAlreadyConfirmed
+                     ? Color.FromArgb(180, 180, 180)
+                         : Color.FromArgb(59, 130, 246);
+            }
+
+            if (btnDeleteService != null)
+            {
+                btnDeleteService.Enabled = !isAlreadyConfirmed;
+                btnDeleteService.BackColor = isAlreadyConfirmed
+               ? Color.FromArgb(180, 180, 180)
+                       : Color.FromArgb(239, 68, 68);
+            }
+
+            if (btnSave != null)
+            {
+                btnSave.Enabled = !isAlreadyConfirmed;
+                btnSave.BackColor = isAlreadyConfirmed
+            ? Color.FromArgb(180, 180, 180)
+              : Color.FromArgb(59, 130, 246);
+            }
+
+            if (isAlreadyConfirmed)
+            {
+                DebugLogger.Info("⚠️ All edit buttons DISABLED - Booking already confirmed (Đã Xác Nhận)");
+            }
         }
 
         private void RefreshRoomsGrid()
@@ -755,7 +889,7 @@ namespace QuanLyKhachSan.UI.BookingUI
                 {
                     DebugLogger.Info("✓ Dialog returned OK");
                     DebugLogger.LogAddService(_rentalDetailId, dialog.SelectedServiceId,
-                         dialog.Quantity, dialog.ServicePrice, dialog.UsageDate);
+                     dialog.Quantity, dialog.ServicePrice, dialog.UsageDate);
 
                     var newService = new ServiceRentalDetail
                     {
@@ -789,6 +923,120 @@ namespace QuanLyKhachSan.UI.BookingUI
             }
         }
 
+        /// <summary>
+        /// Edit service event handler
+        /// </summary>
+        private void BtnEditService_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DebugLogger.Info("=== ✏️ BUTTON: EDIT SERVICE CLICKED ===");
+
+                if (dgvServices.SelectedRows.Count == 0)
+                {
+                    MessageBox.Show("Vui lòng chọn một dịch vụ để sửa", "Cảnh báo",
+                       MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                int selectedRowIndex = dgvServices.SelectedRows[0].Index;
+                if (selectedRowIndex < 0 || selectedRowIndex >= _serviceDetails.Count)
+                {
+                    MessageBox.Show("Dịch vụ không hợp lệ", "Lỗi",
+                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var selectedService = _serviceDetails[selectedRowIndex];
+                DebugLogger.Info($"✓ Selected service to edit: {selectedService.ServiceId}");
+
+                var dialog = new EditServiceDialog(_serviceService, selectedService);
+                DebugLogger.Info("✓ EditServiceDialog instance created");
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    DebugLogger.Info("✓ Edit dialog returned OK");
+
+                    selectedService.Quantity = dialog.Quantity;
+                    selectedService.Price = dialog.ServicePrice;
+                    selectedService.UsageDate = dialog.UsageDate;
+
+                    DebugLogger.Info($"✓ Service updated: Qty={dialog.Quantity}, Price={dialog.ServicePrice}");
+
+                    RefreshUI();
+                    CalculateTotals();
+
+                    DebugLogger.Success("✓ BtnEditService_Click completed successfully");
+                    MessageBox.Show("✓ Sửa dịch vụ thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    DebugLogger.Warning("Edit dialog was cancelled");
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugLogger.Error("❌ ERROR in BtnEditService_Click", ex);
+                MessageBox.Show($"Lỗi khi sửa dịch vụ: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Delete service event handler
+        /// </summary>
+        private void BtnDeleteService_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DebugLogger.Info("=== 🗑️ BUTTON: DELETE SERVICE CLICKED ===");
+
+                if (dgvServices.SelectedRows.Count == 0)
+                {
+                    MessageBox.Show("Vui lòng chọn một dịch vụ để xóa", "Cảnh báo",
+                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                int selectedRowIndex = dgvServices.SelectedRows[0].Index;
+                if (selectedRowIndex < 0 || selectedRowIndex >= _serviceDetails.Count)
+                {
+                    MessageBox.Show("Dịch vụ không hợp lệ", "Lỗi",
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var selectedService = _serviceDetails[selectedRowIndex];
+                DebugLogger.Info($"✓ Selected service to delete: {selectedService.ServiceId}");
+
+                var result = MessageBox.Show(
+                   $"Bạn chắc chắn muốn xóa dịch vụ {selectedService.ServiceId}?",
+                   "Xác nhận xóa",
+                          MessageBoxButtons.YesNo,
+                   MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    _serviceDetails.RemoveAt(selectedRowIndex);
+                    DebugLogger.Info($"✓ Service deleted. Remaining count: {_serviceDetails.Count}");
+
+                    RefreshUI();
+                    CalculateTotals();
+
+                    DebugLogger.Success("✓ BtnDeleteService_Click completed successfully");
+                    MessageBox.Show("✓ Xóa dịch vụ thành công", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    DebugLogger.Info("Delete cancelled by user");
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugLogger.Error("❌ ERROR in BtnDeleteService_Click", ex);
+                MessageBox.Show($"Lỗi khi xóa dịch vụ: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private async void BtnCheckout_Click(object sender, EventArgs e)
         {
             try
@@ -803,101 +1051,103 @@ namespace QuanLyKhachSan.UI.BookingUI
                 DebugLogger.LogState(_roomDetails.Count, _serviceDetails.Count, totalRoomCost, totalServiceCost, grandTotal);
 
                 var result = MessageBox.Show(
-          "Bạn chắc chắn muốn checkout đơn đặt phòng này?\n\nTổng tiền: " + (lblTotalAmount?.Text ?? "0 VNĐ"),
-       "Xác nhận Checkout",
-         MessageBoxButtons.YesNo,
-      MessageBoxIcon.Question);
+                                "Bạn chắc chắn muốn checkout đơn đặt phòng này?\n\nTổng tiền: " + (lblTotalAmount?.Text ?? "0 VNĐ"),
+             "Xác nhận Checkout",
+             MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question);
 
-    DebugLogger.Info($"User response: {(result == DialogResult.Yes ? "YES" : "NO")}");
+                DebugLogger.Info($"User response: {(result == DialogResult.Yes ? "YES" : "NO")}");
 
-     if (result == DialogResult.Yes)
+                if (result == DialogResult.Yes)
                 {
-    DebugLogger.Info("✓ Checkout confirmed by user");
+                    DebugLogger.Info("✓ Checkout confirmed by user");
 
-    // Save room details
-      if (_roomDetails.Count > 0)
-    {
-           DebugLogger.Info($"📌 Saving {_roomDetails.Count} rooms to database...");
-    try
-     {
-        await _roomRentalDetailService.AddRoomRentalDetailsAsync(_roomDetails);
-       DebugLogger.Success($"✓ Successfully saved {_roomDetails.Count} rooms");
-    }
-       catch (Exception roomEx)
-     {
-       DebugLogger.Error($"❌ Failed to save rooms", roomEx);
-              throw;
-      }
-          }
-     else
-   {
-     DebugLogger.Warning("⚠ No rooms to save");
-     }
+                    DebugLogger.Info("📌 Skipping room/service save - already saved in BtnSave_Click");
 
-  // TODO: Save service details when ServiceRentalDetailService is available
-    if (_serviceDetails.Count > 0)
-               {
-    DebugLogger.Warning($"⚠ TODO: Saving {_serviceDetails.Count} services (ServiceRentalDetailService not implemented)");
-        }
+                    // ✅ FIX: ONLY update status - don't touch rooms/services
+                    // Create a minimal object with just the ID and status to update
+                    DebugLogger.Info($"📌 Creating minimal RentalDetail object for status update...");
+                    var rentalToUpdate = new RentalDetail
+                    {
+                        RentalDetailId = _rentalDetailId,
+                        ProcessingStatus = 1  // Set to "Confirmed"
+                    };
 
-        // Update rental status
-       DebugLogger.Info($"📌 Updating RentalDetail status from {_currentRental.ProcessingStatus} to 1 (Confirmed)");
-      _currentRental.ProcessingStatus = 1;
-          try
-         {
-   await _rentalDetailService.UpdateRentalDetailAsync(_currentRental);
-    DebugLogger.Success($"✓ RentalDetail status updated successfully");
-      }
-           catch (Exception statusEx)
-   {
-            DebugLogger.Error($"❌ Failed to update RentalDetail status", statusEx);
-            throw;
-     }
+                    // ✅ Only update rental status to 1 (Confirmed)
+                    DebugLogger.Info($"📌 Updating RentalDetail status to 1 (Confirmed)");
+                    try
+                    {
+                        await _rentalDetailService.UpdateRentalDetailAsync(rentalToUpdate);
+                        DebugLogger.Success($"✓ RentalDetail status updated successfully");
+                    }
+                    catch (Exception statusEx)
+                    {
+                        DebugLogger.Error($"❌ Failed to update RentalDetail status", statusEx);
+                        MessageBox.Show($"Lỗi cập nhật tình trạng: {statusEx.InnerException?.Message ?? statusEx.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
-        DebugLogger.LogCheckout(_rentalDetailId, _roomDetails.Count, _serviceDetails.Count,
-          totalRoomCost, totalServiceCost, grandTotal);
+                    DebugLogger.LogCheckout(_rentalDetailId, _roomDetails.Count, _serviceDetails.Count,
+             totalRoomCost, totalServiceCost, grandTotal);
 
-       DebugLogger.Success("✓✓✓ CHECKOUT COMPLETED SUCCESSFULLY ✓✓✓");
+                    DebugLogger.Success("✓✓✓ CHECKOUT COMPLETED SUCCESSFULLY ✓✓✓");
 
-        MessageBox.Show(
-     "✓ Checkout thành công!\n\nĐơn đặt phòng đã được hoàn tất.",
-    "Thành công",
-       MessageBoxButtons.OK,
-        MessageBoxIcon.Information);
+                    MessageBox.Show(
+                           "✓ Checkout thành công!\n\nĐơn đặt phòng đã được hoàn tất.",
+                      "Thành công",
+             MessageBoxButtons.OK,
+                           MessageBoxIcon.Information);
 
-     // ✅ Open Payment Form after successful checkout
-      if (_invoiceService != null)
-        {
-       DebugLogger.Info("📌 Opening PaymentForm for payment...");
-        var paymentForm = new PaymentForm(
-              _currentRental,
-     null,
-       grandTotal,
-            _currentRental?.DepositAmount ?? 0,
-     _rentalDetailService,
-      _invoiceService);
+                    // ✅ Load RentalDetail with relationships before opening Payment Form
+                    DebugLogger.Info("📌 Loading RentalDetail with relationships for payment...");
+                    var rentalWithDetails = await _rentalDetailService.GetRentalDetailWithDetailsAsync(_rentalDetailId);
 
-      paymentForm.ShowDialog();
-    DebugLogger.Success("✓ PaymentForm closed");
- }
-   else
-        {
-      DebugLogger.Warning("⚠ IInvoiceService not available - skipping payment form");
-       }
+                    if (rentalWithDetails != null)
+                    {
+                        DebugLogger.Info($"✓ RentalDetail loaded with {rentalWithDetails.RoomRentalDetails?.Count ?? 0} rooms and {rentalWithDetails.ServiceRentalDetails?.Count ?? 0} services");
 
-     this.Close();
-      }
- else
+                        // ✅ Open Payment Form after successful checkout
+                        if (_invoiceService != null)
+                        {
+                            DebugLogger.Info("📌 Opening PaymentDetailForm for payment...");
+
+                            // ✅ Create payment form with loaded rental details
+                            var paymentForm = new PaymentDetailForm(
+                     rentalWithDetails,
+                               totalRoomCost,
+                      totalServiceCost,
+                                rentalWithDetails?.DepositAmount ?? 0,
+                            _roomRentalDetailService,
+                         _serviceRentalDetailService,
+                         _invoiceService);  // ✅ ADD THIS PARAMETER
+
+                            paymentForm.ShowDialog();
+                            DebugLogger.Success("✓ PaymentDetailForm closed");
+                        }
+                        else
+                        {
+                            DebugLogger.Warning("⚠ IInvoiceService not available - skipping payment form");
+                        }
+                    }
+                    else
+                    {
+                        DebugLogger.Error("❌ Failed to load RentalDetail with details for payment");
+                        MessageBox.Show("Lỗi tải thông tin chi tiết cho thanh toán", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    this.Close();
+                }
+                else
                 {
-   DebugLogger.Info("Checkout cancelled by user");
-     }
-       }
+                    DebugLogger.Info("Checkout cancelled by user");
+                }
+            }
             catch (Exception ex)
             {
-         DebugLogger.Error("❌ FATAL ERROR in BtnCheckout_Click", ex);
- MessageBox.Show($"Lỗi checkout: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-         }
-  }
+                DebugLogger.Error("❌ FATAL ERROR in BtnCheckout_Click", ex);
+                MessageBox.Show($"Lỗi checkout: {ex.InnerException?.Message ?? ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void BtnPrint_Click(object sender, EventArgs e)
         {
@@ -909,31 +1159,159 @@ namespace QuanLyKhachSan.UI.BookingUI
                  MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// Save rooms and services to database without checkout
+        /// </summary>
+        private async void BtnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DebugLogger.Info("=== 💾 BUTTON: SAVE CLICKED ===");
+                DebugLogger.Info($"RentalDetailId: {_rentalDetailId}");
+
+                if (_roomDetails.Count == 0 && _serviceDetails.Count == 0)
+                {
+                    MessageBox.Show("Không có phòng hoặc dịch vụ nào để lưu", "Cảnh báo",
+                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                int totalRoomCost = _roomDetails.Sum(r => r.RentalPrice * Math.Max(1, (int)(r.ReturnDate - r.RentalDate).TotalDays));
+                int totalServiceCost = _serviceDetails.Sum(s => s.Price * s.Quantity);
+                int grandTotal = totalRoomCost + totalServiceCost;
+
+                DebugLogger.LogState(_roomDetails.Count, _serviceDetails.Count, totalRoomCost, totalServiceCost, grandTotal);
+
+                // Save room details
+                if (_roomDetails.Count > 0)
+                {
+                    DebugLogger.Info($"📌 Saving {_roomDetails.Count} rooms to database...");
+                    try
+                    {
+                        // ✅ FIX: Check existing rooms first to avoid duplicate key error
+                        var existingRooms = await _roomRentalDetailService.GetRoomRentalDetailsByRentalDetailIdAsync(_rentalDetailId);
+                        var existingRoomSet = new HashSet<string>(existingRooms.Select(r => $"{r.RoomId}_{r.RentalDate:yyyy-MM-dd}"));
+
+                        var newRooms = _roomDetails
+                     .Where(r => !string.IsNullOrEmpty(r.RoomId) &&
+                     !existingRoomSet.Contains($"{r.RoomId}_{r.RentalDate:yyyy-MM-dd}"))
+                      .ToList();
+
+                        if (newRooms.Any())
+                        {
+                            await _roomRentalDetailService.AddRoomRentalDetailsAsync(newRooms);
+                            DebugLogger.Success($"✓ Successfully saved {newRooms.Count} new rooms");
+                        }
+                        else
+                        {
+                            DebugLogger.Info($"ℹ️ All {_roomDetails.Count} rooms already exist in database - skipping save");
+                        }
+                    }
+                    catch (Exception roomEx)
+                    {
+                        DebugLogger.Error($"❌ Failed to save rooms: {roomEx.Message}", roomEx);
+                        MessageBox.Show($"Lỗi lưu phòng: {roomEx.InnerException?.Message ?? roomEx.Message}", "Lỗi",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else
+                {
+                    DebugLogger.Warning("⚠ No rooms to save");
+                }
+
+                // Save service details
+                if (_serviceDetails.Count > 0)
+                {
+                    DebugLogger.Info($"📌 Saving {_serviceDetails.Count} services to database...");
+                    try
+                    {
+                        if (_serviceRentalDetailService != null)
+                        {
+                            // ✅ FIX: Check existing services first
+                            var existingServices = await _serviceRentalDetailService.GetServiceRentalDetailsByRentalDetailIdAsync(_rentalDetailId);
+                            var existingServiceSet = new HashSet<string>(existingServices.Select(s => $"{s.ServiceId}_{s.UsageDate:yyyy-MM-dd}"));
+
+                            var newServices = _serviceDetails
+                               .Where(s => !string.IsNullOrEmpty(s.ServiceId) &&
+                               !existingServiceSet.Contains($"{s.ServiceId}_{s.UsageDate:yyyy-MM-dd}"))
+                               .ToList();
+
+                            if (newServices.Any())
+                            {
+                                await _serviceRentalDetailService.AddServiceRentalDetailsAsync(newServices);
+                                DebugLogger.Success($"✓ Successfully saved {newServices.Count} new services");
+                            }
+                            else
+                            {
+                                DebugLogger.Info($"ℹ️ All {_serviceDetails.Count} services already exist in database - skipping save");
+                            }
+                        }
+                        else
+                        {
+                            DebugLogger.Warning($"⚠ IServiceRentalDetailService not available");
+                        }
+                    }
+                    catch (Exception serviceEx)
+                    {
+                        DebugLogger.Error($"❌ Failed to save services: {serviceEx.Message}", serviceEx);
+                        MessageBox.Show($"Lỗi lưu dịch vụ: {serviceEx.InnerException?.Message ?? serviceEx.Message}", "Lỗi",
+                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else
+                {
+                    DebugLogger.Warning("⚠ No services to save");
+                }
+
+                DebugLogger.Success("✓✓ SAVE COMPLETED SUCCESSFULLY ✓✓");
+
+                MessageBox.Show(
+                  "✓ Lưu dữ liệu thành công!\n\n" +
+                        $"Phòng: {_roomDetails.Count}\n" +
+                  $"Dịch vụ: {_serviceDetails.Count}\n" +
+                         $"Tổng tiền: {grandTotal:N0} VNĐ",
+                        "Thành công",
+                    MessageBoxButtons.OK,
+                  MessageBoxIcon.Information);
+
+                // Refresh UI to show saved state
+                RefreshUI();
+                CalculateTotals();
+            }
+            catch (Exception ex)
+            {
+                DebugLogger.Error("❌ FATAL ERROR in BtnSave_Click", ex);
+                MessageBox.Show($"Lỗi lưu dữ liệu: {ex.InnerException?.Message ?? ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private Label CreateLabel(string text, int x, int y)
         {
-    return new Label
-   {
-   Text = text,
-  Font = new Font("Segoe UI", 9),
-          ForeColor = Color.FromArgb(60, 60, 60),
-         Location = new Point(x, y),
-   AutoSize = true
-         };
+            return new Label
+            {
+                Text = text,
+                Font = new Font("Segoe UI", 9),
+                ForeColor = Color.FromArgb(60, 60, 60),
+                Location = new Point(x, y),
+                AutoSize = true
+            };
         }
 
         private TextBox CreateTextBox(int x, int y, int width, string name)
         {
- return new TextBox
- {
-           Name = name,
-     Location = new Point(x, y),
-       Width = width,
-             Height = 28,
-  ReadOnly = true,
-       BackColor = Color.FromArgb(240, 240, 240),
-     BorderStyle = BorderStyle.FixedSingle,
-    Font = new Font("Segoe UI", 9)
-    };
+            return new TextBox
+            {
+                Name = name,
+                Location = new Point(x, y),
+                Width = width,
+                Height = 28,
+                ReadOnly = true,
+                BackColor = Color.FromArgb(240, 240, 240),
+                BorderStyle = BorderStyle.FixedSingle,
+                Font = new Font("Segoe UI", 9)
+            };
         }
 
         #endregion
